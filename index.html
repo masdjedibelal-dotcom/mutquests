@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1,user-scalable=no"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="theme-color" content="#F7F6F3"/>
+<title>Extinction Lab</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden}
+body{background:#F7F6F3;font-family:'DM Sans',-apple-system,sans-serif;-webkit-font-smoothing:antialiased;color:#111;position:fixed;width:100%;height:100%}
+:root{
+  --g:#3D8C5E;--gb:#E8F5EE;--gm:#C8E8D4;--gd:#2D7A50;
+  --r:#DC2626;--rb:#FEF2F2;
+  --am:#D97706;--amb:#FEF3C7;
+  --bg:#F7F6F3;--s:#fff;--s2:#F0EEE9;
+  --bd:#E5E2DC;--bd2:#D4D0C8;
+  --t:#111;--t2:#555;--t3:#999;
+  --safe-t:env(safe-area-inset-top,0px);
+  --safe-b:env(safe-area-inset-bottom,0px);
+}
+#app{height:100%;display:flex;flex-direction:column}
+#topbar{flex-shrink:0;padding:calc(var(--safe-t) + 10px) 20px 10px;background:var(--bg);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bd)}
+#wrap{flex:1;overflow:hidden;position:relative}
+#nav{flex-shrink:0;background:var(--s);border-top:1px solid var(--bd);display:flex;padding-bottom:var(--safe-b)}
+.scr{position:absolute;inset:0;background:var(--bg);display:none;flex-direction:column;overflow:hidden}
+.scr.on{display:flex}
+
+/* Topbar */
+.logo{display:flex;align-items:center;gap:9px}
+.logomark{width:30px;height:30px;border-radius:9px;background:var(--g);display:flex;align-items:center;justify-content:center}
+.appname{font-size:17px;font-weight:800;color:var(--t);letter-spacing:-0.03em}
+.badges{display:flex;gap:7px}
+.sbadge{border-radius:99px;padding:5px 11px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:4px}
+.fire{background:var(--amb);color:var(--am);border:1px solid #FDE68A}
+.reps{background:var(--gb);color:var(--g);border:1px solid var(--gm)}
+
+/* Nav */
+.ntab{flex:1;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 0 7px;font-family:inherit}
+.nicon{width:38px;height:28px;border-radius:9px;display:flex;align-items:center;justify-content:center}
+.ntab.on .nicon{background:var(--gb)}
+.nlbl{font-size:10px;font-weight:500;color:var(--t3)}
+.ntab.on .nlbl{font-weight:700;color:var(--g)}
+
+/* ── HOME ── */
+#s-home{overflow-y:auto}
+#s-home::-webkit-scrollbar{display:none}
+.hero{background:linear-gradient(135deg,#256647 0%,#3D8C5E 55%,#52A876 100%);padding:22px 20px 26px;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;top:-50px;right:-50px;width:200px;height:200px;background:rgba(255,255,255,0.05);border-radius:50%;pointer-events:none}
+.hero-g{font-size:12px;font-weight:600;color:rgba(255,255,255,0.65);letter-spacing:.03em;margin-bottom:3px;position:relative;z-index:1}
+.hero-h{font-size:26px;font-weight:800;color:#fff;line-height:1.15;letter-spacing:-0.03em;margin-bottom:18px;position:relative;z-index:1}
+.hero-cta{background:rgba(255,255,255,0.16);border:1.5px solid rgba(255,255,255,0.28);border-radius:14px;padding:13px 18px;font-size:14px;font-weight:700;color:#fff;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:8px;width:100%;position:relative;z-index:1;transition:all .15s;backdrop-filter:blur(6px)}
+.hero-cta:active{background:rgba(255,255,255,0.25)}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:14px 14px 0}
+.kpi{background:var(--s);border-radius:16px;border:1px solid var(--bd);padding:14px 12px;box-shadow:0 1px 4px rgba(0,0,0,0.05)}
+.kpi-v{font-size:26px;font-weight:800;letter-spacing:-0.03em;line-height:1}
+.kpi-l{font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;margin-top:4px}
+
+/* Prog banner on home */
+.prog-b{margin:14px 14px 0;border-radius:18px;padding:16px;background:linear-gradient(135deg,#1E3A52,#2A5278);position:relative;overflow:hidden}
+.prog-b::after{content:'⚡';position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:28px;opacity:.12}
+.pb-tag{font-size:10px;font-weight:700;letter-spacing:.1em;color:rgba(255,255,255,.55);text-transform:uppercase;margin-bottom:4px}
+.pb-title{font-size:16px;font-weight:800;color:#fff;margin-bottom:2px;letter-spacing:-0.02em}
+.pb-meta{font-size:12px;color:rgba(255,255,255,.6);margin-bottom:10px}
+.pb-track{height:5px;background:rgba(255,255,255,.15);border-radius:3px;overflow:hidden}
+.pb-fill{height:100%;background:rgba(255,255,255,.75);border-radius:3px;transition:width .5s ease}
+
+/* Prog Quest today on home */
+.pq-wrap{margin:10px 14px 0}
+.pq-label{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px}
+.pq-card{background:var(--s);border-radius:18px;border:2px solid;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,0.08)}
+.pq-bar{height:5px}
+.pq-inner{padding:16px 16px 14px}
+.pq-title{font-size:17px;font-weight:800;color:var(--t);margin-bottom:6px;letter-spacing:-0.02em;line-height:1.25}
+.pq-hook{font-size:12px;color:var(--t2);line-height:1.55;margin-bottom:13px}
+.pq-done{width:100%;background:var(--g);border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:700;color:#fff;cursor:pointer;font-family:inherit;box-shadow:0 4px 12px rgba(61,140,94,0.22);display:flex;align-items:center;justify-content:center;gap:7px;transition:all .15s}
+.pq-done:active{transform:scale(.96)}
+.pq-done.done-style{background:var(--s2);color:var(--t3);box-shadow:none;cursor:default}
+
+/* Free quests on home */
+.sec-hd{display:flex;align-items:center;justify-content:space-between;padding:18px 14px 8px}
+.sec-t{font-size:11px;font-weight:700;color:var(--t3);letter-spacing:.07em;text-transform:uppercase}
+.sec-c{font-size:12px;color:var(--t3)}
+.qslider{padding:0 14px 6px;display:flex;gap:11px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.qslider::-webkit-scrollbar{display:none}
+.qcard{flex-shrink:0;width:calc(100vw - 60px);max-width:320px;background:var(--s);border-radius:20px;border:1px solid var(--bd);box-shadow:0 3px 12px rgba(0,0,0,0.07);overflow:hidden;display:flex;flex-direction:column}
+.qc-bar{height:5px;flex-shrink:0}
+.qc-body{padding:16px 16px 14px;flex:1;display:flex;flex-direction:column}
+.qc-tags{display:flex;gap:6px;margin-bottom:11px}
+.tag{border-radius:99px;padding:3px 9px;font-size:11px;font-weight:600}
+.qc-title{font-size:17px;font-weight:800;color:var(--t);line-height:1.25;letter-spacing:-0.02em;margin-bottom:6px;flex:1}
+.qc-hook{font-size:12px;color:var(--t2);line-height:1.55;margin-bottom:13px}
+.qc-btns{display:flex;gap:8px}
+.btn-done{flex:2;background:var(--g);border:none;border-radius:12px;padding:11px;font-size:13px;font-weight:700;color:#fff;cursor:pointer;font-family:inherit;box-shadow:0 4px 12px rgba(61,140,94,0.22);display:flex;align-items:center;justify-content:center;gap:6px;transition:all .15s}
+.btn-done:active{transform:scale(.95)}
+.btn-back{flex:1;background:var(--s2);border:1px solid var(--bd);border-radius:12px;padding:11px;font-size:12px;font-weight:600;color:var(--t2);cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:4px;transition:all .15s}
+.btn-back:active{transform:scale(.95)}
+.home-empty{margin:14px;background:var(--s);border-radius:20px;border:1px solid var(--bd);padding:28px 22px;text-align:center}
+.he-icon{width:50px;height:50px;border-radius:16px;background:var(--gb);display:flex;align-items:center;justify-content:center;margin:0 auto 13px}
+.he-t{font-size:16px;font-weight:700;margin-bottom:6px;letter-spacing:-0.01em}
+.he-s{font-size:13px;color:var(--t2);line-height:1.6;margin-bottom:16px}
+.btn-p{background:var(--g);border:none;border-radius:16px;padding:14px 24px;font-size:14px;font-weight:700;color:#fff;cursor:pointer;font-family:inherit;box-shadow:0 4px 14px rgba(61,140,94,0.25);transition:all .15s;display:inline-block}
+.btn-p:active{transform:scale(.97)}
+.btn-p-full{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;border-radius:18px;padding:17px}
+
+/* ── QUESTS ── */
+#s-q{overflow:hidden}
+.subtabs{flex-shrink:0;display:flex;background:var(--s);border-bottom:1px solid var(--bd);padding:0 16px}
+.stab{flex:1;background:none;border:none;border-bottom:2.5px solid transparent;padding:12px 4px 10px;font-size:13px;font-weight:600;color:var(--t3);cursor:pointer;font-family:inherit;transition:all .15s;white-space:nowrap}
+.stab.on{color:var(--g);border-bottom-color:var(--g)}
+.scontent{flex:1;overflow:hidden;position:relative}
+.spanel{position:absolute;inset:0;overflow-y:auto;display:none;flex-direction:column}
+.spanel.on{display:flex}
+.spanel::-webkit-scrollbar{display:none}
+
+/* Discover panel */
+.disc{flex:1;display:flex;flex-direction:column;padding:12px 14px 14px;overflow:hidden}
+.frow{display:flex;gap:8px;margin-bottom:10px;flex-shrink:0}
+.fbtn{flex:1;display:flex;align-items:center;justify-content:space-between;background:var(--s);border:1.5px solid var(--bd);border-radius:12px;padding:9px 13px;font-size:13px;font-weight:500;color:var(--t2);cursor:pointer;font-family:inherit;box-shadow:0 1px 3px rgba(0,0,0,0.05);transition:all .15s}
+.fbtn.act{border-color:var(--g);color:var(--g);background:var(--gb);font-weight:700}
+.freset{font-size:12px;color:var(--t3);background:none;border:none;cursor:pointer;font-family:inherit;padding:4px 2px;flex-shrink:0}
+.freset.show{color:var(--g);font-weight:600}
+.slots-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-shrink:0}
+.slots-t{font-size:12px;font-weight:500;color:var(--t3)}
+.slots-dots{display:flex;gap:5px}
+.sdot{width:8px;height:8px;border-radius:50%;background:var(--bd2)}
+.sdot.on{background:var(--g)}
+
+/* Card stack */
+.stack{flex:1;position:relative;min-height:0}
+.ghost{position:absolute;inset:0;background:var(--s);border-radius:22px;border:1px solid var(--bd);box-shadow:0 3px 12px rgba(0,0,0,0.07);pointer-events:none}
+.mcard{position:absolute;inset:0;background:var(--s);border-radius:22px;border:1px solid var(--bd);box-shadow:0 8px 32px rgba(0,0,0,0.1);display:flex;flex-direction:column;overflow:hidden;will-change:transform;cursor:grab;transition:transform .32s cubic-bezier(.34,1.4,.64,1)}
+.mcard.drag{transition:none;cursor:grabbing}
+.ctint{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .08s}
+.tadd{background:linear-gradient(135deg,#E8F5EE,#C8E8D4)}
+.tskip{background:linear-gradient(135deg,#FEF2F2,#FFD5D5)}
+.cstamp{position:absolute;top:20px;z-index:10;border-radius:9px;padding:5px 13px;font-size:14px;font-weight:800;letter-spacing:.05em;opacity:0;transition:opacity .08s}
+.sadd{left:18px;border:2.5px solid var(--g);color:var(--g);transform:rotate(-8deg)}
+.sskip{right:18px;border:2.5px solid var(--r);color:var(--r);transform:rotate(8deg)}
+.cbar{height:5px;flex-shrink:0}
+.cinner{flex:1;padding:22px 22px 16px;display:flex;flex-direction:column}
+.ctags{display:flex;gap:7px;margin-bottom:18px}
+.ctitle{font-size:26px;font-weight:800;color:var(--t);line-height:1.2;letter-spacing:-0.03em;margin-bottom:12px;flex:1}
+.chook{font-size:14px;color:var(--t2);line-height:1.65}
+/* Card footer — single active filter shown here */
+.cfoot{border-top:1px solid var(--bd);padding:0;display:flex;overflow:hidden;border-radius:0 0 22px 22px}
+.cfilt-opt{flex:1;padding:11px 14px;font-size:12px;font-weight:600;color:var(--t3);cursor:pointer;text-align:center;transition:all .15s;border:none;background:none;font-family:inherit}
+.cfilt-opt.sel{background:var(--gb);color:var(--g)}
+.cfilt-divider{width:1px;background:var(--bd);flex-shrink:0}
+
+.rbtns{display:flex;align-items:center;justify-content:center;gap:22px;padding:14px 0 2px;flex-shrink:0}
+.rbwrap{display:flex;flex-direction:column;align-items:center;gap:5px}
+.rb{width:62px;height:62px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.rb:active{transform:scale(.88)}
+.rb-skip{background:var(--s);box-shadow:0 3px 12px rgba(0,0,0,0.1);border:2px solid var(--bd)}
+.rb-add{background:var(--g);box-shadow:0 6px 20px rgba(61,140,94,0.32)}
+.rbl{font-size:11px;font-weight:600}
+.rbl-s{color:var(--t3)}
+.rbl-a{color:var(--g)}
+
+/* Overview panel — accordion */
+.ov-wrap{padding:14px}
+.acc-group{background:var(--s);border-radius:18px;border:1px solid var(--bd);margin-bottom:10px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
+.acc-hd{width:100%;background:none;border:none;padding:16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-family:inherit;text-align:left}
+.acc-hd-l{display:flex;align-items:center;gap:10px}
+.acc-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.acc-cat{font-size:15px;font-weight:700;color:var(--t);letter-spacing:-0.01em}
+.acc-count{font-size:12px;color:var(--t3);background:var(--s2);border-radius:99px;padding:2px 9px;font-weight:600}
+.acc-arr{font-size:14px;color:var(--t3);transition:transform .2s}
+.acc-arr.open{transform:rotate(180deg)}
+.acc-body{display:none;border-top:1px solid var(--bd)}
+.acc-body.open{display:block}
+.ql-item{padding:13px 16px;border-bottom:1px solid var(--bd);display:flex;align-items:flex-start;gap:12px}
+.ql-item:last-child{border-bottom:none}
+.ql-color{width:4px;border-radius:2px;align-self:stretch;flex-shrink:0;min-height:40px}
+.ql-info{flex:1}
+.ql-title{font-size:14px;font-weight:700;color:var(--t);margin-bottom:4px;letter-spacing:-0.01em;line-height:1.3}
+.ql-hook{font-size:12px;color:var(--t2);line-height:1.5;margin-bottom:7px}
+.ql-tags{display:flex;gap:5px;flex-wrap:wrap}
+
+/* Programmes panel */
+.plist{padding:14px}
+.pc{background:var(--s);border-radius:20px;border:1px solid var(--bd);margin-bottom:13px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.05);transition:all .2s}
+.pc.act-pc{border-color:var(--g);box-shadow:0 0 0 1px var(--g),0 4px 16px rgba(0,0,0,0.08)}
+.pc-acc{height:4px}
+.pc-body{padding:16px}
+.pc-tags{display:flex;gap:6px;margin-bottom:9px}
+.pc-t{font-size:16px;font-weight:800;color:var(--t);margin-bottom:5px;letter-spacing:-0.02em}
+.pc-d{font-size:12px;color:var(--t2);line-height:1.6;margin-bottom:14px}
+.pc-foot{display:flex;align-items:center;justify-content:space-between}
+.pc-m{font-size:11px;color:var(--t3)}
+.btnp{border-radius:99px;padding:8px 17px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;border:none;transition:all .15s}
+.btnp:active{transform:scale(.94)}
+.btnp-start{background:var(--g);color:#fff;box-shadow:0 3px 10px rgba(61,140,94,0.2)}
+.btnp-stop{background:var(--gb);color:var(--g);border:1px solid var(--gm)!important}
+.pc-prog{margin-bottom:12px}
+.pp-top{display:flex;justify-content:space-between;font-size:11px;color:var(--t2);margin-bottom:5px}
+.pp-tr{height:5px;background:var(--s2);border-radius:3px;overflow:hidden}
+.pp-fill{height:100%;border-radius:3px;transition:width .5s}
+
+/* ── STATS ── */
+#s-st{overflow-y:auto;padding:14px 14px 28px}
+#s-st::-webkit-scrollbar{display:none}
+.sf{display:flex;gap:6px;margin-bottom:18px}
+.sf-b{flex:1;background:var(--s);border:1.5px solid var(--bd);border-radius:12px;padding:8px 4px;font-size:12px;font-weight:600;color:var(--t3);cursor:pointer;font-family:inherit;text-align:center;transition:all .15s}
+.sf-b.on{background:var(--g);border-color:var(--g);color:#fff}
+.sblock{background:var(--s);border-radius:20px;border:1px solid var(--bd);padding:16px;margin-bottom:13px;box-shadow:0 1px 4px rgba(0,0,0,0.05)}
+.sbt{font-size:11px;font-weight:700;color:var(--t3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.sgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.scell{text-align:center}
+.sv{font-size:24px;font-weight:800;letter-spacing:-0.03em;line-height:1}
+.sl{font-size:9px;color:var(--t3);margin-top:3px;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.brow{display:flex;align-items:center;gap:9px;margin-bottom:9px}
+.brow:last-child{margin-bottom:0}
+.blabel{font-size:12px;color:var(--t);min-width:88px;font-weight:500}
+.btrack{flex:1;height:6px;background:var(--s2);border-radius:3px;overflow:hidden}
+.bfill{height:100%;border-radius:3px;transition:width .6s ease}
+.bval{font-size:11px;color:var(--t3);min-width:20px;text-align:right;font-weight:600}
+.sensor-big{text-align:center;padding:4px 0 10px}
+.spct{font-size:48px;font-weight:800;color:var(--g);letter-spacing:-0.04em;line-height:1}
+.ssub{font-size:13px;color:var(--t2);margin-top:6px;line-height:1.5}
+.insight{background:var(--gb);border-radius:12px;padding:11px 13px;margin-top:11px}
+.insight p{font-size:12px;color:#2D7A50;line-height:1.6;font-weight:500}
+
+/* Done quests list in stats */
+.dq-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--bd)}
+.dq-item:last-child{border-bottom:none}
+.dq-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.dq-info{flex:1;min-width:0}
+.dq-title{font-size:13px;font-weight:600;color:var(--t);line-height:1.3;margin-bottom:3px}
+.dq-meta{font-size:11px;color:var(--t3)}
+.dq-reset{background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:5px 10px;font-size:11px;font-weight:600;color:var(--t2);cursor:pointer;font-family:inherit;flex-shrink:0;transition:all .15s;white-space:nowrap}
+.dq-reset:active{transform:scale(.93)}
+
+.avoid-r{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--bd)}
+.avoid-r:last-child{border-bottom:none}
+.avoid-cat{font-size:13px;font-weight:600;color:var(--t)}
+.avoid-n{font-size:10px;color:var(--t3);margin-top:1px}
+.avoid-c{font-size:13px;font-weight:700;color:var(--r)}
+.aitem{padding:9px 0;border-bottom:1px solid var(--bd)}
+.aitem:last-child{border-bottom:none}
+.aitem-t{display:flex;align-items:center;gap:7px;margin-bottom:3px}
+.adot{width:7px;height:7px;border-radius:50%}
+.amet{font-size:10px;color:var(--t3)}
+.atxt{font-size:13px;color:var(--t);line-height:1.5}
+.estat{text-align:center;padding:22px 0;color:var(--t3);font-size:13px}
+
+/* ── SHEETS ── */
+.olay{position:fixed;inset:0;z-index:300;display:flex;flex-direction:column;justify-content:flex-end}
+.obg{position:absolute;inset:0;background:rgba(0,0,0,0.3);animation:fi .2s ease}
+.sht{position:relative;background:var(--s);border-radius:26px 26px 0 0;padding:0 20px calc(var(--safe-b) + 20px);max-height:90vh;display:flex;flex-direction:column;animation:su .3s cubic-bezier(.34,1.05,.64,1)}
+.shdl{width:38px;height:4px;border-radius:2px;background:var(--bd2);margin:12px auto 18px;flex-shrink:0}
+.sht-t{font-size:19px;font-weight:800;color:var(--t);letter-spacing:-0.03em;margin-bottom:3px;flex-shrink:0}
+.sht-s{font-size:13px;color:var(--t2);margin-bottom:18px;flex-shrink:0}
+.sht-sc{overflow-y:auto;flex:1}
+.sht-sc::-webkit-scrollbar{display:none}
+.fg{margin-bottom:18px}
+.fg-l{font-size:10px;font-weight:700;color:var(--t3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:9px}
+.fopts{display:flex;flex-wrap:wrap;gap:7px}
+.fopt{background:var(--s2);border:1.5px solid var(--bd);border-radius:12px;padding:7px 14px;font-size:13px;font-weight:500;color:var(--t2);cursor:pointer;font-family:inherit;transition:all .15s}
+.fopt.on{background:var(--gb);border-color:var(--g);color:var(--g);font-weight:700}
+.acc-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:14px}
+.acc-o{background:var(--s2);border:1.5px solid var(--bd);border-radius:12px;padding:12px 15px;font-size:13px;font-weight:500;color:var(--t);cursor:pointer;font-family:inherit;text-align:left;transition:all .15s}
+.acc-o.on{background:var(--gb);border-color:var(--g);color:var(--g);font-weight:600}
+.rebox{background:linear-gradient(135deg,#F0FFF4,var(--gb));border:1px solid var(--gm);border-radius:12px;padding:14px;margin-bottom:12px}
+.rebox p{font-size:13px;color:#2D7A50;line-height:1.6;font-weight:500}
+.idbox{background:var(--s2);border-radius:12px;padding:14px;border:1px solid var(--bd);margin-bottom:4px}
+.idbox p{font-size:13px;color:var(--t);line-height:1.6;font-style:italic}
+.ref-r{background:var(--s2);border-radius:12px;padding:14px;margin-bottom:14px}
+.ref-rt{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}
+.ref-rl{font-size:13px;font-weight:600;color:var(--t)}
+.ref-rv{font-size:22px;font-weight:800;color:var(--g)}
+input[type=range]{-webkit-appearance:none;width:100%;height:5px;border-radius:3px;background:var(--bd);cursor:pointer;outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--g);border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.15)}
+.ref-rll{display:flex;justify-content:space-between;margin-top:4px}
+.ref-rll span{font-size:10px;color:var(--t3)}
+.ref-cl{font-size:12px;font-weight:700;color:var(--t);margin:12px 0 8px}
+.ref-chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px}
+.rchip{background:var(--s2);border:1.5px solid var(--bd);border-radius:99px;padding:7px 13px;font-size:12px;font-weight:500;color:var(--t2);cursor:pointer;font-family:inherit;transition:all .15s}
+.rchip.on{background:var(--gb);border-color:var(--g);color:var(--g);font-weight:600}
+.ref-pl{font-size:12px;font-weight:700;color:var(--t);margin-bottom:7px}
+.ref-proof{width:100%;background:var(--s2);border:1.5px solid var(--bd);border-radius:12px;padding:11px 13px;font-size:13px;color:var(--t);font-family:inherit;resize:none;outline:none;min-height:65px}
+.ref-proof:focus{border-color:var(--g)}
+.ref-ins{background:var(--gb);border-radius:12px;padding:11px 13px;margin:11px 0;display:none}
+.ref-ins p{font-size:12px;color:#2D7A50;line-height:1.6;font-weight:500}
+.btn-sv{width:100%;background:var(--s2);border:1.5px solid var(--bd);border-radius:16px;padding:15px;font-size:14px;font-weight:700;color:var(--t3);cursor:default;font-family:inherit;transition:all .2s;margin-top:6px;flex-shrink:0}
+.btn-sv.rdy{background:var(--g);border-color:var(--g);color:#fff;cursor:pointer;box-shadow:0 4px 14px rgba(61,140,94,0.25)}
+
+/* Celebration */
+#cel{position:fixed;inset:0;z-index:600;pointer-events:none;display:none}
+.cel-ov{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.4);backdrop-filter:blur(3px)}
+.cel-box{background:var(--s);border-radius:24px;padding:32px 28px;text-align:center;animation:pop .4s cubic-bezier(.34,1.4,.64,1);max-width:280px;margin:0 20px;box-shadow:0 16px 48px rgba(0,0,0,0.15)}
+.cel-ck{font-size:52px;margin-bottom:10px}
+.cel-t{font-size:22px;font-weight:800;color:var(--t);letter-spacing:-0.03em;margin-bottom:5px}
+.cel-s{font-size:13px;color:var(--t2);line-height:1.55;margin-bottom:16px}
+.cel-rep{background:var(--gb);border-radius:12px;padding:9px 14px;margin-bottom:16px;border:1px solid var(--gm)}
+.cel-rv{font-size:20px;font-weight:800;color:var(--g);letter-spacing:-0.02em}
+.cel-rl{font-size:11px;color:var(--t2);margin-top:2px}
+.con{position:absolute;width:7px;height:7px;border-radius:2px;animation:cf linear forwards}
+.btn-cel{width:100%;background:var(--g);border:none;border-radius:14px;padding:14px;font-size:14px;font-weight:700;color:#fff;cursor:pointer;font-family:inherit;pointer-events:all}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+@keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}
+@keyframes pop{0%{transform:scale(.82);opacity:0}65%{transform:scale(1.05)}100%{transform:scale(1);opacity:1}}
+@keyframes cf{0%{transform:translateY(-10px) rotate(0);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
+@keyframes sir{from{transform:translateX(30px);opacity:0}to{transform:translateX(0);opacity:1}}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="topbar">
+    <div class="logo">
+      <div class="logomark"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8C8 10 5.9 16.17 3.82 19.34l1.67 1C9.46 14.8 12 12.5 17 12"/><path d="M17 8s1 8-7 12"/><path d="M17 8c3.66-2.35 5-4 5-4s-3 1-9 1"/></svg></div>
+      <span class="appname">Extinction Lab</span>
+    </div>
+    <div class="badges">
+      <div class="sbadge fire"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c0 4-4 6-4 10a4 4 0 008 0c0-4-4-6-4-10z"/></svg><span id="sn">0</span>d</div>
+      <div class="sbadge reps"><span id="rn">0</span> Reps</div>
+    </div>
+  </div>
+  <div id="wrap">
+    <!-- HOME -->
+    <div class="scr on" id="s-home">
+      <div class="hero">
+        <div class="hero-g" id="hg">Guten Morgen</div>
+        <div class="hero-h" id="hh">Was machst du<br>heute real?</div>
+        <button class="hero-cta" onclick="go('q');gst('disc')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          Quest ziehen
+        </button>
+      </div>
+      <div class="kpis">
+        <div class="kpi"><div class="kpi-v" id="k-today">0</div><div class="kpi-l">Heute</div></div>
+        <div class="kpi"><div class="kpi-v" id="k-streak" style="color:var(--am)">0🔥</div><div class="kpi-l">Streak</div></div>
+        <div class="kpi"><div class="kpi-v" id="k-total">0</div><div class="kpi-l">Gesamt</div></div>
+      </div>
+      <div id="hpb"></div>
+      <div id="hpq"></div>
+      <div id="hqs"></div>
+    </div>
+    <!-- QUESTS -->
+    <div class="scr" id="s-q">
+      <div class="subtabs">
+        <button class="stab on" id="st-disc" onclick="gst('disc')">Entdecken</button>
+        <button class="stab" id="st-ov" onclick="gst('ov')">Übersicht</button>
+        <button class="stab" id="st-prog" onclick="gst('prog')">Programme</button>
+      </div>
+      <div class="scontent">
+        <!-- Discover -->
+        <div class="spanel on" id="sp-disc">
+          <div class="disc">
+            <div class="frow">
+              <button class="fbtn" id="fb-cat" onclick="openFSheet('cat')">
+                <span id="fl-cat">Bereich</span>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <button class="fbtn" id="fb-diff" onclick="openFSheet('diff')">
+                <span id="fl-diff">Schwierigkeit</span>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <button class="freset" id="freset" onclick="resetF()" style="display:none">Reset</button>
+            </div>
+            <div class="slots-row">
+              <span class="slots-t" id="slott">3 Slots frei</span>
+              <div class="slots-dots" id="slotd"></div>
+            </div>
+            <div class="stack" id="stack"></div>
+            <div class="rbtns">
+              <div class="rbwrap">
+                <button class="rb rb-skip" onclick="doSkip()"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+                <span class="rbl rbl-s">Skip</span>
+              </div>
+              <div class="rbwrap">
+                <button class="rb rb-add" onclick="doAdd()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+                <span class="rbl rbl-a">Annehmen</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Overview -->
+        <div class="spanel" id="sp-ov">
+          <div class="ov-wrap" id="ov-wrap"></div>
+        </div>
+        <!-- Programmes -->
+        <div class="spanel" id="sp-prog">
+          <div class="plist" id="plist"></div>
+        </div>
+      </div>
+    </div>
+    <!-- STATS -->
+    <div class="scr" id="s-st">
+      <div class="sf">
+        <button class="sf-b on" onclick="setSF('today',this)">Heute</button>
+        <button class="sf-b" onclick="setSF('week',this)">Woche</button>
+        <button class="sf-b" onclick="setSF('month',this)">Monat</button>
+        <button class="sf-b" onclick="setSF('all',this)">Gesamt</button>
+      </div>
+      <div id="stc"></div>
+    </div>
+  </div>
+  <div id="nav">
+    <button class="ntab on" id="nt-home" onclick="go('home')">
+      <div class="nicon" id="ni-home"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+      <span class="nlbl">Home</span>
+    </button>
+    <button class="ntab" id="nt-q" onclick="go('q')">
+      <div class="nicon" id="ni-q"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+      <span class="nlbl">Quests</span>
+    </button>
+    <button class="ntab" id="nt-st" onclick="go('st')">
+      <div class="nicon" id="ni-st"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+      <span class="nlbl">Stats</span>
+    </button>
+  </div>
+</div>
+<div id="modal"></div>
+<div id="cel"></div>
+
+<script>
+// ═══ DATA ════════════════════════════════════════════
+const CC={'Sozial':'#3B82F6','Kommunikation':'#3D8C5E','Mut':'#D97706','Dating':'#EC4899','Karriere':'#7C3AED','Fokus':'#0891B2','Nervensystem':'#0F766E','Innenleben':'#BE185D','Finanzen':'#92400E'};
+const DS={'Leicht':{c:'#3D8C5E',bg:'#E8F5EE'},'Mittel':{c:'#D97706',bg:'#FEF3C7'},'Stark':{c:'#DC2626',bg:'#FEF2F2'}};
+
+const QL=[
+  {id:'S01',cat:'Sozial',diff:'Leicht',title:'3x Blickkontakt halten',hook:'Schau nicht zuerst weg. Sensor kalibrieren. Wiederholung ist der Wert.'},
+  {id:'S02',cat:'Sozial',diff:'Leicht',title:'Leute aktiv zuerst begrüßen',hook:'Nicht warten bis jemand anfängt. Initiative ohne Einladung.'},
+  {id:'S03',cat:'Sozial',diff:'Leicht',title:'Handy in sozialen Situationen weglassen',hook:'Das Handy ist dein Schutzschild. Heute 5 Minuten weglegen.'},
+  {id:'S04',cat:'Sozial',diff:'Mittel',title:'Mit einem Fremden Smalltalk anfangen',hook:'Kassierer, Barista, jemand der wartet. 30 Sekunden reichen.'},
+  {id:'S05',cat:'Sozial',diff:'Mittel',title:'Direktes Kompliment ohne Abschwächung',hook:'Sagen. Schweigen. Nicht nachjustieren.'},
+  {id:'S06',cat:'Sozial',diff:'Mittel',title:'In einer Gruppe das erste Wort ergreifen',hook:'Nicht warten bis jemand anderes den Raum definiert.'},
+  {id:'S07',cat:'Sozial',diff:'Stark',title:'Eine Frau direkt und live ansprechen',hook:'Nicht per App. Live. Das Nein ist der Erfolg — nicht das Ja.'},
+  {id:'S08',cat:'Sozial',diff:'Stark',title:'Etwas gegen die Norm tun',hook:'Etwas womit andere den Kopf schütteln könnten. Der Erdboden geht nicht auf.'},
+  {id:'S09',cat:'Sozial',diff:'Stark',title:'Einen Flirt halten statt zurückziehen',hook:'Der Sensor sagt zurückziehen. Heute nicht.'},
+  {id:'K01',cat:'Kommunikation',diff:'Leicht',title:'Heute keinen Weichmacher benutzen',hook:'Kein eigentlich, vielleicht, ich glaube. Klare Aussagen den ganzen Tag.'},
+  {id:'K02',cat:'Kommunikation',diff:'Leicht',title:'Bewusst 20% langsamer sprechen',hook:'Tempo ist das einfachste Signal für Selbstsicherheit.'},
+  {id:'K03',cat:'Kommunikation',diff:'Leicht',title:'Blickkontakt bis Satzende halten',hook:'Wegschauen während du redest signalisiert Unsicherheit.'},
+  {id:'K04',cat:'Kommunikation',diff:'Mittel',title:'PREP einmal anwenden',hook:'Punkt → Begründung → Beispiel → Punkt. Bei einer Aussage heute.'},
+  {id:'K05',cat:'Kommunikation',diff:'Mittel',title:'Nach einer Aussage schweigen',hook:'Der Impuls ist weiterzureden. Heute 2 Sekunden stoppen.'},
+  {id:'K06',cat:'Kommunikation',diff:'Mittel',title:'Keine unnötige Rechtfertigung',hook:'Nicht erklären was niemand gefragt hat.'},
+  {id:'K07',cat:'Kommunikation',diff:'Stark',title:'Klar widersprechen ohne Abschwächung',hook:'Sagen. Schweigen. Der Widerspruch darf stehen.'},
+  {id:'K08',cat:'Kommunikation',diff:'Mittel',title:'Ein Gespräch aktiv zusammenfassen',hook:'"Also — wir entscheiden X bis Freitag." Führung in einem Satz.'},
+  {id:'M01',cat:'Mut',diff:'Leicht',title:'Kalte Dusche 2 Minuten',hook:'Fluchtreflex täglich trainieren. Transfer auf sozialen Sensor.',transfer:'Dieser Widerstand ist identisch mit dem Druck vor einer schwierigen sozialen Handlung.'},
+  {id:'M02',cat:'Mut',diff:'Leicht',title:'Unangenehme Aufgabe zuerst',hook:'Eat the Frog. Was du vermeidest kostet mehr als was du tust.'},
+  {id:'M04',cat:'Mut',diff:'Mittel',title:'Einmal klar Nein sagen',hook:'Ein Satz. Dann schweigen. Keine Rechtfertigung danach.'},
+  {id:'M05',cat:'Mut',diff:'Mittel',title:'Heute bewusst nicht pleasen',hook:'Mach\'s allen recht beobachten wenn er aktiv wird. Einmal nicht folgen.'},
+  {id:'M06',cat:'Mut',diff:'Mittel',title:'Kleine Peinlichkeit absichtlich zulassen',hook:'Im Café nach etwas fragen das es nicht gibt. Der Erdboden geht nicht auf.'},
+  {id:'M07',cat:'Mut',diff:'Stark',title:'Trotz Unsicherheit handeln',hook:'Das richtige Gefühl ist keine Voraussetzung. Wiederholung ist es.'},
+  {id:'M08',cat:'Mut',diff:'Stark',title:'Etwas Unfertiges rausgeben',hook:'80% draußen ist besser als 100% in der Schublade.'},
+  {id:'M09',cat:'Mut',diff:'Stark',title:'Grenze setzen ohne Erklärung',hook:'Das war nicht okay. Ein Satz. Dann Pause aushalten.'},
+  {id:'M10',cat:'Mut',diff:'Leicht',title:'Achievement nicht als Zufall abtun',hook:'Was würdest du einem Freund sagen der dasselbe geleistet hat?'},
+  {id:'M11',cat:'Mut',diff:'Mittel',title:'Lob annehmen ohne es wegzumachen',hook:'Danke. Fertig. Nicht relativieren.'},
+  {id:'D01',cat:'Dating',diff:'Leicht',title:'Einer Frau zunicken oder lächeln',hook:'Kein Gespräch. Nur Kontakt. Sensor kalibrieren in der kleinsten Dosis.'},
+  {id:'D02',cat:'Dating',diff:'Leicht',title:'Eine Frau nach einer Empfehlung fragen',hook:'Supermarkt, Café. Echte Frage. Echtes Gespräch.'},
+  {id:'D03',cat:'Dating',diff:'Mittel',title:'Ehrliches Kompliment zum Stil',hook:'Spezifisch. Direkt. Zum Stil — nicht zum Aussehen.'},
+  {id:'D04',cat:'Dating',diff:'Mittel',title:'Eigene Schwäche im Gespräch zeigen',hook:'Verletzlichkeit ist keine Schwäche. Es ist der Weg zu echter Verbindung.'},
+  {id:'D05',cat:'Dating',diff:'Mittel',title:'Nach der Nummer fragen',hook:'Das Nein ist nicht das Ende. Es ist der Erfolg.'},
+  {id:'D06',cat:'Dating',diff:'Mittel',title:'Date mit Ort und Zeit vorschlagen',hook:'Vorschlagen. Nicht andeuten. Direkt.'},
+  {id:'D07',cat:'Dating',diff:'Stark',title:'Flirt starten und souverän beenden',hook:'Wenn kein Interesse — freundlich und klar gehen. Würdevoll.'},
+  {id:'D08',cat:'Dating',diff:'Stark',title:'Echtes Bedürfnis aussprechen',hook:'Nicht was sie hören will. Was du wirklich willst.'},
+  {id:'D09',cat:'Dating',diff:'Stark',title:'Stille im Flirt aushalten',hook:'Blickkontakt halten ohne zu reden. Der der wegschaut verliert den Rahmen.'},
+  {id:'KW01',cat:'Karriere',diff:'Leicht',title:'Im Meeting innerhalb 5 Min sprechen',hook:'Nicht warten auf das perfekte Statement. Den ersten Gedanken sagen.'},
+  {id:'KW02',cat:'Karriere',diff:'Mittel',title:'Unfertige Idee äußern',hook:'Sei perfekt sagt warten bis sie perfekt ist. Heute nicht.'},
+  {id:'KW03',cat:'Karriere',diff:'Mittel',title:'Jemanden um Hilfe bitten',hook:'Sei stark sagt alles selbst machen. Heute nicht.'},
+  {id:'KW05',cat:'Karriere',diff:'Mittel',title:'Nein zu einer Zusatzaufgabe',hook:'Mach\'s allen recht sagt Ja. Heute Nein — und beobachten was passiert.'},
+  {id:'KW06',cat:'Karriere',diff:'Stark',title:'Eigene Leistung benennen ohne Bescheidenheit',hook:'Nicht kleinreden. Klar sagen was du geleistet hast.'},
+  {id:'KW07',cat:'Karriere',diff:'Stark',title:'Konflikt direkt ansprechen',hook:'"Mir ist aufgefallen dass..." Ein Satz. Dann Pause.'},
+  {id:'F01',cat:'Fokus',diff:'Leicht',title:'Top 3 für heute aufschreiben',hook:'Eine davon entwickelnd — nicht regulierend.'},
+  {id:'F02',cat:'Fokus',diff:'Mittel',title:'90 Min Deep Work Block',hook:'Nicht "arbeiten an". Sondern "fertigstellen von".'},
+  {id:'F04',cat:'Fokus',diff:'Mittel',title:'Erste 30 Min kein Handy',hook:'Reaktiver Start programmiert reaktiven Tag.'},
+  {id:'F05',cat:'Fokus',diff:'Stark',title:'Etwas Unfertiges fertigstellen und shippen',hook:'Nicht wenn es perfekt ist. Wenn das Minimum erreicht ist.'},
+  {id:'N01',cat:'Nervensystem',diff:'Leicht',title:'Physiologisches Seufzen vor einer Quest',hook:'Doppeltes Einatmen, langes Ausatmen. 30 Sekunden.',transfer:'Der Vagusnerv reguliert direkt soziales Engagement.'},
+  {id:'N02',cat:'Nervensystem',diff:'Leicht',title:'15 Min Spaziergang ohne Ablenkung',hook:'Kein Handy, keine Musik. Vollständige Präsenz.'},
+  {id:'N03',cat:'Nervensystem',diff:'Mittel',title:'Kalte Dusche auf 3 Minuten',hook:'Noradrenalin-Anstieg bis 300% empirisch nachgewiesen.',transfer:'Direkt auf Fokus und soziale Courage übertragbar.'},
+  {id:'N07',cat:'Nervensystem',diff:'Leicht',title:'Erste 10 Min in Morgenlicht',hook:'Cortisol-Rhythmus direkt regulieren. Kein Aufwand, maximaler Effekt.'},
+  {id:'L01',cat:'Innenleben',diff:'Leicht',title:'Bett machen nach dem Aufstehen',hook:'60 Sekunden. Erste Fertigstellung des Tages.'},
+  {id:'L02',cat:'Innenleben',diff:'Leicht',title:'Kochen statt bestellen',hook:'Selbstversorgung ist eine Form von Selbstrespekt.'},
+  {id:'L04',cat:'Innenleben',diff:'Leicht',title:'Bewusst ohne Bildschirm genießen',hook:'Essen, Kaffee. Vollständig präsent.'},
+  {id:'L05',cat:'Innenleben',diff:'Mittel',title:'Jemanden aktiv kontaktieren',hook:'Nicht warten. Initiator werden.'},
+  {id:'FI01',cat:'Finanzen',diff:'Leicht',title:'Einnahmen diese Woche notieren',hook:'5 Minuten. Was kommt rein? Was geht raus?'},
+  {id:'FI02',cat:'Finanzen',diff:'Mittel',title:'Eine unnötige Ausgabe streichen',hook:'Passive Drains sind unsichtbar bis du schaust.'},
+  {id:'FI04',cat:'Finanzen',diff:'Stark',title:'Nettoworth berechnen',hook:'Vermögen minus Schulden. Einmal im Monat.'},
+];
+
+const PROGS=[
+  {id:'p1',title:'7 Tage Soziale Expansion',days:7,cat:'Sozial',col:'#3B82F6',desc:'Sensor für soziale Initiative kalibrieren.',chain:['S01','S02','S04','S03','S05','S06','S07']},
+  {id:'p2',title:'14 Tage Social & Dating',days:14,cat:'Dating',col:'#EC4899',desc:'Ablehnungsangst reduzieren. Von sozialer Präsenz zu Dating-Initiative.',chain:['S01','S03','D01','S04','D02','S05','D03','K02','D05','S07','D04','D06','D09','D07']},
+  {id:'p3',title:'7 Tage Leadership Presence',days:7,cat:'Karriere',col:'#7C3AED',desc:'Führungsverhalten sichtbar machen.',chain:['KW01','K01','K05','KW02','KW05','K08','KW06']},
+  {id:'p4',title:'30 Tage Momentum Reset',days:30,cat:'Mut',col:'#D97706',desc:'Tägliche entwickelnde Handlung als Routine.',chain:['N01','M01','N07','F01','N02','M02','F02','K01','K02','S04','K05','M04','S05','F02','M06','M07','KW02','S07','F05','M09','K07','D05','KW06','M08','D07','F01','KW07','M11','D08','M07']},
+  {id:'p5',title:'14 Tage Nervensystem Reset',days:14,cat:'Nervensystem',col:'#0F766E',desc:'Chronisch erhöhtes Erregungsniveau reduzieren.',chain:['N07','M01','N02','N01','N03','N07','N01','M01','N02','N01','N03','N07','M01','N02']},
+];
+
+const TRIGGERS=['Wenn ich als nächstes rausgehe','Wenn ich heute Mittag Pause mache','Wenn ich das nächste Meeting habe','Wenn ich heute Abend rausgehe','Wenn ich als nächstes jemanden treffe'];
+
+// Modifier nach Kategorie — erhöhen Schwierigkeit durch Kontext
+const MODIFIERS={
+  Sozial:[
+    'mit einer Person deren Meinung dir wichtig ist',
+    'wenn andere zuschauen können',
+    'direkt nach einer unangenehmen Situation',
+    'ohne dich vorher gedanklich vorzubereiten',
+    'mit einer völlig fremden Person',
+  ],
+  Kommunikation:[
+    'in einem Meeting mit mehr als 3 Personen',
+    'ohne die Aussage danach abzusichern',
+    'mit jemandem der tendenziell widerspricht',
+    'direkt nach dem ersten Impuls — ohne nachzudenken',
+    'in einer Situation die dir wichtig ist',
+  ],
+  Mut:[
+    'wenn du dich eigentlich gerade unwohl fühlst',
+    'ohne eine Ausrede parat zu haben',
+    'direkt beim ersten Mal — kein zweiter Anlauf',
+    'in Anwesenheit von jemandem den du respektierst',
+    'obwohl das Ergebnis unsicher ist',
+  ],
+  Dating:[
+    'ohne vorher eine Eröffnungslinie zu überlegen',
+    'bei der nächsten Frau die dir begegnet',
+    'und halte den Blickkontakt bis sie antwortet',
+    'in einer Situation die keinen offensichtlichen Gesprächsanlass bietet',
+    'direkt nach einer Ablenkung oder einem Rückzugsimpuls',
+  ],
+  Karriere:[
+    'in Anwesenheit deines Vorgesetzten',
+    'ohne die Idee vorher mit jemandem abgesprochen zu haben',
+    'innerhalb der nächsten 30 Minuten',
+    'auch wenn du weißt dass jemand anderer Meinung ist',
+    'ohne auf das perfekte Timing zu warten',
+  ],
+  Fokus:[
+    'mit dem härtesten Block als erstem',
+    'ohne zwischendurch das Handy zu checken',
+    'mit einem konkreten Ergebnis das du vorher definierst',
+    'in deiner niedrigsten Energie-Phase des Tages',
+    'ohne Musik oder Hintergrundgeräusche',
+  ],
+  Nervensystem:[
+    'direkt nach dem Aufstehen — bevor der Tag beginnt',
+    'ohne Ablenkung davor oder danach',
+    'länger als du normalerweise würdest',
+    'und beobachte danach wie sich dein Körper verändert hat',
+    'als bewusste Vorbereitung auf eine schwierige Situation heute',
+  ],
+  Innenleben:[
+    'vollständig und ohne Ablenkung',
+    'mit mehr Sorgfalt als normalerweise',
+    'und teile das Ergebnis mit jemandem',
+    'ohne es auf morgen zu verschieben',
+    'obwohl du keine Lust hast',
+  ],
+  Finanzen:[
+    'mit konkreten Zahlen — keine Schätzungen',
+    'und teile das Ergebnis mit jemandem dem du vertraust',
+    'innerhalb der nächsten Stunde',
+    'ohne das Ergebnis schönzureden',
+    'und leite danach eine konkrete Handlung ab',
+  ],
+};
+function getModifier(cat){
+  const mods=MODIFIERS[cat]||MODIFIERS.Sozial;
+  return mods[Math.floor(Math.random()*mods.length)];
+}
+const CHIPS=['Besser als gedacht','Leichter als erwartet','Kopf hat übertrieben','Unbehagen war aushaltbar','Würde es wiederholen','Schwieriger als gedacht'];
+const CATS_ALL=['Sozial','Kommunikation','Mut','Dating','Karriere','Fokus','Nervensystem','Innenleben','Finanzen'];
+
+// ═══ STATE ═══════════════════════════════════════════
+let S={queue:[],progQueue:null,done:0,total:0,progDone:0,reps:0,streak:0,longest:0,loginDays:0,lastLogin:null,completions:[],progCompletions:[],skips:[],activeP:null,doneP:[],fCat:'Alle',fDiff:'Alle',activeFBtn:'cat',ci:0,sf:'all'};
+function sv(){try{localStorage.setItem('xl7',JSON.stringify(S))}catch(e){}}
+function ld(){try{const d=JSON.parse(localStorage.getItem('xl7')||'{}');if(Object.keys(d).length)Object.assign(S,d)}catch(e){}}
+
+// ═══ INIT ════════════════════════════════════════════
+ld();
+const td=new Date().toDateString(),yd=new Date(Date.now()-864e5).toDateString();
+if(S.lastLogin!==td){
+  if(S.lastLogin===yd)S.streak++;
+  else if(S.lastLogin&&S.lastLogin!==td)S.streak=1;
+  else if(!S.lastLogin)S.streak=1;
+  S.longest=Math.max(S.streak,S.longest||0);
+  S.lastLogin=td;S.loginDays=(S.loginDays||0)+1;sv();
+}
+// Always rebuild shuffled pool on app start
+buildShuffledPool();
+rHome();rTopbar();
+
+// ═══ NAVIGATION ══════════════════════════════════════
+const TABS={home:'s-home',q:'s-q',st:'s-st'};
+const NI={
+  home:{on:`<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,off:`<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`},
+  q:{on:`<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,off:`<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`},
+  st:{on:`<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>`,off:`<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>`}
+};
+function go(tab){
+  Object.keys(TABS).forEach(t=>{
+    document.getElementById(TABS[t]).classList.toggle('on',t===tab);
+    const nb=document.getElementById('nt-'+t);
+    nb.classList.toggle('on',t===tab);
+    document.getElementById('ni-'+t).innerHTML=NI[t][t===tab?'on':'off'];
+  });
+  if(tab==='home')rHome();
+  if(tab==='q'){rCard();rOverview();rProgs();}
+  if(tab==='st')rStats();
+  rTopbar();
+}
+
+// ═══ SUBTABS ═════════════════════════════════════════
+let curST='disc';
+const STMAP={disc:'sp-disc',ov:'sp-ov',prog:'sp-prog'};
+const STBMAP={disc:'st-disc',ov:'st-ov',prog:'st-prog'};
+function gst(t){
+  curST=t;
+  Object.keys(STMAP).forEach(x=>{
+    document.getElementById(STMAP[x]).classList.toggle('on',x===t);
+    document.getElementById(STBMAP[x]).classList.toggle('on',x===t);
+  });
+  if(t==='disc')rCard();
+  if(t==='ov')rOverview();
+  if(t==='prog')rProgs();
+}
+
+// ═══ TOPBAR ══════════════════════════════════════════
+function rTopbar(){
+  document.getElementById('sn').textContent=S.streak;
+  document.getElementById('rn').textContent=S.reps||0;
+}
+
+// ═══ HOME ════════════════════════════════════════════
+function rHome(){
+  const h=new Date().getHours();
+  document.getElementById('hg').textContent=h<12?'Guten Morgen':h<17?'Guten Tag':'Guten Abend';
+  const todayC=(S.completions||[]).filter(c=>new Date(c.ts).toDateString()===td).length
+    + (S.progCompletions||[]).filter(c=>new Date(c.ts).toDateString()===td).length;
+  document.getElementById('k-today').textContent=todayC;
+  document.getElementById('k-streak').textContent=S.streak+'🔥';
+  document.getElementById('k-total').textContent=(S.total||0)+(S.progDone||0);
+
+  // ── Programme banner + today's prog quest ──
+  const pb=document.getElementById('hpb');
+  const hpq=document.getElementById('hpq');
+  if(S.activeP){
+    const p=PROGS.find(x=>x.id===S.activeP.id);
+    if(p){
+      const day=S.activeP.day||1;
+      const pct=Math.round((day-1)/p.days*100);
+      pb.innerHTML=`<div class="prog-b"><div class="pb-tag">Aktives Programm</div><div class="pb-title">${p.title}</div><div class="pb-meta">Tag ${day} von ${p.days}</div><div class="pb-track"><div class="pb-fill" style="width:${pct}%"></div></div></div>`;
+      // Today's prog quest
+      const qid=p.chain[day-1];
+      const pq=QL.find(x=>x.id===qid);
+      const alreadyDone=S.progQueue&&S.progQueue.done;
+      if(pq){
+        const col=CC[pq.cat]||'#3D8C5E';
+        hpq.innerHTML=`<div class="pq-wrap"><div class="pq-label" style="color:${p.col}">Quest des Tages — ${p.title}</div><div class="pq-card" style="border-color:${p.col}"><div class="pq-bar" style="background:${p.col}"></div><div class="pq-inner"><div class="qc-tags" style="margin-bottom:9px"><span class="tag" style="background:${col}18;color:${col}">${pq.cat}</span><span class="tag" style="background:${DS[pq.diff].bg};color:${DS[pq.diff].c}">${pq.diff}</span></div><div class="pq-title">${pq.title}</div><div class="pq-hook">${pq.hook}</div><button class="pq-done${alreadyDone?' done-style':''}" onclick="${alreadyDone?'':('pqDone()')}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="${alreadyDone?'var(--t3)':'#fff'}" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>${alreadyDone?'Heute erledigt ✓':'Als erledigt markieren'}</button></div></div></div>`;
+      }
+    }
+  } else {pb.innerHTML='';hpq.innerHTML='';}
+
+  // ── Free quests ──
+  const qs=document.getElementById('hqs');
+  const freeQ=S.queue||[];
+  if(freeQ.length>0){
+    qs.innerHTML=`<div class="sec-hd"><span class="sec-t">Freie Quests</span><span class="sec-c">${freeQ.length}/3</span></div><div class="qslider" id="qsl"></div>`;
+    const sl=document.getElementById('qsl');
+    freeQ.forEach(item=>{
+      const q=item.quest;
+      const cc=CC[q.cat]||'#3D8C5E';
+      const dc=DS[q.diff]||{c:'#3D8C5E',bg:'#E8F5EE'};
+      const d=document.createElement('div');
+      d.className='qcard';d.style.animation='sir .3s ease';
+      d.innerHTML=`<div class="qc-bar" style="background:${cc}"></div><div class="qc-body"><div class="qc-tags"><span class="tag" style="background:${cc}18;color:${cc}">${q.cat}</span><span class="tag" style="background:${dc.bg};color:${dc.c}">${q.diff}</span></div><div class="qc-title">${q.title}</div>${item.modifier?`<div style="font-size:12px;color:var(--g);font-weight:600;margin-bottom:6px;line-height:1.4">+ ${item.modifier}</div>`:''}<div class="qc-hook">${q.hook}</div><div class="qc-btns"><button class="btn-done" onclick="hDone('${item.id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>Erledigt</button><button class="btn-back" onclick="hBack('${item.id}')">↩ Zurück</button></div></div>`;
+      sl.appendChild(d);
+    });
+  } else {
+    const doneCount=S.done||0;
+    const hasProgDone=S.progQueue&&S.progQueue.done;
+    if(doneCount===0&&!hasProgDone&&!S.activeP){
+      qs.innerHTML=`<div class="home-empty"><div class="he-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><div class="he-t">Noch keine Quests</div><div class="he-s">Geh zu Quests und wähle bis zu 3 freie Quests für heute.</div><button class="btn-p" onclick="go('q');gst('disc')">Quest ziehen →</button></div>`;
+    } else if(doneCount>0){
+      qs.innerHTML=`<div class="home-empty"><div class="he-icon">✅</div><div class="he-t">Freie Quests erledigt</div><div class="he-s">${doneCount} Quest${doneCount>1?'s':''} heute abgeschlossen.</div></div>`;
+    } else {
+      qs.innerHTML='';
+    }
+  }
+}
+
+// ── Prog quest done ──
+function pqDone(){
+  if(!S.activeP)return;
+  const p=PROGS.find(x=>x.id===S.activeP.id);
+  if(!p)return;
+  const day=S.activeP.day||1;
+  const qid=p.chain[day-1];
+  const pq=QL.find(x=>x.id===qid);
+  if(!pq)return;
+  showRef(pq,null,(rating,chips,proof)=>{
+    S.progCompletions=S.progCompletions||[];
+    S.progCompletions.push({id:'pc'+Date.now(),qid:pq.id,cat:pq.cat,diff:pq.diff,ts:Date.now(),stress:rating,outcome:chips.some(c=>['Besser als gedacht','Leichter als erwartet','Kopf hat übertrieben'].includes(c))?'better':chips.includes('Schwieriger als gedacht')?'harder':'neutral',chips,proof,pid:S.activeP.id,day});
+    S.progDone=(S.progDone||0)+1;
+    S.reps=(S.reps||0)+1;
+    S.progQueue={done:true,qid,day};
+    // Advance to next day
+    S.activeP.done=S.activeP.done||[];
+    S.activeP.done.push(day);
+    S.activeP.day=day+1;
+    if(S.activeP.day>p.days){S.doneP=S.doneP||[];S.doneP.push(S.activeP.id);S.activeP=null;S.progQueue=null;}
+    sv();rTopbar();rHome();showCel(pq);
+  });
+}
+
+// ── Free quest done ──
+function hDone(id){
+  const item=(S.queue||[]).find(x=>x.id==id);
+  if(!item)return;
+  showRef(item.quest,item.modifier||null,(rating,chips,proof)=>{
+    S.queue=S.queue.filter(x=>x.id!=id);
+    S.done=(S.done||0)+1;S.total=(S.total||0)+1;S.reps=(S.reps||0)+1;
+    S.completions=S.completions||[];
+    S.completions.push({id:'c'+Date.now(),qid:item.quest.id,cat:item.quest.cat,diff:item.quest.diff,ts:Date.now(),stress:rating,outcome:chips.some(c=>['Besser als gedacht','Leichter als erwartet','Kopf hat übertrieben'].includes(c))?'better':chips.includes('Schwieriger als gedacht')?'harder':'neutral',chips,proof,modifier:item.modifier||null});
+    sv();rTopbar();rHome();showCel(item.quest);
+  });
+}
+function hBack(id){S.queue=(S.queue||[]).filter(x=>x.id!=id);sv();rHome();rCard();}
+
+// ═══ CARD STACK ══════════════════════════════════════
+function pool(){
+  // Use shuffled pool order if available
+  const ids=S.shuffledPool||QL.map(q=>q.id);
+  return ids.map(id=>QL.find(q=>q.id===id)).filter(q=>{
+    if(!q)return false;
+    if(S.fCat!=='Alle'&&q.cat!==S.fCat)return false;
+    if(S.fDiff!=='Alle'&&q.diff!==S.fDiff)return false;
+    if((S.queue||[]).some(x=>x.quest.id===q.id))return false;
+    return true;
+  });
+}
+
+function rSlots(){
+  const left=3-(S.queue||[]).length;
+  const st=document.getElementById('slott');
+  const sd=document.getElementById('slotd');
+  if(!st||!sd)return;
+  st.textContent=left<=0?'Heute voll — erst eine Quest erledigen':`${left} Slot${left>1?'s':''} frei`;
+  st.style.color=left<=0?'var(--r)':'var(--t3)';
+  sd.innerHTML=[0,1,2].map(i=>`<div class="sdot${i<3-left?' on':''}"></div>`).join('');
+}
+
+function rCard(){
+  rSlots();rFUI();
+  const ar=document.getElementById('stack');
+  if(!ar)return;
+  const p=pool();
+  if(!p.length){
+    ar.innerHTML=`<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:8px;text-align:center"><div style="font-size:16px;font-weight:700">Keine Quests.</div><div style="font-size:13px;color:var(--t2)">Filter ändern oder Slots freimachen.</div></div>`;
+    return;
+  }
+  const q=p[S.ci%p.length];
+  // Track as seen today
+  S.seenToday=S.seenToday||[];
+  if(!S.seenToday.includes(q.id)){S.seenToday.push(q.id);sv();}
+  const cc=CC[q.cat]||'#3D8C5E';
+  const dc=DS[q.diff]||{c:'#3D8C5E',bg:'#E8F5EE'};
+
+  const slotsLeft=3-(S.queue||[]).length;
+  ar.innerHTML=`
+    ${p.length>2?'<div class="ghost" style="transform:scale(0.91) translateY(14px)"></div>':''}
+    ${p.length>1?'<div class="ghost" style="transform:scale(0.955) translateY(7px)"></div>':''}
+    <div class="mcard" id="mc">
+      <div class="ctint tadd" id="ta"></div><div class="ctint tskip" id="ts"></div>
+      <div class="cstamp sadd" id="sa">ADD</div><div class="cstamp sskip" id="ss">SKIP</div>
+      <div class="cbar" style="background:${cc}"></div>
+      <div class="cinner">
+        <div class="ctags"><span class="tag" style="background:${cc}18;color:${cc}">${q.cat}</span><span class="tag" style="background:${dc.bg};color:${dc.c}">${q.diff}</span></div>
+        <div class="ctitle">${q.title}</div>
+        <div class="chook">${q.hook}</div>
+      </div>
+
+    </div>`;
+  setupDrag(q);
+}
+
+// Set filter from card footer tap
+function setFFromCard(val){
+  if(S.activeFBtn==='cat'){S.fCat=val;}
+  else{S.fDiff=val;}
+  S.ci=0;sv();rCard();rFUI();
+}
+
+function setupDrag(q){
+  const c=document.getElementById('mc');if(!c)return;
+  let sx=0,sy=0,dx=0,going=false;
+  c.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY;going=true;c.classList.add('drag');},{passive:true});
+  c.addEventListener('touchmove',e=>{
+    if(!going)return;
+    dx=e.touches[0].clientX-sx;
+    const dy=e.touches[0].clientY-sy;
+    if(Math.abs(dx)<Math.abs(dy)&&Math.abs(dy)>8){going=false;c.style.transform='';clrT();return;}
+    c.style.transform=`translateX(${dx}px) rotate(${dx*.045}deg)`;
+    const ao=Math.max(0,Math.min(dx/65,1)),so=Math.max(0,Math.min(-dx/65,1));
+    document.getElementById('ta').style.opacity=ao*.65;
+    document.getElementById('ts').style.opacity=so*.65;
+    document.getElementById('sa').style.opacity=ao>.25?ao:0;
+    document.getElementById('ss').style.opacity=so>.25?so:0;
+  },{passive:true});
+  c.addEventListener('touchend',()=>{
+    if(!going)return;going=false;c.classList.remove('drag');
+    if(dx>70)animC('r',doAdd);else if(dx<-70)animC('l',doSkip);
+    else{c.style.transform='';clrT();}
+    dx=0;
+  });
+}
+function clrT(){['ta','ts','sa','ss'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.opacity=0;});}
+function animC(dir,fn){
+  const c=document.getElementById('mc');if(!c){fn();return;}
+  c.style.transition='transform .27s ease,opacity .27s ease';
+  c.style.transform=dir==='r'?'translateX(115%) rotate(16deg)':'translateX(-115%) rotate(-16deg)';
+  c.style.opacity='0';setTimeout(fn,270);
+}
+function doAdd(){
+  const p=pool();if(!p.length||(S.queue||[]).length>=3)return;
+  showAccF(p[S.ci%p.length]);
+}
+function doSkip(){
+  const p=pool();if(!p.length)return;
+  const q=p[S.ci%p.length];
+  S.skips=S.skips||[];S.skips.push({qid:q.id,cat:q.cat,ts:Date.now()});
+  S.ci++;sv();rCard();
+}
+function addToQ(q,modifier){
+  if((S.queue||[]).some(x=>x.quest.id===q.id))return;
+  if((S.queue||[]).length>=3)return;
+  S.queue=S.queue||[];
+  S.queue.push({id:Date.now()+Math.random(),quest:q,modifier:modifier||null});
+  S.ci++;sv();rCard();rHome();
+}
+
+// ═══ FILTER ══════════════════════════════════════════
+function openFSheet(which){
+  S.activeFBtn=which;sv();
+  const isCat=which==='cat';
+  const opts=isCat?['Alle','Sozial','Kommunikation','Mut','Dating','Karriere','Fokus','Nervensystem','Innenleben','Finanzen']:['Alle','Leicht','Mittel','Stark'];
+  const cur=isCat?S.fCat:S.fDiff;
+  let tmp=cur;
+  showSheet(`
+    <div class="shdl"></div>
+    <div class="sht-t">${isCat?'Bereich':'Schwierigkeit'}</div>
+    <div class="sht-s">${isCat?'Nach Kategorie filtern':'Nach Schwierigkeit filtern'}</div>
+    <div class="sht-sc"><div class="fopts" id="fo">${opts.map(o=>`<button class="fopt${cur===o?' on':''}" onclick="selFO('${o}',this)">${o}</button>`).join('')}</div></div>
+    <button class="btn-p btn-p-full" style="margin-top:16px" onclick="applyF()">Anwenden</button>
+  `);
+  window.selFO=(v,el)=>{document.querySelectorAll('#fo .fopt').forEach(b=>b.classList.remove('on'));el.classList.add('on');tmp=v;window._ftmp=v;};
+  window.applyF=()=>{
+    if(isCat)S.fCat=window._ftmp||tmp;else S.fDiff=window._ftmp||tmp;
+    S.ci=0;sv();closeSheet();rCard();rFUI();
+  };
+  window._ftmp=cur;
+}
+function resetF(){S.fCat='Alle';S.fDiff='Alle';S.ci=0;sv();rCard();rFUI();}
+function rFUI(){
+  const ca=S.fCat!=='Alle',da=S.fDiff!=='Alle';
+  const fc=document.getElementById('fb-cat'),fd=document.getElementById('fb-diff'),fr=document.getElementById('freset');
+  if(!fc||!fd)return;
+  fc.className='fbtn'+(ca?' act':'');fc.querySelector('span').textContent=ca?S.fCat:'Bereich';
+  fd.className='fbtn'+(da?' act':'');fd.querySelector('span').textContent=da?S.fDiff:'Schwierigkeit';
+  // Mark active filter button
+  fc.style.outline=S.activeFBtn==='cat'?'2px solid var(--g)':'none';
+  fd.style.outline=S.activeFBtn==='diff'?'2px solid var(--g)':'none';
+  if(fr)fr.style.display=(ca||da)?'block':'none',fr.className='freset'+(ca||da?' show':'');
+}
+
+// ═══ OVERVIEW ════════════════════════════════════════
+function rOverview(){
+  const w=document.getElementById('ov-wrap');if(!w)return;
+  w.innerHTML='';
+  CATS_ALL.forEach(cat=>{
+    const qs=QL.filter(q=>q.cat===cat);
+    if(!qs.length)return;
+    const col=CC[cat]||'#3D8C5E';
+    const grp=document.createElement('div');grp.className='acc-group';
+    const open=false;
+    grp.innerHTML=`
+      <button class="acc-hd" onclick="toggleAcc(this)">
+        <div class="acc-hd-l">
+          <div class="acc-dot" style="background:${col}"></div>
+          <span class="acc-cat">${cat}</span>
+          <span class="acc-count">${qs.length}</span>
+        </div>
+        <span class="acc-arr">▾</span>
+      </button>
+      <div class="acc-body">
+        ${qs.map(q=>{
+          const dc=DS[q.diff]||{c:'#666',bg:'#eee'};
+          return `<div class="ql-item">
+            <div class="ql-color" style="background:${col}"></div>
+            <div class="ql-info">
+              <div class="ql-title">${q.title}</div>
+              <div class="ql-hook">${q.hook}</div>
+              <div class="ql-tags">
+                <span class="tag" style="background:${col}18;color:${col};font-size:10px">${q.cat}</span>
+                <span class="tag" style="background:${dc.bg};color:${dc.c};font-size:10px">${q.diff}</span>
+              </div>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>`;
+    w.appendChild(grp);
+  });
+}
+function toggleAcc(btn){
+  const body=btn.nextElementSibling;
+  const arr=btn.querySelector('.acc-arr');
+  const open=body.classList.toggle('open');
+  arr.classList.toggle('open',open);
+}
+
+// ═══ PROGRAMMES ══════════════════════════════════════
+function rProgs(){
+  const w=document.getElementById('plist');if(!w)return;
+  w.innerHTML='';
+  PROGS.forEach(p=>{
+    const isA=S.activeP?.id===p.id;
+    const isD=(S.doneP||[]).includes(p.id);
+    const day=isA?S.activeP.day:1;
+    const pct=isA?Math.round((day-1)/p.days*100):0;
+    const d=document.createElement('div');d.className='pc'+(isA?' act-pc':'');
+    d.innerHTML=`<div class="pc-acc" style="background:${p.col}"></div><div class="pc-body"><div class="pc-tags"><span class="tag" style="background:${p.col}18;color:${p.col}">${p.cat}</span><span class="tag" style="background:var(--s2);color:var(--t3)">${p.days}d</span>${isD?'<span class="tag" style="background:var(--gb);color:var(--g)">✓</span>':''}</div><div class="pc-t">${p.title}</div><div class="pc-d">${p.desc}</div>${isA?`<div class="pc-prog"><div class="pp-top"><span>Tag ${day} von ${p.days}</span><span>${pct}%</span></div><div class="pp-tr"><div class="pp-fill" style="width:${pct}%;background:${p.col}"></div></div></div>`:''}<div class="pc-foot"><span class="pc-m">${p.days} Tage</span>${isA?`<button class="btnp btnp-stop" onclick="stopP()">✗ Beenden</button>`:isD?`<button class="btnp" style="background:var(--s2);color:var(--t3)">Fertig ✓</button>`:`<button class="btnp btnp-start" onclick="startP('${p.id}')">Starten →</button>`}</div></div>`;
+    w.appendChild(d);
+  });
+}
+function startP(id){
+  if(S.activeP&&!confirm('Laufendes Programm ersetzen?'))return;
+  S.activeP={id,start:new Date().toISOString(),day:1,done:[]};
+  S.progQueue=null;
+  sv();rProgs();rHome();
+}
+function stopP(){S.activeP=null;S.progQueue=null;sv();rProgs();rHome();}
+
+// ═══ STATS ═══════════════════════════════════════════
+function setSF(f,btn){
+  S.sf=f;sv();
+  document.querySelectorAll('.sf-b').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');rStats();
+}
+function getFComps(){
+  const now=Date.now(),f=S.sf;
+  const filt=c=>{
+    if(f==='today')return new Date(c.ts).toDateString()===td;
+    if(f==='week')return c.ts>now-7*864e5;
+    if(f==='month')return c.ts>now-30*864e5;
+    return true;
+  };
+  return [...(S.completions||[]),...(S.progCompletions||[])].filter(filt);
+}
+function rStats(){
+  const w=document.getElementById('stc');if(!w)return;
+  const cs=getFComps();
+  const better=cs.filter(c=>c.outcome==='better').length;
+  const spct=cs.length>0?Math.round(better/cs.length*100):0;
+  const catC={};cs.forEach(c=>{catC[c.cat]=(catC[c.cat]||0)+1;});
+  const maxC=Math.max(...Object.values(catC),1);
+  const diffC={Leicht:0,Mittel:0,Stark:0};cs.forEach(c=>{if(diffC[c.diff]!==undefined)diffC[c.diff]++;});
+  const maxD=Math.max(...Object.values(diffC),1);
+  const skipC={};(S.skips||[]).forEach(s=>{skipC[s.cat]=(skipC[s.cat]||0)+1;});
+  const topSkips=Object.entries(skipC).sort((a,b)=>b[1]-a[1]).slice(0,4);
+  const chipC={};cs.forEach(c=>{(c.chips||[]).forEach(ch=>{chipC[ch]=(chipC[ch]||0)+1;});});
+  const topChips=Object.entries(chipC).sort((a,b)=>b[1]-a[1]).slice(0,4);
+  const archive=cs.filter(c=>c.proof&&c.proof.trim()).slice(-5).reverse();
+
+  // Done quests for reset (all completions unfiltered, most recent first)
+  const allDone=[...(S.completions||[])].reverse().slice(0,30);
+
+  w.innerHTML=`
+    <div class="sblock">
+      <div class="sbt">📊 Übersicht</div>
+      <div class="sgrid">
+        <div class="scell"><div class="sv">${cs.length}</div><div class="sl">Quests</div></div>
+        <div class="scell"><div class="sv" style="color:var(--am)">${S.streak}🔥</div><div class="sl">Streak</div></div>
+        <div class="scell"><div class="sv" style="color:var(--g)">${S.reps||0}</div><div class="sl">Reps</div></div>
+      </div>
+    </div>
+
+    <div class="sblock">
+      <div class="sbt">🧠 Sensor-Kalibrierung</div>
+      ${cs.length>0?`<div class="sensor-big"><div class="spct">${spct}%</div><div class="ssub">der Fälle war Realität besser als vorhergesagt</div></div>${spct>50?`<div class="insight"><p>Dein Sensor überschätzt Bedrohung in ${spct}% der Fälle.</p></div>`:''}`:`<div class="estat">Erledige Quests und reflektiere — dann erscheinen hier deine Daten.</div>`}
+    </div>
+
+    <div class="sblock">
+      <div class="sbt">📈 Nach Bereich</div>
+      ${Object.keys(CC).map(cat=>{const v=catC[cat]||0;const col=CC[cat];return`<div class="brow"><span class="blabel">${cat}</span><div class="btrack"><div class="bfill" style="width:${Math.round(v/maxC*100)}%;background:${col}"></div></div><span class="bval">${v}</span></div>`;}).join('')}
+    </div>
+
+    <div class="sblock">
+      <div class="sbt">🎯 Nach Schwierigkeit</div>
+      ${Object.entries(diffC).map(([d,v])=>{const dc=DS[d]||{c:'#666'};return`<div class="brow"><span class="blabel">${d}</span><div class="btrack"><div class="bfill" style="width:${Math.round(v/maxD*100)}%;background:${dc.c}"></div></div><span class="bval">${v}</span></div>`;}).join('')}
+    </div>
+
+    ${topSkips.length>0?`<div class="sblock"><div class="sbt" style="color:var(--r)">⚠️ Avoidance Map</div>${topSkips.map(([cat,n])=>`<div class="avoid-r"><div><div class="avoid-cat">${cat}</div><div class="avoid-n">Hier ist der Sensor am stärksten</div></div><div class="avoid-c">${n}×</div></div>`).join('')}${topSkips[0][1]>=5?`<div class="insight" style="margin-top:11px"><p>Du meidest ${topSkips[0][0]} systematisch. Dein größter Wachstumsbereich.</p></div>`:''}</div>`:''}
+
+    ${topChips.length>0?`<div class="sblock"><div class="sbt">💬 Reflexions-Muster</div>${topChips.map(([chip,n])=>`<div class="brow"><span class="blabel" style="font-size:11px;min-width:120px">${chip}</span><div class="btrack"><div class="bfill" style="width:${Math.round(n/topChips[0][1]*100)}%;background:var(--g)"></div></div><span class="bval">${n}</span></div>`).join('')}</div>`:''}
+
+    ${archive.length>0?`<div class="sblock"><div class="sbt">📖 Archiv der Unwahrheiten</div>${archive.map(c=>`<div class="aitem"><div class="aitem-t"><div class="adot" style="background:${c.outcome==='better'?'var(--g)':c.outcome==='harder'?'var(--r)':'var(--am)'}"></div><span class="amet">${c.cat} · Stress: ${c.stress} · ${c.outcome==='better'?'Besser':c.outcome==='harder'?'Schwieriger':'Neutral'}</span></div><div class="atxt">${c.proof}</div></div>`).join('')}</div>`:''}
+
+    <div class="sblock">
+      <div class="sbt">🔄 Erledigte Quests zurücksetzen</div>
+      ${allDone.length>0?allDone.map(c=>{
+        const q=QL.find(x=>x.id===c.qid);
+        const col=CC[c.cat]||'#3D8C5E';
+        const date=new Date(c.ts).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'});
+        return`<div class="dq-item">
+          <div class="dq-dot" style="background:${col}"></div>
+          <div class="dq-info">
+            <div class="dq-title">${q?q.title:c.qid}</div>
+            <div class="dq-meta">${c.cat} · ${c.diff} · ${date}</div>
+          </div>
+          <button class="dq-reset" onclick="resetQuest('${c.id}')">↩ Reset</button>
+        </div>`;
+      }).join(''):`<div class="estat">Noch keine erledigten Quests.</div>`}
+    </div>
+  `;
+}
+
+function resetQuest(cid){
+  const idx=(S.completions||[]).findIndex(c=>c.id===cid);
+  if(idx===-1)return;
+  S.completions.splice(idx,1);
+  S.done=Math.max(0,(S.done||1)-1);
+  S.total=Math.max(0,(S.total||1)-1);
+  S.reps=Math.max(0,(S.reps||1)-1);
+  sv();rStats();rHome();rTopbar();
+}
+
+// ═══ SMART SHUFFLE ═══════════════════════════════════
+function buildShuffledPool(){
+  // Score each quest — higher score = comes earlier
+  const skipCats={};
+  (S.skips||[]).forEach(s=>{skipCats[s.cat]=(skipCats[s.cat]||0)+1;});
+  const doneCats={};
+  (S.completions||[]).forEach(c=>{doneCats[c.qid]=(doneCats[c.qid]||0)+1;});
+  const seenToday=S.seenToday||[];
+
+  const scored=QL.map(q=>{
+    // Skip if already in queue
+    if((S.queue||[]).some(x=>x.quest.id===q.id))return null;
+    let score=0;
+    // +3 if category is often skipped (avoidance map)
+    score+=(skipCats[q.cat]||0)*3;
+    // +2 if never done before
+    if(!doneCats[q.id])score+=2;
+    // -5 if seen today already
+    if(seenToday.includes(q.id))score-=5;
+    // small random jitter so same-score quests vary
+    score+=Math.random()*0.9;
+    return{q,score};
+  }).filter(Boolean);
+
+  // Sort descending by score
+  scored.sort((a,b)=>b.score-a.score);
+  S.shuffledPool=scored.map(x=>x.q.id);
+  S.ci=0;
+  // Reset seenToday on new day
+  const today=new Date().toDateString();
+  if(S.seenTodayDate!==today){S.seenToday=[];S.seenTodayDate=today;}
+  sv();
+}
+function showAccF(q){
+  const rf=['Das Kribbeln das du spürst ist Aktivierung — nicht Gefahr.','Der Widerstand ist das Signal dass diese Quest wichtig ist.','Dein Sensor sagt Achtung. Das ist echtes Training.'][Math.floor(Math.random()*3)];
+  const rn=(S.reps||0)+1;
+  showSheet(`
+    <div class="shdl"></div>
+    <div class="sht-t">Quest annehmen</div>
+    <div class="sht-s">${q.title}</div>
+    <div class="sht-sc">
+      <div style="font-size:13px;font-weight:700;color:var(--t);margin-bottom:10px">Wann ist dein Trigger?</div>
+      <div class="acc-opts">${TRIGGERS.map((t,i)=>`<button class="acc-o" onclick="selTr(${i},this)">${t}</button>`).join('')}</div>
+      <div class="rebox"><p>${rf}</p></div>
+      <div class="idbox"><p>"Jede Handlung definiert wer du bist. Rep Nr. ${rn} für ${q.cat}."</p></div>
+    </div>
+    <button class="btn-p btn-p-full" onclick="confirmAdd()">Los geht's →</button>
+  `);
+  window._addQ=q;
+}
+function selTr(i,el){document.querySelectorAll('.acc-o').forEach(b=>b.classList.remove('on'));el.classList.add('on');}
+function confirmAdd(){
+  closeSheet();
+  if(!window._addQ)return;
+  const q=window._addQ;
+  const modifier=getModifier(q.cat);
+  addToQ(q,modifier);
+}
+
+// ═══ REFLECTION ══════════════════════════════════════
+function showRef(q,modifier,onSave){
+  window.rat=5;window.sel=[];window.proof='';
+  showSheet(`
+    <div class="shdl"></div>
+    <div class="sht-t">Wie war's?</div>
+    <div class="sht-s">"${q.title}"${modifier?`<br><span style="color:var(--g);font-weight:600">+ ${modifier}</span>`:''}</div>
+    <div class="sht-sc">
+      <div class="ref-r">
+        <div class="ref-rt"><span class="ref-rl">Anspannung vorher</span><span class="ref-rv" id="rv">5</span></div>
+        <input type="range" min="1" max="10" value="5" oninput="document.getElementById('rv').textContent=this.value;window.rat=+this.value"/>
+        <div class="ref-rll"><span>Kein Stress</span><span>Maximum</span></div>
+      </div>
+      <div class="ref-cl">Was war wahr?</div>
+      <div class="ref-chips">${CHIPS.map(c=>`<button class="rchip" onclick="togChip('${c}',this)">${c}</button>`).join('')}</div>
+      <div class="ref-pl">Was ist wirklich passiert?</div>
+      <textarea class="ref-proof" placeholder="Ein Satz. Für das Archiv der Unwahrheiten." oninput="window.proof=this.value"></textarea>
+      <div class="ref-ins" id="ri"><p id="ri-t"></p></div>
+    </div>
+    <button class="btn-sv" id="bsv" onclick="saveRef()">Speichern</button>
+  `);
+  window.togChip=(c,el)=>{
+    el.classList.toggle('on');
+    if(window.sel.includes(c))window.sel=window.sel.filter(x=>x!==c);else window.sel.push(c);
+    const b=document.getElementById('bsv'),ri=document.getElementById('ri'),rit=document.getElementById('ri-t');
+    if(window.sel.length>0){
+      b.classList.add('rdy');
+      const os=window.sel.some(c=>['Besser als gedacht','Leichter als erwartet','Kopf hat übertrieben','Unbehagen war aushaltbar'].includes(c));
+      ri.style.display='block';rit.textContent=os?`Sensor hat ${window.rat}/10 antizipiert. Realität war besser.`:'Gut gemacht. Jede Handlung baut Selbstwirksamkeit auf.';
+    }else{b.classList.remove('rdy');ri.style.display='none';}
+  };
+  window.saveRef=()=>{if(!window.sel.length)return;closeSheet();onSave(window.rat,window.sel,window.proof);};
+}
+
+// ═══ CELEBRATION ═════════════════════════════════════
+function showCel(q){
+  const c=document.getElementById('cel');c.style.display='block';c.style.pointerEvents='all';
+  const reps=S.reps||1;
+  let msg='Jede Handlung baut Selbstwirksamkeit auf.';
+  if(reps===10)msg='10 Reps. Du baust ein neues Muster auf.';
+  else if(reps===25)msg='25 Reps. Dein Gehirn lernt dass Handlung möglich ist.';
+  else if(reps===50)msg='50 Reps. Du bist jemand der handelt.';
+  else if(reps===100)msg='100 Reps. Der Sensor hat sich verändert.';
+  const cols=['#3D8C5E','#EC4899','#3B82F6','#D97706','#7C3AED'];
+  const conf=Array.from({length:26},(_,i)=>{const co=cols[i%cols.length];const l=Math.random()*100;const del=Math.random();const dur=2+Math.random()*2;return`<div class="con" style="left:${l}%;background:${co};animation-duration:${dur}s;animation-delay:${del}s;transform:rotate(${Math.random()*360}deg)"></div>`;}).join('');
+  c.innerHTML=`<div class="cel-ov">${conf}<div class="cel-box"><div class="cel-ck">✅</div><div class="cel-t">Quest erledigt!</div><div class="cel-s">${msg}</div><div class="cel-rep"><div class="cel-rv">Rep #${reps}</div><div class="cel-rl">${q.cat} · ${q.diff}</div></div><button class="btn-cel" onclick="closeCel()">Weiter →</button></div></div>`;
+  try{navigator.vibrate&&navigator.vibrate([60,40,100]);}catch(e){}
+  setTimeout(closeCel,8000);
+}
+function closeCel(){const c=document.getElementById('cel');c.style.display='none';c.style.pointerEvents='none';}
+
+// ═══ SHEET ═══════════════════════════════════════════
+function showSheet(html){document.getElementById('modal').innerHTML=`<div class="olay" id="ol"><div class="obg" onclick="closeSheet()"></div><div class="sht">${html}</div></div>`;}
+function closeSheet(){const ol=document.getElementById('ol');if(ol)ol.remove();}
+</script>
+</body>
+</html>
