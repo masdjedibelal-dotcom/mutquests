@@ -770,44 +770,35 @@ const TRINITY={
 };
 
 function morgenWette(){
-  // Pick one quest per trinity slot, avoiding already queued quests
+  // Always recalculate fresh picks with extra randomness
   const queued=(S.queue||[]).map(x=>x.quest.id);
   const done=(S.completions||[]).map(c=>c.qid);
+  const prevPicks=(window._wettePicks||[]).map(p=>p.id);
   const picks=[];
 
   Object.entries(TRINITY).forEach(([slot,cats])=>{
-    // Filter eligible quests for this slot
     let pool=QL.filter(q=>
-      cats.includes(q.cat) &&
-      !queued.includes(q.id) &&
+      cats.includes(q.cat)&&
+      !queued.includes(q.id)&&
       !picks.map(p=>p.id).includes(q.id)
     );
     if(!pool.length)return;
-
-    // Prefer quests not done before, then vary diff based on history
-    const doneInSlot=(S.completions||[]).filter(c=>cats.includes(c.cat));
-    const lastDiff=doneInSlot.length>0?doneInSlot[doneInSlot.length-1].diff:null;
-    const diffOrder=['Leicht','Mittel','Stark'];
-    const nextDiffIdx=lastDiff?Math.min(diffOrder.indexOf(lastDiff)+1,2):0;
-    const targetDiff=diffOrder[nextDiffIdx];
-
-    // Try to pick target diff first, else any
-    let pick=pool.find(q=>q.diff===targetDiff&&!done.includes(q.id));
-    if(!pick)pick=pool.find(q=>!done.includes(q.id));
-    if(!pick)pick=pool.find(q=>q.diff===targetDiff);
-    if(!pick)pick=pool[Math.floor(Math.random()*pool.length)];
-
+    // Shuffle for variety — add randomness so each tap gives different results
+    pool=pool.sort(()=>Math.random()-0.5);
+    // Try to avoid showing same quests as last time
+    const fresh=pool.filter(q=>!prevPicks.includes(q.id));
+    const preferNotDone=fresh.filter(q=>!done.includes(q.id));
+    let pick=preferNotDone[0]||fresh[0]||pool.filter(q=>!done.includes(q.id))[0]||pool[0];
     picks.push(pick);
   });
 
   if(!picks.length)return;
 
-  // Show confirmation sheet
   const slotLabels={mut:'💪 Mut',output:'⚡ Output',wachstum:'🌱 Wachstum'};
   const slotKeys=Object.keys(TRINITY);
   let html=`<div class="shdl"></div>
     <div class="sht-t">Morgen-Wette 🎯</div>
-    <div class="sht-s">Deine 3 Quests für heute. Einmal festgelegt — los.</div>
+    <div class="sht-s">Passt nicht? Nochmal ziehen.</div>
     <div class="sht-sc">`;
 
   picks.forEach((q,i)=>{
@@ -827,7 +818,11 @@ function morgenWette(){
     </div>`;
   });
 
-  html+=`</div><button class="btn-p btn-p-full" onclick="confirmWette()">Ich wette. Los geht's →</button>`;
+  html+=`</div>
+    <div style="display:flex;gap:10px">
+      <button class="btn-p btn-p-full" style="flex:1;background:var(--s2);color:var(--t2);box-shadow:none;border:1px solid var(--bd)" onclick="morgenWette()">🔀 Neu ziehen</button>
+      <button class="btn-p btn-p-full" style="flex:2" onclick="confirmWette()">Wette annehmen →</button>
+    </div>`;
   showSheet(html);
   window._wettePicks=picks;
 }
@@ -885,7 +880,7 @@ function rHome(){
       const dc=DS[q.diff]||{c:'#3D8C5E',bg:'#E8F5EE'};
       const d=document.createElement('div');
       d.className='qcard';d.style.animation='sir .3s ease';
-      d.innerHTML=`<div class="qc-bar" style="background:${cc}"></div><div class="qc-body"><div class="qc-tags"><span class="tag" style="background:${cc}18;color:${cc}">${q.cat}</span><span class="tag" style="background:${dc.bg};color:${dc.c}">${q.diff}</span></div><div class="qc-title">${q.title}</div>${item.modifier?`<div style="font-size:12px;color:var(--g);font-weight:600;margin-bottom:6px;line-height:1.4">+ ${item.modifier}</div>`:''}<div class="qc-hook">${q.hook}</div><div class="qc-btns"><button class="btn-done" onclick="hDone('${item.id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>Erledigt</button><button class="btn-back" onclick="hBack('${item.id}')">↩ Zurück</button></div></div>`;
+      d.innerHTML=`<div class="qc-bar" style="background:${cc}"></div><div class="qc-body"><div class="qc-tags"><span class="tag" style="background:${cc}18;color:${cc}">${q.cat}</span><span class="tag" style="background:${dc.bg};color:${dc.c}">${q.diff}</span></div><div class="qc-title" style="cursor:pointer" onclick="showQuestDetail('${item.id}')">${q.title} <span style="font-size:11px;color:var(--t3)">▸ Details</span></div>${item.modifier?`<div style="font-size:12px;color:var(--g);font-weight:600;margin-bottom:6px;line-height:1.4">+ ${item.modifier}</div>`:''}<div class="qc-hook">${q.hook}</div><div class="qc-btns"><button class="btn-done" onclick="hDone('${item.id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>Erledigt</button><button class="btn-back" style="font-size:11px;color:var(--r);background:var(--rb);border-color:#FECACA" onclick="nichtGeschafft('${item.id}')">✗ Nicht geschafft</button></div></div>`;
       sl.appendChild(d);
     });
   } else {
@@ -1072,11 +1067,158 @@ function doAdd(){
   const p=pool();if(!p.length||(S.queue||[]).length>=3)return;
   showAccF(p[S.ci%p.length]);
 }
+// Quest detail sheet from home card tap
+function showQuestDetail(itemId){
+  const item=(S.queue||[]).find(x=>x.id==itemId);
+  if(!item)return;
+  const q=item.quest;
+  const cc=CC[q.cat]||'#3D8C5E';
+  const dc=DS[q.diff]||{c:'#3D8C5E',bg:'#E8F5EE'};
+  showSheet(`
+    <div class="shdl"></div>
+    <div style="height:4px;background:${cc};border-radius:2px;margin-bottom:14px"></div>
+    <div class="sht-t">${q.title}</div>
+    <div style="display:flex;gap:6px;margin-bottom:16px">
+      <span class="tag" style="background:${cc}18;color:${cc}">${q.cat}</span>
+      <span class="tag" style="background:${dc.bg};color:${dc.c}">${q.diff}</span>
+    </div>
+    <div class="sht-sc">
+      ${q.action?`<div style="margin-bottom:14px"><div style="font-size:10px;font-weight:700;color:var(--t3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px">Was zu tun ist</div><div style="font-size:14px;color:var(--t);line-height:1.6">${q.action}</div></div>`:''}
+      ${item.modifier?`<div style="background:var(--gb);border-radius:12px;padding:12px 14px;margin-bottom:14px"><div style="font-size:10px;font-weight:700;color:var(--g);letter-spacing:.07em;text-transform:uppercase;margin-bottom:4px">Modifier</div><div style="font-size:13px;color:#2D7A50;font-weight:600">${item.modifier}</div></div>`:''}
+      ${q.ifthen?`<div style="background:var(--gb);border-left:3px solid var(--g);border-radius:0 10px 10px 0;padding:12px 14px;margin-bottom:14px"><div style="font-size:10px;font-weight:700;color:var(--g);letter-spacing:.07em;text-transform:uppercase;margin-bottom:4px">Dein Trigger</div><div style="font-size:13px;color:#2D7A50;line-height:1.55;font-style:italic">${q.ifthen}</div></div>`:''}
+      ${q.safety?`<div style="background:var(--rb);border-left:3px solid var(--r);border-radius:0 10px 10px 0;padding:12px 14px;margin-bottom:14px"><div style="font-size:10px;font-weight:700;color:var(--r);letter-spacing:.07em;text-transform:uppercase;margin-bottom:4px">⚠ No-Go</div><div style="font-size:13px;color:#991B1B;line-height:1.55">${q.safety}</div></div>`:''}
+    </div>
+    <div style="display:flex;gap:9px">
+      <button class="btn-p btn-p-full" style="flex:2" onclick="closeSheet();hDone('${itemId}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" style="margin-right:4px"><polyline points="20 6 9 17 4 12"/></svg>Erledigt</button>
+      <button class="btn-p btn-p-full" style="flex:1;background:var(--rb);color:var(--r);box-shadow:none;border:1px solid #FECACA" onclick="closeSheet();nichtGeschafft('${itemId}')">✗ Nicht geschafft</button>
+    </div>
+  `);
+}
+
+// Nicht geschafft flow
+function nichtGeschafft(itemId){
+  const item=(S.queue||[]).find(x=>x.id==itemId);
+  if(!item)return;
+  const q=item.quest;
+  const GRUENDE=['Keine Zeit gefunden','Situation ist nicht eingetreten','Widerstand war zu groß','Habe es vergessen','Bewusst entschieden es nicht zu tun'];
+  let selGrund=null;
+  showSheet(`
+    <div class="shdl"></div>
+    <div class="sht-t">Heute nicht geschafft</div>
+    <div class="sht-s">"${q.title}"</div>
+    <div class="sht-sc">
+      <div style="font-size:13px;font-weight:700;color:var(--t);margin-bottom:10px">Warum nicht?</div>
+      <div class="acc-opts" id="ng-opts">${GRUENDE.map((g,i)=>`<button class="acc-o" onclick="selNG(${i},this)">${g}</button>`).join('')}</div>
+      <div style="font-size:13px;font-weight:700;color:var(--t);margin:16px 0 10px">Was passiert mit der Quest?</div>
+      <div class="acc-opts" id="ng-action">
+        <button class="acc-o on" id="nga-0" onclick="selNGA(0)">↻ Morgen nochmal versuchen</button>
+        <button class="acc-o" id="nga-1" onclick="selNGA(1)">↩ Zurück in den Stack</button>
+        <button class="acc-o" id="nga-2" onclick="selNGA(2)">✗ Für heute löschen</button>
+      </div>
+    </div>
+    <button class="btn-p btn-p-full" id="ng-save" onclick="saveNichtGeschafft('${itemId}')">Speichern</button>
+  `);
+  window._ngGrund=null;
+  window._ngAction=0;
+  window.selNG=(i,el)=>{
+    document.querySelectorAll('#ng-opts .acc-o').forEach(b=>b.classList.remove('on'));
+    el.classList.add('on');window._ngGrund=GRUENDE[i];
+  };
+  window.selNGA=(i)=>{
+    [0,1,2].forEach(j=>{
+      const b=document.getElementById('nga-'+j);
+      if(b)b.classList.toggle('on',j===i);
+    });
+    window._ngAction=i;
+  };
+}
+
+function saveNichtGeschafft(itemId){
+  const item=(S.queue||[]).find(x=>x.id==itemId);
+  if(!item)return;
+  // Track it
+  S.nichtGeschafft=S.nichtGeschafft||[];
+  S.nichtGeschafft.push({
+    id:'ng'+Date.now(),qid:item.quest.id,cat:item.quest.cat,diff:item.quest.diff,
+    ts:Date.now(),grund:window._ngGrund||'Kein Grund angegeben',action:window._ngAction
+  });
+  const action=window._ngAction||0;
+  if(action===0){
+    // Morgen nochmal — mark quest with flag, keep in queue
+    item.morgenNochmal=true;
+  } else {
+    // Remove from queue
+    S.queue=(S.queue||[]).filter(x=>x.id!=itemId);
+  }
+  window._ngGrund=null;window._ngAction=0;
+  sv();closeSheet();rHome();rCard();
+}
+
+// Skip limit logic
+function todaySkipCount(){
+  const today=new Date().toDateString();
+  return (S.skips||[]).filter(s=>new Date(s.ts).toDateString()===today&&!s.noise).length;
+}
+
 function doSkip(){
+  const p=pool();if(!p.length)return;
+  const q=p[S.ci%p.length];
+  const skips=todaySkipCount();
+
+  if(skips>=6){
+    // Force assign random quest — decision taken away
+    const eligible=p.filter(x=>!(S.queue||[]).some(q=>q.quest.id===x.id));
+    if(eligible.length&&(S.queue||[]).length<3){
+      const forced=eligible[Math.floor(Math.random()*eligible.length)];
+      showSheet(`
+        <div class="shdl"></div>
+        <div class="sht-t">Sensor übernimmt 🔒</div>
+        <div class="sht-s">Du hast heute ${skips}x geskippt. Die Entscheidung wird abgenommen.</div>
+        <div class="sht-sc">
+          <div style="background:var(--amb);border-radius:14px;padding:16px;margin-bottom:4px">
+            <div style="font-size:11px;font-weight:700;color:#92400E;margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em">Zugewiesene Quest</div>
+            <div style="font-size:16px;font-weight:800;color:#78350F;margin-bottom:4px">${forced.title}</div>
+            <div style="font-size:12px;color:#92400E;line-height:1.5">${forced.hook}</div>
+          </div>
+        </div>
+        <button class="btn-p btn-p-full" onclick="closeSheet();forceAdd('${forced.id}')">Akzeptiert — los geht's</button>
+      `);
+    }
+    return;
+  }
+
+  if(skips>=4){
+    // Warning sheet before allowing skip
+    showSheet(`
+      <div class="shdl"></div>
+      <div class="sht-t">Was passiert gerade? 🤔</div>
+      <div class="sht-s">Das ist Skip Nr. ${skips+1} heute.</div>
+      <div class="sht-sc">
+        <div style="font-size:14px;color:var(--t);line-height:1.7;margin-bottom:16px">Der Sensor sucht nach dem perfekten Moment. Den gibt es nicht.<br><br>Du kannst noch <b>${6-skips-1} Mal</b> skippen. Danach wird automatisch eine Quest zugewiesen.</div>
+        <div style="background:var(--gb);border-radius:12px;padding:13px;margin-bottom:4px"><p style="font-size:13px;color:#2D7A50;line-height:1.6">Widerstand ist das Signal — nicht der Grund zum Warten.</p></div>
+      </div>
+      <div style="display:flex;gap:9px">
+        <button class="btn-p btn-p-full" style="flex:1;background:var(--s2);color:var(--t2);box-shadow:none;border:1px solid var(--bd)" onclick="closeSheet();execSkip()">Trotzdem skippen</button>
+        <button class="btn-p btn-p-full" style="flex:1" onclick="closeSheet();doAdd()">Quest annehmen →</button>
+      </div>
+    `);
+    return;
+  }
+
+  execSkip();
+}
+
+function execSkip(){
   const p=pool();if(!p.length)return;
   const q=p[S.ci%p.length];
   S.skips=S.skips||[];S.skips.push({qid:q.id,cat:q.cat,ts:Date.now()});
   S.ci++;sv();rCard();
+}
+
+function forceAdd(qid){
+  const q=QL.find(x=>x.id===qid);
+  if(!q)return;
+  addToQ(q,getModifier(q.cat));
 }
 function addToQ(q,modifier){
   if((S.queue||[]).some(x=>x.quest.id===q.id))return;
@@ -1257,6 +1399,20 @@ function rStats(){
     ${noiseC.length>0?`<div class="sblock"><div class="sbt">🧩 Mind-Noise Muster</div><div style="font-size:11px;color:var(--t3);margin-bottom:11px">Was dein Sensor flüstert wenn du zurücklegst.</div>${noiseC.map(([n,c])=>`<div class="brow"><span class="blabel" style="font-size:11px;min-width:140px">${n}</span><div class="btrack"><div class="bfill" style="width:${Math.round(c/noiseC[0][1]*100)}%;background:var(--am)"></div></div><span class="bval">${c}</span></div>`).join('')}</div>`:''}
 
     ${topChips.length>0?`<div class="sblock"><div class="sbt">💬 Reflexions-Muster</div>${topChips.map(([chip,n])=>`<div class="brow"><span class="blabel" style="font-size:11px;min-width:120px">${chip}</span><div class="btrack"><div class="bfill" style="width:${Math.round(n/topChips[0][1]*100)}%;background:var(--g)"></div></div><span class="bval">${n}</span></div>`).join('')}</div>`:''}
+
+    ${(()=>{
+      const ng=(S.nichtGeschafft||[]);
+      if(!ng.length)return'';
+      const grundC={};ng.forEach(x=>{grundC[x.grund]=(grundC[x.grund]||0)+1;});
+      const catC={};ng.forEach(x=>{catC[x.cat]=(catC[x.cat]||0)+1;});
+      const topGrund=Object.entries(grundC).sort((a,b)=>b[1]-a[1]);
+      const topCat=Object.entries(catC).sort((a,b)=>b[1]-a[1]);
+      return`<div class="sblock"><div class="sbt" style="color:var(--am)">⚡ Nicht Geschafft — Muster</div>
+        <div style="font-size:11px;color:var(--t3);margin-bottom:12px">${ng.length}x nicht geschafft insgesamt</div>
+        ${topCat.length?`<div style="margin-bottom:12px"><div style="font-size:11px;font-weight:700;color:var(--t);margin-bottom:7px">Nach Bereich</div>${topCat.map(([cat,n])=>`<div class="brow"><span class="blabel">${cat}</span><div class="btrack"><div class="bfill" style="width:${Math.round(n/topCat[0][1]*100)}%;background:var(--am)"></div></div><span class="bval">${n}</span></div>`).join('')}</div>`:''}
+        ${topGrund.length?`<div><div style="font-size:11px;font-weight:700;color:var(--t);margin-bottom:7px">Häufigste Gründe</div>${topGrund.map(([g,n])=>`<div class="brow"><span class="blabel" style="font-size:11px;min-width:140px">${g}</span><div class="btrack"><div class="bfill" style="width:${Math.round(n/topGrund[0][1]*100)}%;background:var(--am)"></div></div><span class="bval">${n}</span></div>`).join('')}</div>`:''}
+      </div>`;
+    })()}
 
     ${archive.length>0?`<div class="sblock"><div class="sbt">📖 Archiv der Unwahrheiten</div>${archive.map(c=>`<div class="aitem"><div class="aitem-t"><div class="adot" style="background:${c.outcome==='better'?'var(--g)':c.outcome==='harder'?'var(--r)':'var(--am)'}"></div><span class="amet">${c.cat} · Stress: ${c.stress} · ${c.outcome==='better'?'Besser':c.outcome==='harder'?'Schwieriger':'Neutral'}</span></div><div class="atxt">${c.proof}</div></div>`).join('')}</div>`:''}
 
