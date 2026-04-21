@@ -45,7 +45,7 @@ body{background:#F7F6F3;font-family:'DM Sans',-apple-system,sans-serif;-webkit-f
 .ntab.on .nlbl{font-weight:700;color:var(--g)}
 
 /* ── HOME ── */
-#s-home{overflow-y:auto}
+#s-home{overflow-y:auto;padding-bottom:80px}
 #s-home::-webkit-scrollbar{display:none}
 .hero{background:linear-gradient(135deg,#256647 0%,#3D8C5E 55%,#52A876 100%);padding:22px 20px 26px;position:relative;overflow:hidden}
 .hero::after{content:'';position:absolute;top:-50px;right:-50px;width:200px;height:200px;background:rgba(255,255,255,0.05);border-radius:50%;pointer-events:none}
@@ -305,7 +305,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
 @keyframes pop{0%{transform:scale(.82);opacity:0}65%{transform:scale(1.05)}100%{transform:scale(1);opacity:1}}
 @keyframes cf{0%{transform:translateY(-10px) rotate(0);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
 /* Floating Action Button */
-.fab{position:fixed;bottom:calc(var(--safe-b) + 72px);right:18px;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#1E3A52,#2A5278);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,0.25);z-index:200;transition:transform .15s}
+.fab{position:fixed;bottom:calc(var(--safe-b) + 80px);right:16px;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#1E3A52,#2A5278);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,0.25);z-index:200;transition:transform .15s}
 .fab:active{transform:scale(.9)}
 .fab-pulse{animation:fabp 2s infinite}
 @keyframes fabp{0%,100%{box-shadow:0 4px 16px rgba(0,0,0,0.25)}50%{box-shadow:0 4px 24px rgba(42,82,120,0.5)}}
@@ -359,6 +359,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
         <div class="kpi"><div class="kpi-v" id="k-total">0</div><div class="kpi-l">Gesamt</div></div>
       </div>
       <div id="hwf"></div>
+      <div id="hwz"></div>
       <div id="hbl"></div>
       <div id="hpb"></div>
       <div id="hpq"></div>
@@ -952,6 +953,8 @@ function rHome(){
   document.getElementById('k-total').textContent=(S.total||0)+(S.progDone||0);
   rWochenfokus();
   checkWochenfokusPrompt();
+  rWochenziele();
+  checkWochenzielPrompt();
 
   // ── Baseline Quest of the day ──
   const hbl=document.getElementById('hbl');
@@ -1539,6 +1542,8 @@ function rStats(){
 
     ${archive.length>0?`<div class="sblock"><div class="sbt">📖 Archiv der Unwahrheiten</div>${archive.map(c=>`<div class="aitem"><div class="aitem-t"><div class="adot" style="background:${c.outcome==='better'?'var(--g)':c.outcome==='harder'?'var(--r)':'var(--am)'}"></div><span class="amet">${c.cat} · Stress: ${c.stress} · ${c.outcome==='better'?'Besser':c.outcome==='harder'?'Schwieriger':'Neutral'}</span></div><div class="atxt">${c.proof}</div></div>`).join('')}</div>`:''}
 
+    ${rLifeAreas()}
+
     <div class="sblock">
       <div class="sbt">🔄 Erledigte Quests zurücksetzen</div>
       ${allDone.length>0?allDone.map(c=>{
@@ -1568,7 +1573,16 @@ function resetQuest(cid){
   sv();rStats();rHome();rTopbar();
 }
 
-// ═══ WOCHENFOKUS ════════════════════════════════════
+// ═══ LEBENSBEREICHE ══════════════════════════════════
+const LIFE_AREAS=[
+  {id:'karriere',emoji:'💼',label:'Karriere & Einkommen',questCats:['Karriere','Kommunikation','Fokus']},
+  {id:'finanzen',emoji:'💰',label:'Finanzen & Vermögen',questCats:['Finanzen','Fokus']},
+  {id:'wohnen',emoji:'🏠',label:'Wohnen & Umfeld',questCats:['Innenleben','Baseline']},
+  {id:'gesundheit',emoji:'🏃',label:'Gesundheit & Energie',questCats:['Nervensystem','Baseline','Mut']},
+  {id:'liebe',emoji:'❤️',label:'Liebe & Familie',questCats:['Dating','Sozial','Grenzen']},
+  {id:'kreativitaet',emoji:'🎵',label:'Kreativität & Wachstum',questCats:['Fokus','Mut']},
+  {id:'freunde',emoji:'👥',label:'Freunde & Leben',questCats:['Sozial','Innenleben']},
+];
 const WF_OPTIONS=[
   {emoji:'💪',label:'Mut & Social',cats:['Sozial','Mut','Grenzen']},
   {emoji:'💫',label:'Dating',cats:['Dating']},
@@ -1653,6 +1667,151 @@ function rWochenfokus(){
     </div>
     <button class="wf-edit" onclick="showWochenfokusSheet(true)">ändern</button>
   </div>`;
+}
+
+// ═══ WOCHENZIELE ════════════════════════════════════
+function getWochenziele(){return S.wochenziele||[];}
+
+function checkWochenzielPrompt(){
+  const dow=new Date().getDay();
+  if(dow!==0)return;
+  const week=getISOWeek();
+  if(S.wzWeek===week)return;
+  // Show after wochenfokus with slight delay
+  setTimeout(()=>showWochenzieleSheet(false),1200);
+}
+
+function showWochenzieleSheet(manual){
+  const areas=LIFE_AREAS;
+  const cur=getWochenziele();
+  // Get vision states from S.lifeAreas
+  const la=S.lifeAreas||{};
+  let selAreas=cur.map(z=>z.areaId);
+  let goals={};
+  cur.forEach(z=>{goals[z.areaId]=z.goal;});
+
+  const html=`<div class="shdl"></div>
+    <div class="sht-t">Wochenziele 🏹</div>
+    <div class="sht-s">Max. 3 Bereiche — was erreichst du diese Woche konkret?</div>
+    <div class="sht-sc" id="wz-body">
+      ${areas.map(a=>{
+        const visions=(la[a.id]?.visions||[]).filter(v=>v.trim());
+        const isSelected=selAreas.includes(a.id);
+        return`<div style="background:var(--s);border:1.5px solid ${isSelected?'var(--g)':'var(--bd)'};border-radius:16px;margin-bottom:10px;overflow:hidden;transition:border-color .2s" id="wz-${a.id}">
+          <button style="width:100%;background:none;border:none;padding:13px 15px;display:flex;align-items:center;gap:10px;cursor:pointer;font-family:inherit;text-align:left" onclick="toggleWZArea('${a.id}')">
+            <span style="font-size:22px">${a.emoji}</span>
+            <div style="flex:1">
+              <div style="font-size:14px;font-weight:700;color:var(--t)">${a.label}</div>
+              ${visions.length?`<div style="font-size:11px;color:var(--t3);margin-top:2px">${visions[0]}</div>`:''}
+            </div>
+            <div style="width:20px;height:20px;border-radius:50%;border:2px solid ${isSelected?'var(--g)':'var(--bd)'};background:${isSelected?'var(--g)':'transparent'};display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              ${isSelected?'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>':''}
+            </div>
+          </button>
+          ${isSelected?`<div style="padding:0 15px 13px">
+            <input type="text" value="${goals[a.id]||''}" placeholder="Was konkret passiert diese Woche..." style="width:100%;background:var(--s2);border:1.5px solid var(--bd);border-radius:10px;padding:10px 12px;font-size:13px;color:var(--t);font-family:inherit;outline:none" oninput="window._wzGoals['${a.id}']=this.value" onfocus="this.style.borderColor='var(--g)'" onblur="this.style.borderColor='var(--bd)'"/>
+          </div>`:''}
+        </div>`;
+      }).join('')}
+    </div>
+    <div style="font-size:11px;color:var(--t3);text-align:center;margin-bottom:12px" id="wz-count">${selAreas.length}/3 Bereiche gewählt</div>
+    <button class="btn-p btn-p-full" onclick="saveWochenziele()">Wochenziele speichern →</button>`;
+
+  showSheet(html);
+  window._wzSel=[...selAreas];
+  window._wzGoals={...goals};
+
+  window.toggleWZArea=(id)=>{
+    const idx=window._wzSel.indexOf(id);
+    if(idx>-1){
+      window._wzSel.splice(idx,1);
+    } else {
+      if(window._wzSel.length>=3)return;
+      window._wzSel.push(id);
+    }
+    // Re-render sheet content
+    showWochenzieleSheet(true);
+  };
+}
+
+function saveWochenziele(){
+  const ziele=window._wzSel.map(id=>({
+    areaId:id,
+    goal:window._wzGoals[id]||'',
+    emoji:LIFE_AREAS.find(a=>a.id===id)?.emoji||'',
+    label:LIFE_AREAS.find(a=>a.id===id)?.label||'',
+  })).filter(z=>z.goal.trim());
+  S.wochenziele=ziele;
+  S.wzWeek=getISOWeek();
+  sv();closeSheet();rHome();
+}
+
+function rWochenziele(){
+  const wz=getWochenziele();
+  const w=document.getElementById('hwz');
+  if(!w)return;
+  if(!wz.length){
+    w.innerHTML='';return;
+  }
+  w.innerHTML=`<div style="margin:10px 14px 0">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+      <span style="font-size:11px;font-weight:700;color:var(--t3);letter-spacing:.07em;text-transform:uppercase">Wochenziele</span>
+      <button style="font-size:11px;color:var(--t3);background:none;border:none;cursor:pointer;font-family:inherit" onclick="showWochenzieleSheet(true)">ändern</button>
+    </div>
+    ${wz.map(z=>`<div style="background:var(--s);border:1px solid var(--bd);border-radius:14px;padding:11px 14px;margin-bottom:8px;display:flex;align-items:center;gap:10px;box-shadow:0 1px 3px rgba(0,0,0,0.04)">
+      <span style="font-size:20px;flex-shrink:0">${z.emoji}</span>
+      <div style="flex:1">
+        <div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px">${z.label}</div>
+        <div style="font-size:13px;font-weight:600;color:var(--t);line-height:1.4">${z.goal}</div>
+      </div>
+    </div>`).join('')}
+  </div>`;
+}
+
+// ═══ LIFE AREAS (Stats) ══════════════════════════════
+function rLifeAreas(){
+  const la=S.lifeAreas||{};
+  return`<div class="sblock">
+    <div class="sbt">🗺️ Lebensbereiche</div>
+    <div style="font-size:11px;color:var(--t3);margin-bottom:14px">Bewertung 1-5 · Zielzustände · Wochenziel</div>
+    ${LIFE_AREAS.map(a=>{
+      const data=la[a.id]||{rating:0,visions:['','','']};
+      const rating=data.rating||0;
+      const visions=data.visions||['','',''];
+      return`<div style="background:var(--s2);border-radius:16px;padding:14px;margin-bottom:12px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="font-size:20px">${a.emoji}</span>
+            <span style="font-size:14px;font-weight:700;color:var(--t)">${a.label}</span>
+          </div>
+          <div style="display:flex;gap:4px">
+            ${[1,2,3,4,5].map(n=>`<button onclick="setAreaRating('${a.id}',${n})" style="width:22px;height:22px;border-radius:50%;border:2px solid ${n<=rating?'var(--g)':'var(--bd)'};background:${n<=rating?'var(--g)':'transparent'};cursor:pointer;font-size:0;transition:all .15s"></button>`).join('')}
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          ${[0,1,2].map(i=>`<div style="display:flex;align-items:center;gap:8px">
+            <span style="font-size:11px;color:var(--t3);flex-shrink:0">→</span>
+            <input type="text" value="${visions[i]||''}" placeholder="Ich bin / Ich habe / Ich lebe..." style="flex:1;background:var(--s);border:1.5px solid var(--bd);border-radius:9px;padding:8px 11px;font-size:12px;color:var(--t);font-family:inherit;outline:none" oninput="setAreaVision('${a.id}',${i},this.value)" onfocus="this.style.borderColor='var(--g)'" onblur="this.style.borderColor='var(--bd)'"/>
+          </div>`).join('')}
+        </div>
+      </div>`;
+    }).join('')}
+  </div>`;
+}
+
+function setAreaRating(id,n){
+  S.lifeAreas=S.lifeAreas||{};
+  S.lifeAreas[id]=S.lifeAreas[id]||{rating:0,visions:['','','']};
+  S.lifeAreas[id].rating=n;
+  sv();rStats();
+}
+
+function setAreaVision(id,idx,val){
+  S.lifeAreas=S.lifeAreas||{};
+  S.lifeAreas[id]=S.lifeAreas[id]||{rating:0,visions:['','','']};
+  if(!S.lifeAreas[id].visions)S.lifeAreas[id].visions=['','',''];
+  S.lifeAreas[id].visions[idx]=val;
+  sv();
 }
 
 function showWFDetail(idx){
