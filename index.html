@@ -329,6 +329,9 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
           Quest ziehen
         </button>
+        <button class="hero-cta" style="margin-top:10px;background:rgba(255,255,255,0.25);border-color:rgba(255,255,255,0.5)" onclick="morgenWette()">
+          🎯 Morgen-Wette — 3 Quests zuordnen
+        </button>
       </div>
       <div class="kpis">
         <div class="kpi"><div class="kpi-v" id="k-today">0</div><div class="kpi-l">Heute</div></div>
@@ -419,68 +422,201 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
 
 <script>
 // ═══ DATA ════════════════════════════════════════════
-const CC={'Sozial':'#3B82F6','Kommunikation':'#3D8C5E','Mut':'#D97706','Dating':'#EC4899','Karriere':'#7C3AED','Fokus':'#0891B2','Nervensystem':'#0F766E','Innenleben':'#BE185D','Finanzen':'#92400E'};
+const CC={'Sozial':'#3B82F6','Kommunikation':'#3D8C5E','Mut':'#D97706','Dating':'#EC4899','Karriere':'#7C3AED','Fokus':'#0891B2','Nervensystem':'#0F766E','Innenleben':'#BE185D','Finanzen':'#92400E','Grenzen':'#DC2626'};
 const DS={'Leicht':{c:'#3D8C5E',bg:'#E8F5EE'},'Mittel':{c:'#D97706',bg:'#FEF3C7'},'Stark':{c:'#DC2626',bg:'#FEF2F2'}};
 
 const QL=[
-  {id:'S01',cat:'Sozial',diff:'Leicht',title:'3x Blickkontakt halten',hook:'Schau nicht zuerst weg. Sensor kalibrieren. Wiederholung ist der Wert.'},
-  {id:'S02',cat:'Sozial',diff:'Leicht',title:'Leute aktiv zuerst begrüßen',hook:'Nicht warten bis jemand anfängt. Initiative ohne Einladung.'},
-  {id:'S03',cat:'Sozial',diff:'Leicht',title:'Handy in sozialen Situationen weglassen',hook:'Das Handy ist dein Schutzschild. Heute 5 Minuten weglegen.'},
-  {id:'S04',cat:'Sozial',diff:'Mittel',title:'Mit einem Fremden Smalltalk anfangen',hook:'Kassierer, Barista, jemand der wartet. 30 Sekunden reichen.'},
-  {id:'S05',cat:'Sozial',diff:'Mittel',title:'Direktes Kompliment ohne Abschwächung',hook:'Sagen. Schweigen. Nicht nachjustieren.'},
-  {id:'S06',cat:'Sozial',diff:'Mittel',title:'In einer Gruppe das erste Wort ergreifen',hook:'Nicht warten bis jemand anderes den Raum definiert.'},
-  {id:'S07',cat:'Sozial',diff:'Stark',title:'Eine Frau direkt und live ansprechen',hook:'Nicht per App. Live. Das Nein ist der Erfolg — nicht das Ja.'},
-  {id:'S08',cat:'Sozial',diff:'Stark',title:'Etwas gegen die Norm tun',hook:'Etwas womit andere den Kopf schütteln könnten. Der Erdboden geht nicht auf.'},
-  {id:'S09',cat:'Sozial',diff:'Stark',title:'Einen Flirt halten statt zurückziehen',hook:'Der Sensor sagt zurückziehen. Heute nicht.'},
-  {id:'K01',cat:'Kommunikation',diff:'Leicht',title:'Heute keinen Weichmacher benutzen',hook:'Kein eigentlich, vielleicht, ich glaube. Klare Aussagen den ganzen Tag.'},
-  {id:'K02',cat:'Kommunikation',diff:'Leicht',title:'Bewusst 20% langsamer sprechen',hook:'Tempo ist das einfachste Signal für Selbstsicherheit.'},
-  {id:'K03',cat:'Kommunikation',diff:'Leicht',title:'Blickkontakt bis Satzende halten',hook:'Wegschauen während du redest signalisiert Unsicherheit.'},
-  {id:'K04',cat:'Kommunikation',diff:'Mittel',title:'PREP einmal anwenden',hook:'Punkt → Begründung → Beispiel → Punkt. Bei einer Aussage heute.'},
-  {id:'K05',cat:'Kommunikation',diff:'Mittel',title:'Nach einer Aussage schweigen',hook:'Der Impuls ist weiterzureden. Heute 2 Sekunden stoppen.'},
-  {id:'K06',cat:'Kommunikation',diff:'Mittel',title:'Keine unnötige Rechtfertigung',hook:'Nicht erklären was niemand gefragt hat.'},
-  {id:'K07',cat:'Kommunikation',diff:'Stark',title:'Klar widersprechen ohne Abschwächung',hook:'Sagen. Schweigen. Der Widerspruch darf stehen.'},
-  {id:'K08',cat:'Kommunikation',diff:'Mittel',title:'Ein Gespräch aktiv zusammenfassen',hook:'"Also — wir entscheiden X bis Freitag." Führung in einem Satz.'},
-  {id:'M01',cat:'Mut',diff:'Leicht',title:'Kalte Dusche 2 Minuten',hook:'Fluchtreflex täglich trainieren. Transfer auf sozialen Sensor.',transfer:'Dieser Widerstand ist identisch mit dem Druck vor einer schwierigen sozialen Handlung.'},
-  {id:'M02',cat:'Mut',diff:'Leicht',title:'Unangenehme Aufgabe zuerst',hook:'Eat the Frog. Was du vermeidest kostet mehr als was du tust.'},
-  {id:'M04',cat:'Mut',diff:'Mittel',title:'Einmal klar Nein sagen',hook:'Ein Satz. Dann schweigen. Keine Rechtfertigung danach.'},
-  {id:'M05',cat:'Mut',diff:'Mittel',title:'Heute bewusst nicht pleasen',hook:'Mach\'s allen recht beobachten wenn er aktiv wird. Einmal nicht folgen.'},
-  {id:'M06',cat:'Mut',diff:'Mittel',title:'Kleine Peinlichkeit absichtlich zulassen',hook:'Im Café nach etwas fragen das es nicht gibt. Der Erdboden geht nicht auf.'},
-  {id:'M07',cat:'Mut',diff:'Stark',title:'Trotz Unsicherheit handeln',hook:'Das richtige Gefühl ist keine Voraussetzung. Wiederholung ist es.'},
-  {id:'M08',cat:'Mut',diff:'Stark',title:'Etwas Unfertiges rausgeben',hook:'80% draußen ist besser als 100% in der Schublade.'},
-  {id:'M09',cat:'Mut',diff:'Stark',title:'Grenze setzen ohne Erklärung',hook:'Das war nicht okay. Ein Satz. Dann Pause aushalten.'},
-  {id:'M10',cat:'Mut',diff:'Leicht',title:'Achievement nicht als Zufall abtun',hook:'Was würdest du einem Freund sagen der dasselbe geleistet hat?'},
-  {id:'M11',cat:'Mut',diff:'Mittel',title:'Lob annehmen ohne es wegzumachen',hook:'Danke. Fertig. Nicht relativieren.'},
-  {id:'D01',cat:'Dating',diff:'Leicht',title:'Einer Frau zunicken oder lächeln',hook:'Kein Gespräch. Nur Kontakt. Sensor kalibrieren in der kleinsten Dosis.'},
-  {id:'D02',cat:'Dating',diff:'Leicht',title:'Eine Frau nach einer Empfehlung fragen',hook:'Supermarkt, Café. Echte Frage. Echtes Gespräch.'},
-  {id:'D03',cat:'Dating',diff:'Mittel',title:'Ehrliches Kompliment zum Stil',hook:'Spezifisch. Direkt. Zum Stil — nicht zum Aussehen.'},
-  {id:'D04',cat:'Dating',diff:'Mittel',title:'Eigene Schwäche im Gespräch zeigen',hook:'Verletzlichkeit ist keine Schwäche. Es ist der Weg zu echter Verbindung.'},
-  {id:'D05',cat:'Dating',diff:'Mittel',title:'Nach der Nummer fragen',hook:'Das Nein ist nicht das Ende. Es ist der Erfolg.'},
-  {id:'D06',cat:'Dating',diff:'Mittel',title:'Date mit Ort und Zeit vorschlagen',hook:'Vorschlagen. Nicht andeuten. Direkt.'},
-  {id:'D07',cat:'Dating',diff:'Stark',title:'Flirt starten und souverän beenden',hook:'Wenn kein Interesse — freundlich und klar gehen. Würdevoll.'},
-  {id:'D08',cat:'Dating',diff:'Stark',title:'Echtes Bedürfnis aussprechen',hook:'Nicht was sie hören will. Was du wirklich willst.'},
-  {id:'D09',cat:'Dating',diff:'Stark',title:'Stille im Flirt aushalten',hook:'Blickkontakt halten ohne zu reden. Der der wegschaut verliert den Rahmen.'},
-  {id:'KW01',cat:'Karriere',diff:'Leicht',title:'Im Meeting innerhalb 5 Min sprechen',hook:'Nicht warten auf das perfekte Statement. Den ersten Gedanken sagen.'},
-  {id:'KW02',cat:'Karriere',diff:'Mittel',title:'Unfertige Idee äußern',hook:'Sei perfekt sagt warten bis sie perfekt ist. Heute nicht.'},
-  {id:'KW03',cat:'Karriere',diff:'Mittel',title:'Jemanden um Hilfe bitten',hook:'Sei stark sagt alles selbst machen. Heute nicht.'},
-  {id:'KW05',cat:'Karriere',diff:'Mittel',title:'Nein zu einer Zusatzaufgabe',hook:'Mach\'s allen recht sagt Ja. Heute Nein — und beobachten was passiert.'},
-  {id:'KW06',cat:'Karriere',diff:'Stark',title:'Eigene Leistung benennen ohne Bescheidenheit',hook:'Nicht kleinreden. Klar sagen was du geleistet hast.'},
-  {id:'KW07',cat:'Karriere',diff:'Stark',title:'Konflikt direkt ansprechen',hook:'"Mir ist aufgefallen dass..." Ein Satz. Dann Pause.'},
-  {id:'F01',cat:'Fokus',diff:'Leicht',title:'Top 3 für heute aufschreiben',hook:'Eine davon entwickelnd — nicht regulierend.'},
-  {id:'F02',cat:'Fokus',diff:'Mittel',title:'90 Min Deep Work Block',hook:'Nicht "arbeiten an". Sondern "fertigstellen von".'},
-  {id:'F04',cat:'Fokus',diff:'Mittel',title:'Erste 30 Min kein Handy',hook:'Reaktiver Start programmiert reaktiven Tag.'},
-  {id:'F05',cat:'Fokus',diff:'Stark',title:'Etwas Unfertiges fertigstellen und shippen',hook:'Nicht wenn es perfekt ist. Wenn das Minimum erreicht ist.'},
-  {id:'N01',cat:'Nervensystem',diff:'Leicht',title:'Physiologisches Seufzen vor einer Quest',hook:'Doppeltes Einatmen, langes Ausatmen. 30 Sekunden.',transfer:'Der Vagusnerv reguliert direkt soziales Engagement.'},
-  {id:'N02',cat:'Nervensystem',diff:'Leicht',title:'15 Min Spaziergang ohne Ablenkung',hook:'Kein Handy, keine Musik. Vollständige Präsenz.'},
-  {id:'N03',cat:'Nervensystem',diff:'Mittel',title:'Kalte Dusche auf 3 Minuten',hook:'Noradrenalin-Anstieg bis 300% empirisch nachgewiesen.',transfer:'Direkt auf Fokus und soziale Courage übertragbar.'},
-  {id:'N07',cat:'Nervensystem',diff:'Leicht',title:'Erste 10 Min in Morgenlicht',hook:'Cortisol-Rhythmus direkt regulieren. Kein Aufwand, maximaler Effekt.'},
-  {id:'L01',cat:'Innenleben',diff:'Leicht',title:'Bett machen nach dem Aufstehen',hook:'60 Sekunden. Erste Fertigstellung des Tages.'},
-  {id:'L02',cat:'Innenleben',diff:'Leicht',title:'Kochen statt bestellen',hook:'Selbstversorgung ist eine Form von Selbstrespekt.'},
-  {id:'L04',cat:'Innenleben',diff:'Leicht',title:'Bewusst ohne Bildschirm genießen',hook:'Essen, Kaffee. Vollständig präsent.'},
-  {id:'L05',cat:'Innenleben',diff:'Mittel',title:'Jemanden aktiv kontaktieren',hook:'Nicht warten. Initiator werden.'},
-  {id:'FI01',cat:'Finanzen',diff:'Leicht',title:'Einnahmen diese Woche notieren',hook:'5 Minuten. Was kommt rein? Was geht raus?'},
-  {id:'FI02',cat:'Finanzen',diff:'Mittel',title:'Eine unnötige Ausgabe streichen',hook:'Passive Drains sind unsichtbar bis du schaust.'},
-  {id:'FI04',cat:'Finanzen',diff:'Stark',title:'Nettoworth berechnen',hook:'Vermögen minus Schulden. Einmal im Monat.'},
+  {id:'S01',cat:'Sozial',diff:'Leicht',title:'3x Blickkontakt halten',hook:'Trainiert Toleranz für soziale Aufmerksamkeit. Gesehen werden ist sicher.',action:'Halte bei 3 Begegnungen den Blickkontakt bis die andere Person ihn löst.',ifthen:'Wenn ich an jemandem vorbeigehe, dann suche ich kurz die Augen bis ich die Augenfarbe erkenne.',safety:'Kein Starren — blinzeln ist erlaubt. No-Go: Blick als Erster senken.',modminus:'Nur bei Servicepersonal.',modplus:'Lächeln dazu hinzufügen.',
+   triggers:['Beim nächsten Mal wenn ich jemanden grüße oder bezahle','Heute auf dem Weg zur Arbeit oder im Alltag','Beim nächsten sozialen Kontakt egal wo']},
+
+  {id:'S02',cat:'Sozial',diff:'Leicht',title:'Leute aktiv zuerst begrüßen',hook:'Soziale Bringschuld übernehmen gibt Kontrolle. Initiative ohne Einladung.',action:'Sei die erste Person die grüßt — laut und deutlich.',ifthen:'Wenn ich einen Raum oder Laden betrete, dann grüße ich bevor ich angesprochen werde.',safety:'No-Go: Warten bis jemand anfängt.',modminus:'Nur Nicken.',modplus:'Namen der Person nutzen.',
+   triggers:['Beim nächsten Mal wenn ich einen Raum oder Laden betrete','Heute bei der ersten Person die mir begegnet','Morgen früh beim ersten Kontakt des Tages']},
+
+  {id:'S03',cat:'Sozial',diff:'Leicht',title:'Handy in sozialen Situationen weglassen',hook:'Das Handy ist dein Schutzschild. Präsenz ohne Ablenkung trainieren.',action:'Handy bleibt in der Tasche. Beobachte die Umgebung.',ifthen:'Wenn ich warte (Bus, Schlange, Fahrstuhl), dann bleibt das Handy in der Tasche.',safety:'No-Go: Nur kurz checken.',modminus:'Nur im Gehen weglassen.',modplus:'Flugmodus für 30 Minuten.',
+   triggers:['Beim nächsten Mal wenn ich irgendwo warte','Heute bei der nächsten Gelegenheit wo ich zum Handy greifen würde','Auf dem Weg zum nächsten Termin']},
+
+  {id:'S04',cat:'Sozial',diff:'Mittel',title:'Smalltalk mit einem Fremden',hook:'Bricht soziale Isolation. Startet den Motor für größere Interaktionen.',action:'Mache eine Bemerkung zur Situation oder stelle eine banale Frage.',ifthen:'Wenn ich in einer Schlange stehe, dann kommentiere ich kurz die Situation.',safety:'No-Go: Sofort wegdrehen nach der Antwort.',modminus:'Nur ein Situations-Kommentar.',modplus:'Anschlussfrage stellen.',
+   triggers:['Beim nächsten Mal wenn ich in einer Schlange oder Wartebereich bin','Heute beim Einkaufen oder Kaffee holen','Bei der nächsten Gelegenheit mit einem Fremden in Kontakt zu sein']},
+
+  {id:'S05',cat:'Sozial',diff:'Mittel',title:'Direktes Kompliment ohne Abschwächung',hook:'Ein Kompliment ist ein Geschenk — keine Verpflichtung für den anderen.',action:'Gib ein Kompliment ohne Relativierung danach.',ifthen:'Wenn mir etwas Positives auffällt, dann spreche ich es sofort aus.',safety:'No-Go: Hinterher lachen oder abschwächen.',modminus:'Bei Bekannten.',modplus:'Bei einer völlig fremden Person.',
+   triggers:['Beim nächsten Mal wenn mir etwas Positives auffällt','Heute im Laufe des Tages bei der ersten passenden Situation','Heute Abend wenn ich jemanden sehe']},
+
+  {id:'S06',cat:'Sozial',diff:'Mittel',title:'In einer Gruppe das erste Wort ergreifen',hook:'Wer zuerst spricht setzt den Rahmen.',action:'Stelle die erste Frage oder mach den ersten Kommentar.',ifthen:'Wenn eine Gesprächspause entsteht, dann stelle ich die erste Frage.',safety:'No-Go: Warten bis das Thema perfekt ist.',modminus:'In einer Dreier-Gruppe.',modplus:'In einer Gruppe mit mehr als 5 Personen.',
+   triggers:['Beim nächsten Meeting oder Gruppengespräch','Heute beim ersten Gespräch mit mehreren Personen','Bei der nächsten sozialen Situation mit mehr als 2 Personen']},
+
+  {id:'S07',cat:'Sozial',diff:'Stark',title:'Eine Frau direkt und live ansprechen',hook:'Ablehnung ist eine Information — kein Urteil über deinen Wert.',action:'Geh hin, mach Blickkontakt: "Hi, ich wollte kurz Hallo sagen..."',ifthen:'Wenn ich eine Frau sehe die mich interessiert, dann gehe ich hin bevor ich 3 Sekunden nachgedacht habe.',safety:'No-Go: Per App oder Nachricht.',modminus:'Nur nach dem Weg fragen.',modplus:'Nach der Nummer fragen.',
+   triggers:['Beim nächsten Mal wenn ich unterwegs bin und eine interessante Frau sehe','Heute noch — nächster Ausgang oder Einkauf','Am Wochenende bewusst rausgehen mit dieser Intention']},
+
+  {id:'S08',cat:'Sozial',diff:'Stark',title:'Etwas gegen die Norm tun',hook:'Soziale Normen sind oft imaginäre Käfige.',action:'Bleib an einem belebten Ort 10 Sekunden stehen und schau nach oben.',ifthen:'Wenn ich an einem belebten Ort bin, dann tue ich etwas das leicht aus der Norm fällt.',safety:'No-Go: Im Privaten üben.',modminus:'Kurzes Stehen bleiben.',modplus:'30 Sekunden an einem öffentlichen Ort sitzen.',
+   triggers:['Beim nächsten Mal wenn ich an einem belebten Ort bin','Heute auf dem Weg irgendwo hin','Beim nächsten Einkauf oder Stadtgang']},
+
+  {id:'S09',cat:'Sozial',diff:'Stark',title:'Einen Flirt halten statt zurückziehen',hook:'Spannung ist Energie, keine Gefahr.',action:'Halte den Blick eine Sekunde länger als komfortabel.',ifthen:'Wenn ein Flirtmoment entsteht, dann halte ich den Blick eine Sekunde länger.',safety:'No-Go: Wegschauen beim ersten Unbehagen.',modminus:'Nur Lächeln.',modplus:'Körperliche Distanz leicht verringern.',
+   triggers:['Beim nächsten Mal wenn eine interessante soziale Situation entsteht','Heute Abend wenn ich ausgehe','Bei der nächsten Gelegenheit wo Augenkontakt entsteht']},
+
+  {id:'K01',cat:'Kommunikation',diff:'Leicht',title:'Keine Weichmacher heute',hook:'Präzision erzeugt Respekt. Weichmacher sind Schutzschilde des Sensors.',action:'Streiche "vielleicht", "eigentlich", "ein bisschen" komplett.',ifthen:'Wenn ich eine Aussage treffe, dann lasse ich Weichmacher weg.',safety:'No-Go: Satz durch "...oder?" entschärfen.',modminus:'Nur in einem Gespräch.',modplus:'Den ganzen Tag.',
+   triggers:['Ab sofort den ganzen heutigen Tag','Beim nächsten Gespräch das ich führe','Im nächsten Meeting oder Call']},
+
+  {id:'K02',cat:'Kommunikation',diff:'Leicht',title:'20% langsamer sprechen',hook:'Langsamkeit signalisiert Souveränität.',action:'Sprich so langsam dass du deine Atmung zwischen Sätzen spürst.',ifthen:'Wenn ich erkläre oder antworte, dann spreche ich bewusst langsamer.',safety:'No-Go: Schneller werden wenn Nervosität kommt.',modminus:'Nur bei Freunden.',modplus:'In einem wichtigen Gespräch.',
+   triggers:['Beim nächsten Gespräch heute','Im nächsten Meeting oder Telefonat','Ab sofort bei jedem Gespräch den Rest des Tages']},
+
+  {id:'K03',cat:'Kommunikation',diff:'Leicht',title:'Blickkontakt bis Satzende halten',hook:'Das Ende des Satzes ist der Moment der größten Wirkung.',action:'Schaue erst weg nachdem der letzte Laut verklungen ist.',ifthen:'Wenn ich meinen Satz beende, dann schaue ich erst weg danach.',safety:'No-Go: Wegschauen während du sprichst.',modminus:'Beim Smalltalk.',modplus:'Bei einer Kritik oder Forderung.',
+   triggers:['Beim nächsten Gespräch heute','Im nächsten Meeting oder persönlichen Austausch','Beim nächsten Mal wenn ich etwas Wichtiges sage']},
+
+  {id:'K04',cat:'Kommunikation',diff:'Mittel',title:'PREP einmal anwenden',hook:'Struktur schützt vor Verhaspeln und Rechtfertigungszwang.',action:'Punkt → Begründung → Beispiel → Punkt.',ifthen:'Wenn ich meine Meinung sage, dann nutze ich die PREP-Struktur.',safety:'No-Go: Nach dem Beispiel weiterschweifende Zusätze.',modminus:'Im privaten Gespräch.',modplus:'In einem Meeting.',
+   triggers:['Im nächsten Meeting oder wichtigen Gespräch','Beim nächsten Mal wenn ich meine Meinung äußere','Heute noch bei der ersten passenden Situation']},
+
+  {id:'K05',cat:'Kommunikation',diff:'Mittel',title:'Schweigen nach der Aussage',hook:'Wer Stille aushält führt das Gespräch.',action:'Schließ den Mund nach dem Punkt. Warte ohne zu füllen.',ifthen:'Wenn ich meinen Punkt gemacht habe, dann schließe ich die Lippen.',safety:'No-Go: "Ehm" oder "Also..." um die Stille zu füllen.',modminus:'1 Sekunde Stille.',modplus:'3 Sekunden. Blickkontakt dabei.',
+   triggers:['Im nächsten Gespräch oder Meeting','Beim nächsten Mal wenn ich etwas gesagt habe das wichtig ist','Heute bei der ersten Situation wo ich normalerweise weiterre']},
+
+  {id:'K06',cat:'Kommunikation',diff:'Mittel',title:'Keine unnötige Rechtfertigung',hook:'"Nein" ist ein vollständiger Satz.',action:'Lehne ab ohne Begründung.',ifthen:'Wenn ich ablehne, dann liefere ich keine Begründung außer ich werde direkt gefragt.',safety:'No-Go: Rechtfertigen was niemand gefragt hat.',modminus:'Bei Freunden.',modplus:'Bei einer Autoritätsperson.',
+   triggers:['Beim nächsten Mal wenn ich etwas ablehne oder meine Meinung sage','Heute bei der ersten Situation wo der Impuls kommt zu erklären','Im nächsten Meeting oder Gespräch']},
+
+  {id:'K07',cat:'Kommunikation',diff:'Stark',title:'Klar widersprechen ohne Abschwächung',hook:'Konflikt ist die ehrlichste Form der Verbindung.',action:'Sag: "Ich sehe das anders" — ohne Lächeln danach.',ifthen:'Wenn ich eine andere Meinung habe, dann sage ich direkt "Ich sehe das anders".',safety:'No-Go: Position danach relativieren.',modminus:'Mit kurzer Erklärung.',modplus:'Position halten wenn jemand darauf widerspricht.',
+   triggers:['Im nächsten Meeting oder Diskussion','Beim nächsten Mal wenn jemand etwas sagt dem ich nicht zustimme','Heute noch bei der ersten passenden Gelegenheit']},
+
+  {id:'K08',cat:'Kommunikation',diff:'Mittel',title:'Gespräch aktiv zusammenfassen',hook:'Wer zusammenfasst definiert die Realität des Gesprächs.',action:'"Also — wir halten fest: X bis Freitag."',ifthen:'Wenn ein Gesprächsabschnitt endet, dann fasse ich zusammen.',safety:'No-Go: Als Frage formulieren.',modminus:'Rein informativ.',modplus:'Mit Deadline und Handlungsaufforderung.',
+   triggers:['Am Ende des nächsten Meetings','Beim nächsten wichtigen Gespräch oder Call','Heute bei der ersten Situation wo ein Ergebnis festgehalten werden sollte']},
+
+  {id:'M01',cat:'Mut',diff:'Leicht',title:'Kalte Dusche 2 Minuten',hook:'Der Körper lernt: Unbehagen ist keine Katastrophe.',action:'Drehe die letzten 2 Minuten auf ganz kalt.',ifthen:'Wenn ich unter der Dusche stehe, dann drehe ich für die letzten 2 Min auf kalt.',safety:'No-Go: Nach 20 Sekunden abdrehen.',modminus:'Nur Beine und Arme.',modplus:'3 Minuten ohne warmes Vorwaschen.',transfer:'Dieser Widerstand ist identisch mit sozialem Druck.',
+   triggers:['Beim nächsten Duschen — heute oder morgen früh','Morgen direkt nach dem Aufstehen','Heute noch wenn ich duschen gehe']},
+
+  {id:'M02',cat:'Mut',diff:'Leicht',title:'Unangenehme Aufgabe zuerst',hook:'Angst ist ein Wegweiser zur wichtigsten Aufgabe.',action:'Mach die Aufgabe vor der du am meisten Angst hast zuerst.',ifthen:'Wenn ich die Arbeit beginne, dann starte ich mit der Aufgabe vor der ich am meisten Angst habe.',safety:'No-Go: Erstmal E-Mails checken.',modminus:'Nur eine 5-Minuten-Aufgabe.',modplus:'Ohne Handy davor.',
+   triggers:['Morgen früh beim Start in den Arbeitstag','Beim nächsten Mal wenn ich mit der Arbeit anfange','Heute noch — welche Aufgabe liegt schon zu lange da?']},
+
+  {id:'M04',cat:'Mut',diff:'Mittel',title:'Einmal klar Nein sagen',hook:'Jedes Nein zu anderen ist ein Ja zu dir selbst.',action:'Sag "Nein" ohne Erklärung danach.',ifthen:'Wenn mich jemand um etwas bittet das ich nicht will, dann sage ich klar "Nein".',safety:'No-Go: Notlüge erfinden.',modminus:'Mit Verweis auf nächste Woche.',modplus:'Ohne Entschuldigung bei wichtiger Person.',
+   triggers:['Beim nächsten Mal wenn jemand etwas von mir will das ich nicht will','Heute bei der ersten Bitte die mir nicht passt','In der nächsten Situation wo der Impuls kommt Ja zu sagen obwohl du Nein meinst']},
+
+  {id:'M05',cat:'Mut',diff:'Mittel',title:'Bewusst nicht pleasen',hook:'Harmonie um jeden Preis ist Selbstverrat.',action:'Äußere einen Einwand wenn du nur zustimmst um zu gefallen.',ifthen:'Wenn ich merke dass ich nur zustimme um zu gefallen, dann äußere ich einen Einwand.',safety:'No-Go: Einwand sofort zurücknehmen.',modminus:'Im Alltag mit Fremden.',modplus:'Bei einer wichtigen Person.',
+   triggers:['Im nächsten Gespräch wo du den Impuls spürst zuzustimmen','Heute beim nächsten Meeting oder Austausch','Bei der nächsten Situation wo Machs allen recht aktiv wird']},
+
+  {id:'M06',cat:'Mut',diff:'Mittel',title:'Kleine Peinlichkeit absichtlich zulassen',hook:'Mein Wert ist unabhängig von der Reaktion Fremder.',action:'Frage nach etwas Absurdem — z.B. nach Autoreifen beim Bäcker.',ifthen:'Wenn ich unterwegs bin, dann frage ich nach etwas das es dort nicht gibt.',safety:'No-Go: Situation sofort erklären.',modminus:'Wenn niemand hinsieht.',modplus:'Vor Zeugen.',
+   triggers:['Beim nächsten Einkauf oder Alltagsbesorgung','Heute noch wenn ich irgendwo reingehst','Am nächsten Werktag beim ersten Laden']},
+
+  {id:'M07',cat:'Mut',diff:'Stark',title:'Trotz Unsicherheit handeln',hook:'Mut ist nicht die Abwesenheit von Angst.',action:'Zähle 5-4-3-2-1 und bewege dich auf die Sache zu.',ifthen:'Wenn ich zögere, dann zähle ich 5-4-3-2-1 und bewege mich.',safety:'No-Go: Warten bis das Gefühl besser wird.',modminus:'Bei einer E-Mail.',modplus:'Bei einer live-Situation.',
+   triggers:['Beim nächsten Moment wo du zögerst und weißt dass du handeln solltest','Heute noch — was liegt gerade an das du aufgeschoben hast?','In der nächsten Situation wo der Sensor Alarm schlägt']},
+
+  {id:'M08',cat:'Mut',diff:'Stark',title:'Etwas Unfertiges rausgeben',hook:'Done is better than perfect.',action:'Gib eine Aufgabe ab wenn sie bei 80% ist.',ifthen:'Wenn die Aufgabe bei 80% ist, dann schicke ich sie ohne weiteres Prüfen.',safety:'No-Go: Nochmal öffnen.',modminus:'An einen Kollegen.',modplus:'An Chef oder Kunden.',
+   triggers:['Heute noch — was liegt bei 80% und wartet auf Perfektion?','Beim nächsten Projekt das du immer wieder überarbeitest','Innerhalb der nächsten Stunde einen konkreten Output rausgeben']},
+
+  {id:'M09',cat:'Mut',diff:'Stark',title:'Grenze setzen ohne Erklärung',hook:'Grenzen die erklärt werden sind verhandelbar.',action:'Sag: "Das möchte ich nicht" — ohne Begründung.',ifthen:'Wenn jemand meine Grenze überschreitet, dann sage ich: "Das möchte ich nicht".',safety:'No-Go: Erklärung hinzufügen.',modminus:'Per Nachricht.',modplus:'Im direkten Gespräch.',
+   triggers:['Beim nächsten Mal wenn jemand eine Grenze überschreitet','Heute bei der ersten Situation die sich falsch anfühlt','In der nächsten Situation wo du normalerweise schweigst']},
+
+  {id:'M10',cat:'Mut',diff:'Leicht',title:'Achievement nicht als Zufall abtun',hook:'Bescheidenheit ist oft eine Form von Scham.',action:'Sag laut oder schreib: "Das habe ich durch meine Kompetenz erreicht."',ifthen:'Wenn mir etwas gelingt, dann sage ich oder notiere: "Das habe ich erreicht."',safety:'No-Go: Sofort relativieren.',modminus:'Nur im Journal.',modplus:'Jemandem davon erzählen.',
+   triggers:['Heute Abend beim Rückblick auf den Tag','Beim nächsten Mal wenn dir etwas gelingt','Jetzt — was ist heute oder diese Woche gelungen?']},
+
+  {id:'M11',cat:'Mut',diff:'Mittel',title:'Lob annehmen ohne es wegzumachen',hook:'Ein Lob abwehren ist eine Beleidigung für den Schenkenden.',action:'Sag nur "Danke" — schlucke jede Relativierung runter.',ifthen:'Wenn ich ein Lob erhalte, dann sage ich nur "Danke".',safety:'No-Go: "Ach das war doch nichts Besonderes."',modminus:'Mit einem Lächeln.',modplus:'Mit Blickkontakt und Pause danach.',
+   triggers:['Beim nächsten Mal wenn jemand etwas Positives über dich sagt','Heute bei der ersten Situation wo Lob kommt','In der nächsten sozialen Situation']},
+
+  {id:'D01',cat:'Dating',diff:'Leicht',title:'Einer Frau zunicken oder lächeln',hook:'Ein Lächeln ist ein Angebot, keine Forderung.',action:'Initiiere nonverbalen Kontakt — kurzes Nicken oder Lächeln.',ifthen:'Wenn mir eine Frau gefällt, dann schenke ich ihr ein kurzes Nicken oder Lächeln.',safety:'No-Go: Wegschauen bevor sie reagiert.',modminus:'Nur im Vorbeigehen.',modplus:'Blickkontakt halten bis sie wegsieht.',
+   triggers:['Beim nächsten Mal wenn du unterwegs bist','Heute auf dem Weg irgendwo hin','Beim nächsten Einkauf oder Kaffee']},
+
+  {id:'D02',cat:'Dating',diff:'Leicht',title:'Eine Frau nach einer Empfehlung fragen',hook:'Menschen helfen gerne. Risikoarmer Gesprächseinstieg.',action:'Frage nach einer Empfehlung — Drink, Buch, Ort.',ifthen:'Wenn ich eine interessante Frau sehe, dann frage ich nach einer Empfehlung.',safety:'No-Go: Danke sagen und sofort gehen.',modminus:'Nur kurz danke sagen.',modplus:'Gespräch weiterführen.',
+   triggers:['Beim nächsten Café-Besuch oder Einkauf','Heute noch wenn du rausgehst','Am nächsten Tag wo du in der Stadt unterwegs bist']},
+
+  {id:'D03',cat:'Dating',diff:'Mittel',title:'Ehrliches Kompliment zum Stil',hook:'Komplimente über Entscheidungen sind wertvoller als über Genetik.',action:'Bewundere eine bewusste Entscheidung: Stil, Schmuck, Ausstrahlung.',ifthen:'Wenn mir ein Detail auffällt, dann sage ich: "Ich mag deinen Stil, das wirkt sehr [Adjektiv]."',safety:'No-Go: Im Vorbeigehen sagen.',modminus:'Im Vorbeigehen.',modplus:'Dabei stehen bleiben.',
+   triggers:['Beim nächsten Mal wenn dir etwas auffällt das dir gefällt','Heute Abend oder beim nächsten Ausgang','Bei der nächsten Frau die dir visuell auffällt']},
+
+  {id:'D04',cat:'Dating',diff:'Mittel',title:'Eigene Schwäche im Gespräch zeigen',hook:'Perfektion distanziert — Imperfektion verbindet.',action:'Teile eine kleine echte Unsicherheit oder einen "Fail" von heute.',ifthen:'Wenn wir im Gespräch sind, dann teile ich eine kleine echte Unsicherheit.',safety:'No-Go: Nur einen Witz machen.',modminus:'Etwas Harmloses.',modplus:'Etwas Echtes und Relevantes.',
+   triggers:['Im nächsten tieferen Gespräch','Beim nächsten Date oder persönlichen Austausch','Wenn das nächste Mal ein Gespräch über Persönliches entsteht']},
+
+  {id:'D05',cat:'Dating',diff:'Mittel',title:'Nach der Nummer fragen',hook:'Ein Korb ist nur "Nicht heute" — kein Urteil.',action:'Sag direkt: "Ich würde dich gerne wiedersehen, gib mir deine Nummer."',ifthen:'Wenn der Vibe gut ist, dann frage ich direkt nach der Nummer.',safety:'No-Go: Nach Instagram fragen.',modminus:'Nach Instagram fragen.',modplus:'Direkt das Handy hinhalten.',
+   triggers:['Beim nächsten Mal wenn ein gutes Gespräch mit einer Frau entsteht','Heute Abend oder beim nächsten Ausgang','Am Wochenende bewusst mit dieser Intention rausgehen']},
+
+  {id:'D06',cat:'Dating',diff:'Mittel',title:'Date mit Ort und Zeit vorschlagen',hook:'Klarheit ist attraktiv.',action:'Schlage Ort und Zeit konkret vor: "Dienstag, 19 Uhr, Bar X."',ifthen:'Wenn wir schreiben oder sprechen, dann schlage ich Ort und Zeit konkret vor.',safety:'No-Go: Zwei Optionen zur Wahl stellen.',modminus:'Zwei Optionen geben.',modplus:'Einen Vorschlag ohne Rückfrage.',
+   triggers:['Im nächsten Chat oder Gespräch mit jemandem der interessant ist','Heute noch eine Nachricht schreiben mit konkretem Vorschlag','Beim nächsten Mal wenn du schon längere Zeit hin- und herschreibst']},
+
+  {id:'D07',cat:'Dating',diff:'Stark',title:'Flirt starten und souverän beenden',hook:'Wer das Gespräch beendet behält die Dynamik.',action:'Initiiere und beende auf dem Höhepunkt: "Muss weiter, war schön."',ifthen:'Wenn ich einen Flirt initiiert habe, dann beende ich ihn auf dem Höhepunkt.',safety:'No-Go: Erst gehen wenn das Thema ausläuft.',modminus:'Erst wenn Thema ausläuft.',modplus:'Mit Kompliment gehen auf dem Höhepunkt.',
+   triggers:['Beim nächsten Ausgang heute Abend oder am Wochenende','Bei der nächsten Gelegenheit wo ein Gespräch mit einer Frau entsteht','Am nächsten Tag wo du in sozialer Umgebung bist']},
+
+  {id:'D08',cat:'Dating',diff:'Stark',title:'Echtes Bedürfnis aussprechen',hook:'Deine Bedürfnisse sind dein Kompass.',action:'Sprich klar aus was du willst: "Ich möchte gerade..."',ifthen:'Wenn ich etwas will, dann spreche ich es klar aus.',safety:'No-Go: Nur andeuten.',modminus:'Bei einer Freundin üben.',modplus:'Bei einem Date.',
+   triggers:['Beim nächsten Date oder persönlichen Gespräch','Heute noch wenn du mit jemandem sprichst','In der nächsten Situation wo du etwas willst aber zögerst es zu sagen']},
+
+  {id:'D09',cat:'Dating',diff:'Stark',title:'Stille im Flirt aushalten',hook:'Stille im Flirt ist Spannung — keine Leere.',action:'Halte Blickkontakt und lächle ohne die Stille zu füllen.',ifthen:'Wenn eine Pause entsteht, dann halte ich Blickkontakt ohne zu reden.',safety:'No-Go: Stille sofort füllen.',modminus:'2 Sekunden halten.',modplus:'5 Sekunden halten.',
+   triggers:['Beim nächsten Gespräch mit einer Frau die dich interessiert','Heute Abend oder beim nächsten Ausgang','Bei der nächsten Gelegenheit wo Augenkontakt entsteht']},
+
+  {id:'KW01',cat:'Karriere',diff:'Leicht',title:'Im Meeting innerhalb 5 Min sprechen',hook:'Wer früh spricht wird als gestaltend wahrgenommen.',action:'Sage innerhalb der ersten 5 Minuten etwas.',ifthen:'Wenn ein Meeting startet, dann sage ich innerhalb der ersten 5 Minuten etwas.',safety:'No-Go: Warten bis der perfekte Beitrag da ist.',modminus:'Nur zustimmen.',modplus:'Eine kritische Frage stellen.',
+   triggers:['Im nächsten Meeting heute oder morgen','Beim nächsten Call oder Teambesprechung','Im nächsten Austausch mit mehreren Personen']},
+
+  {id:'KW02',cat:'Karriere',diff:'Mittel',title:'Unfertige Idee äußern',hook:'Rohdiamanten sind wertvoller als perfekte Steine im Kämmerlein.',action:'Teile eine Idee die erst zu 50% durchdacht ist.',ifthen:'Wenn wir brainstormen, dann teile ich eine Idee die erst zu 50% fertig ist.',safety:'No-Go: Als "vage Idee" deklarieren.',modminus:'Als vage Idee ankündigen.',modplus:'Um Feedback bitten ohne Schutzformulierung.',
+   triggers:['Im nächsten Meeting oder Brainstorming','Beim nächsten Mal wenn Ideen gefragt sind','Heute noch in einem Gespräch wo etwas entwickelt wird']},
+
+  {id:'KW03',cat:'Karriere',diff:'Mittel',title:'Jemanden um Hilfe bitten',hook:'Hilfe suchen zeigt Selbstbewusstsein.',action:'Frage: "Kannst du mir hier kurz deine Expertise leihen?"',ifthen:'Wenn ich feststecke, dann frage ich jemanden direkt um Hilfe.',safety:'No-Go: Stunden alleine kämpfen.',modminus:'Engen Kollegen fragen.',modplus:'Ranghöhere Person fragen.',
+   triggers:['Beim nächsten Mal wenn du bei etwas feststeckst','Heute noch — wo hängt gerade etwas das du alleine nicht löst?','In der nächsten Arbeitssituation wo du weiterkommst mit Hilfe']},
+
+  {id:'KW05',cat:'Karriere',diff:'Mittel',title:'Nein zu einer Zusatzaufgabe',hook:'Ein Nein zur Aufgabe ist ein Ja zur Qualität.',action:'Sag: "Das passt aktuell nicht in meine Prioritäten."',ifthen:'Wenn eine Aufgabe reinkommt die nicht mein Fokus ist, dann sage ich Nein.',safety:'No-Go: Ja sagen und dann ignorieren.',modminus:'Mit Verweis auf nächste Woche.',modplus:'Ohne Rechtfertigung.',
+   triggers:['Bei der nächsten Anfrage die reinkommt und nicht dein Fokus ist','Heute noch wenn etwas angefragt wird das nicht passt','In der nächsten Situation wo du Ja sagen würdest obwohl du Nein meinst']},
+
+  {id:'KW06',cat:'Karriere',diff:'Stark',title:'Eigene Leistung benennen',hook:'Fakten benennen ist Professionalität.',action:'Sag: "Ich habe X erreicht und Y geliefert."',ifthen:'Wenn über Ergebnisse gesprochen wird, dann benenne ich klar was ich erreicht habe.',safety:'No-Go: "Wir haben..." statt "Ich habe...".',modminus:'Im informellen Gespräch.',modplus:'Vor dem Chef oder in der Gruppe.',
+   triggers:['Im nächsten Meeting oder Status-Update','Beim nächsten Gespräch über Projekte oder Ergebnisse','Heute noch wenn die Gelegenheit entsteht']},
+
+  {id:'KW07',cat:'Karriere',diff:'Stark',title:'Konflikt direkt ansprechen',hook:'Ungeklärte Konflikte kosten mehr als ein klärendes Gespräch.',action:'Sprich an: "Mir ist aufgefallen dass..."',ifthen:'Wenn mich etwas stört, dann spreche ich die Person direkt an.',safety:'No-Go: Per Mail ankündigen.',modminus:'Erst per Mail.',modplus:'Innerhalb 24h direkt.',
+   triggers:['Bei der nächsten Situation die schon länger stört','Heute noch wenn etwas seit Tagen unausgesprochen ist','In der nächsten Arbeitssituation wo eine Spannung da ist']},
+
+  {id:'F01',cat:'Fokus',diff:'Leicht',title:'Top 3 für heute aufschreiben',hook:'Klarheit ist der Feind der Prokrastination.',action:'Schreibe die 3 wichtigsten Ergebnisse auf bevor du anfängst.',ifthen:'Wenn ich den Arbeitstag starte, dann schreibe ich zuerst die Top 3.',safety:'No-Go: Erstmal E-Mails checken.',modminus:'Nach den ersten Mails.',modplus:'Nur 1 Top-Prio wählen.',
+   triggers:['Morgen früh beim Start in den Tag','Heute noch bevor du die nächste Aufgabe anfängst','Beim nächsten Arbeitsbeginn']},
+
+  {id:'F02',cat:'Fokus',diff:'Mittel',title:'90 Min Deep Work Block',hook:'Qualität entsteht in der Tiefe.',action:'Benachrichtigungen aus, Handy weg, eine Aufgabe fertigstellen.',ifthen:'Wenn ich den Deep Work Block starte, dann sind alle Ablenkungen aus.',safety:'No-Go: Nur kurz aufs Handy schauen.',modminus:'45 Minuten Block.',modplus:'Internet komplett aus.',
+   triggers:['Heute noch einen Block einrichten — wann hast du die nächste freie Stunde?','Morgen früh als erstes bevor Meetings kommen','Am nächsten ruhigen Vormittag']},
+
+  {id:'F04',cat:'Fokus',diff:'Mittel',title:'Erste 30 Min kein Handy',hook:'Wer morgens scrollt lässt sich reaktiv steuern.',action:'Handy bleibt 30 Minuten nach dem Aufwachen weg.',ifthen:'Wenn ich aufwache, dann bleibt das Handy für 30 Minuten in einem anderen Raum.',safety:'No-Go: Nur kurz checken.',modminus:'15 Minuten.',modplus:'60 Minuten.',
+   triggers:['Morgen früh direkt nach dem Aufwachen','Ab morgen als feste Routine','Heute Abend Handy schon vorbereitet in den anderen Raum legen']},
+
+  {id:'F05',cat:'Fokus',diff:'Stark',title:'Etwas Unfertiges fertigstellen und shippen',hook:'Iteration am lebenden Objekt schlägt Perfektion.',action:'Drücke Senden wenn die Zeit abgelaufen ist.',ifthen:'Wenn die Aufgabe bei 80% ist, dann schicke ich sie ohne weiteres Prüfen.',safety:'No-Go: Nochmal öffnen zum Prüfen.',modminus:'Eine interne Notiz.',modplus:'Wichtiges Projekt an Chef oder Kunden.',
+   triggers:['Heute noch — was liegt bei 80% und wartet auf perfekt?','Innerhalb der nächsten Stunde konkret etwas rausgeben','Beim nächsten Projekt das du immer wieder überarbeitest']},
+
+  {id:'N01',cat:'Nervensystem',diff:'Leicht',title:'Physiologisches Seufzen',hook:'Chemie schlägt Wille: Du zwingst deinen Puls nach unten.',action:'2x kurz einatmen, 1x lang ausatmen. 30 Sekunden.',ifthen:'Wenn ich Stress spüre oder eine Quest starte, dann atme ich 2x kurz ein und 1x lang aus.',safety:'No-Go: Nur einmal machen.',modminus:'1 Wiederholung.',modplus:'3 Wiederholungen mit geschlossenen Augen.',transfer:'Der Vagusnerv reguliert direkt soziales Engagement.',
+   triggers:['Jetzt gerade vor der nächsten Handlung','Vor der nächsten sozialen Situation heute','Beim nächsten Mal wenn Anspannung kommt']},
+
+  {id:'N02',cat:'Nervensystem',diff:'Leicht',title:'15 Min Spaziergang ohne Ablenkung',hook:'Ohne Input kann das Gehirn verarbeiten.',action:'Handy und Kopfhörer bleiben zuhause.',ifthen:'Wenn ich spazieren gehe, dann bleiben Kopfhörer und Handy weg.',safety:'No-Go: Podcast anmachen.',modminus:'10 Minuten.',modplus:'30 Minuten.',
+   triggers:['Heute in der Mittagspause oder nach der Arbeit','Beim nächsten Mal wenn du sowieso rausgehst','Morgen früh vor dem Start in den Tag']},
+
+  {id:'N03',cat:'Nervensystem',diff:'Mittel',title:'Kalte Dusche auf 3 Minuten',hook:'Wer Kälte kontrolliert kann auch soziale Hitze kontrollieren.',action:'3 Minuten unter kaltem Wasser. Ruhig atmen.',ifthen:'Wenn ich dusche, dann bleibe ich 3 Min unter kaltem Wasser.',safety:'No-Go: Nach einer Minute raus.',modminus:'2 Minuten.',modplus:'Ohne warmes Vorwaschen.',transfer:'Direkt auf Fokus und soziale Courage übertragbar.',
+   triggers:['Beim nächsten Duschen heute oder morgen früh','Morgen als Start in den Tag','Heute Abend wenn du duschen gehst']},
+
+  {id:'N07',cat:'Nervensystem',diff:'Leicht',title:'Erste 10 Min in Morgenlicht',hook:'Licht am Morgen steuert Fokus und Schlaf.',action:'Innerhalb von 30 Min nach dem Aufstehen nach draußen.',ifthen:'Wenn ich aufstehe, dann gehe ich innerhalb von 30 Min für 10 Min nach draußen.',safety:'No-Go: Nur am Fenster stehen.',modminus:'Nur am offenen Fenster.',modplus:'Dabei 5 Minuten gehen.',
+   triggers:['Morgen früh direkt nach dem Aufstehen','Ab morgen als feste Routine einbauen','Heute noch für die kommenden Tage planen']},
+
+  {id:'L01',cat:'Innenleben',diff:'Leicht',title:'Bett machen nach dem Aufstehen',hook:'Äußere Ordnung spiegelt innere Ordnung. Erster Sieg des Tages.',action:'Mach sofort nach dem Aufstehen das Bett.',ifthen:'Wenn ich aufgestanden bin, dann mache ich sofort mein Bett.',safety:'No-Go: Nur Decke glattziehen.',modminus:'Nur Decke glattziehen.',modplus:'Zimmer lüften dabei.',
+   triggers:['Morgen früh direkt nach dem Aufstehen','Ab morgen als feste Routine','Heute wenn du aufstehst']},
+
+  {id:'L02',cat:'Innenleben',diff:'Leicht',title:'Kochen statt bestellen',hook:'Kochen ist eine Form der Selbstachtung.',action:'Bereite dir selbst eine Mahlzeit zu.',ifthen:'Wenn ich Hunger habe, dann koche ich mir etwas.',safety:'No-Go: Nur heute bestellen.',modminus:'Nur ein einfaches Gericht.',modplus:'Neues Rezept probieren.',
+   triggers:['Heute Abend zum Abendessen','Beim nächsten Mal wenn du Hunger hast','Morgen zum Mittagessen']},
+
+  {id:'L04',cat:'Innenleben',diff:'Leicht',title:'Bewusst ohne Bildschirm genießen',hook:'Genuss erfordert Präsenz.',action:'Iss eine Mahlzeit ohne Handy, Fernseher oder Laptop.',ifthen:'Wenn ich esse, dann liegt das Handy in einem anderen Raum.',safety:'No-Go: Nur kurz checken.',modminus:'Nur beim Frühstück.',modplus:'10 Min danach auch ohne Screen.',
+   triggers:['Beim nächsten Essen heute','Morgen beim Frühstück','Heute Abend beim Abendessen']},
+
+  {id:'L05',cat:'Innenleben',diff:'Mittel',title:'Jemanden aktiv kontaktieren',hook:'Beziehungen brauchen Reize. Warten ist keine Strategie.',action:'Schreibe sofort wenn du an jemanden denkst.',ifthen:'Wenn ich an jemanden denke, dann schreibe ich sofort.',safety:'No-Go: Nur ein Like dalassen.',modminus:'Nur ein Like.',modplus:'Anrufen statt schreiben.',
+   triggers:['Jetzt gerade — an wen hast du zuletzt gedacht ohne dich zu melden?','Heute noch eine Nachricht schreiben','In der nächsten ruhigen Minute']},
+
+  {id:'FI01',cat:'Finanzen',diff:'Leicht',title:'Einnahmen diese Woche notieren',hook:'Was man nicht misst kann man nicht steuern.',action:'Trage alle Einnahmen und Ausgaben ein.',ifthen:'Wenn die Woche endet, dann trage ich alle Einnahmen und Ausgaben ein.',safety:'No-Go: Schätzwerte.',modminus:'Nur Grobschätzung.',modplus:'Budget für nächste Woche planen.',
+   triggers:['Heute Abend oder am Wochenende in einer ruhigen Stunde','Beim nächsten Deep Work Block','Sonntag als feste Routine einbauen']},
+
+  {id:'FI02',cat:'Finanzen',diff:'Mittel',title:'Eine unnötige Ausgabe streichen',hook:'Freiheit bedeutet nicht Sklave seiner Impulse zu sein.',action:'Warte 24 Stunden bei jedem Impulskauf.',ifthen:'Wenn ich einen Impulskauf tätigen will, dann warte ich 24 Stunden.',safety:'No-Go: Nur dieses eine Mal.',modminus:'Nur kleinen Kauf weglassen.',modplus:'Ein laufendes Abo kündigen.',
+   triggers:['Beim nächsten Mal wenn du etwas kaufen willst ohne echten Bedarf','Jetzt gerade — welches Abo nutzt du weniger als 3x im Monat?','Heute noch Banking App öffnen und schauen']},
+
+  {id:'FI04',cat:'Finanzen',diff:'Stark',title:'Nettoworth berechnen',hook:'Zahlen lügen nicht. Sie geben dir eine Basis.',action:'Berechne Assets minus Schulden auf den Euro genau.',ifthen:'Wenn ich einen freien Deep Work Block habe, dann berechne ich meinen Nettoworth.',safety:'No-Go: Nur Kontostände addieren.',modminus:'Nur Kontostände.',modplus:'Ziele für 12 Monate setzen.',
+   triggers:['Beim nächsten freien Deep Work Block — heute Abend oder am Wochenende','Am nächsten ruhigen Nachmittag oder Sonntagvormittag','Heute noch einen Termin dafür in den Kalender setzen']},
+
+  {id:'U01',cat:'Grenzen',diff:'Mittel',title:'Nachricht abschicken ohne zweiten Check',hook:'Der zweite Check ist Schutz des Sensors. Er kostet dich nichts.',action:'Schreibe und drücke Senden ohne nochmal zu lesen.',ifthen:'Wenn mein Finger über der Löschtaste schwebt, dann drücke ich Senden.',safety:'No-Go: Nochmal öffnen.',modminus:'An einen Kollegen.',modplus:'An Chef oder Kunden.',
+   triggers:['Beim nächsten Mal wenn du eine Nachricht schreibst und zögerst','Heute noch — welche Nachricht liegt halb fertig da?','In der nächsten Stunde bei der ersten Nachricht die du schreibst']},
+
+  {id:'U02',cat:'Grenzen',diff:'Mittel',title:'Feedback zu Entwurf einholen',hook:'Iteration braucht echtes Feedback.',action:'Schicke den Entwurf obwohl er noch nicht fertig ist.',ifthen:'Wenn ich sage "Ich bin noch nicht fertig", dann schicke ich es trotzdem jetzt.',safety:'No-Go: Erst fertigstellen.',modminus:'Per Text schicken.',modplus:'Im Video-Call zeigen.',
+   triggers:['Heute noch — was liegt bei 70% und wartet auf perfekt?','Beim nächsten Projekt das du gerade bearbeitest','Innerhalb der nächsten Stunde etwas zum Feedback schicken']},
+
+  {id:'R01',cat:'Grenzen',diff:'Mittel',title:'Stille nach der Aussage aushalten',hook:'Wer die Stille aushält kontrolliert den Raum.',action:'Presse die Zunge gegen den Gaumen nach dem letzten Wort.',ifthen:'Wenn ich meinen Satz beendet habe, dann presse ich die Zunge an den Gaumen und warte.',safety:'No-Go: Räuspern oder Ehm.',modminus:'1 Sekunde.',modplus:'3 Sekunden mit Blickkontakt.',
+   triggers:['Im nächsten Meeting oder Gespräch','Beim nächsten Mal wenn du etwas Wichtiges sagst','Heute bei der ersten wichtigen Aussage']},
+
+  {id:'R02',cat:'Grenzen',diff:'Leicht',title:'Aufrecht sitzen und Raum einnehmen',hook:'Körpersprache formt Wahrnehmung von innen und außen.',action:'Sitze breitbeinig und aufrecht. Nimm 10cm mehr Platz.',ifthen:'Wenn mein Hintern den Stuhl berührt, dann nehme ich 10cm mehr Platz.',safety:'No-Go: Zusammengekauert warten.',modminus:'Zuhause.',modplus:'In öffentlichem Café oder Meeting.',
+   triggers:['Ab sofort beim nächsten Mal wenn du sitzt','Im nächsten Meeting oder Café','Jetzt gerade — wie sitzt du gerade?']},
+
+  {id:'KO01',cat:'Grenzen',diff:'Mittel',title:'Klares Nein ohne Erklärung',hook:'Dein Wert hängt nicht von deiner Gefälligkeit ab.',action:'Sage "Das passt mir nicht" ohne weitere Erklärung.',ifthen:'Wenn eine Bitte kommt die ich nicht will, dann sage ich: "Das passt mir diesmal nicht."',safety:'No-Go: Notlüge erfinden.',modminus:'Per Nachricht.',modplus:'Im direkten Gespräch.',
+   triggers:['Bei der nächsten Anfrage die nicht passt','Heute noch wenn etwas von dir erwartet wird das du nicht willst','In der nächsten Situation wo du Nein meinst aber Ja sagst']},
+
+  {id:'KO02',cat:'Grenzen',diff:'Stark',title:'Meinung halten wenn jemand widerspricht',hook:'Chamäleon-Verhalten kostet Identität.',action:'Antworte: "Interessant — ich bleibe bei meiner Sichtweise."',ifthen:'Wenn jemand widerspricht, dann antworte ich: "Ich bleibe bei meiner Sichtweise."',safety:'No-Go: Nervöses Lachen oder nachgeben.',modminus:'Mit kurzer Erklärung.',modplus:'Ohne Lächeln, ohne Erklärung.',
+   triggers:['Im nächsten Gespräch wo eine Meinungsverschiedenheit entsteht','Beim nächsten Meeting oder Austausch','In der nächsten Situation wo jemand deiner Aussage widerspricht']},
 ];
+
+
 
 const PROGS=[
   {id:'p1',title:'7 Tage Soziale Expansion',days:7,cat:'Sozial',col:'#3B82F6',desc:'Sensor für soziale Initiative kalibrieren.',chain:['S01','S02','S04','S03','S05','S06','S07']},
@@ -563,7 +699,7 @@ function getModifier(cat){
   return mods[Math.floor(Math.random()*mods.length)];
 }
 const CHIPS=['Besser als gedacht','Leichter als erwartet','Kopf hat übertrieben','Unbehagen war aushaltbar','Würde es wiederholen','Schwieriger als gedacht'];
-const CATS_ALL=['Sozial','Kommunikation','Mut','Dating','Karriere','Fokus','Nervensystem','Innenleben','Finanzen'];
+const CATS_ALL=['Sozial','Kommunikation','Mut','Dating','Karriere','Fokus','Nervensystem','Innenleben','Finanzen','Grenzen'];
 
 // ═══ STATE ═══════════════════════════════════════════
 let S={queue:[],progQueue:null,done:0,total:0,progDone:0,reps:0,streak:0,longest:0,loginDays:0,lastLogin:null,completions:[],progCompletions:[],skips:[],activeP:null,doneP:[],fCat:'Alle',fDiff:'Alle',activeFBtn:'cat',ci:0,sf:'all'};
@@ -598,7 +734,7 @@ function go(tab){
     nb.classList.toggle('on',t===tab);
     document.getElementById('ni-'+t).innerHTML=NI[t][t===tab?'on':'off'];
   });
-  if(tab==='home')rHome();
+  if(tab==='home'){rHome();setTimeout(checkAbendReflexion,800);}
   if(tab==='q'){rCard();rOverview();rProgs();}
   if(tab==='st')rStats();
   rTopbar();
@@ -626,6 +762,88 @@ function rTopbar(){
 }
 
 // ═══ HOME ════════════════════════════════════════════
+// Trinity slot categories
+const TRINITY={
+  mut:['Sozial','Dating','Mut','Grenzen'],
+  output:['Fokus','Karriere'],
+  wachstum:['Nervensystem','Kommunikation','Innenleben','Finanzen']
+};
+
+function morgenWette(){
+  // Pick one quest per trinity slot, avoiding already queued quests
+  const queued=(S.queue||[]).map(x=>x.quest.id);
+  const done=(S.completions||[]).map(c=>c.qid);
+  const picks=[];
+
+  Object.entries(TRINITY).forEach(([slot,cats])=>{
+    // Filter eligible quests for this slot
+    let pool=QL.filter(q=>
+      cats.includes(q.cat) &&
+      !queued.includes(q.id) &&
+      !picks.map(p=>p.id).includes(q.id)
+    );
+    if(!pool.length)return;
+
+    // Prefer quests not done before, then vary diff based on history
+    const doneInSlot=(S.completions||[]).filter(c=>cats.includes(c.cat));
+    const lastDiff=doneInSlot.length>0?doneInSlot[doneInSlot.length-1].diff:null;
+    const diffOrder=['Leicht','Mittel','Stark'];
+    const nextDiffIdx=lastDiff?Math.min(diffOrder.indexOf(lastDiff)+1,2):0;
+    const targetDiff=diffOrder[nextDiffIdx];
+
+    // Try to pick target diff first, else any
+    let pick=pool.find(q=>q.diff===targetDiff&&!done.includes(q.id));
+    if(!pick)pick=pool.find(q=>!done.includes(q.id));
+    if(!pick)pick=pool.find(q=>q.diff===targetDiff);
+    if(!pick)pick=pool[Math.floor(Math.random()*pool.length)];
+
+    picks.push(pick);
+  });
+
+  if(!picks.length)return;
+
+  // Show confirmation sheet
+  const slotLabels={mut:'💪 Mut',output:'⚡ Output',wachstum:'🌱 Wachstum'};
+  const slotKeys=Object.keys(TRINITY);
+  let html=`<div class="shdl"></div>
+    <div class="sht-t">Morgen-Wette 🎯</div>
+    <div class="sht-s">Deine 3 Quests für heute. Einmal festgelegt — los.</div>
+    <div class="sht-sc">`;
+
+  picks.forEach((q,i)=>{
+    const cc=CC[q.cat]||'#3D8C5E';
+    const dc=DS[q.diff]||{c:'#3D8C5E',bg:'#E8F5EE'};
+    html+=`<div style="background:var(--s);border:1.5px solid var(--bd);border-radius:16px;margin-bottom:11px;overflow:hidden">
+      <div style="height:4px;background:${cc}"></div>
+      <div style="padding:13px 15px">
+        <div style="font-size:10px;font-weight:700;color:var(--t3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px">${slotLabels[slotKeys[i]]}</div>
+        <div style="display:flex;gap:6px;margin-bottom:7px">
+          <span class="tag" style="background:${cc}18;color:${cc};font-size:10px">${q.cat}</span>
+          <span class="tag" style="background:${dc.bg};color:${dc.c};font-size:10px">${q.diff}</span>
+        </div>
+        <div style="font-size:15px;font-weight:700;color:var(--t);margin-bottom:4px">${q.title}</div>
+        <div style="font-size:12px;color:var(--t2);line-height:1.5">${q.hook}</div>
+      </div>
+    </div>`;
+  });
+
+  html+=`</div><button class="btn-p btn-p-full" onclick="confirmWette()">Ich wette. Los geht's →</button>`;
+  showSheet(html);
+  window._wettePicks=picks;
+}
+
+function confirmWette(){
+  closeSheet();
+  const picks=window._wettePicks||[];
+  picks.forEach(q=>{
+    if((S.queue||[]).length>=3)return;
+    if((S.queue||[]).some(x=>x.quest.id===q.id))return;
+    S.queue=S.queue||[];
+    S.queue.push({id:Date.now()+Math.random(),quest:q,modifier:getModifier(q.cat),fromWette:true});
+  });
+  S.ci++;sv();rHome();rCard();
+}
+
 function rHome(){
   const h=new Date().getHours();
   document.getElementById('hg').textContent=h<12?'Guten Morgen':h<17?'Guten Tag':'Guten Abend';
@@ -674,7 +892,7 @@ function rHome(){
     const doneCount=S.done||0;
     const hasProgDone=S.progQueue&&S.progQueue.done;
     if(doneCount===0&&!hasProgDone&&!S.activeP){
-      qs.innerHTML=`<div class="home-empty"><div class="he-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><div class="he-t">Noch keine Quests</div><div class="he-s">Geh zu Quests und wähle bis zu 3 freie Quests für heute.</div><button class="btn-p" onclick="go('q');gst('disc')">Quest ziehen →</button></div>`;
+      qs.innerHTML=`<div class="home-empty"><div class="he-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><div class="he-t">Noch keine Quests</div><div class="he-s">Lass die App für dich wählen oder zieh selbst.</div><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><button class="btn-p" style="font-size:13px;padding:12px 20px" onclick="morgenWette()">🎯 Morgen-Wette</button><button class="btn-p" style="font-size:13px;padding:12px 20px;background:var(--s2);color:var(--t2);box-shadow:none;border:1px solid var(--bd)" onclick="go('q');gst('disc')">Selbst ziehen →</button></div></div>`;
     } else if(doneCount>0){
       qs.innerHTML=`<div class="home-empty"><div class="he-icon">✅</div><div class="he-t">Freie Quests erledigt</div><div class="he-s">${doneCount} Quest${doneCount>1?'s':''} heute abgeschlossen.</div></div>`;
     } else {
@@ -703,7 +921,7 @@ function pqDone(){
     S.activeP.done.push(day);
     S.activeP.day=day+1;
     if(S.activeP.day>p.days){S.doneP=S.doneP||[];S.doneP.push(S.activeP.id);S.activeP=null;S.progQueue=null;}
-    sv();rTopbar();rHome();showCel(pq);
+    sv();rTopbar();rHome();showCel(pq,false);
   });
 }
 
@@ -711,15 +929,49 @@ function pqDone(){
 function hDone(id){
   const item=(S.queue||[]).find(x=>x.id==id);
   if(!item)return;
+  const isNew=!(S.completions||[]).some(c=>c.qid===item.quest.id);
   showRef(item.quest,item.modifier||null,(rating,chips,proof)=>{
     S.queue=S.queue.filter(x=>x.id!=id);
-    S.done=(S.done||0)+1;S.total=(S.total||0)+1;S.reps=(S.reps||0)+1;
+    S.done=(S.done||0)+1;S.total=(S.total||0)+1;
+    S.reps=(S.reps||0)+1;
+    if(isNew)S.reps++; // discovery bonus
     S.completions=S.completions||[];
-    S.completions.push({id:'c'+Date.now(),qid:item.quest.id,cat:item.quest.cat,diff:item.quest.diff,ts:Date.now(),stress:rating,outcome:chips.some(c=>['Besser als gedacht','Leichter als erwartet','Kopf hat übertrieben'].includes(c))?'better':chips.includes('Schwieriger als gedacht')?'harder':'neutral',chips,proof,modifier:item.modifier||null});
-    sv();rTopbar();rHome();showCel(item.quest);
+    S.completions.push({id:'c'+Date.now(),qid:item.quest.id,cat:item.quest.cat,diff:item.quest.diff,ts:Date.now(),stress:rating,outcome:chips.some(c=>['Besser als gedacht','Leichter als erwartet','Kopf hat übertrieben'].includes(c))?'better':chips.includes('Schwieriger als gedacht')?'harder':'neutral',chips,proof,modifier:item.modifier||null,isNew});
+    sv();rTopbar();rHome();showCel(item.quest,isNew);
   });
 }
-function hBack(id){S.queue=(S.queue||[]).filter(x=>x.id!=id);sv();rHome();rCard();}
+function hBack(id){
+  const item=(S.queue||[]).find(x=>x.id==id);
+  if(!item)return;
+  const NOISE=['Morgen ist ein besserer Tag.','Das bringt doch eh nichts.','Die Leute werden komisch reagieren.','Ich bin noch nicht bereit.','Erst wenn ich mich besser fühle.'];
+  showSheet(`
+    <div class="shdl"></div>
+    <div class="sht-t">Was hat der Sensor geflüstert?</div>
+    <div class="sht-s">Erkenne das Muster.</div>
+    <div class="sht-sc">
+      <div class="acc-opts" id="noise-opts">${NOISE.map((n,i)=>`<button class="acc-o" onclick="selNoise(${i},this)">${n}</button>`).join('')}</div>
+      <div style="font-size:11px;color:var(--t3);line-height:1.6;margin-top:8px">Wird in deiner Avoidance Map gespeichert. Das Muster erkennen ist der erste Schritt.</div>
+    </div>
+    <button class="btn-p btn-p-full" onclick="confirmBack('${id}')">Zurück in Stack</button>
+  `);
+  window.selNoise=(i,el)=>{
+    document.querySelectorAll('#noise-opts .acc-o').forEach(b=>b.classList.remove('on'));
+    el.classList.add('on');
+    window._noiseIdx=i;
+    window._noiseText=NOISE[i];
+  };
+}
+function confirmBack(id){
+  // Save mind-noise
+  if(window._noiseText){
+    S.skips=S.skips||[];
+    const item=(S.queue||[]).find(x=>x.id==id);
+    if(item) S.skips.push({qid:item.quest.id,cat:item.quest.cat,ts:Date.now(),noise:window._noiseText});
+  }
+  S.queue=(S.queue||[]).filter(x=>x.id!=id);
+  window._noiseIdx=null;window._noiseText=null;
+  sv();closeSheet();rHome();rCard();
+}
 
 // ═══ CARD STACK ══════════════════════════════════════
 function pool(){
@@ -759,7 +1011,7 @@ function rCard(){
   if(!S.seenToday.includes(q.id)){S.seenToday.push(q.id);sv();}
   const cc=CC[q.cat]||'#3D8C5E';
   const dc=DS[q.diff]||{c:'#3D8C5E',bg:'#E8F5EE'};
-
+  const isNew=!(S.completions||[]).some(c=>c.qid===q.id);
   const slotsLeft=3-(S.queue||[]).length;
   ar.innerHTML=`
     ${p.length>2?'<div class="ghost" style="transform:scale(0.91) translateY(14px)"></div>':''}
@@ -769,9 +1021,10 @@ function rCard(){
       <div class="cstamp sadd" id="sa">ADD</div><div class="cstamp sskip" id="ss">SKIP</div>
       <div class="cbar" style="background:${cc}"></div>
       <div class="cinner">
-        <div class="ctags"><span class="tag" style="background:${cc}18;color:${cc}">${q.cat}</span><span class="tag" style="background:${dc.bg};color:${dc.c}">${q.diff}</span></div>
+        <div class="ctags"><span class="tag" style="background:${cc}18;color:${cc}">${q.cat}</span><span class="tag" style="background:${dc.bg};color:${dc.c}">${q.diff}</span>${isNew?'<span class="tag" style="background:#EEF2FF;color:#4F46E5;font-weight:700">✦ Neu</span>':''}</div>
         <div class="ctitle">${q.title}</div>
         <div class="chook">${q.hook}</div>
+        ${q.ifthen?`<div style="margin-top:12px;padding:10px 12px;background:var(--gb);border-radius:10px;border-left:3px solid var(--g)"><div style="font-size:10px;font-weight:700;color:var(--g);letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px">Dein Trigger</div><div style="font-size:12px;color:#2D7A50;line-height:1.5;font-style:italic">${q.ifthen}</div></div>`:''}
       </div>
 
     </div>`;
@@ -837,7 +1090,7 @@ function addToQ(q,modifier){
 function openFSheet(which){
   S.activeFBtn=which;sv();
   const isCat=which==='cat';
-  const opts=isCat?['Alle','Sozial','Kommunikation','Mut','Dating','Karriere','Fokus','Nervensystem','Innenleben','Finanzen']:['Alle','Leicht','Mittel','Stark'];
+  const opts=isCat?['Alle','Sozial','Kommunikation','Mut','Dating','Karriere','Fokus','Nervensystem','Innenleben','Finanzen','Grenzen']:['Alle','Leicht','Mittel','Stark'];
   const cur=isCat?S.fCat:S.fDiff;
   let tmp=cur;
   showSheet(`
@@ -894,7 +1147,10 @@ function rOverview(){
             <div class="ql-info">
               <div class="ql-title">${q.title}</div>
               <div class="ql-hook">${q.hook}</div>
-              <div class="ql-tags">
+              ${q.action?`<div style="font-size:11px;color:var(--t2);margin-top:5px;line-height:1.5"><b style="color:var(--t)">Was:</b> ${q.action}</div>`:''}
+              ${q.ifthen?`<div style="font-size:11px;color:#2D7A50;margin-top:4px;line-height:1.5;font-style:italic"><b style="font-style:normal">Trigger:</b> ${q.ifthen}</div>`:''}
+              ${q.safety?`<div style="font-size:11px;color:#991B1B;margin-top:4px;line-height:1.5"><b>No-Go:</b> ${q.safety}</div>`:''}
+              <div class="ql-tags" style="margin-top:7px">
                 <span class="tag" style="background:${col}18;color:${col};font-size:10px">${q.cat}</span>
                 <span class="tag" style="background:${dc.bg};color:${dc.c};font-size:10px">${q.diff}</span>
               </div>
@@ -963,6 +1219,9 @@ function rStats(){
   const topSkips=Object.entries(skipC).sort((a,b)=>b[1]-a[1]).slice(0,4);
   const chipC={};cs.forEach(c=>{(c.chips||[]).forEach(ch=>{chipC[ch]=(chipC[ch]||0)+1;});});
   const topChips=Object.entries(chipC).sort((a,b)=>b[1]-a[1]).slice(0,4);
+  // Mind-Noise from backs
+  const noiseMap={};(S.skips||[]).filter(s=>s.noise).forEach(s=>{noiseMap[s.noise]=(noiseMap[s.noise]||0)+1;});
+  const noiseC=Object.entries(noiseMap).sort((a,b)=>b[1]-a[1]).slice(0,5);
   const archive=cs.filter(c=>c.proof&&c.proof.trim()).slice(-5).reverse();
 
   // Done quests for reset (all completions unfiltered, most recent first)
@@ -994,6 +1253,8 @@ function rStats(){
     </div>
 
     ${topSkips.length>0?`<div class="sblock"><div class="sbt" style="color:var(--r)">⚠️ Avoidance Map</div>${topSkips.map(([cat,n])=>`<div class="avoid-r"><div><div class="avoid-cat">${cat}</div><div class="avoid-n">Hier ist der Sensor am stärksten</div></div><div class="avoid-c">${n}×</div></div>`).join('')}${topSkips[0][1]>=5?`<div class="insight" style="margin-top:11px"><p>Du meidest ${topSkips[0][0]} systematisch. Dein größter Wachstumsbereich.</p></div>`:''}</div>`:''}
+
+    ${noiseC.length>0?`<div class="sblock"><div class="sbt">🧩 Mind-Noise Muster</div><div style="font-size:11px;color:var(--t3);margin-bottom:11px">Was dein Sensor flüstert wenn du zurücklegst.</div>${noiseC.map(([n,c])=>`<div class="brow"><span class="blabel" style="font-size:11px;min-width:140px">${n}</span><div class="btrack"><div class="bfill" style="width:${Math.round(c/noiseC[0][1]*100)}%;background:var(--am)"></div></div><span class="bval">${c}</span></div>`).join('')}</div>`:''}
 
     ${topChips.length>0?`<div class="sblock"><div class="sbt">💬 Reflexions-Muster</div>${topChips.map(([chip,n])=>`<div class="brow"><span class="blabel" style="font-size:11px;min-width:120px">${chip}</span><div class="btrack"><div class="bfill" style="width:${Math.round(n/topChips[0][1]*100)}%;background:var(--g)"></div></div><span class="bval">${n}</span></div>`).join('')}</div>`:''}
 
@@ -1030,61 +1291,117 @@ function resetQuest(cid){
 
 // ═══ SMART SHUFFLE ═══════════════════════════════════
 function buildShuffledPool(){
-  // Score each quest — higher score = comes earlier
   const skipCats={};
   (S.skips||[]).forEach(s=>{skipCats[s.cat]=(skipCats[s.cat]||0)+1;});
-  const doneCats={};
-  (S.completions||[]).forEach(c=>{doneCats[c.qid]=(doneCats[c.qid]||0)+1;});
+  const doneIds={};
+  (S.completions||[]).forEach(c=>{doneIds[c.qid]=(doneIds[c.qid]||0)+1;});
   const seenToday=S.seenToday||[];
 
+  // Progressive difficulty: track last completed diff per category
+  const lastDiffByCat={};
+  const diffOrder=['Leicht','Mittel','Stark'];
+  const sortedComps=[...(S.completions||[])].sort((a,b)=>b.ts-a.ts);
+  sortedComps.forEach(c=>{
+    if(!lastDiffByCat[c.cat])lastDiffByCat[c.cat]=c.diff;
+  });
+
   const scored=QL.map(q=>{
-    // Skip if already in queue
     if((S.queue||[]).some(x=>x.quest.id===q.id))return null;
     let score=0;
     // +3 if category is often skipped (avoidance map)
     score+=(skipCats[q.cat]||0)*3;
-    // +2 if never done before
-    if(!doneCats[q.id])score+=2;
+    // +3 if never done before (discovery bonus)
+    if(!doneIds[q.id])score+=3;
     // -5 if seen today already
     if(seenToday.includes(q.id))score-=5;
-    // small random jitter so same-score quests vary
+    // Progressive difficulty: prefer quests at or above last completed diff
+    const lastDiff=lastDiffByCat[q.cat];
+    if(lastDiff){
+      const lastIdx=diffOrder.indexOf(lastDiff);
+      const qIdx=diffOrder.indexOf(q.diff);
+      if(qIdx>=lastIdx)score+=2; // same or harder: boost
+      else score-=2; // easier: slight penalty
+    }
     score+=Math.random()*0.9;
     return{q,score};
   }).filter(Boolean);
 
-  // Sort descending by score
   scored.sort((a,b)=>b.score-a.score);
   S.shuffledPool=scored.map(x=>x.q.id);
   S.ci=0;
-  // Reset seenToday on new day
   const today=new Date().toDateString();
   if(S.seenTodayDate!==today){S.seenToday=[];S.seenTodayDate=today;}
   sv();
 }
+
+// Abend-Reflexion: check if incomplete quests at evening
+function checkAbendReflexion(){
+  const h=new Date().getHours();
+  if(h<19)return; // only after 19:00
+  const today=new Date().toDateString();
+  const lastShown=S.abendShown;
+  if(lastShown===today)return; // already shown today
+  const todayDone=(S.completions||[]).filter(c=>new Date(c.ts).toDateString()===today);
+  if(todayDone.length===0)return; // nothing done, no point showing
+  // Check which trinity slots were covered
+  const mutDone=todayDone.some(c=>TRINITY.mut.includes(c.cat));
+  const outputDone=todayDone.some(c=>TRINITY.output.includes(c.cat));
+  const wachstumDone=todayDone.some(c=>TRINITY.wachstum.includes(c.cat));
+  const missing=[];
+  if(!mutDone)missing.push('Mut');
+  if(!outputDone)missing.push('Output');
+  if(!wachstumDone)missing.push('Wachstum');
+  if(!missing.length)return; // all done, no need
+  S.abendShown=today;sv();
+  const missLabel=missing.join(' & ');
+  showSheet(`
+    <div class="shdl"></div>
+    <div class="sht-t">Sensor-Check 🌙</div>
+    <div class="sht-s">Es ist Abend. Kurze Bilanz.</div>
+    <div class="sht-sc">
+      <div style="background:#FEF3C7;border:1px solid #FDE68A;border-radius:14px;padding:16px;margin-bottom:16px">
+        <div style="font-size:15px;font-weight:700;color:#92400E;margin-bottom:8px">Du hast heute ${todayDone.length} Quest${todayDone.length>1?'s':''} erledigt.</div>
+        <div style="font-size:14px;color:#B45309;line-height:1.6">Der Bereich <b>${missLabel}</b> wurde heute nicht angetippt.</div>
+      </div>
+      <div style="font-size:14px;color:var(--t);line-height:1.7;margin-bottom:14px">Wer hat heute entschieden — <b>du</b> oder dein <b>Sensor</b>?</div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:4px">
+        <button class="acc-o" onclick="closeSheet()" style="background:var(--gb);border-color:var(--g);color:var(--g);font-weight:700">Ich. Ich hole es morgen nach.</button>
+        <button class="acc-o" onclick="closeSheet();go('q');gst('disc')" style="font-weight:600">Sensor. Ich ziehe jetzt noch eine Quest.</button>
+      </div>
+    </div>
+    <button class="btn-p btn-p-full" style="background:var(--s2);color:var(--t2);box-shadow:none;border:1px solid var(--bd);margin-top:10px" onclick="closeSheet()">Schließen</button>
+  `);
+}
 function showAccF(q){
   const rf=['Das Kribbeln das du spürst ist Aktivierung — nicht Gefahr.','Der Widerstand ist das Signal dass diese Quest wichtig ist.','Dein Sensor sagt Achtung. Das ist echtes Training.'][Math.floor(Math.random()*3)];
   const rn=(S.reps||0)+1;
+  const doneCount=(S.completions||[]).filter(c=>c.qid===q.id).length;
+  const modifier=doneCount>=3?q.modplus:q.modminus;
+  const modifierLabel=doneCount>=3?'Erhöhte Schwierigkeit':'Einstiegs-Version';
+  const triggers=q.triggers||['Bei der nächsten passenden Gelegenheit','Heute noch','Morgen als erstes'];
   showSheet(`
     <div class="shdl"></div>
     <div class="sht-t">Quest annehmen</div>
     <div class="sht-s">${q.title}</div>
     <div class="sht-sc">
-      <div style="font-size:13px;font-weight:700;color:var(--t);margin-bottom:10px">Wann ist dein Trigger?</div>
-      <div class="acc-opts">${TRIGGERS.map((t,i)=>`<button class="acc-o" onclick="selTr(${i},this)">${t}</button>`).join('')}</div>
-      <div class="rebox"><p>${rf}</p></div>
+      ${q.safety?`<div style="background:#FEF2F2;border:1px solid #FECACA;border-radius:12px;padding:12px 14px;margin-bottom:14px"><div style="font-size:10px;font-weight:700;color:#DC2626;letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px">⚠ No-Go — Schließ die Hintertür</div><div style="font-size:13px;color:#991B1B;line-height:1.55">${q.safety}</div></div>`:''}
+      <div style="font-size:13px;font-weight:700;color:var(--t);margin-bottom:10px">Wann machst du es?</div>
+      <div class="acc-opts" id="acc-opts">${triggers.map((t,i)=>`<button class="acc-o" onclick="selTr(${i},this)">${t}</button>`).join('')}</div>
+      ${modifier?`<div style="background:var(--s2);border:1px solid var(--bd);border-radius:12px;padding:12px 14px;margin-top:14px"><div style="font-size:10px;font-weight:700;color:var(--t3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px">${modifierLabel}</div><div style="font-size:13px;color:var(--t);line-height:1.55">${modifier}</div></div>`:''}
+      <div class="rebox" style="margin-top:14px"><p>${rf}</p></div>
       <div class="idbox"><p>"Jede Handlung definiert wer du bist. Rep Nr. ${rn} für ${q.cat}."</p></div>
     </div>
-    <button class="btn-p btn-p-full" onclick="confirmAdd()">Los geht's →</button>
+    <button class="btn-p btn-p-full" onclick="confirmAdd()">Verstanden — Los geht's →</button>
   `);
   window._addQ=q;
+  window._addModifier=modifier||null;
+  window.selTr=(i,el)=>{document.querySelectorAll('#acc-opts .acc-o').forEach(b=>b.classList.remove('on'));el.classList.add('on');};
 }
 function selTr(i,el){document.querySelectorAll('.acc-o').forEach(b=>b.classList.remove('on'));el.classList.add('on');}
 function confirmAdd(){
   closeSheet();
   if(!window._addQ)return;
-  const q=window._addQ;
-  const modifier=getModifier(q.cat);
-  addToQ(q,modifier);
+  addToQ(window._addQ, window._addModifier||getModifier(window._addQ.cat));
 }
 
 // ═══ REFLECTION ══════════════════════════════════════
@@ -1122,7 +1439,7 @@ function showRef(q,modifier,onSave){
 }
 
 // ═══ CELEBRATION ═════════════════════════════════════
-function showCel(q){
+function showCel(q,isNew){
   const c=document.getElementById('cel');c.style.display='block';c.style.pointerEvents='all';
   const reps=S.reps||1;
   let msg='Jede Handlung baut Selbstwirksamkeit auf.';
@@ -1132,7 +1449,14 @@ function showCel(q){
   else if(reps===100)msg='100 Reps. Der Sensor hat sich verändert.';
   const cols=['#3D8C5E','#EC4899','#3B82F6','#D97706','#7C3AED'];
   const conf=Array.from({length:26},(_,i)=>{const co=cols[i%cols.length];const l=Math.random()*100;const del=Math.random();const dur=2+Math.random()*2;return`<div class="con" style="left:${l}%;background:${co};animation-duration:${dur}s;animation-delay:${del}s;transform:rotate(${Math.random()*360}deg)"></div>`;}).join('');
-  c.innerHTML=`<div class="cel-ov">${conf}<div class="cel-box"><div class="cel-ck">✅</div><div class="cel-t">Quest erledigt!</div><div class="cel-s">${msg}</div><div class="cel-rep"><div class="cel-rv">Rep #${reps}</div><div class="cel-rl">${q.cat} · ${q.diff}</div></div><button class="btn-cel" onclick="closeCel()">Weiter →</button></div></div>`;
+  c.innerHTML=`<div class="cel-ov">${conf}<div class="cel-box">
+    <div class="cel-ck">${isNew?'🌟':'✅'}</div>
+    <div class="cel-t">${isNew?'Erste Rep!':'Quest erledigt!'}</div>
+    <div class="cel-s">${msg}</div>
+    ${isNew?`<div style="background:#EEF2FF;border-radius:12px;padding:10px 14px;margin-bottom:12px;border:1px solid #C7D2FE"><div style="font-size:13px;font-weight:700;color:#4F46E5">✦ Discovery Bonus +1 Rep</div><div style="font-size:12px;color:#6366F1;margin-top:2px">Erste Mal diese Quest — extra Rep gutgeschrieben.</div></div>`:''}
+    <div class="cel-rep"><div class="cel-rv">Rep #${reps}</div><div class="cel-rl">${q.cat} · ${q.diff}</div></div>
+    <button class="btn-cel" onclick="closeCel()">Weiter →</button>
+  </div></div>`;
   try{navigator.vibrate&&navigator.vibrate([60,40,100]);}catch(e){}
   setTimeout(closeCel,8000);
 }
