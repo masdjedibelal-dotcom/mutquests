@@ -467,12 +467,12 @@ const BUCKET_META={
 // ═══ LEBENSBEREICHE ══════════════════════════════════
 const LIFE_AREAS=[
   {id:'karriere',emoji:'💼',label:'Karriere & Einkommen',questCats:['Karriere','Kommunikation','Fokus']},
-  {id:'finanzen',emoji:'💰',label:'Finanzen & Vermögen',questCats:['Finanzen','Fokus']},
-  {id:'wohnen',emoji:'🏠',label:'Wohnen & Umfeld',questCats:['Innenleben','Baseline']},
-  {id:'gesundheit',emoji:'🏃',label:'Gesundheit & Energie',questCats:['Nervensystem','Baseline','Mut']},
-  {id:'liebe',emoji:'❤️',label:'Liebe & Familie',questCats:['Dating','Sozial','Grenzen']},
-  {id:'kreativitaet',emoji:'🎵',label:'Kreativität & Wachstum',questCats:['Fokus','Mut']},
-  {id:'freunde',emoji:'👥',label:'Freunde & Leben',questCats:['Sozial','Innenleben']},
+  {id:'finanzen',emoji:'💰',label:'Finanzen & Vermögen',questCats:['Finanzen']},
+  {id:'home',emoji:'🏠',label:'Wohnen & Lifestyle',questCats:['Innenleben','Baseline']},
+  {id:'gesundheit',emoji:'🏃',label:'Gesundheit & Energie',questCats:['Nervensystem','Baseline']},
+  {id:'dating',emoji:'❤️',label:'Liebe & Familie',questCats:['Dating','Sozial']},
+  {id:'wachstum',emoji:'🎵',label:'Kreativität & Wachstum',questCats:['Fokus','Mut']},
+  {id:'social',emoji:'👥',label:'Freunde & Leben',questCats:['Sozial','Innenleben']},
 ];
 
 const TRINITY={
@@ -931,8 +931,17 @@ function confirmWette(){
 function baselineDone(qid){
   const q=QL.find(x=>x.id===qid);
   if(!q)return;
+  // Prevent double-completion today
+  const alreadyDone=(S.completions||[]).some(c=>
+    c.qid===qid&&new Date(c.ts).toDateString()===new Date().toDateString()
+  );
+  if(alreadyDone)return;
   S.completions=S.completions||[];
-  S.completions.push({id:'c'+Date.now(),qid:q.id,cat:q.cat,diff:q.diff,ts:Date.now(),stress:1,outcome:'better',chips:['Hat gut getan'],proof:'',modifier:null,isNew:false,type:'fundament'});
+  S.completions.push({
+    id:'c'+Date.now(),qid:q.id,cat:q.cat,diff:q.diff,
+    ts:Date.now(),stress:1,outcome:'better',
+    chips:['Hat gut getan'],proof:'',modifier:null,isNew:false,type:'fundament'
+  });
   S.reps=(S.reps||0)+1;
   sv();rTopbar();rHome();
 }
@@ -1007,8 +1016,8 @@ function rHome(){
   // ── Baseline Quest of the day ──
   const hbl=document.getElementById('hbl');
   const baselinePool=QL.filter(q=>q.cat==='Baseline');
-  if(baselinePool.length){
-    // Pick consistent quest for today, save in state
+  if(baselinePool.length&&hbl){
+    // Pick consistent quest for today, save ID in state
     if(!S.baselineToday||S.baselineTodayDate!==td){
       const dayIdx=Math.floor(Date.now()/864e5)%baselinePool.length;
       S.baselineToday=baselinePool[dayIdx].id;
@@ -1016,17 +1025,20 @@ function rHome(){
       sv();
     }
     const bq=QL.find(q=>q.id===S.baselineToday)||baselinePool[0];
-    const todayBaselineDone=(S.completions||[]).some(c=>c.qid===bq.id&&new Date(c.ts).toDateString()===td);
-    hbl.innerHTML=`<div style="margin:10px 14px 0;background:var(--s);border-radius:16px;border:1px solid var(--bd);padding:13px 16px;box-shadow:0 1px 4px rgba(0,0,0,0.05)">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
-        <div style="font-size:10px;font-weight:700;color:#059669;letter-spacing:.07em;text-transform:uppercase">⚡ Baseline heute</div>
-        ${todayBaselineDone?'<span style="font-size:11px;color:#059669;font-weight:700">✓ Erledigt</span>':''}
-      </div>
-      <div style="font-size:14px;font-weight:700;color:var(--t);margin-bottom:3px">${bq.title}</div>
-      <div style="font-size:12px;color:var(--t2);line-height:1.5;margin-bottom:${todayBaselineDone?'0':'10px'}">${bq.hook}</div>
-      ${todayBaselineDone?'':'<button style="background:#ECFDF5;border:1px solid #6EE7B7;border-radius:10px;padding:8px 14px;font-size:12px;font-weight:700;color:#059669;cursor:pointer;font-family:inherit;width:100%" onclick="baselineDone(\'${bq.id}\')">Erledigt ✓</button>'}
+    // Check if done today - must match quest ID AND today's date
+    const todayBaselineDone=(S.completions||[]).some(c=>
+      c.qid===bq.id&&new Date(c.ts).toDateString()===td
+    );
+    hbl.innerHTML=`<div style="margin:10px 14px 0;background:var(--s);border-radius:16px;border:1px solid var(--bd);padding:13px 16px;box-shadow:0 1px 4px rgba(0,0,0,0.04)">
+      <div style="font-size:10px;font-weight:700;color:#059669;letter-spacing:.07em;text-transform:uppercase;margin-bottom:6px">🟢 FUNDAMENT — Baseline</div>
+      <div style="font-size:15px;font-weight:700;color:var(--t);margin-bottom:4px">${bq.title}</div>
+      <div style="font-size:12px;color:var(--t2);line-height:1.5;margin-bottom:12px">${bq.hook}</div>
+      ${todayBaselineDone
+        ?`<div style="background:#ECFDF5;border-radius:10px;padding:10px 14px;font-size:13px;font-weight:700;color:#059669;text-align:center">✓ Heute erledigt</div>`
+        :`<button id="baseline-btn" style="width:100%;background:#ECFDF5;border:1.5px solid #6EE7B7;border-radius:10px;padding:11px;font-size:13px;font-weight:700;color:#059669;cursor:pointer;font-family:inherit" onclick="baselineDone('${bq.id}')">Als erledigt markieren ✓</button>`
+      }
     </div>`;
-  } else hbl.innerHTML='';
+  } else if(hbl){hbl.innerHTML='';}
   const pb=document.getElementById('hpb');
   const hpq=document.getElementById('hpq');
   if(S.activeP){
