@@ -304,6 +304,26 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
 @keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}
 @keyframes pop{0%{transform:scale(.82);opacity:0}65%{transform:scale(1.05)}100%{transform:scale(1);opacity:1}}
 @keyframes cf{0%{transform:translateY(-10px) rotate(0);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
+/* Floating Action Button */
+.fab{position:fixed;bottom:calc(var(--safe-b) + 72px);right:18px;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#1E3A52,#2A5278);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,0.25);z-index:200;transition:transform .15s}
+.fab:active{transform:scale(.9)}
+.fab-pulse{animation:fabp 2s infinite}
+@keyframes fabp{0%,100%{box-shadow:0 4px 16px rgba(0,0,0,0.25)}50%{box-shadow:0 4px 24px rgba(42,82,120,0.5)}}
+
+/* Wochenfokus banner */
+.wf-banner{margin:10px 14px 0;background:var(--s);border-radius:14px;border:1px solid var(--bd);padding:11px 14px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
+.wf-left{display:flex;flex-direction:column;gap:2px}
+.wf-label{font-size:10px;font-weight:700;color:var(--t3);letter-spacing:.07em;text-transform:uppercase}
+.wf-emojis{display:flex;gap:8px;font-size:22px}
+.wf-edit{font-size:11px;color:var(--t3);background:none;border:none;cursor:pointer;font-family:inherit;padding:4px 8px;border-radius:8px;background:var(--s2)}
+
+/* Emoji chip picker */
+.emo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:4px}
+.emo-chip{background:var(--s2);border:2px solid var(--bd);border-radius:14px;padding:12px 8px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;font-family:inherit;transition:all .15s}
+.emo-chip.on{background:var(--gb);border-color:var(--g)}
+.emo-chip .emo{font-size:24px}
+.emo-chip .elbl{font-size:10px;font-weight:600;color:var(--t2);text-align:center;line-height:1.3}
+.emo-chip.on .elbl{color:var(--g)}
 @keyframes sir{from{transform:translateX(30px);opacity:0}to{transform:translateX(0);opacity:1}}
 </style>
 </head>
@@ -338,6 +358,8 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
         <div class="kpi"><div class="kpi-v" id="k-streak" style="color:var(--am)">0🔥</div><div class="kpi-l">Streak</div></div>
         <div class="kpi"><div class="kpi-v" id="k-total">0</div><div class="kpi-l">Gesamt</div></div>
       </div>
+      <div id="hwf"></div>
+      <div id="hbl"></div>
       <div id="hpb"></div>
       <div id="hpq"></div>
       <div id="hqs"></div>
@@ -419,201 +441,212 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
 </div>
 <div id="modal"></div>
 <div id="cel"></div>
+<button class="fab fab-pulse" onclick="imInASituation()" title="Ich bin in einer Situation">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+</button>
 
 <script>
 // ═══ DATA ════════════════════════════════════════════
-const CC={'Sozial':'#3B82F6','Kommunikation':'#3D8C5E','Mut':'#D97706','Dating':'#EC4899','Karriere':'#7C3AED','Fokus':'#0891B2','Nervensystem':'#0F766E','Innenleben':'#BE185D','Finanzen':'#92400E','Grenzen':'#DC2626'};
+const CC={'Sozial':'#3B82F6','Kommunikation':'#3D8C5E','Mut':'#D97706','Dating':'#EC4899','Karriere':'#7C3AED','Fokus':'#0891B2','Nervensystem':'#0F766E','Innenleben':'#BE185D','Finanzen':'#92400E','Grenzen':'#DC2626','Baseline':'#059669'};
 const DS={'Leicht':{c:'#3D8C5E',bg:'#E8F5EE'},'Mittel':{c:'#D97706',bg:'#FEF3C7'},'Stark':{c:'#DC2626',bg:'#FEF2F2'}};
 
 const QL=[
-  {id:'S01',cat:'Sozial',diff:'Leicht',title:'3x Blickkontakt halten',hook:'Trainiert Toleranz für soziale Aufmerksamkeit. Gesehen werden ist sicher.',action:'Halte bei 3 Begegnungen den Blickkontakt bis die andere Person ihn löst.',ifthen:'Wenn ich an jemandem vorbeigehe, dann suche ich kurz die Augen bis ich die Augenfarbe erkenne.',safety:'Kein Starren — blinzeln ist erlaubt. No-Go: Blick als Erster senken.',modminus:'Nur bei Servicepersonal.',modplus:'Lächeln dazu hinzufügen.',
+  {id:'S01',cat:'Sozial',type:'extinktion',diff:'Leicht',title:'3x Blickkontakt halten',hook:'Trainiert Toleranz für soziale Aufmerksamkeit. Gesehen werden ist sicher.',action:'Halte bei 3 Begegnungen den Blickkontakt bis die andere Person ihn löst.',ifthen:'Wenn ich an jemandem vorbeigehe, dann suche ich kurz die Augen bis ich die Augenfarbe erkenne.',safety:'Kein Starren — blinzeln ist erlaubt. No-Go: Blick als Erster senken.',modminus:'Nur bei Servicepersonal.',modplus:'Lächeln dazu hinzufügen.',
    triggers:['Beim nächsten Mal wenn ich jemanden grüße oder bezahle','Heute auf dem Weg zur Arbeit oder im Alltag','Beim nächsten sozialen Kontakt egal wo']},
 
-  {id:'S02',cat:'Sozial',diff:'Leicht',title:'Leute aktiv zuerst begrüßen',hook:'Soziale Bringschuld übernehmen gibt Kontrolle. Initiative ohne Einladung.',action:'Sei die erste Person die grüßt — laut und deutlich.',ifthen:'Wenn ich einen Raum oder Laden betrete, dann grüße ich bevor ich angesprochen werde.',safety:'No-Go: Warten bis jemand anfängt.',modminus:'Nur Nicken.',modplus:'Namen der Person nutzen.',
+  {id:'S02',cat:'Sozial',type:'extinktion',diff:'Leicht',title:'Leute aktiv zuerst begrüßen',hook:'Soziale Bringschuld übernehmen gibt Kontrolle. Initiative ohne Einladung.',action:'Sei die erste Person die grüßt — laut und deutlich.',ifthen:'Wenn ich einen Raum oder Laden betrete, dann grüße ich bevor ich angesprochen werde.',safety:'No-Go: Warten bis jemand anfängt.',modminus:'Nur Nicken.',modplus:'Namen der Person nutzen.',
    triggers:['Beim nächsten Mal wenn ich einen Raum oder Laden betrete','Heute bei der ersten Person die mir begegnet','Morgen früh beim ersten Kontakt des Tages']},
 
-  {id:'S03',cat:'Sozial',diff:'Leicht',title:'Handy in sozialen Situationen weglassen',hook:'Das Handy ist dein Schutzschild. Präsenz ohne Ablenkung trainieren.',action:'Handy bleibt in der Tasche. Beobachte die Umgebung.',ifthen:'Wenn ich warte (Bus, Schlange, Fahrstuhl), dann bleibt das Handy in der Tasche.',safety:'No-Go: Nur kurz checken.',modminus:'Nur im Gehen weglassen.',modplus:'Flugmodus für 30 Minuten.',
+  {id:'S03',cat:'Sozial',type:'lifestyle',diff:'Leicht',title:'Handy in sozialen Situationen weglassen',hook:'Das Handy ist dein Schutzschild. Präsenz ohne Ablenkung trainieren.',action:'Handy bleibt in der Tasche. Beobachte die Umgebung.',ifthen:'Wenn ich warte (Bus, Schlange, Fahrstuhl), dann bleibt das Handy in der Tasche.',safety:'No-Go: Nur kurz checken.',modminus:'Nur im Gehen weglassen.',modplus:'Flugmodus für 30 Minuten.',
    triggers:['Beim nächsten Mal wenn ich irgendwo warte','Heute bei der nächsten Gelegenheit wo ich zum Handy greifen würde','Auf dem Weg zum nächsten Termin']},
 
-  {id:'S04',cat:'Sozial',diff:'Mittel',title:'Smalltalk mit einem Fremden',hook:'Bricht soziale Isolation. Startet den Motor für größere Interaktionen.',action:'Mache eine Bemerkung zur Situation oder stelle eine banale Frage.',ifthen:'Wenn ich in einer Schlange stehe, dann kommentiere ich kurz die Situation.',safety:'No-Go: Sofort wegdrehen nach der Antwort.',modminus:'Nur ein Situations-Kommentar.',modplus:'Anschlussfrage stellen.',
+  {id:'S04',cat:'Sozial',type:'extinktion',diff:'Mittel',title:'Smalltalk mit einem Fremden',hook:'Bricht soziale Isolation. Startet den Motor für größere Interaktionen.',action:'Mache eine Bemerkung zur Situation oder stelle eine banale Frage.',ifthen:'Wenn ich in einer Schlange stehe, dann kommentiere ich kurz die Situation.',safety:'No-Go: Sofort wegdrehen nach der Antwort.',modminus:'Nur ein Situations-Kommentar.',modplus:'Anschlussfrage stellen.',
    triggers:['Beim nächsten Mal wenn ich in einer Schlange oder Wartebereich bin','Heute beim Einkaufen oder Kaffee holen','Bei der nächsten Gelegenheit mit einem Fremden in Kontakt zu sein']},
 
-  {id:'S05',cat:'Sozial',diff:'Mittel',title:'Direktes Kompliment ohne Abschwächung',hook:'Ein Kompliment ist ein Geschenk — keine Verpflichtung für den anderen.',action:'Gib ein Kompliment ohne Relativierung danach.',ifthen:'Wenn mir etwas Positives auffällt, dann spreche ich es sofort aus.',safety:'No-Go: Hinterher lachen oder abschwächen.',modminus:'Bei Bekannten.',modplus:'Bei einer völlig fremden Person.',
+  {id:'S05',cat:'Sozial',type:'extinktion',diff:'Mittel',title:'Direktes Kompliment ohne Abschwächung',hook:'Ein Kompliment ist ein Geschenk — keine Verpflichtung für den anderen.',action:'Gib ein Kompliment ohne Relativierung danach.',ifthen:'Wenn mir etwas Positives auffällt, dann spreche ich es sofort aus.',safety:'No-Go: Hinterher lachen oder abschwächen.',modminus:'Bei Bekannten.',modplus:'Bei einer völlig fremden Person.',
    triggers:['Beim nächsten Mal wenn mir etwas Positives auffällt','Heute im Laufe des Tages bei der ersten passenden Situation','Heute Abend wenn ich jemanden sehe']},
 
-  {id:'S06',cat:'Sozial',diff:'Mittel',title:'In einer Gruppe das erste Wort ergreifen',hook:'Wer zuerst spricht setzt den Rahmen.',action:'Stelle die erste Frage oder mach den ersten Kommentar.',ifthen:'Wenn eine Gesprächspause entsteht, dann stelle ich die erste Frage.',safety:'No-Go: Warten bis das Thema perfekt ist.',modminus:'In einer Dreier-Gruppe.',modplus:'In einer Gruppe mit mehr als 5 Personen.',
+  {id:'S06',cat:'Sozial',type:'extinktion',diff:'Mittel',title:'In einer Gruppe das erste Wort ergreifen',hook:'Wer zuerst spricht setzt den Rahmen.',action:'Stelle die erste Frage oder mach den ersten Kommentar.',ifthen:'Wenn eine Gesprächspause entsteht, dann stelle ich die erste Frage.',safety:'No-Go: Warten bis das Thema perfekt ist.',modminus:'In einer Dreier-Gruppe.',modplus:'In einer Gruppe mit mehr als 5 Personen.',
    triggers:['Beim nächsten Meeting oder Gruppengespräch','Heute beim ersten Gespräch mit mehreren Personen','Bei der nächsten sozialen Situation mit mehr als 2 Personen']},
 
-  {id:'S07',cat:'Sozial',diff:'Stark',title:'Eine Frau direkt und live ansprechen',hook:'Ablehnung ist eine Information — kein Urteil über deinen Wert.',action:'Geh hin, mach Blickkontakt: "Hi, ich wollte kurz Hallo sagen..."',ifthen:'Wenn ich eine Frau sehe die mich interessiert, dann gehe ich hin bevor ich 3 Sekunden nachgedacht habe.',safety:'No-Go: Per App oder Nachricht.',modminus:'Nur nach dem Weg fragen.',modplus:'Nach der Nummer fragen.',
+  {id:'S07',cat:'Sozial',type:'extinktion',diff:'Stark',title:'Eine Frau direkt und live ansprechen',hook:'Ablehnung ist eine Information — kein Urteil über deinen Wert.',action:'Geh hin, mach Blickkontakt: "Hi, ich wollte kurz Hallo sagen..."',ifthen:'Wenn ich eine Frau sehe die mich interessiert, dann gehe ich hin bevor ich 3 Sekunden nachgedacht habe.',safety:'No-Go: Per App oder Nachricht.',modminus:'Nur nach dem Weg fragen.',modplus:'Nach der Nummer fragen.',
    triggers:['Beim nächsten Mal wenn ich unterwegs bin und eine interessante Frau sehe','Heute noch — nächster Ausgang oder Einkauf','Am Wochenende bewusst rausgehen mit dieser Intention']},
 
-  {id:'S08',cat:'Sozial',diff:'Stark',title:'Etwas gegen die Norm tun',hook:'Soziale Normen sind oft imaginäre Käfige.',action:'Bleib an einem belebten Ort 10 Sekunden stehen und schau nach oben.',ifthen:'Wenn ich an einem belebten Ort bin, dann tue ich etwas das leicht aus der Norm fällt.',safety:'No-Go: Im Privaten üben.',modminus:'Kurzes Stehen bleiben.',modplus:'30 Sekunden an einem öffentlichen Ort sitzen.',
+  {id:'S08',cat:'Sozial',type:'extinktion',diff:'Stark',title:'Etwas gegen die Norm tun',hook:'Soziale Normen sind oft imaginäre Käfige.',action:'Bleib an einem belebten Ort 10 Sekunden stehen und schau nach oben.',ifthen:'Wenn ich an einem belebten Ort bin, dann tue ich etwas das leicht aus der Norm fällt.',safety:'No-Go: Im Privaten üben.',modminus:'Kurzes Stehen bleiben.',modplus:'30 Sekunden an einem öffentlichen Ort sitzen.',
    triggers:['Beim nächsten Mal wenn ich an einem belebten Ort bin','Heute auf dem Weg irgendwo hin','Beim nächsten Einkauf oder Stadtgang']},
 
-  {id:'S09',cat:'Sozial',diff:'Stark',title:'Einen Flirt halten statt zurückziehen',hook:'Spannung ist Energie, keine Gefahr.',action:'Halte den Blick eine Sekunde länger als komfortabel.',ifthen:'Wenn ein Flirtmoment entsteht, dann halte ich den Blick eine Sekunde länger.',safety:'No-Go: Wegschauen beim ersten Unbehagen.',modminus:'Nur Lächeln.',modplus:'Körperliche Distanz leicht verringern.',
-   triggers:['Beim nächsten Mal wenn eine interessante soziale Situation entsteht','Heute Abend wenn ich ausgehe','Bei der nächsten Gelegenheit wo Augenkontakt entsteht']},
+  {id:'S09',cat:'Sozial',type:'extinktion',diff:'Stark',title:'Einen Flirt halten statt zurückziehen',hook:'Spannung ist Energie, keine Gefahr.',action:'Halte den Blick eine Sekunde länger als komfortabel.',ifthen:'Wenn ein Flirtmoment entsteht, dann halte ich den Blick eine Sekunde länger.',safety:'No-Go: Wegschauen beim ersten Unbehagen.',modminus:'Nur Lächeln.',modplus:'Körperliche Distanz leicht verringern.',
+   triggers:['Beim nächsten Mal wenn eine interessante soziale Situation entsteht','Heute Abend wenn ich ausgehe','Bei der nächsten Gelegenheit wo Augenkontakt entsteht'],situativ:true},
 
-  {id:'K01',cat:'Kommunikation',diff:'Leicht',title:'Keine Weichmacher heute',hook:'Präzision erzeugt Respekt. Weichmacher sind Schutzschilde des Sensors.',action:'Streiche "vielleicht", "eigentlich", "ein bisschen" komplett.',ifthen:'Wenn ich eine Aussage treffe, dann lasse ich Weichmacher weg.',safety:'No-Go: Satz durch "...oder?" entschärfen.',modminus:'Nur in einem Gespräch.',modplus:'Den ganzen Tag.',
+  {id:'K01',cat:'Kommunikation',type:'output',diff:'Leicht',title:'Keine Weichmacher heute',hook:'Präzision erzeugt Respekt. Weichmacher sind Schutzschilde des Sensors.',action:'Streiche "vielleicht", "eigentlich", "ein bisschen" komplett.',ifthen:'Wenn ich eine Aussage treffe, dann lasse ich Weichmacher weg.',safety:'No-Go: Satz durch "...oder?" entschärfen.',modminus:'Nur in einem Gespräch.',modplus:'Den ganzen Tag.',
    triggers:['Ab sofort den ganzen heutigen Tag','Beim nächsten Gespräch das ich führe','Im nächsten Meeting oder Call']},
 
-  {id:'K02',cat:'Kommunikation',diff:'Leicht',title:'20% langsamer sprechen',hook:'Langsamkeit signalisiert Souveränität.',action:'Sprich so langsam dass du deine Atmung zwischen Sätzen spürst.',ifthen:'Wenn ich erkläre oder antworte, dann spreche ich bewusst langsamer.',safety:'No-Go: Schneller werden wenn Nervosität kommt.',modminus:'Nur bei Freunden.',modplus:'In einem wichtigen Gespräch.',
+  {id:'K02',cat:'Kommunikation',type:'output',diff:'Leicht',title:'20% langsamer sprechen',hook:'Langsamkeit signalisiert Souveränität.',action:'Sprich so langsam dass du deine Atmung zwischen Sätzen spürst.',ifthen:'Wenn ich erkläre oder antworte, dann spreche ich bewusst langsamer.',safety:'No-Go: Schneller werden wenn Nervosität kommt.',modminus:'Nur bei Freunden.',modplus:'In einem wichtigen Gespräch.',
    triggers:['Beim nächsten Gespräch heute','Im nächsten Meeting oder Telefonat','Ab sofort bei jedem Gespräch den Rest des Tages']},
 
-  {id:'K03',cat:'Kommunikation',diff:'Leicht',title:'Blickkontakt bis Satzende halten',hook:'Das Ende des Satzes ist der Moment der größten Wirkung.',action:'Schaue erst weg nachdem der letzte Laut verklungen ist.',ifthen:'Wenn ich meinen Satz beende, dann schaue ich erst weg danach.',safety:'No-Go: Wegschauen während du sprichst.',modminus:'Beim Smalltalk.',modplus:'Bei einer Kritik oder Forderung.',
+  {id:'K03',cat:'Kommunikation',type:'extinktion',diff:'Leicht',title:'Blickkontakt bis Satzende halten',hook:'Das Ende des Satzes ist der Moment der größten Wirkung.',action:'Schaue erst weg nachdem der letzte Laut verklungen ist.',ifthen:'Wenn ich meinen Satz beende, dann schaue ich erst weg danach.',safety:'No-Go: Wegschauen während du sprichst.',modminus:'Beim Smalltalk.',modplus:'Bei einer Kritik oder Forderung.',
    triggers:['Beim nächsten Gespräch heute','Im nächsten Meeting oder persönlichen Austausch','Beim nächsten Mal wenn ich etwas Wichtiges sage']},
 
-  {id:'K04',cat:'Kommunikation',diff:'Mittel',title:'PREP einmal anwenden',hook:'Struktur schützt vor Verhaspeln und Rechtfertigungszwang.',action:'Punkt → Begründung → Beispiel → Punkt.',ifthen:'Wenn ich meine Meinung sage, dann nutze ich die PREP-Struktur.',safety:'No-Go: Nach dem Beispiel weiterschweifende Zusätze.',modminus:'Im privaten Gespräch.',modplus:'In einem Meeting.',
+  {id:'K04',cat:'Kommunikation',type:'output',diff:'Mittel',title:'PREP einmal anwenden',hook:'Struktur schützt vor Verhaspeln und Rechtfertigungszwang.',action:'Punkt → Begründung → Beispiel → Punkt.',ifthen:'Wenn ich meine Meinung sage, dann nutze ich die PREP-Struktur.',safety:'No-Go: Nach dem Beispiel weiterschweifende Zusätze.',modminus:'Im privaten Gespräch.',modplus:'In einem Meeting.',
    triggers:['Im nächsten Meeting oder wichtigen Gespräch','Beim nächsten Mal wenn ich meine Meinung äußere','Heute noch bei der ersten passenden Situation']},
 
-  {id:'K05',cat:'Kommunikation',diff:'Mittel',title:'Schweigen nach der Aussage',hook:'Wer Stille aushält führt das Gespräch.',action:'Schließ den Mund nach dem Punkt. Warte ohne zu füllen.',ifthen:'Wenn ich meinen Punkt gemacht habe, dann schließe ich die Lippen.',safety:'No-Go: "Ehm" oder "Also..." um die Stille zu füllen.',modminus:'1 Sekunde Stille.',modplus:'3 Sekunden. Blickkontakt dabei.',
+  {id:'K05',cat:'Kommunikation',type:'extinktion',diff:'Mittel',title:'Schweigen nach der Aussage',hook:'Wer Stille aushält führt das Gespräch.',action:'Schließ den Mund nach dem Punkt. Warte ohne zu füllen.',ifthen:'Wenn ich meinen Punkt gemacht habe, dann schließe ich die Lippen.',safety:'No-Go: "Ehm" oder "Also..." um die Stille zu füllen.',modminus:'1 Sekunde Stille.',modplus:'3 Sekunden. Blickkontakt dabei.',
    triggers:['Im nächsten Gespräch oder Meeting','Beim nächsten Mal wenn ich etwas gesagt habe das wichtig ist','Heute bei der ersten Situation wo ich normalerweise weiterre']},
 
-  {id:'K06',cat:'Kommunikation',diff:'Mittel',title:'Keine unnötige Rechtfertigung',hook:'"Nein" ist ein vollständiger Satz.',action:'Lehne ab ohne Begründung.',ifthen:'Wenn ich ablehne, dann liefere ich keine Begründung außer ich werde direkt gefragt.',safety:'No-Go: Rechtfertigen was niemand gefragt hat.',modminus:'Bei Freunden.',modplus:'Bei einer Autoritätsperson.',
+  {id:'K06',cat:'Kommunikation',type:'extinktion',diff:'Mittel',title:'Keine unnötige Rechtfertigung',hook:'"Nein" ist ein vollständiger Satz.',action:'Lehne ab ohne Begründung.',ifthen:'Wenn ich ablehne, dann liefere ich keine Begründung außer ich werde direkt gefragt.',safety:'No-Go: Rechtfertigen was niemand gefragt hat.',modminus:'Bei Freunden.',modplus:'Bei einer Autoritätsperson.',
    triggers:['Beim nächsten Mal wenn ich etwas ablehne oder meine Meinung sage','Heute bei der ersten Situation wo der Impuls kommt zu erklären','Im nächsten Meeting oder Gespräch']},
 
-  {id:'K07',cat:'Kommunikation',diff:'Stark',title:'Klar widersprechen ohne Abschwächung',hook:'Konflikt ist die ehrlichste Form der Verbindung.',action:'Sag: "Ich sehe das anders" — ohne Lächeln danach.',ifthen:'Wenn ich eine andere Meinung habe, dann sage ich direkt "Ich sehe das anders".',safety:'No-Go: Position danach relativieren.',modminus:'Mit kurzer Erklärung.',modplus:'Position halten wenn jemand darauf widerspricht.',
+  {id:'K07',cat:'Kommunikation',type:'extinktion',diff:'Stark',title:'Klar widersprechen ohne Abschwächung',hook:'Konflikt ist die ehrlichste Form der Verbindung.',action:'Sag: "Ich sehe das anders" — ohne Lächeln danach.',ifthen:'Wenn ich eine andere Meinung habe, dann sage ich direkt "Ich sehe das anders".',safety:'No-Go: Position danach relativieren.',modminus:'Mit kurzer Erklärung.',modplus:'Position halten wenn jemand darauf widerspricht.',
    triggers:['Im nächsten Meeting oder Diskussion','Beim nächsten Mal wenn jemand etwas sagt dem ich nicht zustimme','Heute noch bei der ersten passenden Gelegenheit']},
 
-  {id:'K08',cat:'Kommunikation',diff:'Mittel',title:'Gespräch aktiv zusammenfassen',hook:'Wer zusammenfasst definiert die Realität des Gesprächs.',action:'"Also — wir halten fest: X bis Freitag."',ifthen:'Wenn ein Gesprächsabschnitt endet, dann fasse ich zusammen.',safety:'No-Go: Als Frage formulieren.',modminus:'Rein informativ.',modplus:'Mit Deadline und Handlungsaufforderung.',
+  {id:'K08',cat:'Kommunikation',type:'output',diff:'Mittel',title:'Gespräch aktiv zusammenfassen',hook:'Wer zusammenfasst definiert die Realität des Gesprächs.',action:'"Also — wir halten fest: X bis Freitag."',ifthen:'Wenn ein Gesprächsabschnitt endet, dann fasse ich zusammen.',safety:'No-Go: Als Frage formulieren.',modminus:'Rein informativ.',modplus:'Mit Deadline und Handlungsaufforderung.',
    triggers:['Am Ende des nächsten Meetings','Beim nächsten wichtigen Gespräch oder Call','Heute bei der ersten Situation wo ein Ergebnis festgehalten werden sollte']},
 
-  {id:'M01',cat:'Mut',diff:'Leicht',title:'Kalte Dusche 2 Minuten',hook:'Der Körper lernt: Unbehagen ist keine Katastrophe.',action:'Drehe die letzten 2 Minuten auf ganz kalt.',ifthen:'Wenn ich unter der Dusche stehe, dann drehe ich für die letzten 2 Min auf kalt.',safety:'No-Go: Nach 20 Sekunden abdrehen.',modminus:'Nur Beine und Arme.',modplus:'3 Minuten ohne warmes Vorwaschen.',transfer:'Dieser Widerstand ist identisch mit sozialem Druck.',
+  {id:'M01',cat:'Mut',type:'lifestyle',diff:'Leicht',title:'Kalte Dusche 2 Minuten',hook:'Der Körper lernt: Unbehagen ist keine Katastrophe.',action:'Drehe die letzten 2 Minuten auf ganz kalt.',ifthen:'Wenn ich unter der Dusche stehe, dann drehe ich für die letzten 2 Min auf kalt.',safety:'No-Go: Nach 20 Sekunden abdrehen.',modminus:'Nur Beine und Arme.',modplus:'3 Minuten ohne warmes Vorwaschen.',transfer:'Dieser Widerstand ist identisch mit sozialem Druck.',
    triggers:['Beim nächsten Duschen — heute oder morgen früh','Morgen direkt nach dem Aufstehen','Heute noch wenn ich duschen gehe']},
 
-  {id:'M02',cat:'Mut',diff:'Leicht',title:'Unangenehme Aufgabe zuerst',hook:'Angst ist ein Wegweiser zur wichtigsten Aufgabe.',action:'Mach die Aufgabe vor der du am meisten Angst hast zuerst.',ifthen:'Wenn ich die Arbeit beginne, dann starte ich mit der Aufgabe vor der ich am meisten Angst habe.',safety:'No-Go: Erstmal E-Mails checken.',modminus:'Nur eine 5-Minuten-Aufgabe.',modplus:'Ohne Handy davor.',
+  {id:'M02',cat:'Mut',type:'output',diff:'Leicht',title:'Unangenehme Aufgabe zuerst',hook:'Angst ist ein Wegweiser zur wichtigsten Aufgabe.',action:'Mach die Aufgabe vor der du am meisten Angst hast zuerst.',ifthen:'Wenn ich die Arbeit beginne, dann starte ich mit der Aufgabe vor der ich am meisten Angst habe.',safety:'No-Go: Erstmal E-Mails checken.',modminus:'Nur eine 5-Minuten-Aufgabe.',modplus:'Ohne Handy davor.',
    triggers:['Morgen früh beim Start in den Arbeitstag','Beim nächsten Mal wenn ich mit der Arbeit anfange','Heute noch — welche Aufgabe liegt schon zu lange da?']},
 
-  {id:'M04',cat:'Mut',diff:'Mittel',title:'Einmal klar Nein sagen',hook:'Jedes Nein zu anderen ist ein Ja zu dir selbst.',action:'Sag "Nein" ohne Erklärung danach.',ifthen:'Wenn mich jemand um etwas bittet das ich nicht will, dann sage ich klar "Nein".',safety:'No-Go: Notlüge erfinden.',modminus:'Mit Verweis auf nächste Woche.',modplus:'Ohne Entschuldigung bei wichtiger Person.',
+  {id:'M04',cat:'Mut',type:'extinktion',diff:'Mittel',title:'Einmal klar Nein sagen',hook:'Jedes Nein zu anderen ist ein Ja zu dir selbst.',action:'Sag "Nein" ohne Erklärung danach.',ifthen:'Wenn mich jemand um etwas bittet das ich nicht will, dann sage ich klar "Nein".',safety:'No-Go: Notlüge erfinden.',modminus:'Mit Verweis auf nächste Woche.',modplus:'Ohne Entschuldigung bei wichtiger Person.',
    triggers:['Beim nächsten Mal wenn jemand etwas von mir will das ich nicht will','Heute bei der ersten Bitte die mir nicht passt','In der nächsten Situation wo der Impuls kommt Ja zu sagen obwohl du Nein meinst']},
 
-  {id:'M05',cat:'Mut',diff:'Mittel',title:'Bewusst nicht pleasen',hook:'Harmonie um jeden Preis ist Selbstverrat.',action:'Äußere einen Einwand wenn du nur zustimmst um zu gefallen.',ifthen:'Wenn ich merke dass ich nur zustimme um zu gefallen, dann äußere ich einen Einwand.',safety:'No-Go: Einwand sofort zurücknehmen.',modminus:'Im Alltag mit Fremden.',modplus:'Bei einer wichtigen Person.',
+  {id:'M05',cat:'Mut',type:'extinktion',diff:'Mittel',title:'Bewusst nicht pleasen',hook:'Harmonie um jeden Preis ist Selbstverrat.',action:'Äußere einen Einwand wenn du nur zustimmst um zu gefallen.',ifthen:'Wenn ich merke dass ich nur zustimme um zu gefallen, dann äußere ich einen Einwand.',safety:'No-Go: Einwand sofort zurücknehmen.',modminus:'Im Alltag mit Fremden.',modplus:'Bei einer wichtigen Person.',
    triggers:['Im nächsten Gespräch wo du den Impuls spürst zuzustimmen','Heute beim nächsten Meeting oder Austausch','Bei der nächsten Situation wo Machs allen recht aktiv wird']},
 
-  {id:'M06',cat:'Mut',diff:'Mittel',title:'Kleine Peinlichkeit absichtlich zulassen',hook:'Mein Wert ist unabhängig von der Reaktion Fremder.',action:'Frage nach etwas Absurdem — z.B. nach Autoreifen beim Bäcker.',ifthen:'Wenn ich unterwegs bin, dann frage ich nach etwas das es dort nicht gibt.',safety:'No-Go: Situation sofort erklären.',modminus:'Wenn niemand hinsieht.',modplus:'Vor Zeugen.',
+  {id:'M06',cat:'Mut',type:'extinktion',diff:'Mittel',title:'Kleine Peinlichkeit absichtlich zulassen',hook:'Mein Wert ist unabhängig von der Reaktion Fremder.',action:'Frage nach etwas Absurdem — z.B. nach Autoreifen beim Bäcker.',ifthen:'Wenn ich unterwegs bin, dann frage ich nach etwas das es dort nicht gibt.',safety:'No-Go: Situation sofort erklären.',modminus:'Wenn niemand hinsieht.',modplus:'Vor Zeugen.',
    triggers:['Beim nächsten Einkauf oder Alltagsbesorgung','Heute noch wenn ich irgendwo reingehst','Am nächsten Werktag beim ersten Laden']},
 
-  {id:'M07',cat:'Mut',diff:'Stark',title:'Trotz Unsicherheit handeln',hook:'Mut ist nicht die Abwesenheit von Angst.',action:'Zähle 5-4-3-2-1 und bewege dich auf die Sache zu.',ifthen:'Wenn ich zögere, dann zähle ich 5-4-3-2-1 und bewege mich.',safety:'No-Go: Warten bis das Gefühl besser wird.',modminus:'Bei einer E-Mail.',modplus:'Bei einer live-Situation.',
-   triggers:['Beim nächsten Moment wo du zögerst und weißt dass du handeln solltest','Heute noch — was liegt gerade an das du aufgeschoben hast?','In der nächsten Situation wo der Sensor Alarm schlägt']},
-
-  {id:'M08',cat:'Mut',diff:'Stark',title:'Etwas Unfertiges rausgeben',hook:'Done is better than perfect.',action:'Gib eine Aufgabe ab wenn sie bei 80% ist.',ifthen:'Wenn die Aufgabe bei 80% ist, dann schicke ich sie ohne weiteres Prüfen.',safety:'No-Go: Nochmal öffnen.',modminus:'An einen Kollegen.',modplus:'An Chef oder Kunden.',
+  {id:'M08',cat:'Mut',type:'output',diff:'Stark',title:'Etwas Unfertiges rausgeben',hook:'Done is better than perfect.',action:'Gib eine Aufgabe ab wenn sie bei 80% ist.',ifthen:'Wenn die Aufgabe bei 80% ist, dann schicke ich sie ohne weiteres Prüfen.',safety:'No-Go: Nochmal öffnen.',modminus:'An einen Kollegen.',modplus:'An Chef oder Kunden.',
    triggers:['Heute noch — was liegt bei 80% und wartet auf Perfektion?','Beim nächsten Projekt das du immer wieder überarbeitest','Innerhalb der nächsten Stunde einen konkreten Output rausgeben']},
 
-  {id:'M09',cat:'Mut',diff:'Stark',title:'Grenze setzen ohne Erklärung',hook:'Grenzen die erklärt werden sind verhandelbar.',action:'Sag: "Das möchte ich nicht" — ohne Begründung.',ifthen:'Wenn jemand meine Grenze überschreitet, dann sage ich: "Das möchte ich nicht".',safety:'No-Go: Erklärung hinzufügen.',modminus:'Per Nachricht.',modplus:'Im direkten Gespräch.',
+  {id:'M09',cat:'Mut',type:'extinktion',diff:'Stark',title:'Grenze setzen ohne Erklärung',hook:'Grenzen die erklärt werden sind verhandelbar.',action:'Sag: "Das möchte ich nicht" — ohne Begründung.',ifthen:'Wenn jemand meine Grenze überschreitet, dann sage ich: "Das möchte ich nicht".',safety:'No-Go: Erklärung hinzufügen.',modminus:'Per Nachricht.',modplus:'Im direkten Gespräch.',
    triggers:['Beim nächsten Mal wenn jemand eine Grenze überschreitet','Heute bei der ersten Situation die sich falsch anfühlt','In der nächsten Situation wo du normalerweise schweigst']},
 
-  {id:'M10',cat:'Mut',diff:'Leicht',title:'Achievement nicht als Zufall abtun',hook:'Bescheidenheit ist oft eine Form von Scham.',action:'Sag laut oder schreib: "Das habe ich durch meine Kompetenz erreicht."',ifthen:'Wenn mir etwas gelingt, dann sage ich oder notiere: "Das habe ich erreicht."',safety:'No-Go: Sofort relativieren.',modminus:'Nur im Journal.',modplus:'Jemandem davon erzählen.',
+  {id:'M10',cat:'Mut',type:'lifestyle',diff:'Leicht',title:'Achievement nicht als Zufall abtun',hook:'Bescheidenheit ist oft eine Form von Scham.',action:'Sag laut oder schreib: "Das habe ich durch meine Kompetenz erreicht."',ifthen:'Wenn mir etwas gelingt, dann sage ich oder notiere: "Das habe ich erreicht."',safety:'No-Go: Sofort relativieren.',modminus:'Nur im Journal.',modplus:'Jemandem davon erzählen.',
    triggers:['Heute Abend beim Rückblick auf den Tag','Beim nächsten Mal wenn dir etwas gelingt','Jetzt — was ist heute oder diese Woche gelungen?']},
 
-  {id:'M11',cat:'Mut',diff:'Mittel',title:'Lob annehmen ohne es wegzumachen',hook:'Ein Lob abwehren ist eine Beleidigung für den Schenkenden.',action:'Sag nur "Danke" — schlucke jede Relativierung runter.',ifthen:'Wenn ich ein Lob erhalte, dann sage ich nur "Danke".',safety:'No-Go: "Ach das war doch nichts Besonderes."',modminus:'Mit einem Lächeln.',modplus:'Mit Blickkontakt und Pause danach.',
+  {id:'M11',cat:'Mut',type:'extinktion',diff:'Mittel',title:'Lob annehmen ohne es wegzumachen',hook:'Ein Lob abwehren ist eine Beleidigung für den Schenkenden.',action:'Sag nur "Danke" — schlucke jede Relativierung runter.',ifthen:'Wenn ich ein Lob erhalte, dann sage ich nur "Danke".',safety:'No-Go: "Ach das war doch nichts Besonderes."',modminus:'Mit einem Lächeln.',modplus:'Mit Blickkontakt und Pause danach.',
    triggers:['Beim nächsten Mal wenn jemand etwas Positives über dich sagt','Heute bei der ersten Situation wo Lob kommt','In der nächsten sozialen Situation']},
 
-  {id:'D01',cat:'Dating',diff:'Leicht',title:'Einer Frau zunicken oder lächeln',hook:'Ein Lächeln ist ein Angebot, keine Forderung.',action:'Initiiere nonverbalen Kontakt — kurzes Nicken oder Lächeln.',ifthen:'Wenn mir eine Frau gefällt, dann schenke ich ihr ein kurzes Nicken oder Lächeln.',safety:'No-Go: Wegschauen bevor sie reagiert.',modminus:'Nur im Vorbeigehen.',modplus:'Blickkontakt halten bis sie wegsieht.',
+  {id:'D01',cat:'Dating',type:'extinktion',diff:'Leicht',title:'Einer Frau zunicken oder lächeln',hook:'Ein Lächeln ist ein Angebot, keine Forderung.',action:'Initiiere nonverbalen Kontakt — kurzes Nicken oder Lächeln.',ifthen:'Wenn mir eine Frau gefällt, dann schenke ich ihr ein kurzes Nicken oder Lächeln.',safety:'No-Go: Wegschauen bevor sie reagiert.',modminus:'Nur im Vorbeigehen.',modplus:'Blickkontakt halten bis sie wegsieht.',
    triggers:['Beim nächsten Mal wenn du unterwegs bist','Heute auf dem Weg irgendwo hin','Beim nächsten Einkauf oder Kaffee']},
 
-  {id:'D02',cat:'Dating',diff:'Leicht',title:'Eine Frau nach einer Empfehlung fragen',hook:'Menschen helfen gerne. Risikoarmer Gesprächseinstieg.',action:'Frage nach einer Empfehlung — Drink, Buch, Ort.',ifthen:'Wenn ich eine interessante Frau sehe, dann frage ich nach einer Empfehlung.',safety:'No-Go: Danke sagen und sofort gehen.',modminus:'Nur kurz danke sagen.',modplus:'Gespräch weiterführen.',
+  {id:'D02',cat:'Dating',type:'extinktion',diff:'Leicht',title:'Eine Frau nach einer Empfehlung fragen',hook:'Menschen helfen gerne. Risikoarmer Gesprächseinstieg.',action:'Frage nach einer Empfehlung — Drink, Buch, Ort.',ifthen:'Wenn ich eine interessante Frau sehe, dann frage ich nach einer Empfehlung.',safety:'No-Go: Danke sagen und sofort gehen.',modminus:'Nur kurz danke sagen.',modplus:'Gespräch weiterführen.',
    triggers:['Beim nächsten Café-Besuch oder Einkauf','Heute noch wenn du rausgehst','Am nächsten Tag wo du in der Stadt unterwegs bist']},
 
-  {id:'D03',cat:'Dating',diff:'Mittel',title:'Ehrliches Kompliment zum Stil',hook:'Komplimente über Entscheidungen sind wertvoller als über Genetik.',action:'Bewundere eine bewusste Entscheidung: Stil, Schmuck, Ausstrahlung.',ifthen:'Wenn mir ein Detail auffällt, dann sage ich: "Ich mag deinen Stil, das wirkt sehr [Adjektiv]."',safety:'No-Go: Im Vorbeigehen sagen.',modminus:'Im Vorbeigehen.',modplus:'Dabei stehen bleiben.',
+  {id:'D03',cat:'Dating',type:'extinktion',diff:'Mittel',title:'Ehrliches Kompliment zum Stil',hook:'Komplimente über Entscheidungen sind wertvoller als über Genetik.',action:'Bewundere eine bewusste Entscheidung: Stil, Schmuck, Ausstrahlung.',ifthen:'Wenn mir ein Detail auffällt, dann sage ich: "Ich mag deinen Stil, das wirkt sehr [Adjektiv]."',safety:'No-Go: Im Vorbeigehen sagen.',modminus:'Im Vorbeigehen.',modplus:'Dabei stehen bleiben.',
    triggers:['Beim nächsten Mal wenn dir etwas auffällt das dir gefällt','Heute Abend oder beim nächsten Ausgang','Bei der nächsten Frau die dir visuell auffällt']},
 
-  {id:'D04',cat:'Dating',diff:'Mittel',title:'Eigene Schwäche im Gespräch zeigen',hook:'Perfektion distanziert — Imperfektion verbindet.',action:'Teile eine kleine echte Unsicherheit oder einen "Fail" von heute.',ifthen:'Wenn wir im Gespräch sind, dann teile ich eine kleine echte Unsicherheit.',safety:'No-Go: Nur einen Witz machen.',modminus:'Etwas Harmloses.',modplus:'Etwas Echtes und Relevantes.',
-   triggers:['Im nächsten tieferen Gespräch','Beim nächsten Date oder persönlichen Austausch','Wenn das nächste Mal ein Gespräch über Persönliches entsteht']},
+  {id:'D04',cat:'Dating',type:'extinktion',diff:'Mittel',title:'Eigene Schwäche im Gespräch zeigen',hook:'Perfektion distanziert — Imperfektion verbindet.',action:'Teile eine kleine echte Unsicherheit oder einen "Fail" von heute.',ifthen:'Wenn wir im Gespräch sind, dann teile ich eine kleine echte Unsicherheit.',safety:'No-Go: Nur einen Witz machen.',modminus:'Etwas Harmloses.',modplus:'Etwas Echtes und Relevantes.',
+   triggers:['Im nächsten tieferen Gespräch','Beim nächsten Date oder persönlichen Austausch','Wenn das nächste Mal ein Gespräch über Persönliches entsteht'],situativ:true},
 
-  {id:'D05',cat:'Dating',diff:'Mittel',title:'Nach der Nummer fragen',hook:'Ein Korb ist nur "Nicht heute" — kein Urteil.',action:'Sag direkt: "Ich würde dich gerne wiedersehen, gib mir deine Nummer."',ifthen:'Wenn der Vibe gut ist, dann frage ich direkt nach der Nummer.',safety:'No-Go: Nach Instagram fragen.',modminus:'Nach Instagram fragen.',modplus:'Direkt das Handy hinhalten.',
+  {id:'D05',cat:'Dating',type:'extinktion',diff:'Mittel',title:'Nach der Nummer fragen',hook:'Ein Korb ist nur "Nicht heute" — kein Urteil.',action:'Sag direkt: "Ich würde dich gerne wiedersehen, gib mir deine Nummer."',ifthen:'Wenn der Vibe gut ist, dann frage ich direkt nach der Nummer.',safety:'No-Go: Nach Instagram fragen.',modminus:'Nach Instagram fragen.',modplus:'Direkt das Handy hinhalten.',
    triggers:['Beim nächsten Mal wenn ein gutes Gespräch mit einer Frau entsteht','Heute Abend oder beim nächsten Ausgang','Am Wochenende bewusst mit dieser Intention rausgehen']},
 
-  {id:'D06',cat:'Dating',diff:'Mittel',title:'Date mit Ort und Zeit vorschlagen',hook:'Klarheit ist attraktiv.',action:'Schlage Ort und Zeit konkret vor: "Dienstag, 19 Uhr, Bar X."',ifthen:'Wenn wir schreiben oder sprechen, dann schlage ich Ort und Zeit konkret vor.',safety:'No-Go: Zwei Optionen zur Wahl stellen.',modminus:'Zwei Optionen geben.',modplus:'Einen Vorschlag ohne Rückfrage.',
-   triggers:['Im nächsten Chat oder Gespräch mit jemandem der interessant ist','Heute noch eine Nachricht schreiben mit konkretem Vorschlag','Beim nächsten Mal wenn du schon längere Zeit hin- und herschreibst']},
+  {id:'D06',cat:'Dating',type:'extinktion',diff:'Mittel',title:'Date mit Ort und Zeit vorschlagen',hook:'Klarheit ist attraktiv.',action:'Schlage Ort und Zeit konkret vor: "Dienstag, 19 Uhr, Bar X."',ifthen:'Wenn wir schreiben oder sprechen, dann schlage ich Ort und Zeit konkret vor.',safety:'No-Go: Zwei Optionen zur Wahl stellen.',modminus:'Zwei Optionen geben.',modplus:'Einen Vorschlag ohne Rückfrage.',
+   triggers:['Im nächsten Chat oder Gespräch mit jemandem der interessant ist','Heute noch eine Nachricht schreiben mit konkretem Vorschlag','Beim nächsten Mal wenn du schon längere Zeit hin- und herschreibst'],situativ:true},
 
-  {id:'D07',cat:'Dating',diff:'Stark',title:'Flirt starten und souverän beenden',hook:'Wer das Gespräch beendet behält die Dynamik.',action:'Initiiere und beende auf dem Höhepunkt: "Muss weiter, war schön."',ifthen:'Wenn ich einen Flirt initiiert habe, dann beende ich ihn auf dem Höhepunkt.',safety:'No-Go: Erst gehen wenn das Thema ausläuft.',modminus:'Erst wenn Thema ausläuft.',modplus:'Mit Kompliment gehen auf dem Höhepunkt.',
-   triggers:['Beim nächsten Ausgang heute Abend oder am Wochenende','Bei der nächsten Gelegenheit wo ein Gespräch mit einer Frau entsteht','Am nächsten Tag wo du in sozialer Umgebung bist']},
+  {id:'D07',cat:'Dating',type:'extinktion',diff:'Stark',title:'Flirt starten und souverän beenden',hook:'Wer das Gespräch beendet behält die Dynamik.',action:'Initiiere und beende auf dem Höhepunkt: "Muss weiter, war schön."',ifthen:'Wenn ich einen Flirt initiiert habe, dann beende ich ihn auf dem Höhepunkt.',safety:'No-Go: Erst gehen wenn das Thema ausläuft.',modminus:'Erst wenn Thema ausläuft.',modplus:'Mit Kompliment gehen auf dem Höhepunkt.',
+   triggers:['Beim nächsten Ausgang heute Abend oder am Wochenende','Bei der nächsten Gelegenheit wo ein Gespräch mit einer Frau entsteht','Am nächsten Tag wo du in sozialer Umgebung bist'],situativ:true},
 
-  {id:'D08',cat:'Dating',diff:'Stark',title:'Echtes Bedürfnis aussprechen',hook:'Deine Bedürfnisse sind dein Kompass.',action:'Sprich klar aus was du willst: "Ich möchte gerade..."',ifthen:'Wenn ich etwas will, dann spreche ich es klar aus.',safety:'No-Go: Nur andeuten.',modminus:'Bei einer Freundin üben.',modplus:'Bei einem Date.',
-   triggers:['Beim nächsten Date oder persönlichen Gespräch','Heute noch wenn du mit jemandem sprichst','In der nächsten Situation wo du etwas willst aber zögerst es zu sagen']},
+  {id:'D08',cat:'Dating',type:'extinktion',diff:'Stark',title:'Echtes Bedürfnis aussprechen',hook:'Deine Bedürfnisse sind dein Kompass.',action:'Sprich klar aus was du willst: "Ich möchte gerade..."',ifthen:'Wenn ich etwas will, dann spreche ich es klar aus.',safety:'No-Go: Nur andeuten.',modminus:'Bei einer Freundin üben.',modplus:'Bei einem Date.',
+   triggers:['Beim nächsten Date oder persönlichen Gespräch','Heute noch wenn du mit jemandem sprichst','In der nächsten Situation wo du etwas willst aber zögerst es zu sagen'],situativ:true},
 
-  {id:'D09',cat:'Dating',diff:'Stark',title:'Stille im Flirt aushalten',hook:'Stille im Flirt ist Spannung — keine Leere.',action:'Halte Blickkontakt und lächle ohne die Stille zu füllen.',ifthen:'Wenn eine Pause entsteht, dann halte ich Blickkontakt ohne zu reden.',safety:'No-Go: Stille sofort füllen.',modminus:'2 Sekunden halten.',modplus:'5 Sekunden halten.',
-   triggers:['Beim nächsten Gespräch mit einer Frau die dich interessiert','Heute Abend oder beim nächsten Ausgang','Bei der nächsten Gelegenheit wo Augenkontakt entsteht']},
+  {id:'D09',cat:'Dating',type:'extinktion',diff:'Stark',title:'Stille im Flirt aushalten',hook:'Stille im Flirt ist Spannung — keine Leere.',action:'Halte Blickkontakt und lächle ohne die Stille zu füllen.',ifthen:'Wenn eine Pause entsteht, dann halte ich Blickkontakt ohne zu reden.',safety:'No-Go: Stille sofort füllen.',modminus:'2 Sekunden halten.',modplus:'5 Sekunden halten.',
+   triggers:['Beim nächsten Gespräch mit einer Frau die dich interessiert','Heute Abend oder beim nächsten Ausgang','Bei der nächsten Gelegenheit wo Augenkontakt entsteht'],situativ:true},
 
-  {id:'KW01',cat:'Karriere',diff:'Leicht',title:'Im Meeting innerhalb 5 Min sprechen',hook:'Wer früh spricht wird als gestaltend wahrgenommen.',action:'Sage innerhalb der ersten 5 Minuten etwas.',ifthen:'Wenn ein Meeting startet, dann sage ich innerhalb der ersten 5 Minuten etwas.',safety:'No-Go: Warten bis der perfekte Beitrag da ist.',modminus:'Nur zustimmen.',modplus:'Eine kritische Frage stellen.',
-   triggers:['Im nächsten Meeting heute oder morgen','Beim nächsten Call oder Teambesprechung','Im nächsten Austausch mit mehreren Personen']},
+  {id:'KW01',cat:'Karriere',type:'output',diff:'Leicht',title:'Im Meeting innerhalb 5 Min sprechen',hook:'Wer früh spricht wird als gestaltend wahrgenommen.',action:'Sage innerhalb der ersten 5 Minuten etwas.',ifthen:'Wenn ein Meeting startet, dann sage ich innerhalb der ersten 5 Minuten etwas.',safety:'No-Go: Warten bis der perfekte Beitrag da ist.',modminus:'Nur zustimmen.',modplus:'Eine kritische Frage stellen.',
+   triggers:['Im nächsten Meeting heute oder morgen','Beim nächsten Call oder Teambesprechung','Im nächsten Austausch mit mehreren Personen'],situativ:true},
 
-  {id:'KW02',cat:'Karriere',diff:'Mittel',title:'Unfertige Idee äußern',hook:'Rohdiamanten sind wertvoller als perfekte Steine im Kämmerlein.',action:'Teile eine Idee die erst zu 50% durchdacht ist.',ifthen:'Wenn wir brainstormen, dann teile ich eine Idee die erst zu 50% fertig ist.',safety:'No-Go: Als "vage Idee" deklarieren.',modminus:'Als vage Idee ankündigen.',modplus:'Um Feedback bitten ohne Schutzformulierung.',
+  {id:'KW02',cat:'Karriere',type:'extinktion',diff:'Mittel',title:'Unfertige Idee äußern',hook:'Rohdiamanten sind wertvoller als perfekte Steine im Kämmerlein.',action:'Teile eine Idee die erst zu 50% durchdacht ist.',ifthen:'Wenn wir brainstormen, dann teile ich eine Idee die erst zu 50% fertig ist.',safety:'No-Go: Als "vage Idee" deklarieren.',modminus:'Als vage Idee ankündigen.',modplus:'Um Feedback bitten ohne Schutzformulierung.',
    triggers:['Im nächsten Meeting oder Brainstorming','Beim nächsten Mal wenn Ideen gefragt sind','Heute noch in einem Gespräch wo etwas entwickelt wird']},
 
-  {id:'KW03',cat:'Karriere',diff:'Mittel',title:'Jemanden um Hilfe bitten',hook:'Hilfe suchen zeigt Selbstbewusstsein.',action:'Frage: "Kannst du mir hier kurz deine Expertise leihen?"',ifthen:'Wenn ich feststecke, dann frage ich jemanden direkt um Hilfe.',safety:'No-Go: Stunden alleine kämpfen.',modminus:'Engen Kollegen fragen.',modplus:'Ranghöhere Person fragen.',
+  {id:'KW03',cat:'Karriere',type:'extinktion',diff:'Mittel',title:'Jemanden um Hilfe bitten',hook:'Hilfe suchen zeigt Selbstbewusstsein.',action:'Frage: "Kannst du mir hier kurz deine Expertise leihen?"',ifthen:'Wenn ich feststecke, dann frage ich jemanden direkt um Hilfe.',safety:'No-Go: Stunden alleine kämpfen.',modminus:'Engen Kollegen fragen.',modplus:'Ranghöhere Person fragen.',
    triggers:['Beim nächsten Mal wenn du bei etwas feststeckst','Heute noch — wo hängt gerade etwas das du alleine nicht löst?','In der nächsten Arbeitssituation wo du weiterkommst mit Hilfe']},
 
-  {id:'KW05',cat:'Karriere',diff:'Mittel',title:'Nein zu einer Zusatzaufgabe',hook:'Ein Nein zur Aufgabe ist ein Ja zur Qualität.',action:'Sag: "Das passt aktuell nicht in meine Prioritäten."',ifthen:'Wenn eine Aufgabe reinkommt die nicht mein Fokus ist, dann sage ich Nein.',safety:'No-Go: Ja sagen und dann ignorieren.',modminus:'Mit Verweis auf nächste Woche.',modplus:'Ohne Rechtfertigung.',
+  {id:'KW05',cat:'Karriere',type:'extinktion',diff:'Mittel',title:'Nein zu einer Zusatzaufgabe',hook:'Ein Nein zur Aufgabe ist ein Ja zur Qualität.',action:'Sag: "Das passt aktuell nicht in meine Prioritäten."',ifthen:'Wenn eine Aufgabe reinkommt die nicht mein Fokus ist, dann sage ich Nein.',safety:'No-Go: Ja sagen und dann ignorieren.',modminus:'Mit Verweis auf nächste Woche.',modplus:'Ohne Rechtfertigung.',
    triggers:['Bei der nächsten Anfrage die reinkommt und nicht dein Fokus ist','Heute noch wenn etwas angefragt wird das nicht passt','In der nächsten Situation wo du Ja sagen würdest obwohl du Nein meinst']},
 
-  {id:'KW06',cat:'Karriere',diff:'Stark',title:'Eigene Leistung benennen',hook:'Fakten benennen ist Professionalität.',action:'Sag: "Ich habe X erreicht und Y geliefert."',ifthen:'Wenn über Ergebnisse gesprochen wird, dann benenne ich klar was ich erreicht habe.',safety:'No-Go: "Wir haben..." statt "Ich habe...".',modminus:'Im informellen Gespräch.',modplus:'Vor dem Chef oder in der Gruppe.',
+  {id:'KW06',cat:'Karriere',type:'extinktion',diff:'Stark',title:'Eigene Leistung benennen',hook:'Fakten benennen ist Professionalität.',action:'Sag: "Ich habe X erreicht und Y geliefert."',ifthen:'Wenn über Ergebnisse gesprochen wird, dann benenne ich klar was ich erreicht habe.',safety:'No-Go: "Wir haben..." statt "Ich habe...".',modminus:'Im informellen Gespräch.',modplus:'Vor dem Chef oder in der Gruppe.',
    triggers:['Im nächsten Meeting oder Status-Update','Beim nächsten Gespräch über Projekte oder Ergebnisse','Heute noch wenn die Gelegenheit entsteht']},
 
-  {id:'KW07',cat:'Karriere',diff:'Stark',title:'Konflikt direkt ansprechen',hook:'Ungeklärte Konflikte kosten mehr als ein klärendes Gespräch.',action:'Sprich an: "Mir ist aufgefallen dass..."',ifthen:'Wenn mich etwas stört, dann spreche ich die Person direkt an.',safety:'No-Go: Per Mail ankündigen.',modminus:'Erst per Mail.',modplus:'Innerhalb 24h direkt.',
+  {id:'KW07',cat:'Karriere',type:'extinktion',diff:'Stark',title:'Konflikt direkt ansprechen',hook:'Ungeklärte Konflikte kosten mehr als ein klärendes Gespräch.',action:'Sprich an: "Mir ist aufgefallen dass..."',ifthen:'Wenn mich etwas stört, dann spreche ich die Person direkt an.',safety:'No-Go: Per Mail ankündigen.',modminus:'Erst per Mail.',modplus:'Innerhalb 24h direkt.',
    triggers:['Bei der nächsten Situation die schon länger stört','Heute noch wenn etwas seit Tagen unausgesprochen ist','In der nächsten Arbeitssituation wo eine Spannung da ist']},
 
-  {id:'F01',cat:'Fokus',diff:'Leicht',title:'Top 3 für heute aufschreiben',hook:'Klarheit ist der Feind der Prokrastination.',action:'Schreibe die 3 wichtigsten Ergebnisse auf bevor du anfängst.',ifthen:'Wenn ich den Arbeitstag starte, dann schreibe ich zuerst die Top 3.',safety:'No-Go: Erstmal E-Mails checken.',modminus:'Nach den ersten Mails.',modplus:'Nur 1 Top-Prio wählen.',
+  {id:'F01',cat:'Fokus',type:'lifestyle',diff:'Leicht',title:'Top 3 für heute aufschreiben',hook:'Klarheit ist der Feind der Prokrastination.',action:'Schreibe die 3 wichtigsten Ergebnisse auf bevor du anfängst.',ifthen:'Wenn ich den Arbeitstag starte, dann schreibe ich zuerst die Top 3.',safety:'No-Go: Erstmal E-Mails checken.',modminus:'Nach den ersten Mails.',modplus:'Nur 1 Top-Prio wählen.',
    triggers:['Morgen früh beim Start in den Tag','Heute noch bevor du die nächste Aufgabe anfängst','Beim nächsten Arbeitsbeginn']},
 
-  {id:'F02',cat:'Fokus',diff:'Mittel',title:'90 Min Deep Work Block',hook:'Qualität entsteht in der Tiefe.',action:'Benachrichtigungen aus, Handy weg, eine Aufgabe fertigstellen.',ifthen:'Wenn ich den Deep Work Block starte, dann sind alle Ablenkungen aus.',safety:'No-Go: Nur kurz aufs Handy schauen.',modminus:'45 Minuten Block.',modplus:'Internet komplett aus.',
+  {id:'F02',cat:'Fokus',type:'output',diff:'Mittel',title:'90 Min Deep Work Block',hook:'Qualität entsteht in der Tiefe.',action:'Benachrichtigungen aus, Handy weg, eine Aufgabe fertigstellen.',ifthen:'Wenn ich den Deep Work Block starte, dann sind alle Ablenkungen aus.',safety:'No-Go: Nur kurz aufs Handy schauen.',modminus:'45 Minuten Block.',modplus:'Internet komplett aus.',
    triggers:['Heute noch einen Block einrichten — wann hast du die nächste freie Stunde?','Morgen früh als erstes bevor Meetings kommen','Am nächsten ruhigen Vormittag']},
 
-  {id:'F04',cat:'Fokus',diff:'Mittel',title:'Erste 30 Min kein Handy',hook:'Wer morgens scrollt lässt sich reaktiv steuern.',action:'Handy bleibt 30 Minuten nach dem Aufwachen weg.',ifthen:'Wenn ich aufwache, dann bleibt das Handy für 30 Minuten in einem anderen Raum.',safety:'No-Go: Nur kurz checken.',modminus:'15 Minuten.',modplus:'60 Minuten.',
+  {id:'F04',cat:'Fokus',type:'lifestyle',diff:'Mittel',title:'Erste 30 Min kein Handy',hook:'Wer morgens scrollt lässt sich reaktiv steuern.',action:'Handy bleibt 30 Minuten nach dem Aufwachen weg.',ifthen:'Wenn ich aufwache, dann bleibt das Handy für 30 Minuten in einem anderen Raum.',safety:'No-Go: Nur kurz checken.',modminus:'15 Minuten.',modplus:'60 Minuten.',
    triggers:['Morgen früh direkt nach dem Aufwachen','Ab morgen als feste Routine','Heute Abend Handy schon vorbereitet in den anderen Raum legen']},
 
-  {id:'F05',cat:'Fokus',diff:'Stark',title:'Etwas Unfertiges fertigstellen und shippen',hook:'Iteration am lebenden Objekt schlägt Perfektion.',action:'Drücke Senden wenn die Zeit abgelaufen ist.',ifthen:'Wenn die Aufgabe bei 80% ist, dann schicke ich sie ohne weiteres Prüfen.',safety:'No-Go: Nochmal öffnen zum Prüfen.',modminus:'Eine interne Notiz.',modplus:'Wichtiges Projekt an Chef oder Kunden.',
+  {id:'F05',cat:'Fokus',type:'output',diff:'Stark',title:'Etwas Unfertiges fertigstellen und shippen',hook:'Iteration am lebenden Objekt schlägt Perfektion.',action:'Drücke Senden wenn die Zeit abgelaufen ist.',ifthen:'Wenn die Aufgabe bei 80% ist, dann schicke ich sie ohne weiteres Prüfen.',safety:'No-Go: Nochmal öffnen zum Prüfen.',modminus:'Eine interne Notiz.',modplus:'Wichtiges Projekt an Chef oder Kunden.',
    triggers:['Heute noch — was liegt bei 80% und wartet auf perfekt?','Innerhalb der nächsten Stunde konkret etwas rausgeben','Beim nächsten Projekt das du immer wieder überarbeitest']},
 
-  {id:'N01',cat:'Nervensystem',diff:'Leicht',title:'Physiologisches Seufzen',hook:'Chemie schlägt Wille: Du zwingst deinen Puls nach unten.',action:'2x kurz einatmen, 1x lang ausatmen. 30 Sekunden.',ifthen:'Wenn ich Stress spüre oder eine Quest starte, dann atme ich 2x kurz ein und 1x lang aus.',safety:'No-Go: Nur einmal machen.',modminus:'1 Wiederholung.',modplus:'3 Wiederholungen mit geschlossenen Augen.',transfer:'Der Vagusnerv reguliert direkt soziales Engagement.',
+  {id:'N01',cat:'Nervensystem',type:'lifestyle',diff:'Leicht',title:'Physiologisches Seufzen',hook:'Chemie schlägt Wille: Du zwingst deinen Puls nach unten.',action:'2x kurz einatmen, 1x lang ausatmen. 30 Sekunden.',ifthen:'Wenn ich Stress spüre oder eine Quest starte, dann atme ich 2x kurz ein und 1x lang aus.',safety:'No-Go: Nur einmal machen.',modminus:'1 Wiederholung.',modplus:'3 Wiederholungen mit geschlossenen Augen.',transfer:'Der Vagusnerv reguliert direkt soziales Engagement.',
    triggers:['Jetzt gerade vor der nächsten Handlung','Vor der nächsten sozialen Situation heute','Beim nächsten Mal wenn Anspannung kommt']},
 
-  {id:'N02',cat:'Nervensystem',diff:'Leicht',title:'15 Min Spaziergang ohne Ablenkung',hook:'Ohne Input kann das Gehirn verarbeiten.',action:'Handy und Kopfhörer bleiben zuhause.',ifthen:'Wenn ich spazieren gehe, dann bleiben Kopfhörer und Handy weg.',safety:'No-Go: Podcast anmachen.',modminus:'10 Minuten.',modplus:'30 Minuten.',
+  {id:'N02',cat:'Nervensystem',type:'lifestyle',diff:'Leicht',title:'15 Min Spaziergang ohne Ablenkung',hook:'Ohne Input kann das Gehirn verarbeiten.',action:'Handy und Kopfhörer bleiben zuhause.',ifthen:'Wenn ich spazieren gehe, dann bleiben Kopfhörer und Handy weg.',safety:'No-Go: Podcast anmachen.',modminus:'10 Minuten.',modplus:'30 Minuten.',
    triggers:['Heute in der Mittagspause oder nach der Arbeit','Beim nächsten Mal wenn du sowieso rausgehst','Morgen früh vor dem Start in den Tag']},
 
-  {id:'N03',cat:'Nervensystem',diff:'Mittel',title:'Kalte Dusche auf 3 Minuten',hook:'Wer Kälte kontrolliert kann auch soziale Hitze kontrollieren.',action:'3 Minuten unter kaltem Wasser. Ruhig atmen.',ifthen:'Wenn ich dusche, dann bleibe ich 3 Min unter kaltem Wasser.',safety:'No-Go: Nach einer Minute raus.',modminus:'2 Minuten.',modplus:'Ohne warmes Vorwaschen.',transfer:'Direkt auf Fokus und soziale Courage übertragbar.',
+  {id:'N03',cat:'Nervensystem',type:'lifestyle',diff:'Mittel',title:'Kalte Dusche auf 3 Minuten',hook:'Wer Kälte kontrolliert kann auch soziale Hitze kontrollieren.',action:'3 Minuten unter kaltem Wasser. Ruhig atmen.',ifthen:'Wenn ich dusche, dann bleibe ich 3 Min unter kaltem Wasser.',safety:'No-Go: Nach einer Minute raus.',modminus:'2 Minuten.',modplus:'Ohne warmes Vorwaschen.',transfer:'Direkt auf Fokus und soziale Courage übertragbar.',
    triggers:['Beim nächsten Duschen heute oder morgen früh','Morgen als Start in den Tag','Heute Abend wenn du duschen gehst']},
 
-  {id:'N07',cat:'Nervensystem',diff:'Leicht',title:'Erste 10 Min in Morgenlicht',hook:'Licht am Morgen steuert Fokus und Schlaf.',action:'Innerhalb von 30 Min nach dem Aufstehen nach draußen.',ifthen:'Wenn ich aufstehe, dann gehe ich innerhalb von 30 Min für 10 Min nach draußen.',safety:'No-Go: Nur am Fenster stehen.',modminus:'Nur am offenen Fenster.',modplus:'Dabei 5 Minuten gehen.',
+  {id:'N07',cat:'Nervensystem',type:'lifestyle',diff:'Leicht',title:'Erste 10 Min in Morgenlicht',hook:'Licht am Morgen steuert Fokus und Schlaf.',action:'Innerhalb von 30 Min nach dem Aufstehen nach draußen.',ifthen:'Wenn ich aufstehe, dann gehe ich innerhalb von 30 Min für 10 Min nach draußen.',safety:'No-Go: Nur am Fenster stehen.',modminus:'Nur am offenen Fenster.',modplus:'Dabei 5 Minuten gehen.',
    triggers:['Morgen früh direkt nach dem Aufstehen','Ab morgen als feste Routine einbauen','Heute noch für die kommenden Tage planen']},
 
-  {id:'L01',cat:'Innenleben',diff:'Leicht',title:'Bett machen nach dem Aufstehen',hook:'Äußere Ordnung spiegelt innere Ordnung. Erster Sieg des Tages.',action:'Mach sofort nach dem Aufstehen das Bett.',ifthen:'Wenn ich aufgestanden bin, dann mache ich sofort mein Bett.',safety:'No-Go: Nur Decke glattziehen.',modminus:'Nur Decke glattziehen.',modplus:'Zimmer lüften dabei.',
+  {id:'L01',cat:'Innenleben',type:'lifestyle',diff:'Leicht',title:'Bett machen nach dem Aufstehen',hook:'Äußere Ordnung spiegelt innere Ordnung. Erster Sieg des Tages.',action:'Mach sofort nach dem Aufstehen das Bett.',ifthen:'Wenn ich aufgestanden bin, dann mache ich sofort mein Bett.',safety:'No-Go: Nur Decke glattziehen.',modminus:'Nur Decke glattziehen.',modplus:'Zimmer lüften dabei.',
    triggers:['Morgen früh direkt nach dem Aufstehen','Ab morgen als feste Routine','Heute wenn du aufstehst']},
 
-  {id:'L02',cat:'Innenleben',diff:'Leicht',title:'Kochen statt bestellen',hook:'Kochen ist eine Form der Selbstachtung.',action:'Bereite dir selbst eine Mahlzeit zu.',ifthen:'Wenn ich Hunger habe, dann koche ich mir etwas.',safety:'No-Go: Nur heute bestellen.',modminus:'Nur ein einfaches Gericht.',modplus:'Neues Rezept probieren.',
+  {id:'L02',cat:'Innenleben',type:'lifestyle',diff:'Leicht',title:'Kochen statt bestellen',hook:'Kochen ist eine Form der Selbstachtung.',action:'Bereite dir selbst eine Mahlzeit zu.',ifthen:'Wenn ich Hunger habe, dann koche ich mir etwas.',safety:'No-Go: Nur heute bestellen.',modminus:'Nur ein einfaches Gericht.',modplus:'Neues Rezept probieren.',
    triggers:['Heute Abend zum Abendessen','Beim nächsten Mal wenn du Hunger hast','Morgen zum Mittagessen']},
 
-  {id:'L04',cat:'Innenleben',diff:'Leicht',title:'Bewusst ohne Bildschirm genießen',hook:'Genuss erfordert Präsenz.',action:'Iss eine Mahlzeit ohne Handy, Fernseher oder Laptop.',ifthen:'Wenn ich esse, dann liegt das Handy in einem anderen Raum.',safety:'No-Go: Nur kurz checken.',modminus:'Nur beim Frühstück.',modplus:'10 Min danach auch ohne Screen.',
+  {id:'L04',cat:'Innenleben',type:'lifestyle',diff:'Leicht',title:'Bewusst ohne Bildschirm genießen',hook:'Genuss erfordert Präsenz.',action:'Iss eine Mahlzeit ohne Handy, Fernseher oder Laptop.',ifthen:'Wenn ich esse, dann liegt das Handy in einem anderen Raum.',safety:'No-Go: Nur kurz checken.',modminus:'Nur beim Frühstück.',modplus:'10 Min danach auch ohne Screen.',
    triggers:['Beim nächsten Essen heute','Morgen beim Frühstück','Heute Abend beim Abendessen']},
 
-  {id:'L05',cat:'Innenleben',diff:'Mittel',title:'Jemanden aktiv kontaktieren',hook:'Beziehungen brauchen Reize. Warten ist keine Strategie.',action:'Schreibe sofort wenn du an jemanden denkst.',ifthen:'Wenn ich an jemanden denke, dann schreibe ich sofort.',safety:'No-Go: Nur ein Like dalassen.',modminus:'Nur ein Like.',modplus:'Anrufen statt schreiben.',
+  {id:'L05',cat:'Innenleben',type:'lifestyle',diff:'Mittel',title:'Jemanden aktiv kontaktieren',hook:'Beziehungen brauchen Reize. Warten ist keine Strategie.',action:'Schreibe sofort wenn du an jemanden denkst.',ifthen:'Wenn ich an jemanden denke, dann schreibe ich sofort.',safety:'No-Go: Nur ein Like dalassen.',modminus:'Nur ein Like.',modplus:'Anrufen statt schreiben.',
    triggers:['Jetzt gerade — an wen hast du zuletzt gedacht ohne dich zu melden?','Heute noch eine Nachricht schreiben','In der nächsten ruhigen Minute']},
 
-  {id:'FI01',cat:'Finanzen',diff:'Leicht',title:'Einnahmen diese Woche notieren',hook:'Was man nicht misst kann man nicht steuern.',action:'Trage alle Einnahmen und Ausgaben ein.',ifthen:'Wenn die Woche endet, dann trage ich alle Einnahmen und Ausgaben ein.',safety:'No-Go: Schätzwerte.',modminus:'Nur Grobschätzung.',modplus:'Budget für nächste Woche planen.',
+  {id:'FI01',cat:'Finanzen',type:'lifestyle',diff:'Leicht',title:'Einnahmen diese Woche notieren',hook:'Was man nicht misst kann man nicht steuern.',action:'Trage alle Einnahmen und Ausgaben ein.',ifthen:'Wenn die Woche endet, dann trage ich alle Einnahmen und Ausgaben ein.',safety:'No-Go: Schätzwerte.',modminus:'Nur Grobschätzung.',modplus:'Budget für nächste Woche planen.',
    triggers:['Heute Abend oder am Wochenende in einer ruhigen Stunde','Beim nächsten Deep Work Block','Sonntag als feste Routine einbauen']},
 
-  {id:'FI02',cat:'Finanzen',diff:'Mittel',title:'Eine unnötige Ausgabe streichen',hook:'Freiheit bedeutet nicht Sklave seiner Impulse zu sein.',action:'Warte 24 Stunden bei jedem Impulskauf.',ifthen:'Wenn ich einen Impulskauf tätigen will, dann warte ich 24 Stunden.',safety:'No-Go: Nur dieses eine Mal.',modminus:'Nur kleinen Kauf weglassen.',modplus:'Ein laufendes Abo kündigen.',
+  {id:'FI02',cat:'Finanzen',type:'lifestyle',diff:'Mittel',title:'Eine unnötige Ausgabe streichen',hook:'Freiheit bedeutet nicht Sklave seiner Impulse zu sein.',action:'Warte 24 Stunden bei jedem Impulskauf.',ifthen:'Wenn ich einen Impulskauf tätigen will, dann warte ich 24 Stunden.',safety:'No-Go: Nur dieses eine Mal.',modminus:'Nur kleinen Kauf weglassen.',modplus:'Ein laufendes Abo kündigen.',
    triggers:['Beim nächsten Mal wenn du etwas kaufen willst ohne echten Bedarf','Jetzt gerade — welches Abo nutzt du weniger als 3x im Monat?','Heute noch Banking App öffnen und schauen']},
 
-  {id:'FI04',cat:'Finanzen',diff:'Stark',title:'Nettoworth berechnen',hook:'Zahlen lügen nicht. Sie geben dir eine Basis.',action:'Berechne Assets minus Schulden auf den Euro genau.',ifthen:'Wenn ich einen freien Deep Work Block habe, dann berechne ich meinen Nettoworth.',safety:'No-Go: Nur Kontostände addieren.',modminus:'Nur Kontostände.',modplus:'Ziele für 12 Monate setzen.',
+  {id:'FI04',cat:'Finanzen',type:'lifestyle',diff:'Stark',title:'Nettoworth berechnen',hook:'Zahlen lügen nicht. Sie geben dir eine Basis.',action:'Berechne Assets minus Schulden auf den Euro genau.',ifthen:'Wenn ich einen freien Deep Work Block habe, dann berechne ich meinen Nettoworth.',safety:'No-Go: Nur Kontostände addieren.',modminus:'Nur Kontostände.',modplus:'Ziele für 12 Monate setzen.',
    triggers:['Beim nächsten freien Deep Work Block — heute Abend oder am Wochenende','Am nächsten ruhigen Nachmittag oder Sonntagvormittag','Heute noch einen Termin dafür in den Kalender setzen']},
 
-  {id:'U01',cat:'Grenzen',diff:'Mittel',title:'Nachricht abschicken ohne zweiten Check',hook:'Der zweite Check ist Schutz des Sensors. Er kostet dich nichts.',action:'Schreibe und drücke Senden ohne nochmal zu lesen.',ifthen:'Wenn mein Finger über der Löschtaste schwebt, dann drücke ich Senden.',safety:'No-Go: Nochmal öffnen.',modminus:'An einen Kollegen.',modplus:'An Chef oder Kunden.',
+  {id:'U01',cat:'Grenzen',type:'output',diff:'Mittel',title:'Nachricht abschicken ohne zweiten Check',hook:'Der zweite Check ist Schutz des Sensors. Er kostet dich nichts.',action:'Schreibe und drücke Senden ohne nochmal zu lesen.',ifthen:'Wenn mein Finger über der Löschtaste schwebt, dann drücke ich Senden.',safety:'No-Go: Nochmal öffnen.',modminus:'An einen Kollegen.',modplus:'An Chef oder Kunden.',
    triggers:['Beim nächsten Mal wenn du eine Nachricht schreibst und zögerst','Heute noch — welche Nachricht liegt halb fertig da?','In der nächsten Stunde bei der ersten Nachricht die du schreibst']},
 
-  {id:'U02',cat:'Grenzen',diff:'Mittel',title:'Feedback zu Entwurf einholen',hook:'Iteration braucht echtes Feedback.',action:'Schicke den Entwurf obwohl er noch nicht fertig ist.',ifthen:'Wenn ich sage "Ich bin noch nicht fertig", dann schicke ich es trotzdem jetzt.',safety:'No-Go: Erst fertigstellen.',modminus:'Per Text schicken.',modplus:'Im Video-Call zeigen.',
+  {id:'U02',cat:'Grenzen',type:'output',diff:'Mittel',title:'Feedback zu Entwurf einholen',hook:'Iteration braucht echtes Feedback.',action:'Schicke den Entwurf obwohl er noch nicht fertig ist.',ifthen:'Wenn ich sage "Ich bin noch nicht fertig", dann schicke ich es trotzdem jetzt.',safety:'No-Go: Erst fertigstellen.',modminus:'Per Text schicken.',modplus:'Im Video-Call zeigen.',
    triggers:['Heute noch — was liegt bei 70% und wartet auf perfekt?','Beim nächsten Projekt das du gerade bearbeitest','Innerhalb der nächsten Stunde etwas zum Feedback schicken']},
 
-  {id:'R01',cat:'Grenzen',diff:'Mittel',title:'Stille nach der Aussage aushalten',hook:'Wer die Stille aushält kontrolliert den Raum.',action:'Presse die Zunge gegen den Gaumen nach dem letzten Wort.',ifthen:'Wenn ich meinen Satz beendet habe, dann presse ich die Zunge an den Gaumen und warte.',safety:'No-Go: Räuspern oder Ehm.',modminus:'1 Sekunde.',modplus:'3 Sekunden mit Blickkontakt.',
+  {id:'R01',cat:'Grenzen',type:'extinktion',diff:'Mittel',title:'Stille nach der Aussage aushalten',hook:'Wer die Stille aushält kontrolliert den Raum.',action:'Presse die Zunge gegen den Gaumen nach dem letzten Wort.',ifthen:'Wenn ich meinen Satz beendet habe, dann presse ich die Zunge an den Gaumen und warte.',safety:'No-Go: Räuspern oder Ehm.',modminus:'1 Sekunde.',modplus:'3 Sekunden mit Blickkontakt.',
    triggers:['Im nächsten Meeting oder Gespräch','Beim nächsten Mal wenn du etwas Wichtiges sagst','Heute bei der ersten wichtigen Aussage']},
 
-  {id:'R02',cat:'Grenzen',diff:'Leicht',title:'Aufrecht sitzen und Raum einnehmen',hook:'Körpersprache formt Wahrnehmung von innen und außen.',action:'Sitze breitbeinig und aufrecht. Nimm 10cm mehr Platz.',ifthen:'Wenn mein Hintern den Stuhl berührt, dann nehme ich 10cm mehr Platz.',safety:'No-Go: Zusammengekauert warten.',modminus:'Zuhause.',modplus:'In öffentlichem Café oder Meeting.',
+  {id:'R02',cat:'Grenzen',type:'lifestyle',diff:'Leicht',title:'Aufrecht sitzen und Raum einnehmen',hook:'Körpersprache formt Wahrnehmung von innen und außen.',action:'Sitze breitbeinig und aufrecht. Nimm 10cm mehr Platz.',ifthen:'Wenn mein Hintern den Stuhl berührt, dann nehme ich 10cm mehr Platz.',safety:'No-Go: Zusammengekauert warten.',modminus:'Zuhause.',modplus:'In öffentlichem Café oder Meeting.',
    triggers:['Ab sofort beim nächsten Mal wenn du sitzt','Im nächsten Meeting oder Café','Jetzt gerade — wie sitzt du gerade?']},
 
-  {id:'KO01',cat:'Grenzen',diff:'Mittel',title:'Klares Nein ohne Erklärung',hook:'Dein Wert hängt nicht von deiner Gefälligkeit ab.',action:'Sage "Das passt mir nicht" ohne weitere Erklärung.',ifthen:'Wenn eine Bitte kommt die ich nicht will, dann sage ich: "Das passt mir diesmal nicht."',safety:'No-Go: Notlüge erfinden.',modminus:'Per Nachricht.',modplus:'Im direkten Gespräch.',
+  {id:'KO01',cat:'Grenzen',type:'extinktion',diff:'Mittel',title:'Klares Nein ohne Erklärung',hook:'Dein Wert hängt nicht von deiner Gefälligkeit ab.',action:'Sage "Das passt mir nicht" ohne weitere Erklärung.',ifthen:'Wenn eine Bitte kommt die ich nicht will, dann sage ich: "Das passt mir diesmal nicht."',safety:'No-Go: Notlüge erfinden.',modminus:'Per Nachricht.',modplus:'Im direkten Gespräch.',
    triggers:['Bei der nächsten Anfrage die nicht passt','Heute noch wenn etwas von dir erwartet wird das du nicht willst','In der nächsten Situation wo du Nein meinst aber Ja sagst']},
 
-  {id:'KO02',cat:'Grenzen',diff:'Stark',title:'Meinung halten wenn jemand widerspricht',hook:'Chamäleon-Verhalten kostet Identität.',action:'Antworte: "Interessant — ich bleibe bei meiner Sichtweise."',ifthen:'Wenn jemand widerspricht, dann antworte ich: "Ich bleibe bei meiner Sichtweise."',safety:'No-Go: Nervöses Lachen oder nachgeben.',modminus:'Mit kurzer Erklärung.',modplus:'Ohne Lächeln, ohne Erklärung.',
+  {id:'KO02',cat:'Grenzen',type:'extinktion',diff:'Stark',title:'Meinung halten wenn jemand widerspricht',hook:'Chamäleon-Verhalten kostet Identität.',action:'Antworte: "Interessant — ich bleibe bei meiner Sichtweise."',ifthen:'Wenn jemand widerspricht, dann antworte ich: "Ich bleibe bei meiner Sichtweise."',safety:'No-Go: Nervöses Lachen oder nachgeben.',modminus:'Mit kurzer Erklärung.',modplus:'Ohne Lächeln, ohne Erklärung.',
    triggers:['Im nächsten Gespräch wo eine Meinungsverschiedenheit entsteht','Beim nächsten Meeting oder Austausch','In der nächsten Situation wo jemand deiner Aussage widerspricht']},
+  // ── NEUE QUESTS (Baseline + M07-Ersatz) ─────────────
+  {id:'M07N',cat:'Mut',type:'extinktion',diff:'Stark',title:'Den unmöglichen Gefallen fragen',hook:'Das Ziel ist das Nein — nicht der Gefallen. Ablehnungsangst direkt trainieren.',action:'Frage jemanden nach einem Gefallen von dem du zu 90% sicher bist dass er Nein sagt.',ifthen:'Wenn ich die Person sehe, dann stelle ich die Frage ohne Vorwarnung und halte die Stille nach der Antwort aus.',safety:'No-Go: Erklären warum du fragst. Frage stellen — Stille halten.',modminus:'Im Freundeskreis nach etwas Absurdem fragen.',modplus:'Eine völlig fremde autoritär wirkende Person fragen.',triggers:['Heute noch beim nächsten Einkauf oder Ausgang','Beim nächsten Mal wenn du unter Menschen bist','Jetzt — wer ist gerade in Reichweite?']},
+  {id:'B01',cat:'Baseline',type:'lifestyle',diff:'Leicht',title:'500ml Wasser vor dem ersten Kaffee',hook:'Hydrierung vor Stimulanz. Gehirn braucht Wasser bevor es Koffein verarbeitet.',action:'Ein volles Glas Wasser trinken bevor die Kaffeemaschine läuft.',ifthen:'Wenn ich die Kaffeemaschine sehe, dann trinke ich erst das Glas Wasser.',safety:'No-Go: Kaffee zuerst weil es schneller geht.',modminus:'Nur 250ml.',modplus:'Dazu 5 Min kein Handy.',triggers:['Morgen früh direkt nach dem Aufstehen','Ab heute als feste Routine','Heute noch — Glas neben das Bett stellen']},
+  {id:'B02',cat:'Baseline',type:'lifestyle',diff:'Leicht',title:'Protein-Fokus bei einer Mahlzeit',hook:'Protein stabilisiert Blutzucker und Energie. Basis für alles andere.',action:'Eine Mahlzeit bewusst mit mindestens 30g Protein planen.',ifthen:'Wenn ich das Essen plane, dann ist die Proteinquelle die erste Wahl.',safety:'No-Go: Kohlenhydrate als Hauptmahlzeit ohne Protein.',modminus:'Einfaches Protein — Ei, Quark, Hühnchen.',modplus:'Mahlzeit komplett selbst kochen.',triggers:['Beim nächsten Essen heute','Morgen beim Frühstück','Heute Abend beim Abendessen']},
+  {id:'B03',cat:'Baseline',type:'lifestyle',diff:'Leicht',title:'5 Min Mobility nach dem Aufstehen',hook:'Faszien lösen, Körper aktivieren. Erste Bewegung setzt den Ton.',action:'3 Mobility-Übungen direkt nach dem Aufstehen — Hüfte, Schultern, Nacken.',ifthen:'Wenn ich aus dem Bett steige, dann mache ich 3 Übungen bevor ich das Zimmer verlasse.',safety:'No-Go: Direkt aufs Handy. Körper zuerst.',modminus:'Nur Strecken — 60 Sekunden.',modplus:'Kompletter 10 Min Mobility Flow.',triggers:['Morgen früh direkt nach dem Aufstehen','Ab heute als feste Morgenroutine','Heute noch ausprobieren']},
+  {id:'B04',cat:'Baseline',type:'lifestyle',diff:'Leicht',title:'Schreibtisch leer räumen',hook:'Äußeres Chaos erzeugt inneres Chaos. Ein leerer Schreibtisch = ein freier Kopf.',action:'Alles vom Schreibtisch räumen — nur das was für die aktuelle Aufgabe gebraucht wird bleibt.',ifthen:'Wenn ich den Rechner starte, dann wandert alles andere in die Schublade.',safety:'No-Go: Nur verschieben statt wegräumen.',modminus:'Nur Bildschirm-Bereich frei.',modplus:'Komplett leer — nichts außer Monitor und Tastatur.',triggers:['Jetzt gerade bevor du anfängst','Morgen früh als erstes','Beim nächsten Arbeitsbeginn']},
+  {id:'B05',cat:'Baseline',type:'lifestyle',diff:'Leicht',title:'10 Min Wohnung Reset',hook:'Speed-Cleaning gibt sofortiges Kontrollgefühl. Kostet 10 Minuten, gibt eine Stunde Ruhe.',action:'Timer auf 10 Minuten — so viel wie möglich aufräumen. Speed ist das Spiel.',ifthen:'Wenn ich nach Hause komme, dann stelle ich den Timer auf 10 Min bevor ich mich hinsetze.',safety:'No-Go: Anfangen und aufhören wenn es aufwändig wird. Timer durchziehen.',modminus:'Nur ein Zimmer.',modplus:'Wohnung komplett — Küche, Bad, Wohnzimmer.',triggers:['Heute Abend wenn du nach Hause kommst','Jetzt gerade — wie sieht es aus?','Am Wochenende als Reset']},
+  {id:'B06',cat:'Baseline',type:'lifestyle',diff:'Leicht',title:'Handy 30 Min vor Schlafen weg',hook:'Blaues Licht blockiert Melatonin. Schlafqualität direkt verbessern.',action:'Handy in den anderen Raum legen 30 Minuten vor dem Schlafen.',ifthen:'Wenn das Licht ausgeht, dann liegt das Handy bereits im Flur.',safety:'No-Go: Nur auf stumm schalten. Physisch wegräumen.',modminus:'Handy auf stumm und umgedreht.',modplus:'60 Minuten vor Schlafen. Dazu kein TV.',triggers:['Heute Abend','Ab morgen als feste Schlaf-Routine','Jetzt Handy schon vorbereiten']},
+  {id:'B07',cat:'Baseline',type:'lifestyle',diff:'Leicht',title:'10 Min physisch lesen',hook:'Lineares Lesen trainiert Aufmerksamkeit die Social Media systematisch abbaut.',action:'10 Minuten in einem physischen Buch oder Fachartikel lesen — kein Screen.',ifthen:'Wenn ich mich abends hinsetze, dann greife ich zum Buch nicht zum Handy.',safety:'No-Go: E-Book zählt nicht wenn du danach scrollst.',modminus:'5 Minuten.',modplus:'30 Minuten. Notizen machen.',triggers:['Heute Abend','In der nächsten ruhigen Minute','Beim nächsten Mal wenn du zum Handy greifen würdest']},
+  {id:'B08',cat:'Baseline',type:'lifestyle',diff:'Leicht',title:'Alle Browser-Tabs schließen',hook:'Tab-Chaos fragmentiert Aufmerksamkeit. Sauber beenden ist ein Abschlussritual.',action:'Alle nicht benötigten Tabs schließen. Nur aktive Aufgabe offen lassen.',ifthen:'Wenn ich eine Aufgabe beende, dann schließe ich alle zugehörigen Tabs.',safety:'No-Go: "Die brauche ich vielleicht noch." Wenn nicht aktiv — schließen.',modminus:'Alle außer 3.',modplus:'Browser komplett schließen und neu öffnen.',triggers:['Jetzt gerade','Beim nächsten Aufgabenwechsel','Am Ende des Arbeitstags']},
+  {id:'B09',cat:'Baseline',type:'lifestyle',diff:'Leicht',title:'Morgenlicht direkt nach dem Aufstehen',hook:'10 Min Tageslicht reguliert Cortisol-Rhythmus und Energie für den ganzen Tag.',action:'Innerhalb von 10 Min nach dem Aufstehen nach draußen oder ans offene Fenster.',ifthen:'Wenn ich wach bin, dann gehe ich sofort ans Fenster oder nach draußen.',safety:'No-Go: Sonnenbrille. Direktes Licht ist der Effekt.',modminus:'Nur ans offene Fenster.',modplus:'5 Min draußen gehen dabei.',triggers:['Morgen früh direkt nach dem Aufwachen','Ab heute als feste Routine','Heute noch für morgen planen']},
 ];
 
 
@@ -699,7 +732,7 @@ function getModifier(cat){
   return mods[Math.floor(Math.random()*mods.length)];
 }
 const CHIPS=['Besser als gedacht','Leichter als erwartet','Kopf hat übertrieben','Unbehagen war aushaltbar','Würde es wiederholen','Schwieriger als gedacht'];
-const CATS_ALL=['Sozial','Kommunikation','Mut','Dating','Karriere','Fokus','Nervensystem','Innenleben','Finanzen','Grenzen'];
+const CATS_ALL=['Sozial','Kommunikation','Mut','Dating','Karriere','Fokus','Nervensystem','Innenleben','Finanzen','Grenzen','Baseline'];
 
 // ═══ STATE ═══════════════════════════════════════════
 let S={queue:[],progQueue:null,done:0,total:0,progDone:0,reps:0,streak:0,longest:0,loginDays:0,lastLogin:null,completions:[],progCompletions:[],skips:[],activeP:null,doneP:[],fCat:'Alle',fDiff:'Alle',activeFBtn:'cat',ci:0,sf:'all'};
@@ -839,6 +872,76 @@ function confirmWette(){
   S.ci++;sv();rHome();rCard();
 }
 
+// Baseline quest done
+function baselineDone(qid){
+  const q=QL.find(x=>x.id===qid);
+  if(!q)return;
+  S.completions=S.completions||[];
+  S.completions.push({id:'c'+Date.now(),qid:q.id,cat:q.cat,diff:q.diff,ts:Date.now(),stress:1,outcome:'better',chips:['Hat gut getan'],proof:'',modifier:null,isNew:false,type:'lifestyle'});
+  S.reps=(S.reps||0)+1;
+  sv();rTopbar();rHome();
+}
+
+// I'm in a Situation — contextual situativ quests
+const SITUATION_CLUSTERS={
+  meeting:{label:'📋 Im Meeting',quests:['KW01','K05','K07','KW06'],desc:'Du bist gerade in einem Meeting oder kurz davor.'},
+  date:{label:'💫 Date / Begegnung',quests:['D09','D07','D03','D05'],desc:'Du bist gerade mit einer interessanten Frau oder auf einem Date.'},
+  conflict:{label:'⚡ Schwieriges Gespräch',quests:['KO01','KO02','M09','K06'],desc:'Du bist in einem Konflikt oder unangenehmen Gespräch.'},
+  social:{label:'👥 Soziale Situation',quests:['S09','S07','S06','D04'],desc:'Du bist gerade unter Leuten — Party, Event, Gruppe.'},
+};
+
+function imInASituation(){
+  // Check if wochenfokus has dating/social — highlight those clusters
+  const wf=getWochenfokus();
+  const wfCats=(wf||[]).flatMap(i=>WF_OPTIONS[i]?.cats||[]);
+  const hasDating=wfCats.includes('Dating');
+  const hasSocial=wfCats.includes('Sozial');
+  showSheet(`<div class="shdl"></div>
+    <div class="sht-t">⚡ In einer Situation</div>
+    <div class="sht-s">Was passiert gerade?</div>
+    <div class="sht-sc">
+      ${Object.entries(SITUATION_CLUSTERS).map(([key,cl])=>{
+        const isWfMatch=(key==='date'&&hasDating)||(key==='social'&&hasSocial);
+        return`<button class="acc-o" style="margin-bottom:9px;text-align:left;width:100%;${isWfMatch?'border-color:var(--g);background:var(--gb);':''}" onclick="showSituationQuests('${key}')">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div style="font-size:14px;font-weight:700">${cl.label}</div>
+            ${isWfMatch?'<span style="font-size:10px;font-weight:700;color:var(--g)">Wochenfokus ↑</span>':''}
+          </div>
+          <div style="font-size:12px;color:var(--t2);margin-top:2px">${cl.desc}</div>
+        </button>`;
+      }).join('')}
+    </div>`);
+}
+
+function showSituationQuests(key){
+  const cl=SITUATION_CLUSTERS[key];
+  if(!cl)return;
+  const quests=cl.quests.map(id=>QL.find(q=>q.id===id)).filter(Boolean);
+  showSheet(`<div class="shdl"></div>
+    <div class="sht-t">${cl.label}</div>
+    <div class="sht-s">${cl.desc}</div>
+    <div class="sht-sc">
+      ${quests.map(q=>{
+        const cc=CC[q.cat]||'#3D8C5E';
+        const dc=DS[q.diff]||{c:'#3D8C5E',bg:'#E8F5EE'};
+        return`<div style="background:var(--s);border:1.5px solid var(--bd);border-radius:16px;margin-bottom:11px;overflow:hidden">
+          <div style="height:4px;background:${cc}"></div>
+          <div style="padding:13px 15px">
+            <div style="display:flex;gap:6px;margin-bottom:7px">
+              <span class="tag" style="background:${cc}18;color:${cc};font-size:10px">${q.cat}</span>
+              <span class="tag" style="background:${dc.bg};color:${dc.c};font-size:10px">${q.diff}</span>
+            </div>
+            <div style="font-size:15px;font-weight:700;color:var(--t);margin-bottom:4px">${q.title}</div>
+            <div style="font-size:12px;color:var(--t2);line-height:1.5;margin-bottom:10px">${q.hook}</div>
+            ${q.ifthen?`<div style="font-size:12px;color:#2D7A50;font-style:italic;margin-bottom:10px">${q.ifthen}</div>`:''}
+            <button style="width:100%;background:var(--g);border:none;border-radius:10px;padding:10px;font-size:13px;font-weight:700;color:#fff;cursor:pointer;font-family:inherit" onclick="closeSheet();addToQ(QL.find(x=>x.id==='${q.id}'),getModifier('${q.cat}'))">Jetzt annehmen →</button>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+    <button class="btn-p btn-p-full" style="background:var(--s2);color:var(--t2);box-shadow:none;border:1px solid var(--bd);margin-top:4px" onclick="imInASituation()">← Zurück</button>`);
+}
+
 function rHome(){
   const h=new Date().getHours();
   document.getElementById('hg').textContent=h<12?'Guten Morgen':h<17?'Guten Tag':'Guten Abend';
@@ -847,8 +950,27 @@ function rHome(){
   document.getElementById('k-today').textContent=todayC;
   document.getElementById('k-streak').textContent=S.streak+'🔥';
   document.getElementById('k-total').textContent=(S.total||0)+(S.progDone||0);
+  rWochenfokus();
+  checkWochenfokusPrompt();
 
-  // ── Programme banner + today's prog quest ──
+  // ── Baseline Quest of the day ──
+  const hbl=document.getElementById('hbl');
+  const baselinePool=QL.filter(q=>q.cat==='Baseline');
+  if(baselinePool.length){
+    // Pick based on day so it stays consistent within a day
+    const dayIdx=Math.floor(Date.now()/864e5)%baselinePool.length;
+    const bq=baselinePool[dayIdx];
+    const todayBaselineDone=(S.completions||[]).some(c=>c.qid===bq.id&&new Date(c.ts).toDateString()===td);
+    hbl.innerHTML=`<div style="margin:10px 14px 0;background:var(--s);border-radius:16px;border:1px solid var(--bd);padding:13px 16px;box-shadow:0 1px 4px rgba(0,0,0,0.05)">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+        <div style="font-size:10px;font-weight:700;color:#059669;letter-spacing:.07em;text-transform:uppercase">⚡ Baseline heute</div>
+        ${todayBaselineDone?'<span style="font-size:11px;color:#059669;font-weight:700">✓ Erledigt</span>':''}
+      </div>
+      <div style="font-size:14px;font-weight:700;color:var(--t);margin-bottom:3px">${bq.title}</div>
+      <div style="font-size:12px;color:var(--t2);line-height:1.5;margin-bottom:${todayBaselineDone?'0':'10px'}">${bq.hook}</div>
+      ${todayBaselineDone?'':'<button style="background:#ECFDF5;border:1px solid #6EE7B7;border-radius:10px;padding:8px 14px;font-size:12px;font-weight:700;color:#059669;cursor:pointer;font-family:inherit;width:100%" onclick="baselineDone(\'${bq.id}\')">Erledigt ✓</button>'}
+    </div>`;
+  } else hbl.innerHTML='';
   const pb=document.getElementById('hpb');
   const hpq=document.getElementById('hpq');
   if(S.activeP){
@@ -970,10 +1092,11 @@ function confirmBack(id){
 
 // ═══ CARD STACK ══════════════════════════════════════
 function pool(){
-  // Use shuffled pool order if available
   const ids=S.shuffledPool||QL.map(q=>q.id);
   return ids.map(id=>QL.find(q=>q.id===id)).filter(q=>{
     if(!q)return false;
+    if(q.situativ)return false; // situativ quests only via "I'm in a Situation"
+    if(q.cat==='Baseline')return false; // baseline has own slot
     if(S.fCat!=='Alle'&&q.cat!==S.fCat)return false;
     if(S.fDiff!=='Alle'&&q.diff!==S.fDiff)return false;
     if((S.queue||[]).some(x=>x.quest.id===q.id))return false;
@@ -1232,7 +1355,7 @@ function addToQ(q,modifier){
 function openFSheet(which){
   S.activeFBtn=which;sv();
   const isCat=which==='cat';
-  const opts=isCat?['Alle','Sozial','Kommunikation','Mut','Dating','Karriere','Fokus','Nervensystem','Innenleben','Finanzen','Grenzen']:['Alle','Leicht','Mittel','Stark'];
+  const opts=isCat?['Alle','Sozial','Kommunikation','Mut','Dating','Karriere','Fokus','Nervensystem','Innenleben','Finanzen','Grenzen','Baseline']:['Alle','Leicht','Mittel','Stark'];
   const cur=isCat?S.fCat:S.fDiff;
   let tmp=cur;
   showSheet(`
@@ -1445,7 +1568,120 @@ function resetQuest(cid){
   sv();rStats();rHome();rTopbar();
 }
 
-// ═══ SMART SHUFFLE ═══════════════════════════════════
+// ═══ WOCHENFOKUS ════════════════════════════════════
+const WF_OPTIONS=[
+  {emoji:'💪',label:'Mut & Social',cats:['Sozial','Mut','Grenzen']},
+  {emoji:'💫',label:'Dating',cats:['Dating']},
+  {emoji:'💼',label:'Karriere',cats:['Karriere']},
+  {emoji:'💰',label:'Cashflow',cats:['Fokus','Finanzen']},
+  {emoji:'🏠',label:'Wohnung',cats:['Innenleben','Baseline']},
+  {emoji:'❤️',label:'Partnerschaft',cats:['Dating','Sozial']},
+  {emoji:'🏃',label:'Gesundheit',cats:['Nervensystem','Baseline']},
+  {emoji:'🧠',label:'Fokus & Output',cats:['Fokus','Karriere']},
+  {emoji:'🌱',label:'Nervensystem',cats:['Nervensystem']},
+  {emoji:'👥',label:'Freunde',cats:['Sozial','Innenleben']},
+];
+
+function getWochenfokus(){return S.wochenfokus||[];}
+
+function checkWochenfokusPrompt(){
+  const dow=new Date().getDay();
+  if(dow!==0)return; // only Sunday
+  const week=getISOWeek();
+  if(S.wfWeek===week)return; // already set this week
+  setTimeout(()=>showWochenfokusSheet(false),600);
+}
+
+function getISOWeek(){
+  const d=new Date();
+  d.setHours(0,0,0,0);
+  d.setDate(d.getDate()+3-(d.getDay()+6)%7);
+  const w=new Date(d.getFullYear(),0,4);
+  return 1+Math.round(((d-w)/864e5-3+(w.getDay()+6)%7)/7);
+}
+
+function showWochenfokusSheet(manual){
+  const cur=getWochenfokus();
+  let sel=[...cur];
+  showSheet(`
+    <div class="shdl"></div>
+    <div class="sht-t">Wochenfokus 🎯</div>
+    <div class="sht-s">Wähle 3 Bereiche für diese Woche. Der Stack passt sich an.</div>
+    <div class="sht-sc">
+      <div class="emo-grid" id="wf-grid">
+        ${WF_OPTIONS.map((o,i)=>`
+          <button class="emo-chip${cur.includes(i)?' on':''}" onclick="toggleWF(${i},this)">
+            <span class="emo">${o.emoji}</span>
+            <span class="elbl">${o.label}</span>
+          </button>`).join('')}
+      </div>
+      <div style="font-size:12px;color:var(--t3);text-align:center;margin-top:8px" id="wf-count">${cur.length}/3 gewählt</div>
+    </div>
+    <button class="btn-p btn-p-full" id="wf-save" onclick="saveWochenfokus()" style="${cur.length===3?'':'opacity:.5'}">Diese Woche starten →</button>
+  `);
+  window._wfSel=sel;
+  window.toggleWF=(i,el)=>{
+    const idx=window._wfSel.indexOf(i);
+    if(idx>-1){window._wfSel.splice(idx,1);el.classList.remove('on');}
+    else if(window._wfSel.length<3){window._wfSel.push(i);el.classList.add('on');}
+    const cnt=document.getElementById('wf-count');
+    const btn=document.getElementById('wf-save');
+    if(cnt)cnt.textContent=`${window._wfSel.length}/3 gewählt`;
+    if(btn)btn.style.opacity=window._wfSel.length===3?'1':'0.5';
+  };
+  window.saveWochenfokus=()=>{
+    S.wochenfokus=window._wfSel;
+    S.wfWeek=getISOWeek();
+    sv();closeSheet();rHome();buildShuffledPool();rCard();
+  };
+}
+
+function rWochenfokus(){
+  const w=document.getElementById('hwf');
+  if(!w)return;
+  const wf=getWochenfokus();
+  if(!wf.length){
+    w.innerHTML=`<div style="margin:10px 14px 0"><button style="width:100%;background:var(--s);border:1.5px dashed var(--bd2);border-radius:14px;padding:12px;font-size:13px;font-weight:600;color:var(--t3);cursor:pointer;font-family:inherit" onclick="showWochenfokusSheet(true)">+ Wochenfokus setzen</button></div>`;
+    return;
+  }
+  const emojis=wf.map(i=>WF_OPTIONS[i]?.emoji||'').join('  ');
+  const labels=wf.map(i=>WF_OPTIONS[i]?.label||'').join(' · ');
+  w.innerHTML=`<div class="wf-banner">
+    <div class="wf-left">
+      <span class="wf-label">Wochenfokus</span>
+      <span class="wf-emojis">${wf.map(i=>`<span title="${WF_OPTIONS[i]?.label}" onclick="showWFDetail(${i})" style="cursor:pointer">${WF_OPTIONS[i]?.emoji||''}</span>`).join('')}</span>
+    </div>
+    <button class="wf-edit" onclick="showWochenfokusSheet(true)">ändern</button>
+  </div>`;
+}
+
+function showWFDetail(idx){
+  const opt=WF_OPTIONS[idx];
+  if(!opt)return;
+  const quests=QL.filter(q=>opt.cats.includes(q.cat)&&!q.situativ&&q.cat!=='Baseline').slice(0,8);
+  showSheet(`
+    <div class="shdl"></div>
+    <div class="sht-t">${opt.emoji} ${opt.label}</div>
+    <div class="sht-s">Quests in diesem Fokusbereich</div>
+    <div class="sht-sc">
+      ${quests.map(q=>{
+        const cc=CC[q.cat]||'#3D8C5E';
+        const dc=DS[q.diff]||{c:'#3D8C5E',bg:'#E8F5EE'};
+        return`<div style="background:var(--s);border:1px solid var(--bd);border-radius:14px;margin-bottom:9px;overflow:hidden">
+          <div style="height:3px;background:${cc}"></div>
+          <div style="padding:11px 13px;display:flex;align-items:center;justify-content:space-between;gap:10px">
+            <div style="flex:1">
+              <div style="display:flex;gap:5px;margin-bottom:5px"><span class="tag" style="background:${cc}18;color:${cc};font-size:10px">${q.cat}</span><span class="tag" style="background:${dc.bg};color:${dc.c};font-size:10px">${q.diff}</span></div>
+              <div style="font-size:13px;font-weight:700;color:var(--t)">${q.title}</div>
+            </div>
+            <button style="background:var(--gb);border:1px solid var(--gm);border-radius:10px;padding:7px 12px;font-size:12px;font-weight:700;color:var(--g);cursor:pointer;font-family:inherit;flex-shrink:0" onclick="closeSheet();showAccF(QL.find(x=>x.id==='${q.id}'))">+</button>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+    <button class="btn-p btn-p-full" style="background:var(--s2);color:var(--t2);box-shadow:none;border:1px solid var(--bd)" onclick="closeSheet()">Schließen</button>
+  `);
+}
 function buildShuffledPool(){
   const skipCats={};
   (S.skips||[]).forEach(s=>{skipCats[s.cat]=(skipCats[s.cat]||0)+1;});
@@ -1478,6 +1714,22 @@ function buildShuffledPool(){
       if(qIdx>=lastIdx)score+=2; // same or harder: boost
       else score-=2; // easier: slight penalty
     }
+    // Wochenfokus boost
+    const wfBoostCats=(getWochenfokus()||[]).flatMap(i=>WF_OPTIONS[i]?.cats||[]);
+    if(wfBoostCats.includes(q.cat))score+=4;
+
+    // Weekday weighting — subtle, not forced
+    const dow=new Date().getDay(); // 0=Sun,1=Mon...6=Sat
+    const dowBoost={
+      1:['Nervensystem','Innenleben','Baseline'],    // Mon: foundation
+      2:['Sozial','Kommunikation'],                   // Tue: micro-social
+      3:['Mut','Fokus','Karriere'],                   // Wed: growth edge
+      4:['Karriere','Kommunikation','Grenzen'],       // Thu: status & space
+      5:['Dating','Sozial','Mut'],                    // Fri: high stakes
+    };
+    const boostCats=dowBoost[dow]||[];
+    if(boostCats.includes(q.cat))score+=3;
+    
     score+=Math.random()*0.9;
     return{q,score};
   }).filter(Boolean);
@@ -1561,12 +1813,24 @@ function confirmAdd(){
 }
 
 // ═══ REFLECTION ══════════════════════════════════════
-function showRef(q,modifier,onSave){
+const CHIPS_EXTINKTION=['Besser als gedacht','Leichter als erwartet','Kopf hat übertrieben','Unbehagen war aushaltbar','Würde es wiederholen','Schwieriger als gedacht'];
+const CHIPS_OUTPUT=['Fertiggestellt — fühlt sich gut an','Qualität war okay','Hat länger gedauert als erwartet','Widerstand war anfangs stark','Hätte früher anfangen sollen','Bin stolz auf das Ergebnis'];
+const CHIPS_LIFESTYLE=['Hat gut getan','War einfacher als gedacht','Werde es wiederholen','Hat mich geerdet','Kein großer Unterschied gespürt','Schwerer als erwartet'];
+
+function showRef(q, modifier, onSave){
+  const type=q.type||'extinktion';
   window.rat=5;window.sel=[];window.proof='';
+
+  if(type==='extinktion') showRefExtinktion(q,modifier,onSave);
+  else if(type==='output') showRefOutput(q,modifier,onSave);
+  else showRefLifestyle(q,modifier,onSave);
+}
+
+function showRefExtinktion(q,modifier,onSave){
   showSheet(`
     <div class="shdl"></div>
-    <div class="sht-t">Wie war's?</div>
-    <div class="sht-s">"${q.title}"${modifier?`<br><span style="color:var(--g);font-weight:600">+ ${modifier}</span>`:''}</div>
+    <div class="sht-t">Sensor-Check</div>
+    <div class="sht-s">"${q.title}"${modifier?`<br><span style="font-size:12px;color:var(--g);font-weight:600">+ ${modifier}</span>`:''}</div>
     <div class="sht-sc">
       <div class="ref-r">
         <div class="ref-rt"><span class="ref-rl">Anspannung vorher</span><span class="ref-rv" id="rv">5</span></div>
@@ -1574,24 +1838,90 @@ function showRef(q,modifier,onSave){
         <div class="ref-rll"><span>Kein Stress</span><span>Maximum</span></div>
       </div>
       <div class="ref-cl">Was war wahr?</div>
-      <div class="ref-chips">${CHIPS.map(c=>`<button class="rchip" onclick="togChip('${c}',this)">${c}</button>`).join('')}</div>
-      <div class="ref-pl">Was ist wirklich passiert?</div>
-      <textarea class="ref-proof" placeholder="Ein Satz. Für das Archiv der Unwahrheiten." oninput="window.proof=this.value"></textarea>
+      <div class="ref-chips">${CHIPS_EXTINKTION.map(c=>`<button class="rchip" onclick="togChip('${c}',this)">${c}</button>`).join('')}</div>
+      <div class="ref-pl">Was ist wirklich passiert? (Archiv der Unwahrheiten)</div>
+      <textarea class="ref-proof" placeholder="Ein Satz. Der Sensor hat gesagt X — in Wirklichkeit war Y." oninput="window.proof=this.value"></textarea>
+      <div style="margin-top:14px;margin-bottom:4px">
+        <div class="ref-cl" style="margin-bottom:6px">Was hat der innere Kritiker vorher gesagt?</div>
+        <textarea class="ref-proof" style="min-height:48px" placeholder="Optional — ein Satz was er geflüstert hat." oninput="window.critic=this.value"></textarea>
+      </div>
       <div class="ref-ins" id="ri"><p id="ri-t"></p></div>
     </div>
     <button class="btn-sv" id="bsv" onclick="saveRef()">Speichern</button>
   `);
+  setupRefChips(onSave,'extinktion');
+}
+
+function showRefOutput(q,modifier,onSave){
+  showSheet(`
+    <div class="shdl"></div>
+    <div class="sht-t">Output-Check</div>
+    <div class="sht-s">"${q.title}"${modifier?`<br><span style="font-size:12px;color:var(--g);font-weight:600">+ ${modifier}</span>`:''}</div>
+    <div class="sht-sc">
+      <div style="margin-bottom:16px">
+        <div class="ref-cl" style="margin-bottom:8px">Wie war der Prozess?</div>
+        <div class="ref-chips">${CHIPS_OUTPUT.map(c=>`<button class="rchip" onclick="togChip('${c}',this)">${c}</button>`).join('')}</div>
+      </div>
+      <div style="margin-bottom:16px">
+        <div class="ref-cl" style="margin-bottom:8px">Was hat es gebracht oder blockiert?</div>
+        <textarea class="ref-proof" placeholder="Optional — ein Satz was du daraus mitnimmst." oninput="window.proof=this.value"></textarea>
+      </div>
+      <div class="ref-ins" id="ri"><p id="ri-t"></p></div>
+    </div>
+    <button class="btn-sv" id="bsv" onclick="saveRef()">Speichern</button>
+  `);
+  setupRefChips(onSave,'output');
+}
+
+function showRefLifestyle(q,modifier,onSave){
+  showSheet(`
+    <div class="shdl"></div>
+    <div class="sht-t">Wie war's?</div>
+    <div class="sht-s">"${q.title}"${modifier?`<br><span style="font-size:12px;color:var(--g);font-weight:600">+ ${modifier}</span>`:''}</div>
+    <div class="sht-sc">
+      <div style="margin-bottom:16px">
+        <div class="ref-cl" style="margin-bottom:8px">Wie hat es sich angefühlt?</div>
+        <div class="ref-chips">${CHIPS_LIFESTYLE.map(c=>`<button class="rchip" onclick="togChip('${c}',this)">${c}</button>`).join('')}</div>
+      </div>
+      <textarea class="ref-proof" placeholder="Optional — kurze Notiz." oninput="window.proof=this.value" style="margin-top:4px"></textarea>
+      <div class="ref-ins" id="ri"><p id="ri-t"></p></div>
+    </div>
+    <button class="btn-sv" id="bsv" onclick="saveRef()">Speichern</button>
+  `);
+  setupRefChips(onSave,'lifestyle');
+}
+
+function setupRefChips(onSave, type){
   window.togChip=(c,el)=>{
     el.classList.toggle('on');
-    if(window.sel.includes(c))window.sel=window.sel.filter(x=>x!==c);else window.sel.push(c);
-    const b=document.getElementById('bsv'),ri=document.getElementById('ri'),rit=document.getElementById('ri-t');
+    if(window.sel.includes(c))window.sel=window.sel.filter(x=>x!==c);
+    else window.sel.push(c);
+    const b=document.getElementById('bsv');
+    const ri=document.getElementById('ri');
+    const rit=document.getElementById('ri-t');
     if(window.sel.length>0){
       b.classList.add('rdy');
-      const os=window.sel.some(c=>['Besser als gedacht','Leichter als erwartet','Kopf hat übertrieben','Unbehagen war aushaltbar'].includes(c));
-      ri.style.display='block';rit.textContent=os?`Sensor hat ${window.rat}/10 antizipiert. Realität war besser.`:'Gut gemacht. Jede Handlung baut Selbstwirksamkeit auf.';
-    }else{b.classList.remove('rdy');ri.style.display='none';}
+      if(type==='extinktion'){
+        const os=window.sel.some(c=>['Besser als gedacht','Leichter als erwartet','Kopf hat übertrieben','Unbehagen war aushaltbar'].includes(c));
+        ri.style.display='block';
+        rit.textContent=os?`Sensor hat ${window.rat}/10 antizipiert. Realität war besser. Muster aufgezeichnet.`:'Gut gemacht. Jede Handlung baut Selbstwirksamkeit auf.';
+      } else if(type==='output'){
+        ri.style.display='block';
+        rit.textContent='Output erzeugt. Das ist der einzige Weg wie Projekte vorankommen.';
+      } else {
+        ri.style.display='block';
+        rit.textContent='Kleine Handlungen summieren sich. Das Innenleben wird durch Tun gepflegt.';
+      }
+    } else {
+      b.classList.remove('rdy');
+      ri.style.display='none';
+    }
   };
-  window.saveRef=()=>{if(!window.sel.length)return;closeSheet();onSave(window.rat,window.sel,window.proof);};
+  window.saveRef=()=>{
+    if(!window.sel.length)return;
+    closeSheet();
+    onSave(window.rat,window.sel,window.proof);
+  };
 }
 
 // ═══ CELEBRATION ═════════════════════════════════════
