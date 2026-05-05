@@ -794,7 +794,10 @@ body{background:var(--app-grad);font-family:var(--font-sans);-webkit-font-smooth
 .qc-pill--mut{background:#DC2626}
 .qc-pill--action{background:#D97706}
 .qc-pill--fund{background:#059669}
+.qc-pill--fun{background:#EC4899}
 .qc-pill--method{background:#7C3AED}
+.qc-variant-list{margin:0;padding-left:18px;font-family:var(--font-sans);font-size:var(--fs-body);font-weight:500;color:#111827;line-height:1.55}
+.qc-variant-list li{margin-bottom:6px}
 .qc-method-row{
   width:100%;
   border:none;
@@ -878,6 +881,18 @@ body{background:var(--app-grad);font-family:var(--font-sans);-webkit-font-smooth
 .qc-bubble--modminus{background:#F3F4F6;color:var(--t);border:1px solid var(--border)}
 .qc-mod-hint{font-weight:800;margin-right:6px;font-size:var(--fs-card-hd);vertical-align:middle}
 .qc-xp-pill{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:99px;background:linear-gradient(90deg,#C4B5FD 0%,#F0ABFC 50%,#FBCFE8 100%);color:#fff;font-family:var(--font-sans);font-size:var(--fs-screen-sub);font-weight:800;margin-top:2px;box-shadow:0 6px 18px rgba(167,139,250,0.28)}
+.qc-lock-banner{
+  font-family:var(--font-sans);
+  font-size:13px;
+  font-weight:600;
+  color:var(--t2);
+  line-height:1.45;
+  background:rgba(234,179,8,0.1);
+  border:1px solid rgba(234,179,8,0.28);
+  border-radius:14px;
+  padding:12px 14px;
+  margin-bottom:14px;
+}
 .qc-foot{
   flex-shrink:0;
   padding:14px 0 calc(var(--safe-b) + 14px);
@@ -1147,109 +1162,37 @@ input[type=range]{width:100%;accent-color:var(--t);cursor:pointer;height:4px}
 
 <div id="modal"></div>
 <div id="cel"></div>
+<script type="application/json" id="rt-quests-json">[{"id":"RT00_01","level":0,"cat":"Präsenz","title":"Blickkontakt nicht sofort abbrechen","action":"Wenn sich heute zufällig Blickkontakt ergibt, halte ihn eine halbe Sekunde länger als dein Reflex will. Dann schaust du ruhig weiter.","variants":["Bei einer fremden Person auf der Straße.","Bei einer Serviceperson beim Bestellen.","Bei einer Frau, die dir auffällt.","In einem Café oder Laden.","Im Fitnessstudio oder in der Umkleide."],"goal":"Das Ziel ist nicht starren. Das Ziel ist nicht sofort ausweichen.","safety":"No-Go: Aggressiv starren oder jemanden fixieren.","modminus":"Nur bei kurzer Service-Interaktion.","modplus":"Mit leichtem Lächeln halten.","style":"classic"},{"id":"RT00_02","level":0,"cat":"Präsenz","title":"Blickkontakt + leichtes Lächeln","action":"Wenn du heute mit einer sympathischen Person oder Frau kurzen Blickkontakt hast, halte ihn kurz, lächle leicht und schau ruhig weiter.","variants":["Beim Vorbeigehen auf der Straße.","Im Café.","Im Supermarkt.","Im Gym.","An der Kasse."],"goal":"Das Ziel ist nicht flirten müssen. Das Ziel ist freundlich sichtbar bleiben.","safety":"No-Go: Hinterher starren oder übertreiben.","modminus":"Nur leicht lächeln.","modplus":"Zusätzlich kurz Hallo sagen.","style":"classic"},{"id":"RT00_03","level":0,"cat":"Präsenz","title":"Warten ohne Handy-Flucht","action":"Setz dich heute 3 Minuten in ein Café, an eine Haltestelle oder auf eine Bank und nimm dein Handy nicht raus. Schau dich ruhig um und bleib im Moment.","variants":["An einer Haltestelle.","In einem Café.","Auf einer Parkbank.","In einer Warteschlange.","In einer Lobby oder Wartezone."],"goal":"Das Ziel ist nicht Meditation. Das Ziel ist Anwesenheit ohne Ablenkung aushalten.","safety":"No-Go: Sofort Handy checken sobald es unangenehm wird.","modminus":"1 Minute ohne Handy.","modplus":"5 Minuten ohne Handy und ohne Kopfhörer.","style":"classic"},{"id":"RT00_04","level":0,"cat":"Präsenz","title":"Augenfarbe-Check","action":"Halte beim Bestellen oder Bezahlen genug Blickkontakt, dass du danach sagen könntest, welche Augenfarbe die Person hatte.","variants":["Beim Kaffee bestellen.","Beim Bezahlen im Supermarkt.","Beim Gespräch mit einem Kellner.","Beim Empfang oder Check-in.","Bei einer kurzen Frage im Laden."],"goal":"Das Ziel ist nicht starren. Das Ziel ist präsent bleiben statt ausweichen.","safety":"No-Go: Unnatürlich fixieren.","modminus":"Nur einmal kurz bewusst Blickkontakt.","modplus":"Während eines ganzen Satzes Blickkontakt halten.","style":"classic"},{"id":"RT00_05","level":0,"cat":"Präsenz","title":"Hallo in halb-offenen Räumen","action":"Sag heute einmal klar Hallo in einer Situation, wo es passen würde, aber viele es vermeiden.","variants":["Im Aufzug.","In der Fitness-Umkleide.","Im Hausflur.","In einem kleinen Laden.","Im Wartezimmer.","Beim Betreten eines kleinen Cafés."],"goal":"Das Ziel ist nicht ein Gespräch. Das Ziel ist soziale Initiative in einem kleinen Moment.","safety":"No-Go: Nuschelnd oder mit Blick nach unten grüßen.","modminus":"Nur nicken und lächeln.","modplus":"Hallo sagen und Blickkontakt halten.","style":"classic"},{"id":"RT00_06","level":0,"cat":"Präsenz","title":"Ohne Weichmacher bestellen","action":"Bestell heute einmal klar und ruhig: „Ich nehme bitte X.“ Kein vielleicht, kein könnte ich eventuell, kein leiser Ton.","variants":["Im Café.","Beim Bäcker.","Im Imbiss.","Im Restaurant.","An einer Bar."],"goal":"Das Ziel ist nicht unhöflich sein. Das Ziel ist klar sprechen ohne dich klein zu machen.","safety":"No-Go: Danach lachen oder dich entschuldigen.","modminus":"Nur einen Satz klar sagen.","modplus":"Zusätzlich 20% langsamer sprechen.","style":"classic"},{"id":"RT01_01","level":1,"cat":"Mini-Kontakt","title":"Frag nach einer unnötigen Info","action":"Sprich heute eine fremde Person an und frag nach einer einfachen Information, die du eigentlich selbst herausfinden könntest.","variants":["Frag nach der Uhrzeit, obwohl du dein Handy hast.","Frag nach dem Weg zu einem Ort in der Nähe.","Frag nach Öffnungszeiten, obwohl sie irgendwo stehen.","Frag nach dem Preis, obwohl er angeschrieben ist.","Frag nach einem Produkt, obwohl du es fast siehst.","Frag, ob du hier richtig bist für eine bestimmte Richtung."],"goal":"Das Ziel ist nicht die Information. Das Ziel ist den ersten Satz zu einem fremden Menschen sagen.","safety":"No-Go: Direkt erklären, dass du es eigentlich weißt.","modminus":"Frag eine Serviceperson.","modplus":"Frag einen Passanten auf der Straße.","style":"classic"},{"id":"RT01_02","level":1,"cat":"Mini-Kontakt","title":"Frag nach einer Empfehlung","action":"Frag heute eine fremde Person oder Serviceperson nach einer persönlichen Empfehlung.","variants":["Frag im Café: „Was trinken Sie hier selbst am liebsten?“","Frag im Restaurant: „Was würden Sie persönlich nehmen?“","Frag einen Passanten nach einem Café-Tipp.","Frag im Buchladen nach dem Lieblingsbuch eines Mitarbeiters.","Frag jemanden nach einem Song, den du heute hören solltest.","Frag im Laden, welches Produkt die Person besser findet."],"goal":"Das Ziel ist nicht die Empfehlung. Das Ziel ist jemanden kurz in deinen Moment einzubinden.","safety":"No-Go: Die Frage stellen und sofort weglaufen.","modminus":"Frag eine Serviceperson.","modplus":"Frag eine fremde Person außerhalb eines Servicekontexts.","style":"classic"},{"id":"RT01_03","level":1,"cat":"Mini-Kontakt","title":"Teile einen Situationssatz","action":"Sag heute zu einer fremden Person einen einfachen Satz über etwas, das ihr beide gerade wahrnehmt.","variants":["In der Warteschlange: „Heute ist hier echt viel los.“","Im Aufzug: „Der fährt heute aber langsam.“","Beim Hund: „Der hat ja richtig Energie.“","Im Café: „Die Musik hier ist heute echt gut.“","Draußen: „Das Wetter weiß heute auch nicht, was es will.“","In der Bahn: „Heute ist es ungewöhnlich voll.“"],"goal":"Das Ziel ist nicht ein Gespräch. Das Ziel ist einen sozialen Ball kurz ins Feld werfen.","safety":"No-Go: Nach dem Satz sofort wegschauen.","modminus":"Nur bei einer harmlosen Situation.","modplus":"Eine kleine Folgefrage anhängen.","style":"classic"},{"id":"RT01_04","level":1,"cat":"Mini-Kontakt","title":"Frag nach einer kleinen Entscheidung","action":"Bitte heute jemanden kurz um Hilfe bei einer kleinen Entscheidung.","variants":["„Würden Sie eher das oder das nehmen?“","„Wirkt das eher casual oder schick?“","„Welches Foto wirkt sympathischer?“","„Welches Café würden Sie nehmen?“","„Apfel oder Banane?“","„Welche Farbe finden Sie besser?“"],"goal":"Das Ziel ist nicht die Entscheidung. Das Ziel ist jemanden aktiv einbinden.","safety":"No-Go: Sofort erklären, dass es egal ist.","modminus":"Frag eine Serviceperson.","modplus":"Frag einen Fremden auf der Straße.","style":"classic"},{"id":"RT01_05","level":1,"cat":"Mini-Kontakt","title":"Mach ein konkretes kleines Lob","action":"Sag heute einer Person ein kurzes, konkretes Lob für etwas, das dir wirklich auffällt.","variants":["„Der Kaffee war richtig gut.“","„Sie waren gerade echt freundlich.“","„Die Musik hier passt richtig gut.“","„Die Einrichtung hier ist schön.“","„Das ging gerade echt schnell, danke.“","„Coole Jacke.“"],"goal":"Das Ziel ist nicht schmeicheln. Das Ziel ist etwas Positives aussprechen, statt es nur zu denken.","safety":"No-Go: Danach lachen oder es kleinmachen.","modminus":"Lob an Serviceperson.","modplus":"Lob an fremde Person im Vorbeigehen.","style":"classic"},{"id":"RT02_01","level":2,"cat":"Kleine Bitte","title":"Bitte um ein kleines Extra","action":"Frag heute bei einer Bestellung nach einem kleinen Extra, das nicht automatisch dabei ist.","variants":["Frag nach einem Glas Leitungswasser.","Frag nach einer extra Serviette.","Frag nach Eiswürfeln.","Frag nach Zitrone.","Frag nach extra Sauce.","Frag nach einer kleinen Tüte oder Verpackung."],"goal":"Das Ziel ist nicht das Extra. Das Ziel ist aktiv mehr verlangen als Standard.","safety":"No-Go: Dich sofort entschuldigen, wenn die Person zögert.","modminus":"Frag nach etwas sehr Normalem.","modplus":"Frag nach etwas leicht Ungewöhnlichem.","style":"classic"},{"id":"RT02_02","level":2,"cat":"Kleine Bitte","title":"Bitte um kleine Hilfe","action":"Bitte heute eine fremde Person um eine kleine konkrete Hilfe.","variants":["Frag, ob jemand dir ein Foto machen kann.","Frag, ob jemand kurz einen Stift hat.","Frag, ob jemand dir Münzen wechseln kann.","Frag, ob jemand kurz auf deine Tasche schaut, während du etwas holst.","Frag, ob jemand dir kurz eine Richtung bestätigt.","Frag, ob jemand dir kurz etwas vom oberen Regal gibt."],"goal":"Das Ziel ist nicht die Hilfe. Das Ziel ist die Bitte ruhig stellen.","safety":"No-Go: Wertgegenstände oder unangenehme Nähe verlangen.","modminus":"Frag Servicepersonal.","modplus":"Frag einen Passanten.","style":"classic"},{"id":"RT02_03","level":2,"cat":"Kleine Bitte","title":"Frag nach einer Sonderlösung","action":"Frag heute freundlich, ob etwas leicht anders möglich ist als vorgesehen.","variants":["Frag, ob du ein Gericht anders kombinieren kannst.","Frag, ob du den ruhigsten Tisch bekommen kannst.","Frag, ob du kurz dein Handy laden darfst.","Frag, ob du etwas probieren darfst.","Frag, ob du eine kleinere Portion bekommen kannst.","Frag, ob du eine Sache kurz sehen oder testen darfst."],"goal":"Das Ziel ist nicht die Sonderlösung. Das Ziel ist vom Standard abweichen und fragen.","safety":"No-Go: Bei der ersten Unsicherheit sofort zurückrudern.","modminus":"Frag nach einer plausiblen Sonderlösung.","modplus":"Frag nach einer ungewöhnlichen Sonderlösung.","style":"classic"},{"id":"RT02_04","level":2,"cat":"Kleine Bitte","title":"Frag nach einem kleinen Vorteil","action":"Frag heute beim Bezahlen oder Bestellen nach einem kleinen Vorteil, Rabatt oder Deal.","variants":["„Gibt es heute einen kleinen Rabatt?“","„Gibt es einen geheimen Deal, den ich kennen sollte?“","„Gibt es heute etwas gratis dazu?“","„Gibt es einen Sympathie-Rabatt?“","„Gibt es einen Vorteil, wenn ich direkt bar zahle?“","„Kann man da preislich noch etwas machen?“"],"goal":"Das Ziel ist nicht der Rabatt. Das Ziel ist die Frage stellen und ein Nein entspannt annehmen.","safety":"No-Go: Sofort sagen: „War nur Spaß.“","modminus":"Frag spielerisch bei kleinem Betrag.","modplus":"Frag ernst bei einer offiziellen Kasse.","style":"classic"},{"id":"RT02_05","level":2,"cat":"Kleine Bitte","title":"Bitte um eine Mini-Ausnahme","action":"Frag heute freundlich nach einer kleinen Ausnahme, ohne dich dafür zu entschuldigen.","variants":["„Wäre es ausnahmsweise möglich, das so zu machen?“","„Könnte ich das kurz testen?“","„Darf ich kurz sehen, wie das gemacht wird?“","„Könnten Sie das heute einmal anders machen?“","„Gibt es eine flexible Lösung?“","„Wäre eine kleine Ausnahme drin?“"],"goal":"Das Ziel ist nicht die Ausnahme. Das Ziel ist eine Bitte stellen, die abgelehnt werden darf.","safety":"No-Go: Die Bitte als Scherz tarnen.","modminus":"Frag bei einer kleinen Sache.","modplus":"Frag bei einer offiziellen Person.","style":"classic"},{"id":"RT03_01","level":3,"cat":"Meinung & Feedback","title":"Frag nach Feedback zu deinem Auftreten","action":"Frag nach einer kurzen Interaktion eine Person nach 10 Sekunden ehrlichem Feedback dazu, wie du gerade gewirkt hast.","variants":["„Kurze Frage: Wirkte ich gerade klar oder unsicher?“","„War meine Stimme gut hörbar?“","„Kam meine Frage normal rüber?“","„Wirkte ich eher entspannt oder nervös?“","„Darf ich kurz Feedback haben, wie ich gerade gewirkt habe?“"],"goal":"Das Ziel ist nicht gutes Feedback. Das Ziel ist Bewertung zulassen.","safety":"No-Go: Die Antwort sofort erklären oder verteidigen.","modminus":"Frag jemanden, der dir sympathisch wirkt.","modplus":"Frag eine fremde Person.","style":"classic"},{"id":"RT03_02","level":3,"cat":"Meinung & Feedback","title":"Frag nach Meinung zu etwas Sichtbarem","action":"Frag heute jemanden nach ehrlicher Meinung zu etwas, das mit dir zu tun hat.","variants":["Frag nach deinem Outfit.","Frag nach einem Profilfoto.","Frag nach einer kurzen Bio.","Frag nach einer Idee.","Frag nach einem Satz oder Titel.","Frag nach deiner Stimme oder Wirkung."],"goal":"Das Ziel ist nicht die perfekte Meinung. Das Ziel ist dich selbst kurz bewerten lassen.","safety":"No-Go: Nur nach Lob suchen.","modminus":"Frag jemanden, den du ein bisschen kennst.","modplus":"Frag eine fremde Person.","style":"classic"},{"id":"RT03_03","level":3,"cat":"Meinung & Feedback","title":"Nimm eine fremde Empfehlung wirklich an","action":"Frag heute eine Serviceperson nach ihrer persönlichen Empfehlung und nimm diese dann wirklich.","variants":["Lieblingskaffee.","Lieblingsgericht.","Lieblingsdrink.","Lieblingsbuch.","Lieblingsprodukt.","Lieblingsdessert."],"goal":"Das Ziel ist nicht die beste Wahl. Das Ziel ist Kontrolle abgeben.","safety":"No-Go: Nach der Empfehlung doch wieder deine sichere Option nehmen.","modminus":"Nimm eine kleine Empfehlung.","modplus":"Nimm etwas, das du normalerweise nicht wählen würdest.","style":"classic"},{"id":"RT03_04","level":3,"cat":"Meinung & Feedback","title":"Lass einen Fremden entscheiden","action":"Lass heute eine fremde Person eine kleine Entscheidung für dich treffen.","variants":["Welchen Kaffee du nimmst.","Welche Süßigkeit du kaufst.","Welchen Song du hörst.","Welchen Weg du nimmst.","Welches Foto du nutzt.","Welche Farbe du wählst."],"goal":"Das Ziel ist nicht die Entscheidung. Das Ziel ist Kontrolle für einen kleinen Moment loslassen.","safety":"No-Go: Danach sofort alles ändern.","modminus":"Nur zwischen zwei Optionen wählen lassen.","modplus":"Die Person komplett frei entscheiden lassen.","style":"classic"},{"id":"RT04_01","level":4,"cat":"Sichtbarkeit","title":"Laut und langsam bestellen","action":"Bestell heute bewusst 20% lauter und langsamer als sonst. Nicht nuscheln, nicht kleiner werden.","variants":["Im Café.","Beim Bäcker.","Im Restaurant.","An der Bar.","Im Imbiss."],"goal":"Das Ziel ist nicht laut sein. Das Ziel ist klar hörbar sein ohne dich zu entschuldigen.","safety":"No-Go: Danach leiser werden, wenn jemand schaut.","modminus":"Nur einen Satz lauter sprechen.","modplus":"Die ganze Bestellung ruhig und klar halten.","style":"classic"},{"id":"RT04_02","level":4,"cat":"Sichtbarkeit","title":"Solo-Präsenz ohne Handy","action":"Setz dich heute allein an einen sichtbaren Platz und nimm 5 Minuten kein Handy raus.","variants":["Zentraler Tisch im Café.","Bank in der Fußgängerzone.","Tisch im Foodcourt.","Platz an der Bar.","Allein im Restaurant."],"goal":"Das Ziel ist nicht entspannen. Das Ziel ist sichtbar allein sein ohne Schutz.","safety":"No-Go: Handy, Kopfhörer oder Buch als Schutz benutzen.","modminus":"3 Minuten.","modplus":"10 Minuten.","style":"classic"},{"id":"RT04_03","level":4,"cat":"Sichtbarkeit","title":"Kompliment-Drop","action":"Geh auf eine Person zu, sag ein kurzes konkretes Kompliment und geh danach ruhig weiter.","variants":["„Coole Jacke.“","„Dein Stil sieht richtig gut aus.“","„Die Schuhe sind stark.“","„Das Outfit passt richtig gut.“","„Du hast eine gute Ausstrahlung.“"],"goal":"Das Ziel ist nicht die Reaktion. Das Ziel ist etwas Positives direkt aussprechen.","safety":"No-Go: Danach lachen, relativieren oder hektisch fliehen.","modminus":"Bei jemandem, den du ein bisschen kennst.","modplus":"Bei einer fremden Person.","style":"classic"},{"id":"RT04_04","level":4,"cat":"Sichtbarkeit","title":"Foto-Request","action":"Frag heute eine fremde Person, ob sie kurz ein Foto von dir machen kann.","variants":["Vor einem Gebäude.","In einem Café.","An einem schönen Spot.","Im Park.","In einer Einkaufsstraße."],"goal":"Das Ziel ist nicht das Foto. Das Ziel ist einen Fremden aktiv in deine Sache einbinden.","safety":"No-Go: Direkt sagen, dass es egal ist.","modminus":"Frag eine Person, die entspannt wirkt.","modplus":"Sag genau, wie das Foto aussehen soll.","style":"classic"},{"id":"RT04_05","level":4,"cat":"Ablehnung","title":"Frag nach 1 Euro für etwas Banales","action":"Frag heute einen Passanten freundlich, ob er dir 1 Euro schenken kann — für ein Eis, einen Kaffee oder etwas Banales.","variants":["„Könnten Sie mir 1 Euro für ein Eis schenken?“","„Haben Sie zufällig 1 Euro für meinen Kaffee übrig?“","„Ich sammle gerade 1 Euro für einen Snack.“"],"goal":"Das Ziel ist nicht der Euro. Das Ziel ist ein mögliches Nein ruhig aushalten.","safety":"No-Go: Druck machen oder mitleidig wirken.","modminus":"Frag im Freundeskreis absurd.","modplus":"Frag einen fremden Passanten.","style":"classic"},{"id":"RT04_06","level":4,"cat":"Ablehnung","title":"Frag nach einem Blick hinter die Kulissen","action":"Frag in einem Café, Laden oder Servicepunkt, ob du kurz sehen darfst, wie etwas hinter den Kulissen aussieht.","variants":["„Darf ich kurz sehen, wie der Kaffee gemacht wird?“","„Darf ich kurz hinter die Theke schauen?“","„Darf ich sehen, wie ihr das zubereitet?“","„Darf ich kurz einen Blick in den Arbeitsbereich werfen?“"],"goal":"Das Ziel ist nicht der Blick. Das Ziel ist eine ungewöhnliche Bitte ruhig stellen.","safety":"No-Go: Sofort erklären, dass es nur eine Challenge ist.","modminus":"Frag nach Erklärung statt Blick.","modplus":"Frag wirklich nach kurzem Blick.","style":"classic"},{"id":"RT04_07","level":4,"cat":"Ablehnung","title":"Frag, ob du dich dazusetzen darfst","action":"Frag jemanden, der allein an einem größeren Tisch sitzt, ob du dich kurz dazusetzen darfst.","variants":["Im Café.","In einer Mensa.","In einem Foodcourt.","Im Park an einer Bank.","In einer Bibliothek oder Coworking-Zone."],"goal":"Das Ziel ist nicht der Platz. Das Ziel ist eine soziale Grenze freundlich testen.","safety":"No-Go: Aufdringlich bleiben, wenn die Person nein sagt.","modminus":"Frag, ob der Platz frei ist.","modplus":"Frag, ob du dich wirklich kurz dazusetzen darfst.","style":"classic"},{"id":"RT04_08","level":4,"cat":"Ablehnung","title":"Frag nach einer kleinen Ausnahme","action":"Frag heute nach einer kleinen Ausnahme, ohne dich lang zu erklären.","variants":["„Könnten Sie heute eine kleine Ausnahme machen?“","„Wäre das ausnahmsweise möglich?“","„Gibt es irgendeine flexible Lösung?“","„Kann man das einmal anders machen?“"],"goal":"Das Ziel ist nicht die Ausnahme. Das Ziel ist die Frage stehen lassen.","safety":"No-Go: Sofort zurückrudern, wenn die Person nachfragt.","modminus":"Frag bei einer kleinen Sache.","modplus":"Frag bei einer offiziellen Person.","style":"classic"},{"id":"RT05_01","level":5,"cat":"Fun Mode","title":"Frag nach einem Burger Refill","action":"Frag bei Fast-Food oder Imbiss höflich, ob es für den Burger auch ein kostenloses Refill gibt wie beim Getränk.","variants":["Burger Refill.","Pommes Refill.","Döner Refill.","Croissant Refill.","Kaffee mit unendlichem Nachschub."],"goal":"Das Ziel ist nicht das Refill. Das Ziel ist eine absurde Frage mit ernstem Gesicht stellen.","safety":"No-Go: Personal lächerlich machen oder provozieren.","modminus":"Frag mit leichtem Lächeln.","modplus":"Frag völlig ernst.","style":"fun"},{"id":"RT05_02","level":5,"cat":"Fun Mode","title":"Frag nach der Glücksmomente-Abteilung","action":"Frag im Supermarkt oder Laden ernst, wo du die Abteilung für Glücksmomente findest.","variants":["Glücksmomente.","Motivation zum Mitnehmen.","Selbstvertrauen in Dosen.","Mut für unterwegs.","Gute Laune im Angebot."],"goal":"Das Ziel ist nicht die Antwort. Das Ziel ist eine absurde Frage ohne Erklärung aushalten.","safety":"No-Go: Danach sofort lachen und erklären.","modminus":"Frag mit freundlichem Lächeln.","modplus":"Frag komplett ernst.","style":"fun"},{"id":"RT05_03","level":5,"cat":"Fun Mode","title":"High-Five Lotto","action":"Lauf mit erhobener Hand durch einen belebten Ort und schau, wer im Vorbeigehen einschlägt.","variants":["Fußgängerzone.","Uni-Campus.","Park.","Event-Warteschlange.","Vor einem Stadion oder Konzert."],"goal":"Das Ziel ist nicht das High-Five. Das Ziel ist sichtbar spielerisch sein.","safety":"No-Go: Menschen berühren, die nicht reagieren.","modminus":"Nur eine Person aktiv fragen.","modplus":"Mit erhobener Hand 20 Meter gehen.","style":"fun"},{"id":"RT05_04","level":5,"cat":"Fun Mode","title":"Ampel-Klatscher","action":"Klatsche einmal laut in die Hände und sag „Ja!“, genau wenn eine Ampel auf Grün springt.","variants":["An einer Fußgängerampel.","An einer kleinen Kreuzung.","Mit anderen Wartenden.","Allein an der Ampel.","Nach langer Wartezeit."],"goal":"Das Ziel ist nicht feiern. Das Ziel ist kurz peinlich sein und normal weitergehen.","safety":"No-Go: Andere erschrecken oder anschreien.","modminus":"Nur leise „Yes“ sagen.","modplus":"Klatschen und sichtbar freuen.","style":"fun"},{"id":"RT05_05","level":5,"cat":"Fun Mode","title":"Zeitreisender","action":"Frag jemanden ernst, welches Jahr wir gerade haben. Reagiere kurz überrascht und geh dann ruhig weiter.","variants":["„Welches Jahr haben wir gerade?“","„Ist es wirklich schon 2026?“","„Bin ich hier richtig in diesem Jahr?“"],"goal":"Das Ziel ist nicht Schauspiel. Das Ziel ist eine absurde soziale Situation ruhig halten.","safety":"No-Go: Menschen verfolgen, erschrecken oder lange irritieren.","modminus":"Frag eine Serviceperson spielerisch.","modplus":"Frag eine fremde Person draußen.","style":"fun"},{"id":"RT05_06","level":5,"cat":"Fun Mode","title":"Sieges-Kaffee","action":"Wenn du deinen Kaffee oder dein Essen bekommst, sag deutlich: „Yes, geschafft.“ Dann lächelst du und bedankst dich normal.","variants":["Beim Kaffee.","Beim Döner.","Beim Eis.","Beim Bäcker.","Beim Take-away."],"goal":"Das Ziel ist nicht Theater. Das Ziel ist einen kleinen absurden Moment erzeugen und nicht erklären.","safety":"No-Go: Zu laut oder störend werden.","modminus":"Nur leise „Yes“ sagen.","modplus":"Mit kleiner Siegergeste.","style":"fun"}]</script>
 <script>
-const QL = [
-  {id:'L0_01',level:0,title:'Nicken im Vorbeigehen',action:'Nicke heute 3 fremden Personen im Vorbeigehen freundlich zu.',goal:'Das Ziel ist nicht die Reaktion. Das Ziel ist die Initiative setzen.',style:'classic'},
-  {id:'L0_02',level:0,title:'Blickkontakt halten',action:'Halte bei einem kurzen Blickkontakt mit einem Passanten einen Moment länger stand — und schau dann ruhig weiter.',goal:'Das Ziel ist nicht einschüchtern. Das Ziel ist nicht sofort wegzuschauen.',style:'classic'},
-  {id:'L0_03',level:0,title:'Aufrechter Gang',action:'Geh heute bewusst aufrecht und langsam durch einen Laden, ein Café oder eine Lobby. Schultern zurück, Blick nach vorne.',goal:'Das Ziel ist nicht auffallen. Das Ziel ist Raum einnehmen ohne Entschuldigung.',style:'classic'},
-  {id:'L0_04',level:0,title:'Ohne Handy warten',action:'Warte heute in einer Schlange oder an einer Haltestelle ohne dein Handy zu checken. Einfach da sein.',goal:'Das Ziel ist nicht langweilen. Das Ziel ist Anwesenheit aushalten.',style:'classic'},
-  {id:'L0_05',level:0,title:'Bewusst eintreten',action:'Betritt einen Laden oder ein Café bewusst aufrecht — Blick nach vorne statt nach unten.',goal:'Das Ziel ist nicht performen. Das Ziel ist den ersten Moment nicht wegducken.',style:'classic'},
-  {id:'L0_06',level:0,title:'Blickkontakt beim Bezahlen',action:'Halte beim Bezahlen kurz Blickkontakt mit der Serviceperson und sag klar Danke.',goal:'Das Ziel ist nicht Freundschaft. Das Ziel ist nicht ausweichen.',style:'classic'},
-  {id:'L0_07',level:0,title:'Ruhig stehen bleiben',action:'Bleib nach einer kurzen Interaktion eine Sekunde ruhig stehen statt sofort hektisch wegzugehen.',goal:'Das Ziel ist nicht warten. Das Ziel ist die Situation nicht sofort flüchten.',style:'classic'},
-  {id:'L0_08',level:0,title:'Raum scannen',action:'Schau dich beim Betreten eines Raumes bewusst einmal ruhig um. Nicht sofort aufs Handy.',goal:'Das Ziel ist nicht beobachten. Das Ziel ist präsent ankommen.',style:'classic'},
-  {id:'L0_09',level:0,title:'Deutlich Danke',action:'Sag heute 3 mal deutlich Danke statt leise zu murmeln. Laut genug dass die Person es klar hört.',goal:'Das Ziel ist nicht laut sein. Das Ziel ist hörbar existieren.',style:'classic'},
-  {id:'L0_10',level:0,title:'Zuerst grüßen',action:'Grüße heute eine Serviceperson klar und hörbar zuerst — bevor sie dich grüßt.',goal:'Das Ziel ist nicht Eindruck machen. Das Ziel ist die Initiative nicht abwarten.',style:'classic'},
-  {id:'L0_11',level:0,title:'Ganze Sätze sprechen',action:'Antworte heute bei einer Service-Interaktion mit einem vollständigen Satz statt nur einem Wort.',goal:'Das Ziel ist nicht reden. Das Ziel ist nicht auf Minimum schrumpfen.',style:'classic'},
-  {id:'L0_12',level:0,title:'Schönen Tag wünschen',action:'Sag beim Verlassen eines Ladens oder Cafés hörbar Schönen Tag noch zum Personal.',goal:'Das Ziel ist nicht beliebt sein. Das Ziel ist eine Handlung die sich komisch anfühlt trotzdem tun.',style:'classic'},
-  {id:'L0_13',level:0,title:'Danke statt Sorry',action:'Ersetze heute bei einer kleinen Verzögerung oder einem Missgeschick Sorry durch Danke für die Geduld.',goal:'Das Ziel ist nicht arrogant sein. Das Ziel ist aufhören sich reflexartig zu entschuldigen.',style:'classic'},
-  {id:'L0_14',level:0,title:'Direkt bestellen',action:'Bestell heute ohne ich hätte vielleicht gerne oder wäre es möglich. Sag direkt Ich nehme bitte.',goal:'Das Ziel ist nicht unhöflich sein. Das Ziel ist ohne Weichmacher sprechen.',style:'classic'},
-  {id:'L0_15',level:0,title:'Klar nachfragen',action:'Wenn du heute etwas nicht verstanden hast, frag einmal klar nach statt so zu tun als wäre alles klar.',goal:'Das Ziel ist nicht stören. Das Ziel ist nicht aus Scham schweigen.',style:'classic'},
-  {id:'L0_16',level:0,title:'Erst sprechen dann zahlen',action:'Sag beim Bezahlen zuerst einen kurzen Satz statt nur stumm die Karte hinzuhalten.',goal:'Das Ziel ist nicht reden. Das Ziel ist die Stille nicht als Schutz benutzen.',style:'classic'},
-  {id:'L1_01',level:1,title:'Uhrzeit fragen',action:'Frag heute jemanden nach der Uhrzeit obwohl du dein Handy dabei hast.',goal:'Das Ziel ist nicht die Uhrzeit. Das Ziel ist den ersten Satz zu einem Fremden sagen.',style:'classic'},
-  {id:'L1_02',level:1,title:'Weg fragen',action:'Frag heute nach dem Weg zu einem Ort den du eigentlich selbst findest.',goal:'Das Ziel ist nicht die Wegbeschreibung. Das Ziel ist jemanden aktiv ansprechen.',style:'classic'},
-  {id:'L1_03',level:1,title:'Öffnungszeiten fragen',action:'Frag in einem Laden wie lange sie heute geöffnet haben — auch wenn es am Eingang steht.',goal:'Das Ziel ist nicht die Info. Das Ziel ist eine Frage stellen ohne sie zu brauchen.',style:'classic'},
-  {id:'L1_04',level:1,title:'Produkt suchen lassen',action:'Frag einen Mitarbeiter im Laden wo ein bestimmtes Produkt ist — auch wenn du es fast siehst.',goal:'Das Ziel ist nicht das Produkt. Das Ziel ist jemanden aktiv einbinden.',style:'classic'},
-  {id:'L1_05',level:1,title:'Preis fragen',action:'Frag nach dem Preis eines Produkts obwohl er angeschrieben ist.',goal:'Das Ziel ist nicht der Preis. Das Ziel ist eine unnötige Frage trotzdem stellen.',style:'classic'},
-  {id:'L1_06',level:1,title:'Café-Tipp',action:'Frag einen Passanten nach einem guten Café in der Nähe.',goal:'Das Ziel ist nicht das Café. Das Ziel ist einen Fremden aktiv ansprechen.',style:'classic'},
-  {id:'L1_07',level:1,title:'Richtung bestätigen',action:'Frag jemanden ob du hier richtig bist für eine bestimmte Richtung oder Haltestelle.',goal:'Das Ziel ist nicht die Bestätigung. Das Ziel ist Kontakt herstellen.',style:'classic'},
-  {id:'L1_08',level:1,title:'Entscheidungshilfe',action:'Frag jemanden Würden Sie eher das hier oder das nehmen und warte die Antwort ab.',goal:'Das Ziel ist nicht die Entscheidung. Das Ziel ist einen Fremden einbinden.',style:'classic'},
-  {id:'L1_09',level:1,title:'Persönliche Empfehlung',action:'Frag eine Serviceperson was sie persönlich empfehlen würden — nicht was beliebt ist.',goal:'Das Ziel ist nicht die Empfehlung. Das Ziel ist eine persönliche Frage stellen.',style:'classic'},
-  {id:'L1_10',level:1,title:'Was trinken Sie selbst',action:'Frag im Café was die Person dort selbst am liebsten trinkt.',goal:'Das Ziel ist nicht die Antwort. Das Ziel ist persönlicher fragen als nötig.',style:'classic'},
-  {id:'L1_11',level:1,title:'Produktunterschied',action:'Frag im Laden was der Unterschied zwischen zwei ähnlichen Produkten ist.',goal:'Das Ziel ist nicht die Info. Das Ziel ist ein Gespräch starten.',style:'classic'},
-  {id:'L1_12',level:1,title:'Wie wird das gemacht',action:'Frag im Café oder Imbiss wie ein bestimmtes Getränk oder Gericht zubereitet wird.',goal:'Das Ziel ist nicht das Rezept. Das Ziel ist Neugier zeigen.',style:'classic'},
-  {id:'L1_13',level:1,title:'Service loben',action:'Sag einer Serviceperson konkret was gut war — Sie waren gerade echt schnell oder das war sehr freundlich.',goal:'Das Ziel ist nicht schmeicheln. Das Ziel ist etwas aussprechen das sich komisch anfühlt.',style:'classic'},
-  {id:'L1_14',level:1,title:'Schlangen-Kommentar',action:'Sag zu einer fremden Person in der Warteschlange Heute ist hier echt viel los oder ähnliches.',goal:'Das Ziel ist nicht ein Gespräch. Das Ziel ist den ersten Satz sagen.',style:'classic'},
-  {id:'L1_15',level:1,title:'Aufzug-Satz',action:'Sag im Aufzug oder Treppenhaus einen kurzen Satz zur Situation.',goal:'Das Ziel ist nicht reden. Das Ziel ist die Stille aktiv brechen.',style:'classic'},
-  {id:'L1_16',level:1,title:'Hund kommentieren',action:'Sag zu jemandem mit einem Hund Der hat ja richtig Energie oder etwas Ähnliches.',goal:'Das Ziel ist nicht der Hund. Das Ziel ist eine Beobachtung teilen.',style:'classic'},
-  {id:'L1_17',level:1,title:'Ein Satz mehr',action:'Wenn dich heute jemand anspricht häng einen Satz mehr an als nötig.',goal:'Das Ziel ist nicht reden. Das Ziel ist nicht sofort schließen.',style:'classic'},
-  {id:'L1_18',level:1,title:'Musik kommentieren',action:'Sag zur Serviceperson Die Musik hier ist gut oder Die Musik ist heute etwas laut.',goal:'Das Ziel ist nicht die Meinung. Das Ziel ist etwas sagen das sich unnötig anfühlt.',style:'classic'},
-  {id:'L2_01',level:2,title:'Leitungswasser',action:'Bestell im Café explizit ein Glas Leitungswasser extra zu deinem Getränk.',goal:'Das Ziel ist nicht das Wasser. Das Ziel ist eine zusätzliche Bitte stellen.',style:'classic'},
-  {id:'L2_02',level:2,title:'Extra Serviette',action:'Frag nach einer extra Serviette obwohl du keine dringend brauchst.',goal:'Das Ziel ist nicht die Serviette. Das Ziel ist um etwas bitten das man eigentlich nicht braucht.',style:'classic'},
-  {id:'L2_03',level:2,title:'Kleines Extra',action:'Frag beim Bestellen nach etwas Kleinem extra — eine Zitrone, Eiswürfel oder extra Sauce.',goal:'Das Ziel ist nicht das Extra. Das Ziel ist aktiv mehr verlangen als Standard.',style:'classic'},
-  {id:'L2_04',level:2,title:'Handy laden',action:'Frag im Café oder Laden ob du dein Handy kurz dort laden darfst.',goal:'Das Ziel ist nicht der Strom. Das Ziel ist eine ungewöhnliche Bitte ruhig stellen.',style:'classic'},
-  {id:'L2_05',level:2,title:'Stift leihen',action:'Frag einen Fremden ob du kurz seinen Stift leihen kannst für eine kurze Notiz.',goal:'Das Ziel ist nicht der Stift. Das Ziel ist eine Bitte an einen Fremden stellen.',style:'classic'},
-  {id:'L2_06',level:2,title:'Wasser mitnehmen',action:'Frag ob du ein kleines Glas Wasser zum Mitnehmen bekommen kannst.',goal:'Das Ziel ist nicht das Wasser. Das Ziel ist nach etwas Ungewöhnlichem fragen.',style:'classic'},
-  {id:'L2_07',level:2,title:'Münzwechsel',action:'Frag jemanden ob er dir 2 Euro in zwei 1er wechseln kann.',goal:'Das Ziel ist nicht das Geld. Das Ziel ist eine konkrete Bitte an einen Fremden.',style:'classic'},
-  {id:'L2_08',level:2,title:'Ruhigster Tisch',action:'Frag im Restaurant oder Café nach dem ruhigsten Tisch obwohl es fast leer ist.',goal:'Das Ziel ist nicht der Tisch. Das Ziel ist eine spezifische Anfrage stellen.',style:'classic'},
-  {id:'L2_09',level:2,title:'Mut-Rabatt',action:'Frag beim Bezahlen ob es heute einen Rabatt für besonders sympathische Kunden gibt.',goal:'Das Ziel ist nicht der Rabatt. Das Ziel ist eine absurde Frage mit ernstem Gesicht stellen.',style:'classic'},
-  {id:'L2_10',level:2,title:'Geheimer Deal',action:'Frag an der Kasse ob es heute irgendeinen geheimen Vorteil oder Deal gibt den du kennen solltest.',goal:'Das Ziel ist nicht der Deal. Das Ziel ist eine ungewöhnliche Frage ohne Entschuldigung stellen.',style:'classic'},
-  {id:'L2_11',level:2,title:'Produkt probieren',action:'Frag im Laden ob du ein Produkt kurz ausprobieren oder probieren darfst bevor du dich entscheidest.',goal:'Das Ziel ist nicht die Probe. Das Ziel ist aktiv nach etwas fragen das nicht angeboten wird.',style:'classic'},
-  {id:'L2_12',level:2,title:'Sonder-Kombi',action:'Frag im Imbiss oder Restaurant ob du ein Produkt anders kombinieren kannst als es auf der Karte steht.',goal:'Das Ziel ist nicht die Kombi. Das Ziel ist vom Standard abweichen und fragen.',style:'classic'},
-  {id:'L2_13',level:2,title:'Lieblingsbuch',action:'Frag im Buchladen einen Mitarbeiter nach seinem persönlichen Lieblingsbuch — nicht dem Bestseller.',goal:'Das Ziel ist nicht das Buch. Das Ziel ist eine persönliche Frage an einen Fremden stellen.',style:'classic'},
-  {id:'L2_14',level:2,title:'Foto-Beratung',action:'Zeig einem Fremden zwei Fotos auf deinem Handy und frag welches sympathischer wirkt.',goal:'Das Ziel ist nicht das beste Foto. Das Ziel ist einen Fremden aktiv einbinden.',style:'classic'},
-  {id:'L2_15',level:2,title:'Song-Empfehlung',action:'Frag jemanden mit Kopfhörern nach einem Song den er heute empfehlen würde.',goal:'Das Ziel ist nicht der Song. Das Ziel ist jemanden ansprechen der Signale von Nicht-stören sendet.',style:'classic'},
-  {id:'L2_16',level:2,title:'Outfit-Check',action:'Frag jemanden ob dein Outfit eher casual oder schick wirkt — ich kann mich gerade nicht entscheiden.',goal:'Das Ziel ist nicht die Meinung. Das Ziel ist sich selbst sichtbar machen.',style:'classic'},
-  {id:'L2_17',level:2,title:'Entscheidungs-Hilfe',action:'Bitte jemanden dir kurz bei einer spontanen Entscheidung zu helfen — Apfel oder Banane, welches Café.',goal:'Das Ziel ist nicht die Entscheidung. Das Ziel ist Hilfe von einem Fremden annehmen.',style:'classic'},
-  {id:'L2_18',level:2,title:'Lautstärke-Test',action:'Frag jemanden nach einem kurzen Satz ob deine Stimme gerade gut hörbar war.',goal:'Das Ziel ist nicht das Feedback. Das Ziel ist eine ungewöhnliche Frage über sich selbst stellen.',style:'classic'},
-  {id:'L3_01',level:3,title:'1 Euro für ein Eis',action:'Frag einen Passanten ob er dir 1 Euro schenken kann — du sammelst für ein Eis das du eigentlich nicht brauchst.',goal:'Das Ziel ist nicht der Euro. Das Ziel ist die Frage ruhig stellen und stehen bleiben.',style:'classic'},
-  {id:'L3_02',level:3,title:'Platztausch ohne Grund',action:'Frag jemanden in der Bahn ob du auf seinem Platz sitzen darfst — du findest die Aussicht von dort schöner.',goal:'Das Ziel ist nicht der Platz. Das Ziel ist eine absurde Bitte ohne echten Grund stellen.',style:'classic'},
-  {id:'L3_03',level:3,title:'Vordrängeln mit Ansage',action:'Frag in einer Schlange ob du kurz vordrängeln darfst — du hast viel Zeit aber du hasst Warten.',goal:'Das Ziel ist nicht vorzudrängeln. Das Ziel ist eine unmögliche Bitte ruhig stellen.',style:'classic'},
-  {id:'L3_04',level:3,title:'Hinter die Kulissen',action:'Frag im Café oder Laden ob du kurz hinter die Theke schauen darfst — nur aus Neugier.',goal:'Das Ziel ist nicht der Blick. Das Ziel ist eine Bitte stellen die wahrscheinlich abgelehnt wird.',style:'classic'},
-  {id:'L3_05',level:3,title:'Burger Refill',action:'Frag bei Fast-Food höflich ob es für den Burger auch ein kostenloses Refill gibt wie beim Softdrink.',goal:'Das Ziel ist nicht das Essen. Das Ziel ist eine absurde Frage mit ernstem Gesicht halten.',style:'fun'},
-  {id:'L3_06',level:3,title:'Batterien beim Bäcker',action:'Frag in einer Bäckerei nach AA-Batterien. Klar und ernst. Halte den Blickkontakt.',goal:'Das Ziel ist nicht die Batterien. Das Ziel ist die Reaktion ohne Erklärung aushalten.',style:'fun'},
-  {id:'L3_07',level:3,title:'Dazusetzen',action:'Frag jemanden der alleine an einem großen Tisch sitzt ob du dich kurz dazusetzen darfst.',goal:'Das Ziel ist nicht der Platz. Das Ziel ist eine soziale Grenze testen.',style:'classic'},
-  {id:'L3_08',level:3,title:'Probieren dürfen',action:'Frag jemanden der isst ob du kurz probieren darfst — das sieht so lecker aus.',goal:'Das Ziel ist nicht das Essen. Das Ziel ist eine komplett unerwartete Bitte stellen.',style:'classic'},
-  {id:'L3_09',level:3,title:'Tourguide spielen',action:'Frag in einem Laden ob du für 30 Sekunden Tourguide für einen anderen Kunden spielen darfst.',goal:'Das Ziel ist nicht die Rolle. Das Ziel ist eine absurde Anfrage ernst und ruhig stellen.',style:'fun'},
-  {id:'L3_10',level:3,title:'10 Sekunden Feedback',action:'Frag jemanden nach einem kurzen Kontakt ob er dir 10 Sekunden ehrliches Feedback geben kann wie du gerade gewirkt hast.',goal:'Das Ziel ist nicht das Feedback. Das Ziel ist sich selbst bewerten lassen.',style:'classic'},
-  {id:'L3_11',level:3,title:'Kleine Ausnahme',action:'Frag in einem Laden oder Restaurant ob du eine kleine Ausnahme bekommen kannst — ohne zu sagen welche.',goal:'Das Ziel ist nicht die Ausnahme. Das Ziel ist eine vage Bitte stellen und die Reaktion aushalten.',style:'classic'},
-  {id:'L3_12',level:3,title:'Glücksmomente-Abteilung',action:'Frag im Supermarkt einen Mitarbeiter völlig ernst wo du die Abteilung für Glücksmomente findest.',goal:'Das Ziel ist nicht die Antwort. Das Ziel ist eine absurde Frage ohne Lachen durchhalten.',style:'fun'},
-  {id:'L4_01',level:4,title:'Laut bestellen',action:'Bestell dein Getränk oder Essen heute bewusst 20% lauter und langsamer als sonst.',goal:'Das Ziel ist nicht laut sein. Das Ziel ist Aufmerksamkeit aushalten ohne kleiner zu werden.',style:'classic'},
-  {id:'L4_02',level:4,title:'Solo-Präsenz',action:'Setz dich in einem vollen Café an einen zentralen Tisch. Kein Handy, kein Buch. 5 Minuten einfach da sein.',goal:'Das Ziel ist nicht entspannen. Das Ziel ist Bewertung aushalten ohne Ablenkung.',style:'classic'},
-  {id:'L4_03',level:4,title:'Kompliment-Drop',action:'Geh auf einen Fremden zu — Coole Jacke — und geh sofort weiter ohne die Reaktion abzuwarten.',goal:'Das Ziel ist nicht das Kompliment. Das Ziel ist handeln und nicht auf Reaktion warten.',style:'classic'},
-  {id:'L4_04',level:4,title:'Foto-Request',action:'Frag einen Fremden ob er kurz ein Foto von dir vor einem Gebäude oder Ort machen kann.',goal:'Das Ziel ist nicht das Foto. Das Ziel ist einen Fremden aktiv in deine Sache einbinden.',style:'classic'},
-  {id:'L4_05',level:4,title:'Langsamer Gang',action:'Geh heute bewusst langsam und aufrecht durch eine Bahnhofshalle, Einkaufsstraße oder Lobby.',goal:'Das Ziel ist nicht ankommen. Das Ziel ist Tempo nicht als Schutz benutzen.',style:'classic'},
-  {id:'L4_06',level:4,title:'Stehen bleiben',action:'Bleib mitten in einer Menschenmenge 30 Sekunden ruhig stehen und schau dich um.',goal:'Das Ziel ist nicht beobachten. Das Ziel ist sichtbar sein ohne Grund.',style:'classic'},
-  {id:'L4_07',level:4,title:'Hörbares Lob',action:'Sag einer Serviceperson deutlich hörbar ein konkretes Kompliment für ihre Arbeit — laut genug dass andere es hören.',goal:'Das Ziel ist nicht freundlich sein. Das Ziel ist öffentlich etwas sagen.',style:'classic'},
-  {id:'L4_08',level:4,title:'Alleine essen gehen',action:'Geh alleine in ein volles Restaurant essen. Zentraler Tisch. Kein Handy, kein Buch. Einfach essen.',goal:'Das Ziel ist nicht das Essen. Das Ziel ist öffentliche Einsamkeit ohne Schutz aushalten.',style:'classic'},
-  {id:'L4_09',level:4,title:'Wolken-Kommentar',action:'Sprich jemanden auf eine gemeinsame Beobachtung an — Die Wolke sieht aus wie ein Hund oder ähnliches.',goal:'Das Ziel ist nicht das Gespräch. Das Ziel ist etwas Absurdes ernst teilen.',style:'classic'},
-  {id:'L4_10',level:4,title:'Stil-Kompliment',action:'Geh auf eine Frau zu und sag Dein Stil wirkt richtig selbstbewusst — dann geh weiter.',goal:'Das Ziel ist nicht die Reaktion. Das Ziel ist ein direktes Kompliment ohne Absicherung.',style:'classic'},
-  {id:'L4_11',level:4,title:'5 Sekunden Stille',action:'Halte in einem Gespräch nach einer Aussage 5 Sekunden Stille aus ohne sie zu füllen.',goal:'Das Ziel ist nicht schweigen. Das Ziel ist Unbehagen durch Stille aushalten.',style:'classic'},
-  {id:'L5_01',level:5,title:'Zeitreisender',action:'Frag jemanden welches Jahr wir gerade haben. Schau geschockt bei der Antwort und geh weiter.',goal:'Das Ziel ist nicht die Antwort. Das Ziel ist eine absurde Situation mit Ruhe durchhalten.',style:'fun'},
-  {id:'L5_02',level:5,title:'High-Five Lotto',action:'Lauf mit erhobener Hand durch die Fußgängerzone und schau wer im Vorbeigehen einfach einschlägt.',goal:'Das Ziel ist nicht das High-Five. Das Ziel ist peinlich sein und weitergehen.',style:'fun'},
-  {id:'L5_03',level:5,title:'Tanz-Move',action:'Mach mitten in der Fußgängerzone einen einzigen völlig übertriebenen Tanzschritt — dann geh sofort normal weiter.',goal:'Das Ziel ist nicht tanzen. Das Ziel ist einen absurden Moment erzeugen und danach ruhig bleiben.',style:'fun'},
-  {id:'L5_04',level:5,title:'Ampel-Klatscher',action:'Klatsch laut in die Hände und sag Ja genau in dem Moment in dem eine Ampel auf Grün springt.',goal:'Das Ziel ist nicht feiern. Das Ziel ist öffentlich etwas Absurdes tun.',style:'fun'},
-  {id:'L5_05',level:5,title:'Wolken kaufen',action:'Frag im Supermarkt einen Mitarbeiter nach Wolken zum Mitnehmen. Warte die Reaktion ab.',goal:'Das Ziel ist nicht das Produkt. Das Ziel ist eine sinnlose Frage mit ernstem Gesicht halten.',style:'fun'},
-  {id:'L5_06',level:5,title:'Sieges-Kaffee',action:'Sag beim Erhalt deines Kaffees laut Yes geschafft und lächle die Bedienung an.',goal:'Das Ziel ist nicht feiern. Das Ziel ist eine absurde Reaktion zeigen ohne sie zu erklären.',style:'fun'},
-  {id:'L5_07',level:5,title:'Daumen-Check',action:'Zeig einem Fremden den Daumen hoch und frag Alles im grünen Bereich bei dir heute.',goal:'Das Ziel ist nicht die Antwort. Das Ziel ist einen absurden sozialen Moment mit Ruhe durchhalten.',style:'fun'},
-  {id:'L5_08',level:5,title:'Unsichtbare Decke',action:'Bleib an einem belebten Ort stehen und starre 20 Sekunden mit offenem Mund in den leeren Himmel. Schau wer mitguckt.',goal:'Das Ziel ist nicht beobachten. Das Ziel ist peinlich sein ohne es zu erklären.',style:'fun'},
-  {id:'L5_09',level:5,title:'Olympischer Kaffee',action:'Wenn du deinen Kaffee bekommst reiß die Arme hoch wie ein Sieger und sag Danke ans Team wir haben es geschafft.',goal:'Das Ziel ist nicht Theater spielen. Das Ziel ist einen absurden Moment ohne Erklärung durchhalten.',style:'fun'},
-  {id:'L5_10',level:5,title:'Grüner Bereich',action:'Zeig einem völlig Fremden den Daumen hoch und sag Alles im grünen Bereich — dann geh normal weiter.',goal:'Das Ziel ist nicht die Reaktion. Das Ziel ist absurdes Verhalten mit Ruhe durchführen.',style:'fun'},
-];
-
+const RT_CATS = ['Präsenz','Mini-Kontakt','Kleine Bitte','Meinung & Feedback','Sichtbarkeit','Ablehnung','Fun Mode'];
+const RT_LEVELS = {0:'Präsenz ohne Flucht',1:'Mini-Kontakt',2:'Kleine Bitte',3:'Meinung & Feedback',4:'Sichtbarkeit & Rejection',5:'Fun / Hard Mode'};
+const QL = JSON.parse(document.getElementById('rt-quests-json').textContent);
 const LEVEL_META = {
-  0:{name:'Präsenz & Stimme',desc:'Fast unsichtbar. Kein Risiko.',color:'#059669',emoji:'🌱'},
-  1:{name:'Erster Kontakt',desc:'Kurze harmlose Interaktion.',color:'#0891B2',emoji:'👋'},
-  2:{name:'Kleine Bitte',desc:'Ein Nein ist möglich.',color:'#D97706',emoji:'🙏'},
-  3:{name:'Rejection Risk',desc:'Ein Nein ist wahrscheinlich.',color:'#DC2626',emoji:'⚡'},
-  4:{name:'Sichtbarkeit',desc:'Bewertung aktiv aushalten.',color:'#7C3AED',emoji:'👁️'},
-  5:{name:'Fun Mode',desc:'Absurd und erzählbar.',color:'#EC4899',emoji:'🎭'},
+  0:{name:RT_LEVELS[0],desc:'',color:'#059669',emoji:'🌱'},
+  1:{name:RT_LEVELS[1],desc:'',color:'#0891B2',emoji:'👋'},
+  2:{name:RT_LEVELS[2],desc:'',color:'#D97706',emoji:'🙏'},
+  3:{name:RT_LEVELS[3],desc:'',color:'#7C3AED',emoji:'💬'},
+  4:{name:RT_LEVELS[4],desc:'',color:'#DC2626',emoji:'👁️'},
+  5:{name:RT_LEVELS[5],desc:'',color:'#EC4899',emoji:'🎭'},
 };
 const LEVEL_UNLOCK = {0:0,1:5,2:15,3:30,4:50,5:75};
 function getUnlockedLevel(totalDone){let level=0;Object.entries(LEVEL_UNLOCK).forEach(([lvl,needed])=>{if(totalDone>=needed)level=parseInt(lvl,10);});return level;}
 
-let S = {totalDone:0,streak:0,lastLogin:null,completions:[],todayQueue:[],lastShuffle:null,currentLevel:0,fCat:'Alle',dailyMood:{},dailyScore:{}};
+let S = {totalDone:0,streak:0,lastLogin:null,completions:[],todayQueue:[],lastShuffle:null,currentLevel:0,ovLvl:'all',dailyMood:{},dailyScore:{}};
 function sv(){try{localStorage.setItem('xl7',JSON.stringify(S))}catch(e){}}
-function ld(){try{const d=JSON.parse(localStorage.getItem('xl7')||'{}');if(Object.keys(d).length)Object.assign(S,d)}catch(e){}}
+function ld(){try{const d=JSON.parse(localStorage.getItem('xl7')||'{}');if(Object.keys(d).length)Object.assign(S,d)}catch(e){}
+  if('fCat' in S){
+    var fc=S.fCat;
+    delete S.fCat;
+    if(RT_CATS.indexOf(fc)!==-1||fc==='Alle')S.ovLvl='all';
+    else if(typeof fc==='number'&&fc>=0&&fc<=5)S.ovLvl=fc;
+    else if(typeof fc==='string'){var pfc=parseInt(fc,10);if(!isNaN(pfc)&&pfc>=0&&pfc<=5)S.ovLvl=pfc;}
+  }
+  if(S.ovLvl==null||S.ovLvl==='')S.ovLvl='all';
+  if(typeof S.ovLvl==='string'&&S.ovLvl!=='all'){var px=parseInt(S.ovLvl,10);S.ovLvl=isNaN(px)?'all':px;}
+  if(S.ovLvl!=='all'&&(typeof S.ovLvl!=='number'||S.ovLvl<0||S.ovLvl>5))S.ovLvl='all';
+  sanitizeTodayQueue();}
+function sanitizeTodayQueue(){const ok=new Set(QL.map(q=>q.id));S.todayQueue=(S.todayQueue||[]).filter(id=>ok.has(id));sv();}
 
 const SCREENS = {home:'s-home',q:'s-q',stats:'s-stats'};
 const td = new Date().toDateString();
@@ -1267,6 +1210,7 @@ function dayKey(d){const x=new Date(d);return x.getFullYear()+'-'+String(x.getMo
 function scoreClass(n){if(n>=2)return'g';if(n===1)return'y';return'r';}
 
 function shuffleQueue(){
+  sanitizeTodayQueue();
   const unlockedLevel = getUnlockedLevel(S.totalDone||0);
   const doneToday = todayDoneIds();
   const pool = QL.filter(q=>q.level<=unlockedLevel && !doneToday.includes(q.id));
@@ -1280,7 +1224,7 @@ function rHome(){
   if(S.lastShuffle!==td||!S.todayQueue||!S.todayQueue.length)shuffleQueue();
   const doneToday=todayDoneIds();
   const unlockedLevel=getUnlockedLevel(S.totalDone||0);
-  const homeLvl=document.getElementById('home-level-copy');if(homeLvl)homeLvl.textContent='Lv. '+unlockedLevel+' Starter';
+  const homeLvl=document.getElementById('home-level-copy');if(homeLvl)homeLvl.textContent='Lv. '+unlockedLevel+' · '+RT_LEVELS[unlockedLevel];
   const doneCount=doneToday.length,totalQ=S.todayQueue.length,pct=totalQ>0?Math.round(doneCount/totalQ*100):0;
   const kDone=document.getElementById('kpi-done-val');if(kDone)kDone.textContent=String(S.streak||0);
   const fill=document.getElementById('kpi-xp-fill');if(fill)fill.style.width=pct+'%';
@@ -1316,9 +1260,9 @@ function rHome(){
     return '<div class="hq-row">'
       +'<button type="button" class="hq-row-tap" onclick="showQuestDetail(\''+qid+'\')">'
       +'<div class="hq-ico">'+(q.style==='fun'?'🎭':'⚡')+'</div>'
-      +'<div class="hq-copy"><div class="hq-meta">Level '+q.level+'</div>'
+      +'<div class="hq-copy"><div class="hq-meta">'+escHtml(q.cat||'')+' · L'+q.level+'</div>'
       +'<div class="hq-title" style="'+(done?'text-decoration:line-through;opacity:.5':'')+'">'+escHtml(q.title)+'</div>'
-      +'<div class="hq-sub">'+escHtml(q.action||'')+'</div></div></button>'
+      +'</div></button>'
       +'<div class="hq-act">'+(done?'<button type="button" class="hq-ring done" disabled>✓</button>':'<button type="button" class="hq-ring" onclick="event.stopPropagation();questDone(\''+qid+'\')" aria-label="Erledigt"></button>')
       +'<button type="button" class="hq-xskip" onclick="event.stopPropagation();removeFromQueue(\''+qid+'\')" title="Entfernen">✕</button></div></div>';
   }).join('');
@@ -1338,21 +1282,25 @@ function setTodayMood(emo){
 
 function ovFilteredQuests(){
   return QL.filter(function(q){
-    if(S.fCat!=='Alle'&&String(q.level)!==S.fCat)return false;
+    if(S.ovLvl!=='all'&&q.level!==S.ovLvl)return false;
     return true;
   });
 }
 
-function ovSetCat(v){S.fCat=v;sv();rOverview();}
+function ovSetLvl(v){
+  if(v==='all'||v==='Alle')S.ovLvl='all';
+  else{var n=typeof v==='number'?v:parseInt(v,10);S.ovLvl=isNaN(n)?'all':Math.min(5,Math.max(0,n));}
+  sv();rOverview();
+}
 
 function rOverview(){
   const w=document.getElementById('ov-wrap');if(!w)return;
   const unlockedLevel=getUnlockedLevel(S.totalDone||0);
-  var catChips=['Alle','0','1','2','3','4','5'].map(function(id){
-    var on=id==='Alle'?S.fCat==='Alle':S.fCat===id;
-    var lbl=id==='Alle'?'Alle':'Level '+id;
-    return '<button type="button" class="ov-chip ov-chip--cat'+(on?' on':'')+'" onclick="ovSetCat(\''+id+'\')">'+lbl+'</button>';
-  }).join('');
+  var lvlChips='<button type="button" class="ov-chip ov-chip--diff'+(S.ovLvl==='all'?' on':'')+'" onclick="ovSetLvl('+JSON.stringify('all')+')">Alle</button>'
+    +[0,1,2,3,4,5].map(function(n){
+      var on=S.ovLvl===n;
+      return '<button type="button" class="ov-chip ov-chip--diff'+(on?' on':'')+'" title="'+escHtml(RT_LEVELS[n]||'')+'" onclick="ovSetLvl('+n+')">L'+n+'</button>';
+    }).join('');
   var qs=ovFilteredQuests();
   var cards=qs.length?qs.map(function(q){
     var skin=q.level<=1?'ov-card--diff-leicht':q.level<=3?'ov-card--diff-mittel':'ov-card--diff-stark';
@@ -1363,31 +1311,44 @@ function rOverview(){
       : inQ
         ? '<button type="button" class="ov-card-go" disabled>In Queue ✓</button>'
         : '<button type="button" class="ov-card-go" onclick="addToTodayQueue(\''+q.id+'\')">Start Quest →</button>';
-    return '<article class="ov-card '+skin+'"><button type="button" class="ov-card-tap" onclick="showQuestDetail(\''+q.id+'\')"><div class="ov-card-top"><div class="ov-card-ico">'+(q.style==='fun'?'🎭':'⚡')+'</div><span class="ov-card-diff">Level '+q.level+'</span></div><div class="ov-card-title">'+escHtml(q.title)+'</div><p class="ov-card-hook">'+escHtml(q.action)+'</p></button><div class="ov-card-foot"><span class="ov-card-time">🎯 '+escHtml(q.goal)+'</span>'+btn+'</div></article>';
+    return '<article class="ov-card '+skin+'"><button type="button" class="ov-card-tap" onclick="showQuestDetail(\''+q.id+'\')"><div class="ov-card-top"><div class="ov-card-ico">'+(q.style==='fun'?'🎭':'⚡')+'</div><span class="ov-card-diff">'+escHtml(q.cat||'')+' · L'+q.level+'</span></div><div class="ov-card-title">'+escHtml(q.title)+'</div></button><div class="ov-card-foot"><span class="ov-card-time">'+escHtml(RT_LEVELS[q.level]||'')+'</span>'+btn+'</div></article>';
   }).join(''):'<div class="ov-empty">Keine Quests für diese Filter.</div>';
-  w.innerHTML='<div class="ov-chip-sticky"><div class="ov-chip-row">'+catChips+'</div></div><div class="ov-scroll-list">'+cards+'</div>';
+  w.innerHTML='<div class="ov-chip-sticky"><div class="ov-chip-row">'+lvlChips+'</div></div><div class="ov-scroll-list">'+cards+'</div>';
 }
 function reshuffleHome(){S.lastShuffle=null;shuffleQueue();rHome();}
 function removeFromQueue(qid){S.todayQueue=(S.todayQueue||[]).filter(id=>id!==qid);const unlockedLevel=getUnlockedLevel(S.totalDone||0),doneToday=todayDoneIds(),used=[...S.todayQueue,...doneToday],pool=QL.filter(q=>q.level<=unlockedLevel&&!used.includes(q.id));if(pool.length){const pick=pool[Math.floor(Math.random()*pool.length)];S.todayQueue.push(pick.id);}sv();rHome();}
 
 function questDone(qid){
   const q=QL.find(x=>x.id===qid);if(!q)return;
+  const unlockedLevel=getUnlockedLevel(S.totalDone||0);
+  if(q.level>unlockedLevel){alert('Dieses Level ist noch gesperrt.');return;}
   showSheet(`<div class="shdl"></div><div class="sht-t">Was ist passiert?</div><div class="sht-s" style="font-size:13px;color:var(--t2)">${escHtml(q.title)}</div><div class="sht-sc"><div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;color:var(--t);margin-bottom:10px">Wie war es?</div><div style="display:flex;gap:8px;margin-bottom:20px" id="outcome-btns">${[{id:'done',label:'Gemacht ✓'},{id:'nein',label:'Nein bekommen'},{id:'skip',label:'Situation kam nicht'}].map(o=>`<button onclick="selOutcome('${o.id}',this)" style="flex:1;border:1.5px solid var(--border);border-radius:12px;padding:10px 4px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;color:var(--t2);background:var(--surface);cursor:pointer;transition:all .15s">${o.label}</button>`).join('')}</div><div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;color:var(--t);margin-bottom:8px">Was ist wirklich passiert? (optional)</div><textarea id="ref-text" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--t);resize:none;min-height:80px;line-height:1.5;outline:none;box-sizing:border-box" placeholder="Ein Satz — was hat dein Kopf erwartet und was ist wirklich passiert?"></textarea><div style="background:rgba(5,150,105,0.07);border-radius:12px;padding:10px 14px;margin-top:12px;display:flex;gap:10px;align-items:flex-start"><span style="font-size:14px;flex-shrink:0">🤝</span><div style="font-family:'DM Sans',sans-serif;font-size:11px;color:var(--t2);line-height:1.5"><b style="color:var(--t)">Fair-Play-Regel:</b> Freundlich fragen. Nein sofort akzeptieren. Kein Druck, keine Erklärung.</div></div></div><div class="qc-foot"><button class="qc-btn qc-btn--primary" onclick="saveQuestDone('${qid}')">Speichern →</button><button class="qc-btn qc-btn--ghost" onclick="closeSheet()">Schließen</button></div></div>`);
   window._selectedOutcome=null;
   window.selOutcome=(id,el)=>{document.querySelectorAll('#outcome-btns button').forEach(b=>{b.style.background='var(--surface)';b.style.color='var(--t2)';b.style.borderColor='var(--border)';});el.style.background='var(--t)';el.style.color='#fff';el.style.borderColor='var(--t)';window._selectedOutcome=id;};
 }
-function saveQuestDone(qid){const q=QL.find(x=>x.id===qid);if(!q)return;const reflection=(document.getElementById('ref-text')?.value||'').trim(),outcome=window._selectedOutcome||'done';S.completions=S.completions||[];S.completions.push({qid,ts:Date.now(),reflection,outcome,level:q.level,title:q.title});S.totalDone=(S.totalDone||0)+1;S.currentLevel=getUnlockedLevel(S.totalDone);const lastLogin=S.lastLogin;if(lastLogin!==td){if(lastLogin===yd)S.streak=(S.streak||0)+1;else S.streak=1;S.lastLogin=td;}S.todayQueue=(S.todayQueue||[]).filter(id=>id!==qid);sv();closeSheet();showCel(q);setTimeout(rHome,400);}
+function saveQuestDone(qid){const q=QL.find(x=>x.id===qid);if(!q)return;const unlockedLevel=getUnlockedLevel(S.totalDone||0);if(q.level>unlockedLevel){alert('Dieses Level ist noch gesperrt.');closeSheet();return;}const reflection=(document.getElementById('ref-text')?.value||'').trim(),outcome=window._selectedOutcome||'done';S.completions=S.completions||[];S.completions.push({qid,ts:Date.now(),reflection,outcome,level:q.level,title:q.title});S.totalDone=(S.totalDone||0)+1;S.currentLevel=getUnlockedLevel(S.totalDone);const lastLogin=S.lastLogin;if(lastLogin!==td){if(lastLogin===yd)S.streak=(S.streak||0)+1;else S.streak=1;S.lastLogin=td;}S.todayQueue=(S.todayQueue||[]).filter(id=>id!==qid);sv();closeSheet();showCel(q);setTimeout(rHome,400);}
 
+function questPillHtml(q){
+  if(q.style==='fun'||q.cat==='Fun Mode')return '<span class="qc-pill qc-pill--fun">FUN</span>';
+  if(q.cat==='Ablehnung')return '<span class="qc-pill qc-pill--mut">MUT</span>';
+  if(q.cat==='Sichtbarkeit')return '<span class="qc-pill qc-pill--action">SICHTBAR</span>';
+  if(q.level<=1)return '<span class="qc-pill qc-pill--fund">BASIS</span>';
+  return '<span class="qc-pill qc-pill--action">KONTAKT</span>';
+}
 function showQuestDetail(qid){
   const q=QL.find(x=>x.id===qid);if(!q)return;
   const unlockedLevel=getUnlockedLevel(S.totalDone||0);
-  if(q.level>unlockedLevel){alert('Dieses Level ist noch gesperrt.');return;}
+  const isLocked=q.level>unlockedLevel;
+  const needLock=isLocked?Math.max(0,(LEVEL_UNLOCK[q.level]||0)-(S.totalDone||0)):0;
+  const lockBanner=isLocked?`<div class="qc-lock-banner">🔒 Diese Quest kannst du erst <strong>spielen</strong>, wenn <strong>Level ${q.level}</strong> frei ist${needLock>0?' — noch <strong>'+needLock+'</strong> Gesamt-Quests bis dahin':''}.</div>`:'';
   const doneToday=todayDoneIds().includes(qid);
-  const pillClass=q.level>=3?'qc-pill--mut':q.level===2?'qc-pill--action':'qc-pill--fund';
-  const pillLabel=q.level>=3?'MUT':q.level===2?'ACTION':'BASIS';
-  const headSub=q.goal||'Du trainierst, soziale Spannung auszuhalten.';
-  const triggerTxt='Wenn die nächste passende Situation kommt, starte direkt ohne langes Zögern.';
-  const modTxt=q.style==='fun'?'Mach die Quest mit komplett ruhigem Gesicht und ohne dich zu erklären.':'Wenn es leicht ist, erhöhe die Intensität um einen kleinen Schritt.';
+  const vars=(q.variants||[]).map(function(v){return '<li>'+escHtml(v)+'</li>';}).join('');
+  const variantsBlock=vars?`<div class="qc-card qc-card--trigger"><div class="qc-card-hd qc-card-hd--trigger">✨ VARIANTEN</div><ul class="qc-variant-list">${vars}</ul></div>`:'';
+  const safetyBlock=q.safety?`<div class="qc-card qc-card--nogo"><div class="qc-card-hd qc-card-hd--nogo">🚫 NO-GO</div><div class="qc-card-body">${escHtml(q.safety)}</div></div>`:'';
+  const goalBlock=q.goal?`<div class="qc-card" style="background:rgba(5,150,105,0.06);border:1px solid rgba(5,150,105,0.15)"><div class="qc-card-hd" style="color:var(--g)">🎯 ZIEL</div><div class="qc-card-body">${escHtml(q.goal)}</div></div>`:'';
+  const modMinus=q.modminus?`<div class="qc-mod-row"><div class="qc-mod-ico qc-mod-ico--minus">−</div><p class="qc-mod-txt"><strong>Leichter:</strong> ${escHtml(q.modminus)}</p></div>`:'';
+  const modPlus=q.modplus?`<div class="qc-mod-row"><div class="qc-mod-ico qc-mod-ico--plus">+</div><p class="qc-mod-txt"><strong>Schwerer:</strong> ${escHtml(q.modplus)}</p></div>`:'';
+  const modBlock=(modMinus||modPlus)?`<div class="qc-card qc-card--mod"><div class="qc-card-hd qc-card-hd--mod">🎚 MODIFIER</div>${modMinus}${modPlus}</div>`:'';
   showSheet(
     `<div class="qc-sheet">
       <div class="shdl"></div>
@@ -1402,33 +1363,30 @@ function showQuestDetail(qid){
               <span class="qc-dot"></span>
               <span class="qc-dot"></span>
             </span>
-            <span class="qc-pill ${pillClass}">${pillLabel}</span>
+            ${questPillHtml(q)}
           </div>
         </div>
         <div class="qc-head-title">${escHtml(q.title)}</div>
-        <div class="qc-head-sub">${escHtml(headSub)}</div>
+        <div class="qc-head-sub">${escHtml(q.cat||'')+' · Level '+q.level+' · '+escHtml(RT_LEVELS[q.level]||'')}</div>
       </div>
       <div class="qc-scroll">
-        <div class="qc-card qc-card--trigger">
-          <div class="qc-card-body">${escHtml(triggerTxt)}</div>
-        </div>
+        ${lockBanner}
+        ${variantsBlock}
         <div class="qc-card qc-card--action">
           <div class="qc-card-hd qc-card-hd--action">📍 WAS ZU TUN IST</div>
           <div class="qc-card-body">${escHtml(q.action)}</div>
         </div>
-        <div class="qc-card qc-card--mod">
-          <div class="qc-card-hd qc-card-hd--mod">🎚 MODIFIER</div>
-          <div class="qc-mod-row">
-            <div class="qc-mod-ico qc-mod-ico--plus">+</div>
-            <p class="qc-mod-txt">${escHtml(modTxt)}</p>
-          </div>
-        </div>
+        ${goalBlock}
+        ${safetyBlock}
+        ${modBlock}
       </div>
       <div class="qc-foot">
-        ${doneToday
-          ? '<button class="qc-btn qc-btn--ghost" onclick="closeSheet()">Heute erledigt ✓</button>'
-          : `<button class="qc-btn qc-btn--primary" onclick="closeSheet();questDone('${qid}')">Quest annehmen</button>
-             <button class="qc-btn qc-btn--ghost" onclick="closeSheet()">Schließen</button>`}
+        ${isLocked
+          ? '<button type="button" class="qc-btn qc-btn--ghost" onclick="closeSheet()">Schließen</button>'
+          : doneToday
+            ? '<button type="button" class="qc-btn qc-btn--ghost" onclick="closeSheet()">Heute erledigt ✓</button>'
+            : `<button type="button" class="qc-btn qc-btn--primary" onclick="closeSheet();questDone('${qid}')">Quest annehmen</button>
+               <button type="button" class="qc-btn qc-btn--ghost" onclick="closeSheet()">Schließen</button>`}
       </div>
     </div>`,
     'sht--qc'
