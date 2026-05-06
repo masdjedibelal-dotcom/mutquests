@@ -1178,7 +1178,7 @@ const LEVEL_META = {
 const LEVEL_UNLOCK = {0:0,1:5,2:15,3:30,4:50,5:75};
 function getUnlockedLevel(totalDone){let level=0;Object.entries(LEVEL_UNLOCK).forEach(([lvl,needed])=>{if(totalDone>=needed)level=parseInt(lvl,10);});return level;}
 
-let S = {totalDone:0,streak:0,lastLogin:null,completions:[],todayQueue:[],lastShuffle:null,currentLevel:0,ovLvl:'all',dailyMood:{},dailyScore:{}};
+let S = {totalDone:0,streak:0,lastLogin:null,completions:[],weekQueue:[],weekStart:null,weekDone:{},currentLevel:0,ovLvl:'all',dailyMood:{},dailyScore:{}};
 function sv(){try{localStorage.setItem('xl7',JSON.stringify(S))}catch(e){}}
 function ld(){try{const d=JSON.parse(localStorage.getItem('xl7')||'{}');if(Object.keys(d).length)Object.assign(S,d)}catch(e){}
   if('fCat' in S){
@@ -1191,14 +1191,36 @@ function ld(){try{const d=JSON.parse(localStorage.getItem('xl7')||'{}');if(Objec
   if(S.ovLvl==null||S.ovLvl==='')S.ovLvl='all';
   if(typeof S.ovLvl==='string'&&S.ovLvl!=='all'){var px=parseInt(S.ovLvl,10);S.ovLvl=isNaN(px)?'all':px;}
   if(S.ovLvl!=='all'&&(typeof S.ovLvl!=='number'||S.ovLvl<0||S.ovLvl>5))S.ovLvl='all';
+  if('todayQueue'in S){if(!(S.weekQueue&&S.weekQueue.length))S.weekQueue=S.todayQueue||[];delete S.todayQueue;}
+  delete S.lastShuffle;
+  if((S.weekQueue||[]).length){
+    S.weekDone=S.weekDone||{};
+    S.weekQueue.forEach(function(qid){if(!S.weekDone[qid])S.weekDone[qid]=[0,0,0,0,0,0,0];});
+    if(!S.weekStart)S.weekStart=getMonday();
+  }
   sanitizeTodayQueue();}
-function sanitizeTodayQueue(){const ok=new Set(QL.map(q=>q.id));S.todayQueue=(S.todayQueue||[]).filter(id=>ok.has(id));sv();}
+function sanitizeTodayQueue(){const ok=new Set(QL.map(q=>q.id));S.weekQueue=(S.weekQueue||[]).filter(id=>ok.has(id));sv();}
+
+function getMonday(){
+  const d=new Date();
+  const day=d.getDay();
+  const diff=day===0?-6:1-day;
+  d.setDate(d.getDate()+diff);
+  d.setHours(0,0,0,0);
+  return d.toDateString();
+}
+
+function getTodayDowIndex(){
+  const d=new Date().getDay();
+  return d===0?6:d-1;
+}
 
 const SCREENS = {home:'s-home',q:'s-q',stats:'s-stats'};
 const td = new Date().toDateString();
 const yd = new Date(Date.now()-864e5).toDateString();
 
 function go(tab){
+  if(tab==='levels')tab='q';
   Object.keys(SCREENS).forEach(t=>{document.getElementById(SCREENS[t]).classList.toggle('on',t===tab);const nb=document.getElementById('nt-'+t);if(nb)nb.classList.toggle('on',t===tab);});
   if(tab==='home')rHome();
   if(tab==='q')rOverview();
@@ -1210,28 +1232,71 @@ function dayKey(d){const x=new Date(d);return x.getFullYear()+'-'+String(x.getMo
 function scoreClass(n){if(n>=2)return'g';if(n===1)return'y';return'r';}
 
 function shuffleQueue(){
-  sanitizeTodayQueue();
-  const unlockedLevel = getUnlockedLevel(S.totalDone||0);
-  const doneToday = todayDoneIds();
-  const pool = QL.filter(q=>q.level<=unlockedLevel && !doneToday.includes(q.id));
-  for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
-  const picks=[];const low=pool.filter(q=>q.level<=1);const mid=pool.filter(q=>q.level===2||q.level===3);const high=pool.filter(q=>q.level>=4);
-  if(low.length)picks.push(low[0]);if(mid.length)picks.push(mid[0]);if(high.length&&unlockedLevel>=2)picks.push(high[0]);
-  const used=picks.map(p=>p.id);for(const q of pool){if(picks.length>=3)break;if(!used.includes(q.id))picks.push(q);}S.todayQueue=picks.map(q=>q.id).slice(0,3);S.lastShuffle=td;sv();
+  const unlockedLevel=getUnlockedLevel(S.totalDone||0);
+  const pool=QL.filter(q=>q.level<=unlockedLevel);
+
+  for(let i=pool.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [pool[i],pool[j]]=[pool[j],pool[i]];
+  }
+
+  const picks=[];
+  const low=pool.filter(q=>q.level<=1);
+  const mid=pool.filter(q=>q.level===2||q.level===3);
+  const high=pool.filter(q=>q.level>=4);
+  if(low.length)picks.push(low[0]);
+  if(mid.length&&unlockedLevel>=2)picks.push(mid[0]);
+  if(high.length&&unlockedLevel>=4)picks.push(high[0]);
+  const used=picks.map(p=>p.id);
+  for(const q of pool){
+    if(picks.length>=3)break;
+    if(!used.includes(q.id))picks.push(q);
+  }
+
+  S.weekQueue=picks.map(q=>q.id).slice(0,3);
+  S.weekStart=getMonday();
+  S.weekDone={};
+  S.weekQueue.forEach(qid=>{S.weekDone[qid]=[0,0,0,0,0,0,0];});
+  sv();
+}
+
+function weekDotsHtml(qid){
+  const dowIdx=getTodayDowIndex();
+  const done=S.weekDone?.[qid]||[0,0,0,0,0,0,0];
+  const dots=done.map(function(on,i){
+    let bg,border='none';
+    if(i===dowIdx){
+      bg=on?'#059669':'#111111';
+    }else if(on){
+      bg='#059669';
+    }else if(i<dowIdx){
+      bg='var(--surface2)';
+      border='0.5px dashed var(--t3)';
+    }else{
+      bg='var(--surface2)';
+    }
+    return '<div style="width:14px;height:14px;border-radius:50%;background:'+bg+';border:'+border+';flex-shrink:0"></div>';
+  }).join('');
+  return '<div style="display:flex;gap:3px;margin-top:6px;margin-bottom:10px">'+dots+'</div>';
 }
 
 function rHome(){
-  if(S.lastShuffle!==td||!S.todayQueue||!S.todayQueue.length)shuffleQueue();
-  const doneToday=todayDoneIds();
+  S.weekQueue=S.weekQueue||[];
+  if(S.weekQueue.length&&S.weekStart!=null&&S.weekStart!==getMonday())shuffleQueue();
+  const totalQ=S.weekQueue.length;
+  const dowIdx=getTodayDowIndex();
+  const doneToday=(S.weekQueue||[]).filter(qid=>(S.weekDone?.[qid]||[])[dowIdx]===1).length;
   const unlockedLevel=getUnlockedLevel(S.totalDone||0);
   const homeLvl=document.getElementById('home-level-copy');if(homeLvl)homeLvl.textContent='Lv. '+unlockedLevel+' · '+RT_LEVELS[unlockedLevel];
-  const doneCount=doneToday.length,totalQ=S.todayQueue.length,pct=totalQ>0?Math.round(doneCount/totalQ*100):0;
+  const pct=totalQ>0?Math.round(doneToday/totalQ*100):0;
   const kDone=document.getElementById('kpi-done-val');if(kDone)kDone.textContent=String(S.streak||0);
+  const xpWrap=document.querySelector('#s-home .kpi-xp');
+  if(xpWrap)xpWrap.style.display=totalQ===0?'none':'';
   const fill=document.getElementById('kpi-xp-fill');if(fill)fill.style.width=pct+'%';
-  const lbl=document.getElementById('kpi-xp-lbl');if(lbl)lbl.textContent=doneCount===0?'Noch keine Quests heute':doneCount+' von '+totalQ+' heute erledigt';
+  const lbl=document.getElementById('kpi-xp-lbl');if(lbl)lbl.textContent='HEUTE · '+doneToday+' VON '+totalQ+' ERLEDIGT';
   S.dailyScore=S.dailyScore||{};
   S.dailyMood=S.dailyMood||{};
-  S.dailyScore[dayKey(new Date())]=scoreClass(doneCount);
+  S.dailyScore[dayKey(new Date())]=scoreClass(doneToday);
   const moodNow=S.dailyMood[dayKey(new Date())]||'🙂';
   const moodPrev=document.getElementById('kpi-mood-preview');if(moodPrev)moodPrev.textContent=moodNow;
   const wk=document.getElementById('kpi-week');if(wk){
@@ -1253,20 +1318,55 @@ function rHome(){
   }
   sv();
   const qs=document.getElementById('hqs');if(!qs)return;
-  if(!(S.todayQueue||[]).length){qs.innerHTML='<div class="ov-empty">Keine Quests aktiv. Tippe auf 🔀 für neue Quests.</div>';return;}
-  const rows=(S.todayQueue||[]).map(function(qid){
+  if(!(S.weekQueue||[]).length){qs.innerHTML=`<div style="text-align:center;padding:40px 20px">
+  <div style="font-size:32px;margin-bottom:12px">📭</div>
+  <div style="font-family:'DM Sans',sans-serif;font-size:17px;
+    font-weight:700;color:var(--t);margin-bottom:8px">
+    Keine Quests aktiv
+  </div>
+  <div style="font-family:'DM Sans',sans-serif;font-size:13px;
+    color:var(--t2);line-height:1.6;margin-bottom:24px">
+    Wähle Quests aus deinem Level<br/>
+    oder lass die App für dich wählen.
+  </div>
+  <button onclick="shuffleQueue();rHome()"
+    style="width:100%;background:var(--t);border:none;
+    border-radius:14px;padding:14px;
+    font-family:'DM Sans',sans-serif;font-size:14px;
+    font-weight:700;color:#fff;cursor:pointer;
+    margin-bottom:10px">
+    🎲 3 Quests für mich wählen
+  </button>
+  <button onclick="go('levels')"
+    style="width:100%;background:var(--surface2);border:none;
+    border-radius:14px;padding:14px;
+    font-family:'DM Sans',sans-serif;font-size:14px;
+    font-weight:600;color:var(--t2);cursor:pointer">
+    Selbst auswählen →
+  </button>
+</div>`;return;}
+  const rows=(S.weekQueue||[]).map(function(qid){
     const q=QL.find(function(x){return x.id===qid;});if(!q)return'';
-    const done=doneToday.includes(qid);
+    const isDoneToday=(S.weekDone?.[q.id]||[])[dowIdx]===1;
+    const heuteBtn=isDoneToday
+      ? '<button type="button" onclick="event.stopPropagation();questDoneToday(\''+qid+'\')" style="flex:1;background:rgba(5,150,105,0.1);border:none;border-radius:14px;padding:13px;font-family:\'DM Sans\',sans-serif;font-size:13px;font-weight:700;color:#059669;cursor:pointer">✓ Heute gemacht</button>'
+      : '<button type="button" onclick="event.stopPropagation();questDoneToday(\''+qid+'\')" style="flex:1;background:var(--t);border:none;border-radius:14px;padding:13px;font-family:\'DM Sans\',sans-serif;font-size:13px;font-weight:700;color:#fff;cursor:pointer">✓ Heute machen</button>';
     return '<div class="hq-row">'
-      +'<button type="button" class="hq-row-tap" onclick="showQuestDetail(\''+qid+'\')">'
+      +'<div class="hq-copy" style="flex:1;min-width:0">'
+      +'<div class="hq-meta">'+escHtml(q.cat||'')+' · L'+q.level+'</div>'
+      +'<button type="button" class="hq-row-tap" onclick="showQuestDetail(\''+qid+'\')" style="width:100%">'
       +'<div class="hq-ico">'+(q.style==='fun'?'🎭':'⚡')+'</div>'
-      +'<div class="hq-copy"><div class="hq-meta">'+escHtml(q.cat||'')+' · L'+q.level+'</div>'
-      +'<div class="hq-title" style="'+(done?'text-decoration:line-through;opacity:.5':'')+'">'+escHtml(q.title)+'</div>'
+      +'<div style="flex:1;min-width:0;text-align:left">'
+      +'<div class="hq-title" style="'+(isDoneToday?'text-decoration:line-through;opacity:.5':'')+'">'+escHtml(q.title)+'</div>'
       +'</div></button>'
-      +'<div class="hq-act">'+(done?'<button type="button" class="hq-ring done" disabled>✓</button>':'<button type="button" class="hq-ring" onclick="event.stopPropagation();questDone(\''+qid+'\')" aria-label="Erledigt"></button>')
+      +weekDotsHtml(q.id)
+      +'<div class="hq-sub">'+escHtml(q.action||'')+'</div>'
+      +'</div>'
+      +'<div class="hq-act" style="width:auto;min-width:132px;align-items:stretch;align-self:stretch">'
+      +heuteBtn
       +'<button type="button" class="hq-xskip" onclick="event.stopPropagation();removeFromQueue(\''+qid+'\')" title="Entfernen">✕</button></div></div>';
   }).join('');
-  qs.innerHTML='<div class="hq-list-card"><div class="hq-list-hd">Heute ein Level weiter?</div>'+rows+'<div class="hq-card-foot"><span style="font-family:DM Mono,monospace;font-size:9px;color:var(--t3)">'+doneCount+'/'+totalQ+' erledigt</span><button type="button" class="hq-foot-link" onclick="reshuffleHome()">⚡ Shuffle</button></div></div>';
+  qs.innerHTML='<div class="hq-list-card"><div class="hq-list-hd">Heute ein Level weiter?</div>'+rows+'<div class="hq-card-foot"><span style="font-family:DM Mono,monospace;font-size:9px;color:var(--t3)">'+doneToday+'/'+totalQ+' erledigt</span><button type="button" class="hq-foot-link" onclick="reshuffleHome()">↺ Neue Woche</button></div></div>';
 }
 function openMoodPicker(){
   const opts=['😄','🙂','😐','😮‍💨','😵','😤'];
@@ -1304,29 +1404,56 @@ function rOverview(){
   var qs=ovFilteredQuests();
   var cards=qs.length?qs.map(function(q){
     var skin=q.level<=1?'ov-card--diff-leicht':q.level<=3?'ov-card--diff-mittel':'ov-card--diff-stark';
-    var inQ=(S.todayQueue||[]).includes(q.id);
+    var inQ=(S.weekQueue||[]).includes(q.id);
     var isLocked=q.level>unlockedLevel;
     var btn=isLocked
       ? '<button type="button" class="ov-card-go ov-card-go--muted" disabled>Gesperrt 🔒</button>'
       : inQ
         ? '<button type="button" class="ov-card-go" disabled>In Queue ✓</button>'
-        : '<button type="button" class="ov-card-go" onclick="addToTodayQueue(\''+q.id+'\')">Start Quest →</button>';
+        : '<button type="button" class="ov-card-go" onclick="addToWeekQueue(\''+q.id+'\')">Start Quest →</button>';
     return '<article class="ov-card '+skin+'"><button type="button" class="ov-card-tap" onclick="showQuestDetail(\''+q.id+'\')"><div class="ov-card-top"><div class="ov-card-ico">'+(q.style==='fun'?'🎭':'⚡')+'</div><span class="ov-card-diff">'+escHtml(q.cat||'')+' · L'+q.level+'</span></div><div class="ov-card-title">'+escHtml(q.title)+'</div></button><div class="ov-card-foot"><span class="ov-card-time">'+escHtml(RT_LEVELS[q.level]||'')+'</span>'+btn+'</div></article>';
   }).join(''):'<div class="ov-empty">Keine Quests für diese Filter.</div>';
   w.innerHTML='<div class="ov-chip-sticky"><div class="ov-chip-row">'+lvlChips+'</div></div><div class="ov-scroll-list">'+cards+'</div>';
 }
-function reshuffleHome(){S.lastShuffle=null;shuffleQueue();rHome();}
-function removeFromQueue(qid){S.todayQueue=(S.todayQueue||[]).filter(id=>id!==qid);const unlockedLevel=getUnlockedLevel(S.totalDone||0),doneToday=todayDoneIds(),used=[...S.todayQueue,...doneToday],pool=QL.filter(q=>q.level<=unlockedLevel&&!used.includes(q.id));if(pool.length){const pick=pool[Math.floor(Math.random()*pool.length)];S.todayQueue.push(pick.id);}sv();rHome();}
-
-function questDone(qid){
-  const q=QL.find(x=>x.id===qid);if(!q)return;
-  const unlockedLevel=getUnlockedLevel(S.totalDone||0);
-  if(q.level>unlockedLevel){alert('Dieses Level ist noch gesperrt.');return;}
-  showSheet(`<div class="shdl"></div><div class="sht-t">Was ist passiert?</div><div class="sht-s" style="font-size:13px;color:var(--t2)">${escHtml(q.title)}</div><div class="sht-sc"><div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;color:var(--t);margin-bottom:10px">Wie war es?</div><div style="display:flex;gap:8px;margin-bottom:20px" id="outcome-btns">${[{id:'done',label:'Gemacht ✓'},{id:'nein',label:'Nein bekommen'},{id:'skip',label:'Situation kam nicht'}].map(o=>`<button onclick="selOutcome('${o.id}',this)" style="flex:1;border:1.5px solid var(--border);border-radius:12px;padding:10px 4px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;color:var(--t2);background:var(--surface);cursor:pointer;transition:all .15s">${o.label}</button>`).join('')}</div><div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;color:var(--t);margin-bottom:8px">Was ist wirklich passiert? (optional)</div><textarea id="ref-text" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--t);resize:none;min-height:80px;line-height:1.5;outline:none;box-sizing:border-box" placeholder="Ein Satz — was hat dein Kopf erwartet und was ist wirklich passiert?"></textarea><div style="background:rgba(5,150,105,0.07);border-radius:12px;padding:10px 14px;margin-top:12px;display:flex;gap:10px;align-items:flex-start"><span style="font-size:14px;flex-shrink:0">🤝</span><div style="font-family:'DM Sans',sans-serif;font-size:11px;color:var(--t2);line-height:1.5"><b style="color:var(--t)">Fair-Play-Regel:</b> Freundlich fragen. Nein sofort akzeptieren. Kein Druck, keine Erklärung.</div></div></div><div class="qc-foot"><button class="qc-btn qc-btn--primary" onclick="saveQuestDone('${qid}')">Speichern →</button><button class="qc-btn qc-btn--ghost" onclick="closeSheet()">Schließen</button></div></div>`);
-  window._selectedOutcome=null;
-  window.selOutcome=(id,el)=>{document.querySelectorAll('#outcome-btns button').forEach(b=>{b.style.background='var(--surface)';b.style.color='var(--t2)';b.style.borderColor='var(--border)';});el.style.background='var(--t)';el.style.color='#fff';el.style.borderColor='var(--t)';window._selectedOutcome=id;};
+function reshuffleHome(){shuffleQueue();rHome();}
+function removeFromQueue(qid){
+  S.weekQueue=(S.weekQueue||[]).filter(id=>id!==qid);
+  if(S.weekDone)delete S.weekDone[qid];
+  sv();
+  rHome();
 }
-function saveQuestDone(qid){const q=QL.find(x=>x.id===qid);if(!q)return;const unlockedLevel=getUnlockedLevel(S.totalDone||0);if(q.level>unlockedLevel){alert('Dieses Level ist noch gesperrt.');closeSheet();return;}const reflection=(document.getElementById('ref-text')?.value||'').trim(),outcome=window._selectedOutcome||'done';S.completions=S.completions||[];S.completions.push({qid,ts:Date.now(),reflection,outcome,level:q.level,title:q.title});S.totalDone=(S.totalDone||0)+1;S.currentLevel=getUnlockedLevel(S.totalDone);const lastLogin=S.lastLogin;if(lastLogin!==td){if(lastLogin===yd)S.streak=(S.streak||0)+1;else S.streak=1;S.lastLogin=td;}S.todayQueue=(S.todayQueue||[]).filter(id=>id!==qid);sv();closeSheet();showCel(q);setTimeout(rHome,400);}
+
+function questDoneToday(qid){
+  const dowIdx=getTodayDowIndex();
+  S.weekDone=S.weekDone||{};
+  if(!S.weekDone[qid])S.weekDone[qid]=[0,0,0,0,0,0,0];
+
+  if(S.weekDone[qid][dowIdx]){
+    S.weekDone[qid][dowIdx]=0;
+    sv();rHome();return;
+  }
+
+  S.weekDone[qid][dowIdx]=1;
+  S.totalDone=(S.totalDone||0)+1;
+  S.currentLevel=getUnlockedLevel(S.totalDone);
+
+  if(S.lastLogin!==td){
+    if(S.lastLogin===yd)S.streak=(S.streak||0)+1;
+    else S.streak=1;
+    S.lastLogin=td;
+  }
+
+  S.completions=S.completions||[];
+  S.completions.push({
+    qid,ts:Date.now(),
+    level:(QL.find(q=>q.id===qid)||{}).level||0,
+    title:(QL.find(q=>q.id===qid)||{}).title||''
+  });
+
+  sv();
+  showCel(QL.find(q=>q.id===qid)||{title:'Quest'});
+  setTimeout(rHome,400);
+}
 
 function questPillHtml(q){
   if(q.style==='fun'||q.cat==='Fun Mode')return '<span class="qc-pill qc-pill--fun">FUN</span>';
@@ -1341,7 +1468,7 @@ function showQuestDetail(qid){
   const isLocked=q.level>unlockedLevel;
   const needLock=isLocked?Math.max(0,(LEVEL_UNLOCK[q.level]||0)-(S.totalDone||0)):0;
   const lockBanner=isLocked?`<div class="qc-lock-banner">🔒 Diese Quest kannst du erst <strong>spielen</strong>, wenn <strong>Level ${q.level}</strong> frei ist${needLock>0?' — noch <strong>'+needLock+'</strong> Gesamt-Quests bis dahin':''}.</div>`:'';
-  const doneToday=todayDoneIds().includes(qid);
+  const doneToday=(S.weekDone?.[qid]||[])[getTodayDowIndex()]===1;
   const vars=(q.variants||[]).map(function(v){return '<li>'+escHtml(v)+'</li>';}).join('');
   const variantsBlock=vars?`<div class="qc-card qc-card--trigger"><div class="qc-card-hd qc-card-hd--trigger">✨ VARIANTEN</div><ul class="qc-variant-list">${vars}</ul></div>`:'';
   const safetyBlock=q.safety?`<div class="qc-card qc-card--nogo"><div class="qc-card-hd qc-card-hd--nogo">🚫 NO-GO</div><div class="qc-card-body">${escHtml(q.safety)}</div></div>`:'';
@@ -1385,7 +1512,7 @@ function showQuestDetail(qid){
           ? '<button type="button" class="qc-btn qc-btn--ghost" onclick="closeSheet()">Schließen</button>'
           : doneToday
             ? '<button type="button" class="qc-btn qc-btn--ghost" onclick="closeSheet()">Heute erledigt ✓</button>'
-            : `<button type="button" class="qc-btn qc-btn--primary" onclick="closeSheet();questDone('${qid}')">Quest annehmen</button>
+            : `<button type="button" class="qc-btn qc-btn--primary" onclick="closeSheet();questDoneToday('${qid}')">Quest annehmen</button>
                <button type="button" class="qc-btn qc-btn--ghost" onclick="closeSheet()">Schließen</button>`}
       </div>
     </div>`,
@@ -1393,8 +1520,29 @@ function showQuestDetail(qid){
   );
 }
 
-function rLevels(){const w=document.getElementById('levels-wrap');if(!w)return;const unlockedLevel=getUnlockedLevel(S.totalDone||0);let html='';Object.entries(LEVEL_META).forEach(([lvl,lm])=>{const lvlNum=parseInt(lvl,10),isUnlocked=lvlNum<=unlockedLevel,neededFor=LEVEL_UNLOCK[lvlNum],quests=QL.filter(q=>q.level===lvlNum),doneInLevel=S.completions.filter(c=>QL.find(q=>q.id===c.qid&&q.level===lvlNum)).length;html+=`<div style="background:var(--surface);border-radius:22px;padding:18px 20px;margin-bottom:12px;box-shadow:0 2px 12px rgba(0,0,0,0.05);opacity:${isUnlocked?1:0.55}"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:${isUnlocked?'14px':'8px'}"><div style="display:flex;align-items:center;gap:10px"><div style="width:40px;height:40px;border-radius:20px;background:${lm.color}18;display:flex;align-items:center;justify-content:center;font-size:20px">${isUnlocked?lm.emoji:'🔒'}</div><div><div style="font-family:'DM Sans',sans-serif;font-size:15px;font-weight:800;color:var(--t)">Level ${lvlNum} · ${lm.name}</div><div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--t3);letter-spacing:0.06em;margin-top:2px">${quests.length} Quests · ${doneInLevel} erledigt</div></div></div>${!isUnlocked?`<div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--t3);text-align:right;letter-spacing:0.06em">Ab ${neededFor} Quests</div>`:''}</div>${isUnlocked?`<div style="font-family:'DM Sans',sans-serif;font-size:12px;color:var(--t2);margin-bottom:14px">${lm.desc}</div><div style="display:flex;flex-direction:column;gap:8px">${quests.map(q=>{const isDone=S.completions.some(c=>c.qid===q.id),inQueue=S.todayQueue.includes(q.id),isFun=q.style==='fun';return`<div style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;background:${isDone?'rgba(5,150,105,0.05)':'var(--surface2)'};cursor:pointer" onclick="showQuestDetail('${q.id}')"><div style="width:28px;height:28px;border-radius:14px;background:${isDone?'var(--g)':'var(--border)'};display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff;font-size:12px">${isDone?'✓':''}</div><div style="flex:1;min-width:0"><div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:var(--t);${isDone?'text-decoration:line-through;opacity:0.5':''}">${escHtml(q.title)}${isFun?'<span style="font-size:10px;margin-left:4px">🎭</span>':''}</div></div>${inQueue?`<span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--am);font-weight:700">HEUTE</span>`:isDone?'':`<button onclick="event.stopPropagation();addToTodayQueue('${q.id}')" style="background:var(--t);border:none;border-radius:8px;padding:5px 10px;font-family:'DM Mono',monospace;font-size:8px;font-weight:700;color:#fff;cursor:pointer;white-space:nowrap">+ HEUTE</button>`}</div>`}).join('')}</div>`:`<div style="background:var(--surface2);border-radius:12px;padding:12px;text-align:center"><div style="font-family:'DM Sans',sans-serif;font-size:12px;color:var(--t3);line-height:1.5">🔒 Noch ${neededFor-(S.totalDone||0)} Quests bis Level ${lvlNum}</div></div>`}</div>`;});w.innerHTML=html;}
-function addToTodayQueue(qid){const q=QL.find(x=>x.id===qid);if(!q)return;const unlockedLevel=getUnlockedLevel(S.totalDone||0);if(q.level>unlockedLevel){alert('Dieses Level ist noch gesperrt.');return;}if(S.todayQueue.length>=3){alert('Heute sind schon 3 Quests aktiv.');return;}if(S.todayQueue.includes(qid))return;S.todayQueue.push(qid);sv();rOverview();rHome();}
+function rLevels(){const w=document.getElementById('levels-wrap');if(!w)return;const unlockedLevel=getUnlockedLevel(S.totalDone||0);let html='';Object.entries(LEVEL_META).forEach(([lvl,lm])=>{const lvlNum=parseInt(lvl,10),isUnlocked=lvlNum<=unlockedLevel,neededFor=LEVEL_UNLOCK[lvlNum],quests=QL.filter(q=>q.level===lvlNum),doneInLevel=S.completions.filter(c=>QL.find(q=>q.id===c.qid&&q.level===lvlNum)).length;html+=`<div style="background:var(--surface);border-radius:22px;padding:18px 20px;margin-bottom:12px;box-shadow:0 2px 12px rgba(0,0,0,0.05);opacity:${isUnlocked?1:0.55}"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:${isUnlocked?'14px':'8px'}"><div style="display:flex;align-items:center;gap:10px"><div style="width:40px;height:40px;border-radius:20px;background:${lm.color}18;display:flex;align-items:center;justify-content:center;font-size:20px">${isUnlocked?lm.emoji:'🔒'}</div><div><div style="font-family:'DM Sans',sans-serif;font-size:15px;font-weight:800;color:var(--t)">Level ${lvlNum} · ${lm.name}</div><div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--t3);letter-spacing:0.06em;margin-top:2px">${quests.length} Quests · ${doneInLevel} erledigt</div></div></div>${!isUnlocked?`<div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--t3);text-align:right;letter-spacing:0.06em">Ab ${neededFor} Quests</div>`:''}</div>${isUnlocked?`<div style="font-family:'DM Sans',sans-serif;font-size:12px;color:var(--t2);margin-bottom:14px">${lm.desc}</div><div style="display:flex;flex-direction:column;gap:8px">${quests.map(q=>{const isDone=S.completions.some(c=>c.qid===q.id),inQueue=S.weekQueue.includes(q.id),isFun=q.style==='fun';return`<div style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;background:${isDone?'rgba(5,150,105,0.05)':'var(--surface2)'};cursor:pointer" onclick="showQuestDetail('${q.id}')"><div style="width:28px;height:28px;border-radius:14px;background:${isDone?'var(--g)':'var(--border)'};display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff;font-size:12px">${isDone?'✓':''}</div><div style="flex:1;min-width:0"><div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:var(--t);${isDone?'text-decoration:line-through;opacity:0.5':''}">${escHtml(q.title)}${isFun?'<span style="font-size:10px;margin-left:4px">🎭</span>':''}</div></div>${inQueue?`<span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--am);font-weight:700">HEUTE</span>`:isDone?'':`<button onclick="event.stopPropagation();addToWeekQueue('${q.id}')" style="background:var(--t);border:none;border-radius:8px;padding:5px 10px;font-family:'DM Mono',monospace;font-size:8px;font-weight:700;color:#fff;cursor:pointer;white-space:nowrap">+ HEUTE</button>`}</div>`}).join('')}</div>`:`<div style="background:var(--surface2);border-radius:12px;padding:12px;text-align:center"><div style="font-family:'DM Sans',sans-serif;font-size:12px;color:var(--t3);line-height:1.5">🔒 Noch ${neededFor-(S.totalDone||0)} Quests bis Level ${lvlNum}</div></div>`}</div>`;});w.innerHTML=html;}
+function addToWeekQueue(qid){
+  S.weekQueue=S.weekQueue||[];
+  if(S.weekQueue.length>=3){
+    showSheet(`
+      <div class="shdl"></div>
+      <div class="sht-t">Schon 3 Quests aktiv</div>
+      <div class="sht-s">Entferne zuerst eine Quest
+        auf der Startseite.</div>
+      <button class="btn-sv" onclick="closeSheet();go('home')">
+        Zur Startseite
+      </button>
+    `);
+    return;
+  }
+  if(S.weekQueue.includes(qid))return;
+  S.weekQueue.push(qid);
+  S.weekDone=S.weekDone||{};
+  S.weekDone[qid]=[0,0,0,0,0,0,0];
+  sv();
+  rLevels();
+  rHome();
+}
 
 function rStats(){const w=document.getElementById('stats-wrap');if(!w)return;const total=S.totalDone||0,unlockedLevel=getUnlockedLevel(total),streak=S.streak||0,todayC=todayDoneIds().length,reflections=(S.completions||[]).filter(c=>c.reflection&&c.reflection.trim()).slice(-5).reverse();const outcomes={done:0,nein:0,skip:0};(S.completions||[]).forEach(c=>{if(outcomes[c.outcome]!==undefined)outcomes[c.outcome]++;});const nextLevel=unlockedLevel<5?unlockedLevel+1:null,nextUnlock=nextLevel!==null?LEVEL_UNLOCK[nextLevel]:null,progressToNext=nextUnlock?Math.min(100,Math.round(total/nextUnlock*100)):100;w.innerHTML=`<div class="sblock" style="margin-bottom:12px"><div class="sbt">📊 ÜBERSICHT</div><div class="sgrid"><div class="scell"><div class="sv">${total}</div><div class="sl">GESAMT</div></div><div class="scell"><div class="sv" style="color:var(--am)">${streak}🔥</div><div class="sl">STREAK</div></div><div class="scell"><div class="sv">${todayC}</div><div class="sl">HEUTE</div></div></div></div><div class="sblock" style="margin-bottom:12px"><div class="sbt">⭐ LEVEL</div><div style="display:flex;align-items:center;gap:12px;margin-bottom:12px"><div style="font-size:32px">${LEVEL_META[unlockedLevel].emoji}</div><div><div style="font-family:'DM Sans',sans-serif;font-size:16px;font-weight:800;color:var(--t)">Level ${unlockedLevel} · ${LEVEL_META[unlockedLevel].name}</div><div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--t3);margin-top:3px">${total} von ${nextUnlock||total} Quests</div></div></div>${nextLevel!==null?`<div style="height:6px;background:var(--surface2);border-radius:99px;overflow:hidden;margin-bottom:6px"><div style="width:${progressToNext}%;height:100%;background:${LEVEL_META[unlockedLevel].color};border-radius:99px;transition:width .5s ease"></div></div><div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--t3);text-align:right">Noch ${nextUnlock-total} bis Level ${nextLevel}</div>`:`<div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--g);text-align:center">🏆 Höchstes Level erreicht</div>`}</div>${total>0?`<div class="sblock" style="margin-bottom:12px"><div class="sbt">🎯 ERGEBNISSE</div><div class="brow"><span class="blabel">✓ Gemacht</span><div class="btrack"><div class="bfill" style="width:${Math.round(outcomes.done/Math.max(total,1)*100)}%;background:var(--g)"></div></div><span class="bval">${outcomes.done}</span></div><div class="brow"><span class="blabel">Nein bekommen</span><div class="btrack"><div class="bfill" style="width:${Math.round(outcomes.nein/Math.max(total,1)*100)}%;background:#DC2626"></div></div><span class="bval">${outcomes.nein}</span></div><div class="brow"><span class="blabel">Kein Moment</span><div class="btrack"><div class="bfill" style="width:${Math.round(outcomes.skip/Math.max(total,1)*100)}%;background:var(--t3)"></div></div><span class="bval">${outcomes.skip}</span></div>${outcomes.nein>0?`<div class="insight"><p>Du hast ${outcomes.nein} mal ein Nein bekommen. Das ist der Kern von Rejection Therapy. Gut gemacht.</p></div>`:''}</div>`:''}${reflections.length?`<div class="sblock" style="margin-bottom:12px"><div class="sbt">📖 LETZTE REFLEXIONEN</div>${reflections.map(c=>`<div style="padding:10px 0;border-bottom:1px solid var(--border)"><div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--t3);margin-bottom:4px">${c.title||''} · ${new Date(c.ts).toLocaleDateString('de')}</div><div style="font-family:'DM Sans',sans-serif;font-size:13px;color:var(--t);line-height:1.5">${escHtml(c.reflection)}</div></div>`).join('')}</div>`:''}`;}
 
