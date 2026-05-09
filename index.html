@@ -36,9 +36,6 @@ body{background:var(--app-grad);font-family:var(--font-sans);-webkit-font-smooth
   --t:#111111;
   --t2:#6B6B6B;
   --t3:#ABABAB;
-  /* Quest-Zeilen / Streak XP */
-  --streak-xp-track:#F3F4F6;
-  --streak-xp-fill:#F9A8D4;
   --ico-mut:rgba(220,38,38,0.12);
   --ico-action:rgba(217,119,6,0.12);
   --ico-fund:rgba(5,150,105,0.12);
@@ -78,15 +75,16 @@ body{background:var(--app-grad);font-family:var(--font-sans);-webkit-font-smooth
 /* ── Shell: Bottom nav (bento) ── */
 #nav{
   flex-shrink:0;margin:0 14px calc(var(--safe-b) + 10px);padding:6px 4px 8px;
-  display:flex;background:var(--bento-fill-strong);backdrop-filter:blur(var(--bento-blur));-webkit-backdrop-filter:blur(var(--bento-blur));
-  border:1px solid var(--bento-line);border-radius:var(--bento-r);
+  display:flex;background:#F3F4F6;backdrop-filter:blur(var(--bento-blur));-webkit-backdrop-filter:blur(var(--bento-blur));
+  border:1px solid #E5E7EB;border-radius:var(--bento-r);
   box-shadow:var(--bento-inset),var(--bento-shade-sm);
 }
 .ntab{flex:1;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 0 6px;font-family:var(--font-mono);border-radius:14px;transition:background .15s}
-.ntab.on{background:rgba(17,24,39,0.06)}
-.nlbl{font-size:7px;font-weight:500;color:var(--t3);letter-spacing:0.06em}
-.ntab.on .nlbl{font-weight:700;color:var(--t)}
-.nicon{width:38px;height:28px;border-radius:10px;display:flex;align-items:center;justify-content:center}
+.ntab{color:#A3A3A3}
+.ntab.on{background:transparent;color:#7A7A7A}
+.nlbl{font-size:7px;font-weight:500;color:#A3A3A3;letter-spacing:0.06em}
+.ntab.on .nlbl{font-weight:700;color:#7A7A7A}
+.nicon{width:38px;height:28px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:inherit}
 .nt-dot{width:5px;height:5px;border-radius:50%;margin-top:1px;background:transparent;flex-shrink:0}
 .ntab.on .nt-dot{background:var(--g)}
 
@@ -383,38 +381,24 @@ body{background:var(--app-grad);font-family:var(--font-sans);-webkit-font-smooth
   border:1px solid var(--bento-line);border-radius:22px;
   padding:16px 16px 14px;box-shadow:var(--bento-inset),0 6px 18px rgba(17,24,39,0.06);
 }
-.kpi-streak{display:flex;align-items:center;gap:12px;margin-bottom:14px}
-.kpi-flame{font-size:44px;line-height:1}
-.kpi-streak-mid{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.kpi-streak{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:14px;
+}
+.kpi-streak-main{display:flex;align-items:flex-start;gap:10px;min-width:0;flex:1}
+.kpi-flame{font-size:40px;line-height:1;flex-shrink:0;margin-top:2px}
+.kpi-streak-textcol{display:flex;flex-direction:column;align-items:flex-start;gap:2px;min-width:0}
 .kpi-streak-n{font-family:var(--font-sans);font-size:58px;font-weight:800;color:var(--t);line-height:1;letter-spacing:-0.05em}
-.kpi-streak-sub{font-family:var(--font-sans);font-size:16px;font-weight:600;color:var(--t2)}
+.kpi-streak-sub{font-family:var(--font-sans);font-size:13px;font-weight:600;color:var(--t2);line-height:1.25}
 .kpi-streak-sub span{font-size:13px;margin-left:2px}
-.kpi-xp{position:relative;height:38px;border-radius:20px;background:var(--streak-xp-track);overflow:hidden;margin-bottom:8px}
-.kpi-xp-fill{
-  position:absolute;inset:0 auto 0 0;width:0%;border-radius:17px;
-  background:linear-gradient(90deg,#C4B5FD 0%,#F0ABFC 55%,#FBCFE8 100%);
-  transition:width .4s ease;
+.kpi-today-pill{
+  flex-shrink:0;align-self:flex-start;margin-top:4px;
+  background:rgba(17,24,39,0.06);border:1px solid var(--bento-line);
+  border-radius:999px;padding:8px 12px;font-family:var(--font-sans);font-size:11px;font-weight:800;
+  color:var(--t);letter-spacing:0.04em;text-transform:uppercase;line-height:1;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.5);
 }
-.kpi-xp-lbl{
-  position:relative;z-index:2;display:flex;align-items:center;justify-content:center;height:100%;
-  font-family:var(--font-sans);font-size:14px;font-weight:700;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,0.12);
-}
-.kpi-xp-lbl.kpi-xp-lbl--empty{color:var(--t2);text-shadow:none}
-.kpi-mood-hd{font-family:var(--font-sans);font-size:var(--fs-card-hd);font-weight:800;color:var(--t);text-align:center;margin-bottom:10px;letter-spacing:-0.02em}
-.kpi-mood-after-week{display:flex;justify-content:center;margin-top:12px;margin-bottom:4px}
-.kpi-mood-open{
-  background:rgba(255,255,255,0.55);border:1px solid var(--bento-line);border-radius:12px;
-  padding:8px 16px;font-family:var(--font-sans);font-size:var(--fs-screen-sub);font-weight:700;color:var(--t);cursor:pointer;
-  box-shadow:var(--bento-inset);transition:transform .12s,background .15s;
-}
-.kpi-mood-open:active{transform:scale(.97);background:rgba(255,255,255,0.85)}
-.kpi-mood-btn{
-  width:44px;height:44px;border-radius:12px;border:1.5px solid transparent;background:rgba(255,255,255,0.5);
-  font-size:22px;line-height:1;cursor:pointer;transition:all .15s;padding:0;
-}
-.kpi-mood-btn.on{border-color:var(--t);background:rgba(17,24,39,0.06);box-shadow:0 2px 8px rgba(0,0,0,0.06)}
-.kpi-mood-btn:active{transform:scale(.92)}
-.kpi-week{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
+.kpi-today-pill.kpi-today-pill--hide{display:none!important}
+.kpi-week{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;margin-top:4px}
 .kpi-dcell{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0}
 /* Ampel-Ring um Wochentag + Datum */
 .kpi-dayring{
@@ -430,12 +414,11 @@ body{background:var(--app-grad);font-family:var(--font-sans);-webkit-font-smooth
 .kpi-dayring .kpi-dlbl{font-family:var(--font-mono);font-size:var(--fs-meta);font-weight:600;color:var(--t3);letter-spacing:0.02em;margin:0;line-height:1.1}
 .kpi-dayring .kpi-dlbl.today{color:var(--t);font-weight:800}
 .kpi-dayring .kpi-dd{font-family:var(--font-mono);font-size:0.6875rem;font-weight:700;color:var(--t2);margin:0;line-height:1.15}
-.kpi-dayring .kpi-dd--mood{font-family:var(--font-sans);font-size:1.125rem;font-weight:400;line-height:1;margin:0;padding:0;letter-spacing:0}
 .kpi-dayring.future{border-style:dashed;opacity:0.45}
 .kpi-dayring.r{border-color:#EF4444;background:rgba(254,226,226,0.35)}
 .kpi-dayring.y{border-color:#CA8A04;background:rgba(254,249,195,0.45)}
 .kpi-dayring.g{border-color:#16A34A;background:rgba(220,252,231,0.45)}
-.kpi-dmood{font-size:18px;line-height:1;min-height:22px;opacity:0.85}
+.kpi-dayring.neutral{border-style:dashed;opacity:0.55;background:rgba(249,250,251,0.85);border-color:rgba(17,24,39,0.12)}
 
 /* Hero card */
 .hero-card{background:var(--deep);border-radius:20px;padding:20px;box-shadow:0 8px 24px rgba(30,58,82,0.20)}
@@ -464,17 +447,68 @@ body{background:var(--app-grad);font-family:var(--font-sans);-webkit-font-smooth
 }
 .hq-row{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid rgba(17,24,39,0.07)}
 .hq-row:last-child{border-bottom:none}
-.hq-row-tap{
-  flex:1;min-width:0;display:flex;align-items:center;gap:12px;cursor:pointer;text-align:left;
-  background:none;border:none;padding:0;font:inherit;-webkit-tap-highlight-color:transparent;
+.hq-row.hq-row--stack{
+  flex-direction:column;align-items:stretch;gap:12px;
 }
-.hq-row-tap:active{opacity:0.88}
+.hq-row-tap,.hq-row-head{
+  flex:1;min-width:0;display:flex;align-items:flex-start;gap:12px;cursor:pointer;text-align:left;
+  background:none;border:none;padding:0;font:inherit;-webkit-tap-highlight-color:transparent;width:100%;
+  box-sizing:border-box;
+}
+.hq-row-head{align-items:center}
+.hq-row-tap:active,.hq-row-head:active{opacity:0.88}
 .hq-ico{
   width:44px;height:44px;border-radius:22px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;
   font-size:20px;line-height:1;flex-shrink:0;border:2.5px solid #D1D5DB;background:rgba(255,255,255,0.55);
   transition:border-color .15s,background-color .15s;
 }
 .hq-copy{flex:1;min-width:0}
+.hq-week-track{width:100%;padding-top:2px}
+.hq-wk-dots{display:flex;justify-content:space-between;gap:4px;width:100%}
+.hq-wk-cell{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;min-width:0}
+.hq-wk-ring{
+  width:34px;height:34px;min-width:34px;border-radius:50%;box-sizing:border-box;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-mono);font-size:10px;font-weight:800;line-height:1;
+}
+.hq-wk-ring--done{
+  background:#16A34A;border:2px solid #15803D;color:#fff;font-size:15px;line-height:1;
+}
+.hq-wk-ring--today{
+  background:#fff;border:2px solid rgba(17,24,39,0.12);color:var(--t3);
+}
+.hq-wk-ring--future{
+  background:rgba(17,24,39,0.12);border:2px solid rgba(17,24,39,0.06);color:transparent;
+}
+.hq-wk-ring--past{
+  background:rgba(249,250,251,0.8);border:2px dashed rgba(17,24,39,0.2);color:transparent;
+}
+.hq-wk-lbl{
+  font-family:var(--font-sans);font-size:10px;font-weight:600;color:var(--t3);line-height:1;
+  letter-spacing:0.02em;
+}
+.hq-row-actions{display:flex;flex-direction:row;align-items:stretch;gap:10px;width:100%}
+.hq-btn-done{
+  flex:1;min-width:0;border:none;border-radius:14px;padding:13px 16px;font-family:var(--font-sans);font-size:var(--fs-screen-sub);font-weight:700;
+  cursor:pointer;-webkit-tap-highlight-color:transparent;
+  background:var(--t);color:#fff;
+  box-shadow:0 4px 14px rgba(17,24,39,0.14);transition:transform .12s,box-shadow .12s;
+}
+.hq-btn-done:active{transform:scale(0.98)}
+.hq-btn-done--done{
+  background:var(--g);border:none;color:#fff;
+  box-shadow:0 4px 14px rgba(5,150,105,0.25);
+}
+.hq-btn-remove{
+  width:52px;min-width:52px;flex-shrink:0;border-radius:14px;padding:0;
+  font-family:var(--font-sans);font-size:17px;font-weight:700;line-height:1;color:var(--t2);
+  cursor:pointer;-webkit-tap-highlight-color:transparent;
+  background:#fff;border:1px solid rgba(17,24,39,0.1);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.85),0 1px 2px rgba(17,24,39,0.05);
+  transition:transform .12s,background .12s;
+}
+.hq-btn-remove:active{transform:scale(0.98);background:var(--surface2)}
 .hq-meta{font-family:var(--font-mono);font-size:var(--fs-meta);font-weight:600;color:var(--t3);letter-spacing:0.06em;margin-bottom:4px}
 .hq-meta .hq-new{color:#4F46E5;font-weight:700}
 .hq-title{font-family:var(--font-sans);font-size:var(--fs-card-title);font-weight:800;color:var(--t);letter-spacing:-0.02em;line-height:1.25;margin-bottom:4px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
@@ -496,6 +530,23 @@ body{background:var(--app-grad);font-family:var(--font-sans);-webkit-font-smooth
 .hq-card-foot{display:flex;justify-content:flex-end;align-items:center;padding-top:12px;margin-top:2px;border-top:1px solid rgba(17,24,39,0.06)}
 .hq-foot-link{background:none;border:none;font-family:var(--font-mono);font-size:var(--fs-meta);font-weight:600;color:var(--t3);cursor:pointer;padding:6px 4px;letter-spacing:0.06em}
 .hq-foot-link:active{color:var(--t)}
+.hq-add-slot-wrap{
+  padding:12px 8px 6px;margin-top:10px;
+  border-top:1px solid rgba(17,24,39,0.06);
+  display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;
+}
+.hq-add-slot-hint{
+  margin:0;font-family:var(--font-sans);font-size:11px;font-weight:500;
+  color:var(--t3);line-height:1.45;max-width:260px;
+}
+.hq-add-quest-btn{
+  font-family:var(--font-sans);font-size:var(--fs-screen-sub);font-weight:700;
+  padding:10px 18px;border-radius:14px;cursor:pointer;-webkit-tap-highlight-color:transparent;
+  border:1px solid rgba(17,24,39,0.1);background:#fff;color:#111827;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.9),0 1px 3px rgba(17,24,39,0.06);
+  transition:transform .12s,background .15s;
+}
+.hq-add-quest-btn:active{transform:scale(0.98);background:var(--surface2)}
 .hq-add-more-wrap{text-align:center;padding:2px 6px 10px;margin-top:2px}
 .hq-add-more{background:none;border:none;font-family:var(--font-mono);font-size:var(--fs-meta);font-weight:600;color:var(--t3);letter-spacing:0.06em;cursor:pointer;text-decoration:underline;text-underline-offset:3px;padding:5px 10px}
 .hq-add-more:active{color:var(--t2)}
@@ -1078,21 +1129,16 @@ input[type=range]{width:100%;accent-color:var(--t);cursor:pointer;height:4px}
       <div class="home-scroll home-bento">
         <div class="kpi-card">
           <div class="kpi-streak">
-            <div class="kpi-flame" aria-hidden="true">🔥</div>
-            <div class="kpi-streak-mid">
-              <span class="kpi-streak-n" id="kpi-done-val">0</span>
-              <span class="kpi-streak-sub">Tage Streak 🔥</span>
+            <div class="kpi-streak-main">
+              <div class="kpi-flame" aria-hidden="true">🔥</div>
+              <div class="kpi-streak-textcol">
+                <span class="kpi-streak-n" id="kpi-done-val">0</span>
+                <span class="kpi-streak-sub">Tage Streak</span>
+              </div>
             </div>
+            <div class="kpi-today-pill kpi-today-pill--hide" id="kpi-today-pill" aria-live="polite"></div>
           </div>
-          <div class="kpi-xp" aria-hidden="false">
-            <div class="kpi-xp-fill" id="kpi-xp-fill"></div>
-            <div class="kpi-xp-lbl kpi-xp-lbl--empty" id="kpi-xp-lbl">Noch keine Quests heute</div>
-          </div>
-          <div class="kpi-mood-hd">Wie fühlst du dich heute?</div>
           <div class="kpi-week" id="kpi-week"></div>
-          <div class="kpi-mood-after-week">
-            <button type="button" class="kpi-mood-open" onclick="openMoodPicker()">Auswahl ändern</button>
-          </div>
         </div>
         <div id="hqs"></div>
       </div>
@@ -1109,13 +1155,7 @@ input[type=range]{width:100%;accent-color:var(--t);cursor:pointer;height:4px}
 
     <!-- STATS -->
     <div class="scr" id="s-stats">
-      <div style="padding:calc(var(--safe-t)+16px) 20px 8px;flex-shrink:0">
-        <div style="font-family:'DM Sans',sans-serif;font-size:22px;
-          font-weight:800;color:var(--t);letter-spacing:-0.03em">
-          Stats
-        </div>
-      </div>
-      <div style="flex:1;overflow-y:auto;padding:8px 20px 100px"
+      <div style="flex:1;overflow-y:auto;padding:calc(var(--safe-t)+10px) 20px 100px"
         id="stats-wrap"></div>
     </div>
 
@@ -1125,11 +1165,11 @@ input[type=range]{width:100%;accent-color:var(--t);cursor:pointer;height:4px}
   <div id="nav">
     <button class="ntab on" id="nt-home" onclick="go('home')">
       <div class="nicon" id="ni-home">
-        <svg width="19" height="19" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2" stroke-linecap="round"
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="1.9" stroke-linecap="round"
           stroke-linejoin="round">
-          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
-          <polyline points="9 22 9 12 15 12 15 22"/>
+          <path d="M4 10.5L12 4l8 6.5V20a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-9.5z"/>
+          <path d="M9 21v-6h6v6"/>
         </svg>
       </div>
       <span class="nlbl">HOME</span>
@@ -1137,10 +1177,13 @@ input[type=range]{width:100%;accent-color:var(--t);cursor:pointer;height:4px}
     </button>
     <button class="ntab" id="nt-q" onclick="go('q')">
       <div class="nicon" id="ni-q">
-        <svg width="19" height="19" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2" stroke-linecap="round"
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="1.9" stroke-linecap="round"
           stroke-linejoin="round">
-          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+          <rect x="4" y="4" width="6" height="6" rx="1.5"/>
+          <rect x="14" y="4" width="6" height="6" rx="1.5"/>
+          <rect x="4" y="14" width="6" height="6" rx="1.5"/>
+          <rect x="14" y="14" width="6" height="6" rx="1.5"/>
         </svg>
       </div>
       <span class="nlbl">QUESTS</span>
@@ -1148,15 +1191,15 @@ input[type=range]{width:100%;accent-color:var(--t);cursor:pointer;height:4px}
     </button>
     <button class="ntab" id="nt-stats" onclick="go('stats')">
       <div class="nicon" id="ni-stats">
-        <svg width="19" height="19" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2" stroke-linecap="round"
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="1.9" stroke-linecap="round"
           stroke-linejoin="round">
-          <line x1="18" y1="20" x2="18" y2="10"/>
-          <line x1="12" y1="20" x2="12" y2="4"/>
           <line x1="6" y1="20" x2="6" y2="14"/>
+          <line x1="12" y1="20" x2="12" y2="8"/>
+          <line x1="18" y1="20" x2="18" y2="4"/>
         </svg>
       </div>
-      <span class="nlbl">STATS</span>
+      <span class="nlbl">PROFIL</span>
       <span class="nt-dot"></span>
     </button>
   </div>
@@ -1164,7 +1207,7 @@ input[type=range]{width:100%;accent-color:var(--t);cursor:pointer;height:4px}
 
 <div id="modal"></div>
 <div id="cel"></div>
-<script type="application/json" id="rt-quests-json">[{"id":"L0_01","level":0,"cat":"Präsenz","style":"classic","title":"Augenfarben-Check","action":"Schau der nächsten Person die dir entgegenkommt so lange in die Augen bis du die Augenfarbe kennst.","goal":"Nicht ob sie zurückschaut — sondern ob du den Moment aushältst.","variants":[],"safety":"","modminus":"","modplus":""},{"id":"L0_02","level":0,"cat":"Präsenz","style":"classic","title":"Blickkontakt halten","action":"Wenn heute jemand deinen Blick trifft — schau nicht sofort weg. Halt aus bis die andere Person wegschaut.","goal":"Nicht gewinnen — den Fluchtreflex einmal ignorieren.","variants":[],"safety":"","modminus":"","modplus":""},{"id":"L0_03","level":0,"cat":"Präsenz","style":"classic","title":"Handy in der Tasche","action":"Steh heute einmal irgendwo rum ohne Handy und tu einfach nichts — Schlange, Wartezimmer, Ampel.","goal":"Nicht entspannen — uncomfortable da stehen ohne Ablenkung.","variants":[],"safety":"","modminus":"","modplus":""},{"id":"L0_04","level":0,"cat":"Präsenz","style":"classic","title":"Zuerst grüßen","action":"Grüße heute 3 Fremde zuerst — bevor sie dich grüßen oder bevor du weißt ob sie zurückgrüßen.","goal":"Nicht nett sein — handeln ohne zu wissen wie es ankommt.","variants":[],"safety":"","modminus":"","modplus":""},{"id":"L0_05","level":0,"cat":"Präsenz","style":"classic","title":"Schönen Tag sagen","action":"Sag heute beim Verlassen von 3 Orten laut Schönen Tag — auch wenn es sich overdressed anfühlt.","goal":"Nicht beliebt sein — etwas sagen das sich peinlich anfühlt.","variants":[],"safety":"","modminus":"","modplus":""},{"id":"L0_06","level":0,"cat":"Präsenz","style":"classic","title":"Direkt bestellen","action":"Bestell heute ohne Weichmacher — kein ich hätte gerne, kein vielleicht, kein kurz. Einfach Ich nehme.","goal":"Nicht unhöflich sein — spüren wie komisch es sich anfühlt einfach direkt zu sein.","variants":[],"safety":"","modminus":"","modplus":""},{"id":"L0_07","level":0,"cat":"Präsenz","style":"classic","title":"Danke statt Sorry","action":"Wenn du heute zu spät bist oder jemanden warten lässt — sag Danke für die Geduld statt Sorry.","goal":"Nicht arrogant sein — merken wie der Körper auf das fehlende Sorry reagiert.","variants":[],"safety":"","modminus":"","modplus":""},{"id":"L0_08","level":0,"cat":"Präsenz","style":"classic","title":"Aufrecht reingehen","action":"Betritt heute einen vollen Laden oder ein Café bewusst langsam mit Blick nach vorne — nicht sofort aufs Handy oder nach unten.","goal":"Nicht cool wirken — den Impuls sich klein zu machen einmal ignorieren.","variants":[],"safety":"","modminus":"","modplus":""},{"id":"RT01_01","level":1,"cat":"Mini-Kontakt","title":"Frag nach einer unnötigen Info","action":"Sprich heute eine fremde Person an und frag nach einer einfachen Information, die du eigentlich selbst herausfinden könntest.","variants":["Frag nach der Uhrzeit, obwohl du dein Handy hast.","Frag nach dem Weg zu einem Ort in der Nähe.","Frag nach Öffnungszeiten, obwohl sie irgendwo stehen.","Frag nach dem Preis, obwohl er angeschrieben ist.","Frag nach einem Produkt, obwohl du es fast siehst.","Frag, ob du hier richtig bist für eine bestimmte Richtung."],"goal":"Das Ziel ist nicht die Information. Das Ziel ist den ersten Satz zu einem fremden Menschen sagen.","safety":"No-Go: Direkt erklären, dass du es eigentlich weißt.","modminus":"Frag eine Serviceperson.","modplus":"Frag einen Passanten auf der Straße.","style":"classic"},{"id":"RT01_02","level":1,"cat":"Mini-Kontakt","title":"Frag nach einer Empfehlung","action":"Frag heute eine fremde Person oder Serviceperson nach einer persönlichen Empfehlung.","variants":["Frag im Café: „Was trinken Sie hier selbst am liebsten?“","Frag im Restaurant: „Was würden Sie persönlich nehmen?“","Frag einen Passanten nach einem Café-Tipp.","Frag im Buchladen nach dem Lieblingsbuch eines Mitarbeiters.","Frag jemanden nach einem Song, den du heute hören solltest.","Frag im Laden, welches Produkt die Person besser findet."],"goal":"Das Ziel ist nicht die Empfehlung. Das Ziel ist jemanden kurz in deinen Moment einzubinden.","safety":"No-Go: Die Frage stellen und sofort weglaufen.","modminus":"Frag eine Serviceperson.","modplus":"Frag eine fremde Person außerhalb eines Servicekontexts.","style":"classic"},{"id":"RT01_03","level":1,"cat":"Mini-Kontakt","title":"Teile einen Situationssatz","action":"Sag heute zu einer fremden Person einen einfachen Satz über etwas, das ihr beide gerade wahrnehmt.","variants":["In der Warteschlange: „Heute ist hier echt viel los.“","Im Aufzug: „Der fährt heute aber langsam.“","Beim Hund: „Der hat ja richtig Energie.“","Im Café: „Die Musik hier ist heute echt gut.“","Draußen: „Das Wetter weiß heute auch nicht, was es will.“","In der Bahn: „Heute ist es ungewöhnlich voll.“"],"goal":"Das Ziel ist nicht ein Gespräch. Das Ziel ist einen sozialen Ball kurz ins Feld werfen.","safety":"No-Go: Nach dem Satz sofort wegschauen.","modminus":"Nur bei einer harmlosen Situation.","modplus":"Eine kleine Folgefrage anhängen.","style":"classic"},{"id":"RT01_04","level":1,"cat":"Mini-Kontakt","title":"Frag nach einer kleinen Entscheidung","action":"Bitte heute jemanden kurz um Hilfe bei einer kleinen Entscheidung.","variants":["„Würden Sie eher das oder das nehmen?“","„Wirkt das eher casual oder schick?“","„Welches Foto wirkt sympathischer?“","„Welches Café würden Sie nehmen?“","„Apfel oder Banane?“","„Welche Farbe finden Sie besser?“"],"goal":"Das Ziel ist nicht die Entscheidung. Das Ziel ist jemanden aktiv einbinden.","safety":"No-Go: Sofort erklären, dass es egal ist.","modminus":"Frag eine Serviceperson.","modplus":"Frag einen Fremden auf der Straße.","style":"classic"},{"id":"RT01_05","level":1,"cat":"Mini-Kontakt","title":"Mach ein konkretes kleines Lob","action":"Sag heute einer Person ein kurzes, konkretes Lob für etwas, das dir wirklich auffällt.","variants":["„Der Kaffee war richtig gut.“","„Sie waren gerade echt freundlich.“","„Die Musik hier passt richtig gut.“","„Die Einrichtung hier ist schön.“","„Das ging gerade echt schnell, danke.“","„Coole Jacke.“"],"goal":"Das Ziel ist nicht schmeicheln. Das Ziel ist etwas Positives aussprechen, statt es nur zu denken.","safety":"No-Go: Danach lachen oder es kleinmachen.","modminus":"Lob an Serviceperson.","modplus":"Lob an fremde Person im Vorbeigehen.","style":"classic"},{"id":"RT02_01","level":2,"cat":"Kleine Bitte","title":"Bitte um ein kleines Extra","action":"Frag heute bei einer Bestellung nach einem kleinen Extra, das nicht automatisch dabei ist.","variants":["Frag nach einem Glas Leitungswasser.","Frag nach einer extra Serviette.","Frag nach Eiswürfeln.","Frag nach Zitrone.","Frag nach extra Sauce.","Frag nach einer kleinen Tüte oder Verpackung."],"goal":"Das Ziel ist nicht das Extra. Das Ziel ist aktiv mehr verlangen als Standard.","safety":"No-Go: Dich sofort entschuldigen, wenn die Person zögert.","modminus":"Frag nach etwas sehr Normalem.","modplus":"Frag nach etwas leicht Ungewöhnlichem.","style":"classic"},{"id":"RT02_02","level":2,"cat":"Kleine Bitte","title":"Bitte um kleine Hilfe","action":"Bitte heute eine fremde Person um eine kleine konkrete Hilfe.","variants":["Frag, ob jemand dir ein Foto machen kann.","Frag, ob jemand kurz einen Stift hat.","Frag, ob jemand dir Münzen wechseln kann.","Frag, ob jemand kurz auf deine Tasche schaut, während du etwas holst.","Frag, ob jemand dir kurz eine Richtung bestätigt.","Frag, ob jemand dir kurz etwas vom oberen Regal gibt."],"goal":"Das Ziel ist nicht die Hilfe. Das Ziel ist die Bitte ruhig stellen.","safety":"No-Go: Wertgegenstände oder unangenehme Nähe verlangen.","modminus":"Frag Servicepersonal.","modplus":"Frag einen Passanten.","style":"classic"},{"id":"RT02_03","level":2,"cat":"Kleine Bitte","title":"Frag nach einer Sonderlösung","action":"Frag heute freundlich, ob etwas leicht anders möglich ist als vorgesehen.","variants":["Frag, ob du ein Gericht anders kombinieren kannst.","Frag, ob du den ruhigsten Tisch bekommen kannst.","Frag, ob du kurz dein Handy laden darfst.","Frag, ob du etwas probieren darfst.","Frag, ob du eine kleinere Portion bekommen kannst.","Frag, ob du eine Sache kurz sehen oder testen darfst."],"goal":"Das Ziel ist nicht die Sonderlösung. Das Ziel ist vom Standard abweichen und fragen.","safety":"No-Go: Bei der ersten Unsicherheit sofort zurückrudern.","modminus":"Frag nach einer plausiblen Sonderlösung.","modplus":"Frag nach einer ungewöhnlichen Sonderlösung.","style":"classic"},{"id":"RT02_04","level":2,"cat":"Kleine Bitte","title":"Frag nach einem kleinen Vorteil","action":"Frag heute beim Bezahlen oder Bestellen nach einem kleinen Vorteil, Rabatt oder Deal.","variants":["„Gibt es heute einen kleinen Rabatt?“","„Gibt es einen geheimen Deal, den ich kennen sollte?“","„Gibt es heute etwas gratis dazu?“","„Gibt es einen Sympathie-Rabatt?“","„Gibt es einen Vorteil, wenn ich direkt bar zahle?“","„Kann man da preislich noch etwas machen?“"],"goal":"Das Ziel ist nicht der Rabatt. Das Ziel ist die Frage stellen und ein Nein entspannt annehmen.","safety":"No-Go: Sofort sagen: „War nur Spaß.“","modminus":"Frag spielerisch bei kleinem Betrag.","modplus":"Frag ernst bei einer offiziellen Kasse.","style":"classic"},{"id":"RT02_05","level":2,"cat":"Kleine Bitte","title":"Bitte um eine Mini-Ausnahme","action":"Frag heute freundlich nach einer kleinen Ausnahme, ohne dich dafür zu entschuldigen.","variants":["„Wäre es ausnahmsweise möglich, das so zu machen?“","„Könnte ich das kurz testen?“","„Darf ich kurz sehen, wie das gemacht wird?“","„Könnten Sie das heute einmal anders machen?“","„Gibt es eine flexible Lösung?“","„Wäre eine kleine Ausnahme drin?“"],"goal":"Das Ziel ist nicht die Ausnahme. Das Ziel ist eine Bitte stellen, die abgelehnt werden darf.","safety":"No-Go: Die Bitte als Scherz tarnen.","modminus":"Frag bei einer kleinen Sache.","modplus":"Frag bei einer offiziellen Person.","style":"classic"},{"id":"RT03_01","level":3,"cat":"Meinung & Feedback","title":"Frag nach Feedback zu deinem Auftreten","action":"Frag nach einer kurzen Interaktion eine Person nach 10 Sekunden ehrlichem Feedback dazu, wie du gerade gewirkt hast.","variants":["„Kurze Frage: Wirkte ich gerade klar oder unsicher?“","„War meine Stimme gut hörbar?“","„Kam meine Frage normal rüber?“","„Wirkte ich eher entspannt oder nervös?“","„Darf ich kurz Feedback haben, wie ich gerade gewirkt habe?“"],"goal":"Das Ziel ist nicht gutes Feedback. Das Ziel ist Bewertung zulassen.","safety":"No-Go: Die Antwort sofort erklären oder verteidigen.","modminus":"Frag jemanden, der dir sympathisch wirkt.","modplus":"Frag eine fremde Person.","style":"classic"},{"id":"RT03_02","level":3,"cat":"Meinung & Feedback","title":"Frag nach Meinung zu etwas Sichtbarem","action":"Frag heute jemanden nach ehrlicher Meinung zu etwas, das mit dir zu tun hat.","variants":["Frag nach deinem Outfit.","Frag nach einem Profilfoto.","Frag nach einer kurzen Bio.","Frag nach einer Idee.","Frag nach einem Satz oder Titel.","Frag nach deiner Stimme oder Wirkung."],"goal":"Das Ziel ist nicht die perfekte Meinung. Das Ziel ist dich selbst kurz bewerten lassen.","safety":"No-Go: Nur nach Lob suchen.","modminus":"Frag jemanden, den du ein bisschen kennst.","modplus":"Frag eine fremde Person.","style":"classic"},{"id":"RT03_03","level":3,"cat":"Meinung & Feedback","title":"Nimm eine fremde Empfehlung wirklich an","action":"Frag heute eine Serviceperson nach ihrer persönlichen Empfehlung und nimm diese dann wirklich.","variants":["Lieblingskaffee.","Lieblingsgericht.","Lieblingsdrink.","Lieblingsbuch.","Lieblingsprodukt.","Lieblingsdessert."],"goal":"Das Ziel ist nicht die beste Wahl. Das Ziel ist Kontrolle abgeben.","safety":"No-Go: Nach der Empfehlung doch wieder deine sichere Option nehmen.","modminus":"Nimm eine kleine Empfehlung.","modplus":"Nimm etwas, das du normalerweise nicht wählen würdest.","style":"classic"},{"id":"RT03_04","level":3,"cat":"Meinung & Feedback","title":"Lass einen Fremden entscheiden","action":"Lass heute eine fremde Person eine kleine Entscheidung für dich treffen.","variants":["Welchen Kaffee du nimmst.","Welche Süßigkeit du kaufst.","Welchen Song du hörst.","Welchen Weg du nimmst.","Welches Foto du nutzt.","Welche Farbe du wählst."],"goal":"Das Ziel ist nicht die Entscheidung. Das Ziel ist Kontrolle für einen kleinen Moment loslassen.","safety":"No-Go: Danach sofort alles ändern.","modminus":"Nur zwischen zwei Optionen wählen lassen.","modplus":"Die Person komplett frei entscheiden lassen.","style":"classic"},{"id":"RT04_01","level":4,"cat":"Sichtbarkeit","title":"Laut und langsam bestellen","action":"Bestell heute bewusst 20% lauter und langsamer als sonst. Nicht nuscheln, nicht kleiner werden.","variants":["Im Café.","Beim Bäcker.","Im Restaurant.","An der Bar.","Im Imbiss."],"goal":"Das Ziel ist nicht laut sein. Das Ziel ist klar hörbar sein ohne dich zu entschuldigen.","safety":"No-Go: Danach leiser werden, wenn jemand schaut.","modminus":"Nur einen Satz lauter sprechen.","modplus":"Die ganze Bestellung ruhig und klar halten.","style":"classic"},{"id":"RT04_02","level":4,"cat":"Sichtbarkeit","title":"Solo-Präsenz ohne Handy","action":"Setz dich heute allein an einen sichtbaren Platz und nimm 5 Minuten kein Handy raus.","variants":["Zentraler Tisch im Café.","Bank in der Fußgängerzone.","Tisch im Foodcourt.","Platz an der Bar.","Allein im Restaurant."],"goal":"Das Ziel ist nicht entspannen. Das Ziel ist sichtbar allein sein ohne Schutz.","safety":"No-Go: Handy, Kopfhörer oder Buch als Schutz benutzen.","modminus":"3 Minuten.","modplus":"10 Minuten.","style":"classic"},{"id":"RT04_03","level":4,"cat":"Sichtbarkeit","title":"Kompliment-Drop","action":"Geh auf eine Person zu, sag ein kurzes konkretes Kompliment und geh danach ruhig weiter.","variants":["„Coole Jacke.“","„Dein Stil sieht richtig gut aus.“","„Die Schuhe sind stark.“","„Das Outfit passt richtig gut.“","„Du hast eine gute Ausstrahlung.“"],"goal":"Das Ziel ist nicht die Reaktion. Das Ziel ist etwas Positives direkt aussprechen.","safety":"No-Go: Danach lachen, relativieren oder hektisch fliehen.","modminus":"Bei jemandem, den du ein bisschen kennst.","modplus":"Bei einer fremden Person.","style":"classic"},{"id":"RT04_04","level":4,"cat":"Sichtbarkeit","title":"Foto-Request","action":"Frag heute eine fremde Person, ob sie kurz ein Foto von dir machen kann.","variants":["Vor einem Gebäude.","In einem Café.","An einem schönen Spot.","Im Park.","In einer Einkaufsstraße."],"goal":"Das Ziel ist nicht das Foto. Das Ziel ist einen Fremden aktiv in deine Sache einbinden.","safety":"No-Go: Direkt sagen, dass es egal ist.","modminus":"Frag eine Person, die entspannt wirkt.","modplus":"Sag genau, wie das Foto aussehen soll.","style":"classic"},{"id":"RT04_05","level":4,"cat":"Ablehnung","title":"Frag nach 1 Euro für etwas Banales","action":"Frag heute einen Passanten freundlich, ob er dir 1 Euro schenken kann — für ein Eis, einen Kaffee oder etwas Banales.","variants":["„Könnten Sie mir 1 Euro für ein Eis schenken?“","„Haben Sie zufällig 1 Euro für meinen Kaffee übrig?“","„Ich sammle gerade 1 Euro für einen Snack.“"],"goal":"Das Ziel ist nicht der Euro. Das Ziel ist ein mögliches Nein ruhig aushalten.","safety":"No-Go: Druck machen oder mitleidig wirken.","modminus":"Frag im Freundeskreis absurd.","modplus":"Frag einen fremden Passanten.","style":"classic"},{"id":"RT04_06","level":4,"cat":"Ablehnung","title":"Frag nach einem Blick hinter die Kulissen","action":"Frag in einem Café, Laden oder Servicepunkt, ob du kurz sehen darfst, wie etwas hinter den Kulissen aussieht.","variants":["„Darf ich kurz sehen, wie der Kaffee gemacht wird?“","„Darf ich kurz hinter die Theke schauen?“","„Darf ich sehen, wie ihr das zubereitet?“","„Darf ich kurz einen Blick in den Arbeitsbereich werfen?“"],"goal":"Das Ziel ist nicht der Blick. Das Ziel ist eine ungewöhnliche Bitte ruhig stellen.","safety":"No-Go: Sofort erklären, dass es nur eine Challenge ist.","modminus":"Frag nach Erklärung statt Blick.","modplus":"Frag wirklich nach kurzem Blick.","style":"classic"},{"id":"RT04_07","level":4,"cat":"Ablehnung","title":"Frag, ob du dich dazusetzen darfst","action":"Frag jemanden, der allein an einem größeren Tisch sitzt, ob du dich kurz dazusetzen darfst.","variants":["Im Café.","In einer Mensa.","In einem Foodcourt.","Im Park an einer Bank.","In einer Bibliothek oder Coworking-Zone."],"goal":"Das Ziel ist nicht der Platz. Das Ziel ist eine soziale Grenze freundlich testen.","safety":"No-Go: Aufdringlich bleiben, wenn die Person nein sagt.","modminus":"Frag, ob der Platz frei ist.","modplus":"Frag, ob du dich wirklich kurz dazusetzen darfst.","style":"classic"},{"id":"RT04_08","level":4,"cat":"Ablehnung","title":"Frag nach einer kleinen Ausnahme","action":"Frag heute nach einer kleinen Ausnahme, ohne dich lang zu erklären.","variants":["„Könnten Sie heute eine kleine Ausnahme machen?“","„Wäre das ausnahmsweise möglich?“","„Gibt es irgendeine flexible Lösung?“","„Kann man das einmal anders machen?“"],"goal":"Das Ziel ist nicht die Ausnahme. Das Ziel ist die Frage stehen lassen.","safety":"No-Go: Sofort zurückrudern, wenn die Person nachfragt.","modminus":"Frag bei einer kleinen Sache.","modplus":"Frag bei einer offiziellen Person.","style":"classic"},{"id":"RT05_01","level":5,"cat":"Fun Mode","title":"Frag nach einem Burger Refill","action":"Frag bei Fast-Food oder Imbiss höflich, ob es für den Burger auch ein kostenloses Refill gibt wie beim Getränk.","variants":["Burger Refill.","Pommes Refill.","Döner Refill.","Croissant Refill.","Kaffee mit unendlichem Nachschub."],"goal":"Das Ziel ist nicht das Refill. Das Ziel ist eine absurde Frage mit ernstem Gesicht stellen.","safety":"No-Go: Personal lächerlich machen oder provozieren.","modminus":"Frag mit leichtem Lächeln.","modplus":"Frag völlig ernst.","style":"fun"},{"id":"RT05_02","level":5,"cat":"Fun Mode","title":"Frag nach der Glücksmomente-Abteilung","action":"Frag im Supermarkt oder Laden ernst, wo du die Abteilung für Glücksmomente findest.","variants":["Glücksmomente.","Motivation zum Mitnehmen.","Selbstvertrauen in Dosen.","Mut für unterwegs.","Gute Laune im Angebot."],"goal":"Das Ziel ist nicht die Antwort. Das Ziel ist eine absurde Frage ohne Erklärung aushalten.","safety":"No-Go: Danach sofort lachen und erklären.","modminus":"Frag mit freundlichem Lächeln.","modplus":"Frag komplett ernst.","style":"fun"},{"id":"RT05_03","level":5,"cat":"Fun Mode","title":"High-Five Lotto","action":"Lauf mit erhobener Hand durch einen belebten Ort und schau, wer im Vorbeigehen einschlägt.","variants":["Fußgängerzone.","Uni-Campus.","Park.","Event-Warteschlange.","Vor einem Stadion oder Konzert."],"goal":"Das Ziel ist nicht das High-Five. Das Ziel ist sichtbar spielerisch sein.","safety":"No-Go: Menschen berühren, die nicht reagieren.","modminus":"Nur eine Person aktiv fragen.","modplus":"Mit erhobener Hand 20 Meter gehen.","style":"fun"},{"id":"RT05_04","level":5,"cat":"Fun Mode","title":"Ampel-Klatscher","action":"Klatsche einmal laut in die Hände und sag „Ja!“, genau wenn eine Ampel auf Grün springt.","variants":["An einer Fußgängerampel.","An einer kleinen Kreuzung.","Mit anderen Wartenden.","Allein an der Ampel.","Nach langer Wartezeit."],"goal":"Das Ziel ist nicht feiern. Das Ziel ist kurz peinlich sein und normal weitergehen.","safety":"No-Go: Andere erschrecken oder anschreien.","modminus":"Nur leise „Yes“ sagen.","modplus":"Klatschen und sichtbar freuen.","style":"fun"},{"id":"RT05_05","level":5,"cat":"Fun Mode","title":"Zeitreisender","action":"Frag jemanden ernst, welches Jahr wir gerade haben. Reagiere kurz überrascht und geh dann ruhig weiter.","variants":["„Welches Jahr haben wir gerade?“","„Ist es wirklich schon 2026?“","„Bin ich hier richtig in diesem Jahr?“"],"goal":"Das Ziel ist nicht Schauspiel. Das Ziel ist eine absurde soziale Situation ruhig halten.","safety":"No-Go: Menschen verfolgen, erschrecken oder lange irritieren.","modminus":"Frag eine Serviceperson spielerisch.","modplus":"Frag eine fremde Person draußen.","style":"fun"},{"id":"RT05_06","level":5,"cat":"Fun Mode","title":"Sieges-Kaffee","action":"Wenn du deinen Kaffee oder dein Essen bekommst, sag deutlich: „Yes, geschafft.“ Dann lächelst du und bedankst dich normal.","variants":["Beim Kaffee.","Beim Döner.","Beim Eis.","Beim Bäcker.","Beim Take-away."],"goal":"Das Ziel ist nicht Theater. Das Ziel ist einen kleinen absurden Moment erzeugen und nicht erklären.","safety":"No-Go: Zu laut oder störend werden.","modminus":"Nur leise „Yes“ sagen.","modplus":"Mit kleiner Siegergeste.","style":"fun"}]</script>
+<script type="application/json" id="rt-quests-json">[{"id":"SA_L1_01","sector":"sozial","diff":1,"style":"classic","title":"Uhren-Check","action":"Frag einen Passanten nach der Uhrzeit während dein Handy sichtbar in der Hand liegt.","goal":"Nicht die Uhrzeit — eine unnötige Frage trotzdem stellen.","level":0,"cat":"Sozial","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich an einer Haltestelle stehe, dann frage ich die Person neben mir nach der Uhrzeit - trotz eigenem Handy.","preview":{"fear":"Die halten mich für dumm.","reality":"Die Person nennt die Zeit und vergisst mich sofort wieder."},"mutsatz":"Ich darf Fragen stellen auch wenn ich die Antwort wissen könnte.","safetycheck":"Schau nicht auf dein Handy während du fragst.","exitjoker":"Super danke! Mein Akku ist fast leer."},{"id":"SA_L1_02","sector":"sozial","diff":1,"style":"classic","title":"Regal-Suche","action":"Frag einen Mitarbeiter im Supermarkt nach einem Produkt das direkt vor dir in Augenhöhe steht.","goal":"Nicht die Hilfe — die Frage stellen obwohl sie überflüssig ist.","level":0,"cat":"Sozial","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich im Supermarkt bin, dann frage ich einen Mitarbeiter nach einem Produkt direkt vor meiner Nase.","preview":{"fear":"Der Mitarbeiter ist genervt.","reality":"Es ist sein Job - er zeigt es dir kurz und macht weiter."},"mutsatz":"Es ist okay kurz hilflos zu wirken.","safetycheck":"Sag nicht oh Gott wie peinlich. Nimm es einfach an.","exitjoker":"Ah da ist es ja! Danke."},{"id":"SA_L1_03","sector":"sozial","diff":1,"style":"classic","title":"Über-Kompliment","action":"Wünsch einer Kassiererin nach dem Zahlen einen außergewöhnlich phänomenalen Tag.","goal":"Nicht das Kompliment — einen Satz sagen der sich overdressed anfühlt.","level":0,"cat":"Sozial","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich bezahlt habe, dann wünsche ich der Person an der Kasse einen außergewöhnlich phänomenalen Tag.","preview":{"fear":"Das wirkt total künstlich.","reality":"Die meisten Menschen freuen sich über ein ungewöhnliches Wort."},"mutsatz":"Ich darf die soziale Norm ein kleines Stück dehnen.","safetycheck":"Sag es mit einem Lächeln nicht ironisch.","exitjoker":""},{"id":"SA_L1_04","sector":"sozial","diff":1,"style":"classic","title":"Blick-Halter","action":"Such in der Fußgängerzone Blickkontakt mit 3 Personen und halt ihn bis die andere Person zuerst wegschaut.","goal":"Nicht gewinnen — den Fluchtreflex ignorieren.","level":0,"cat":"Sozial","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn mir Leute entgegenkommen, dann halte ich den Blickkontakt zu 3 Personen bis diese wegschauen.","preview":{"fear":"Die denken ich will Streit.","reality":"In einer belebten Straße wird das als Selbstbewusstsein wahrgenommen."},"mutsatz":"Ich muss mich nicht unsichtbar machen.","safetycheck":"Nicht starren oder böse gucken - Gesicht entspannt lassen.","exitjoker":"Ein kurzes Zunicken entspannt die Situation sofort."},{"id":"SA_L1_05","sector":"sozial","diff":1,"style":"classic","title":"Echo-Frage","action":"Frag im Kiosk oder Laden nach etwas das direkt vor dir liegt oder hängt.","goal":"Nicht die Info — eine sinnlose Frage ernst stellen.","level":0,"cat":"Sozial","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich vor einem Kiosk stehe, dann frage ich ob sie Zeitungen haben - obwohl ich sie sehe.","preview":{"fear":"Der hält mich für blind.","reality":"Er sagt einfach Ja und wartet auf deinen Kaufwunsch."},"mutsatz":"Ich darf offensichtliche Dinge aussprechen.","safetycheck":"Erkläre dich nicht.","exitjoker":"Gut zu wissen danke!"},{"id":"SA_L1_06","sector":"sozial","diff":1,"style":"classic","title":"Richtungs-Twist","action":"Frag jemanden nach dem Weg zu einem Ort von dem du gerade kommst.","goal":"Nicht die Wegbeschreibung — eine falsche Frage ohne Erklärung stellen.","level":0,"cat":"Sozial","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich in der Stadt bin, dann frage ich nach dem Weg zu einem Ort von dem ich gerade komme.","preview":{"fear":"Die denken ich bin völlig orientierungslos.","reality":"Keiner weiß woher du gerade kommst."},"mutsatz":"Die Meinung Fremder über meine Orientierung ist egal.","safetycheck":"Benutze kein Google Maps als Beweis.","exitjoker":"Ah danke! Dann bin ich ja fast da."},{"id":"SA_L1_07","sector":"sozial","diff":1,"style":"classic","title":"Summen-Test","action":"Summ oder pfeif eine Melodie deutlich hörbar während du in einer Warteschlange stehst.","goal":"Nicht Musik machen — hörbar sein ohne Grund.","level":0,"cat":"Sozial","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich in einer Warteschlange stehe, dann summe ich hörbar eine Melodie.","preview":{"fear":"Die Leute denken ich bin nervig.","reality":"Die meisten merken es kaum oder finden es menschlich."},"mutsatz":"Ich darf Geräusche machen.","safetycheck":"Nicht extrem laut werden - es soll kein Konzert sein.","exitjoker":""},{"id":"SA_L2_01","sector":"sozial","diff":2,"style":"classic","title":"Leere Wand","action":"Bleib in einer belebten Passage stehen und starre 60 Sekunden intensiv an eine kahle Wand. Ignoriere die Blicke.","goal":"Nicht warten — Blicke aushalten ohne zu erklären was du machst.","level":1,"cat":"Sozial","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich in einer Mall bin, dann starre ich 60 Sekunden lang konzentriert auf eine leere Wand.","preview":{"fear":"Alle denken ich bin verrückt.","reality":"Die Leute schauen kurz irritiert und gehen weiter."},"mutsatz":"Ich darf auffallen ohne eine Rechtfertigung.","safetycheck":"Schau nicht zwischendurch peinlich berührt zu den Leuten.","exitjoker":"Schau kurz auf deine Uhr nick und geh weg."},{"id":"SA_L2_02","sector":"sozial","diff":2,"style":"classic","title":"Sitzplatz-Mut","action":"Setz dich im Bus oder der Bahn direkt neben jemanden obwohl noch viele freie Plätze da sind.","goal":"Nicht der Platz — eine soziale Norm brechen und die Reaktion aushalten.","level":1,"cat":"Sozial","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich in den Bus steige, dann setze ich mich neben jemanden obwohl andere Zweier-Plätze frei sind.","preview":{"fear":"Der andere denkt ich bin aufdringlich.","reality":"Es ist ein öffentlicher Raum - man darf sich setzen."},"mutsatz":"Soziale Nähe ist nichts Verbotenes.","safetycheck":"Fang nicht sofort ein Gespräch an wenn du nicht willst. Setz dich einfach.","exitjoker":""},{"id":"SA_L2_03","sector":"sozial","diff":2,"style":"classic","title":"Kostproben-Bitte","action":"Frag in einer Bäckerei nach einer kostenlosen Kostprobe von etwas das nicht als Probe ausliegt.","goal":"Nicht die Kostprobe — nach etwas fragen das nicht angeboten wird.","level":1,"cat":"Sozial","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich an einer Theke bin, dann frage ich nach einer Probe von etwas das nicht ausliegt.","preview":{"fear":"Die denken ich will nur was schnorren.","reality":"Es ist Verkaufsförderung - meistens kriegst du ein Stückchen."},"mutsatz":"Fragen kostet nichts.","safetycheck":"Reagiere entspannt auf ein Nein.","exitjoker":"Ah schade. Trotzdem danke!"},{"id":"SA_L2_04","sector":"sozial","diff":2,"style":"classic","title":"Parkbank","action":"Setz dich im Park zu jemandem auf die Bank und sag nach 2 Minuten: Genießen Sie die Sonne auch so?","goal":"Nicht das Gespräch — die Stille vor dem ersten Satz aushalten.","level":1,"cat":"Sozial","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich im Park bin, dann setze ich mich zu jemandem und sage: Schönes Wetter heute oder?","preview":{"fear":"Die Person will ihre Ruhe haben.","reality":"Ein Satz bricht kein Gesetz - wenn sie nicht will merkst du es sofort."},"mutsatz":"Ich darf die soziale Stille brechen.","safetycheck":"Wenn die Person nur kurz nickt akzeptiere das Schweigen danach.","exitjoker":"Ich genieß dann mal weiter die Aussicht. Ciao!"},{"id":"SA_L2_05","sector":"sozial","diff":2,"style":"fun","title":"Falsche Abteilung","action":"Frag im Baumarkt nach Vollmilch oder in der Apotheke nach Socken. Akzeptiere das Nein mit: Ah okay danke.","goal":"Nicht das Produkt — eine absurde Frage ernst stellen und ruhig bleiben.","level":1,"cat":"Sozial","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich in einem Fachgeschäft bin, dann frage ich nach etwas völlig Unpassendem.","preview":{"fear":"Die halten mich für verwirrt.","reality":"Der Mitarbeiter korrigiert dich sachlich."},"mutsatz":"Mein Ruf als wissender Kunde ist zweitrangig.","safetycheck":"Erkläre nicht dass es ein Scherz war. Nimm die Antwort ernst.","exitjoker":"Verstehe danke für die Info."},{"id":"SA_L2_06","sector":"sozial","diff":2,"style":"classic","title":"Artikel zurücklassen","action":"Lass einen Artikel an der Kasse scannen und sag dann: Ich überlegs mir nochmal. Geh ruhig.","goal":"Nicht die Entscheidung — eine unbequeme Situation selbst herbeiführen und ruhig bleiben.","level":1,"cat":"Sozial","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn alles gescannt wurde, dann sage ich kurz vor dem Zahlen: Ich möchte das doch nicht kaufen.","preview":{"fear":"Die Kassiererin wird mich hassen.","reality":"Es ist nervig für sie aber ein Standardvorgang."},"mutsatz":"Ich darf mich umentscheiden auch im letzten Moment.","safetycheck":"Du musst keinen Grund nennen.","exitjoker":"Entschuldigung für die Umstände. Schönen Tag!"},{"id":"SA_L2_07","sector":"sozial","diff":2,"style":"classic","title":"Solo-Tisch","action":"Geh alleine in ein volles Café oder Restaurant. Zentraler Tisch. Kein Handy kein Buch. Einfach da sein.","goal":"Nicht das Essen — öffentliche Einsamkeit ohne Ablenkung aushalten.","level":1,"cat":"Sozial","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich ausgehe, dann gehe ich alleine in ein volles Café. Zentraler Tisch. Kein Handy kein Buch.","preview":{"fear":"Alle sehen dass ich alleine bin.","reality":"Die meisten Menschen sind zu beschäftigt mit sich selbst um es zu bemerken."},"mutsatz":"Ich brauche keine Requisite um Raum einzunehmen.","safetycheck":"Greif nicht nach dem Handy wenn es unangenehm wird.","exitjoker":""},{"id":"SA_L3_01","sector":"sozial","diff":3,"style":"classic","title":"Glückspilz-Rabatt","action":"Frag an der Kasse beim Bezahlen: Bekomme ich heute eigentlich den Glückspilz-Rabatt von 10%? Lächle beim Nein.","goal":"Das Ziel ist das Nein. Das ist ein Punkt für dich.","level":2,"cat":"Sozial","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich an der Kasse bin, dann frage ich nach dem Glückspilz-Rabatt von 10%.","preview":{"fear":"Das ist peinlich vor den anderen Kunden.","reality":"Du kriegst ein Nein aber die Welt geht nicht unter."},"mutsatz":"Ich darf absurde Dinge fordern.","safetycheck":"Frag mit einem neutralen Tonfall.","exitjoker":"War einen Versuch wert! Danke."},{"id":"SA_L3_02","sector":"sozial","diff":3,"style":"fun","title":"Mikrofon-Wunsch","action":"Frag am Info-Stand eines Kaufhauses ob du kurz eine Durchsage für einen fiktiven Freund machen darfst.","goal":"Nicht die Durchsage — eine absurde Bitte mit ernstem Gesicht stellen und die Reaktion aushalten.","level":2,"cat":"Sozial","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich in einem Kaufhaus bin, dann frage ich an der Info ob ich eine Durchsage machen darf.","preview":{"fear":"Die Security wirft mich raus.","reality":"Man wird dir freundlich sagen dass das nicht geht."},"mutsatz":"Ich darf nach Privilegien fragen.","safetycheck":"Bleib höflich. Es ist keine Provokation sondern eine Bitte.","exitjoker":"Alles klar verstehe ich. Danke trotzdem!"},{"id":"SA_L3_03","sector":"sozial","diff":3,"style":"fun","title":"Zwei verschiedene Schuhe","action":"Zieh zwei komplett verschiedene Schuhe an und geh 30 Minuten durch die Stadt. Kein Kommentar dazu.","goal":"Nicht auffallen — mit einem sichtbaren Makel draußen sein ohne es zu erklären.","level":2,"cat":"Sozial","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich rausgehe, dann ziehe ich zwei komplett verschiedene Schuhe an und gehe 30 Minuten durch die Stadt.","preview":{"fear":"Jeder starrt auf meine Füße.","reality":"Erstaunlich viele Leute bemerken es gar nicht."},"mutsatz":"Mein Wert hängt nicht an meiner Kleidung.","safetycheck":"Wenn dich jemand anspricht sag: Ja ich wollte heute mal Abwechslung.","exitjoker":""},{"id":"SA_L3_04","sector":"sozial","diff":3,"style":"fun","title":"Bananen-Anruf","action":"Halt dir eine Banane ans Ohr und führ ein kurzes ernstes Telefonat in der Öffentlichkeit.","goal":"Nicht Aufmerksamkeit — absurd sein und nicht lachen.","level":2,"cat":"Sozial","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich unter Leuten bin, dann telefoniere ich mit einer Banane oder ähnlichem.","preview":{"fear":"Absolute soziale Ächtung.","reality":"Die meisten finden es lustig oder ignorieren es als Kunst."},"mutsatz":"Ich stehe über dem Urteil der Masse.","safetycheck":"Sprich ganz normal als wäre es ein Smartphone.","exitjoker":"Steck die Banane weg und geh ganz normal weiter."},{"id":"SA_L3_05","sector":"sozial","diff":3,"style":"fun","title":"High-Five Lotto","action":"Lauf mit erhobener Hand durch die Fußgängerzone und schau wer im Vorbeigehen einfach einschlägt.","goal":"Nicht das High-Five — peinlich sein und weitergehen.","level":2,"cat":"Sozial","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich durch eine belebte Straße gehe, dann halte ich meine Hand hoch und schaue wer einschlägt.","preview":{"fear":"Alle ignorieren mich und ich stehe dumm da.","reality":"Mindestens einer schlägt immer ein - und der Rest lächelt."},"mutsatz":"Peinlichkeit ist nur ein Gefühl kein Urteil.","safetycheck":"Nicht erklären was du machst. Einfach Hand oben lassen.","exitjoker":""},{"id":"SA_L3_06","sector":"sozial","diff":3,"style":"fun","title":"Zeitreisender","action":"Frag jemanden welches Jahr wir gerade haben. Schau geschockt bei der Antwort und geh weiter.","goal":"Nicht die Antwort — eine absurde Situation mit Ruhe durchhalten.","level":2,"cat":"Sozial","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich jemanden treffe, dann frage ich welches Jahr wir haben. Schau geschockt bei der Antwort.","preview":{"fear":"Die Person hält mich für verrückt.","reality":"Die meisten lachen oder spielen mit."},"mutsatz":"Ich darf das Drehbuch des Alltags verlassen.","safetycheck":"Nicht lachen bevor die Antwort kommt.","exitjoker":""},{"id":"DA_L1_01","sector":"dating","diff":1,"style":"classic","title":"Blick-Duell","action":"Such dir eine attraktive Person die dir entgegenkommt. Halt den Blickkontakt bis ihr auf gleicher Höhe seid — nick dann kurz.","goal":"Nicht ansprechen — den Impuls wegzuschauen ignorieren.","level":0,"cat":"Dating","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn mir eine attraktive Person entgegenkommt, dann halte ich den Blickkontakt bis wir auf gleicher Höhe sind.","preview":{"fear":"Die Person hält mich für einen Stalker.","reality":"Meistens wird kurz zurückgeschaut oder weggesehen - die Situation ist in 2 Sekunden vorbei."},"mutsatz":"Ich darf präsent sein und andere wahrnehmen.","safetycheck":"Nicht starr gucken. Entspanne deine Augenbrauen.","exitjoker":"Ein kurzes neutrales Zunicken neutralisiert jede Spannung."},{"id":"DA_L1_02","sector":"dating","diff":1,"style":"classic","title":"Drive-By Kompliment","action":"Sag im Vorbeigehen ohne anzuhalten: Hey cooler Style. Lauf direkt weiter.","goal":"Nicht die Reaktion — einen Satz sagen und verschwinden bevor das Gehirn abbricht.","level":0,"cat":"Dating","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich jemanden mit einem auffälligen Kleidungsstück sehe, dann sage ich im Vorbeigehen: Cooles Outfit!","preview":{"fear":"Die Person denkt ich will was von ihr.","reality":"Ein Kompliment ohne stehenzubleiben ist der harmloseste soziale Kontakt überhaupt."},"mutsatz":"Ich verbreite gute Laune ohne etwas zu fordern.","safetycheck":"Bleib nicht stehen. Lauf weiter während du es sagst.","exitjoker":""},{"id":"DA_L1_03","sector":"dating","diff":1,"style":"classic","title":"Experten-Frage","action":"Geh auf jemanden zu: Kurze Frage — siehst du hier irgendwo X? Wenn die Antwort kommt sag Danke und geh weg.","goal":"Nicht das Produkt — Kontakt herstellen und sauber beenden.","level":0,"cat":"Dating","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich im Laden eine attraktive Person sehe, dann frage ich nach der Position eines Produkts.","preview":{"fear":"Die Person merkt dass ich den Ort des Produkts kenne.","reality":"Niemand hinterfragt die Ortskenntnis eines Fremden im Supermarkt."},"mutsatz":"Jeder Kontakt ist eine Übung für meine Freiheit.","safetycheck":"Fang nicht an zu stammeln. Frag so kurz wie möglich.","exitjoker":"Ah danke! Da hab ich wohl Tomaten auf den Augen gehabt."},{"id":"DA_L1_04","sector":"dating","diff":1,"style":"classic","title":"Sichtbarkeits-Lächeln","action":"Lächle jemanden bewusst an während du vorbeiläufst. Zähl bis 3 bevor du den Blick abwendest.","goal":"Nicht das Lächeln zurückbekommen — den Moment aushalten.","level":0,"cat":"Dating","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn mir jemand gefällt, dann lächle ich die Person bewusst an und zähle bis 3 bevor ich den Blick abwende.","preview":{"fear":"Die Person fühlt sich angestarrt.","reality":"Ein Lächeln ist die universellste positive Geste überhaupt."},"mutsatz":"Ich darf zeigen dass ich jemanden wahrgenommen habe.","safetycheck":"Nicht sofort wegschauen wenn die Person zurückschaut.","exitjoker":""},{"id":"DA_L1_05","sector":"dating","diff":1,"style":"classic","title":"Orientierungs-Hilfe","action":"Frag jemanden nach dem Weg zu einem bekannten Ort. Nimm die Antwort an und geh sofort.","goal":"Nicht der Weg — Initiative setzen ohne Plan was danach kommt.","level":0,"cat":"Dating","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich draußen bin, dann frage ich eine attraktive Person nach dem Weg zu einem bekannten Café.","preview":{"fear":"Die Person ist genervt von mir.","reality":"Menschen helfen meistens gerne - es gibt ihnen ein kurzes Gefühl von Kompetenz."},"mutsatz":"Ich übe das Ansprechen - der Inhalt ist zweitrangig.","safetycheck":"Lass dein Handy in der Tasche. Kein Google Maps als Backup.","exitjoker":"Super danke für die Hilfe! Schönen Tag noch."},{"id":"DA_L1_06","sector":"dating","diff":1,"style":"classic","title":"Sitzplatz-Check","action":"Frag in der Bahn oder im Bus: Ist hier frei? Setz dich kurz hin schau einmal zur Person dann weg.","goal":"Nicht das Gespräch — physische Nähe ohne Erklärung aushalten.","level":0,"cat":"Dating","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich in der Bahn bin, dann frage ich eine attraktive Person: Ist hier frei?","preview":{"fear":"Die Person fühlt sich belästigt.","reality":"Solange du nicht starrst ist es ein völlig normales Verhalten im ÖPNV."},"mutsatz":"Ich darf mich dorthin setzen wo ich möchte.","safetycheck":"Schau nach der Frage kurz weg um den Druck rauszunehmen.","exitjoker":""},{"id":"DA_L1_07","sector":"dating","diff":1,"style":"classic","title":"Duft-Info","action":"Frag im Drogeriemarkt jemanden: Riecht das Parfüm gut? Sprüh es auf einen Teststreifen sag Danke und geh weiter.","goal":"Nicht die Meinung — eine fremde Person für eine Sekunde einbinden.","level":0,"cat":"Dating","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich im Drogeriemarkt bin, dann frage ich jemanden: Riecht das Parfüm gut?","preview":{"fear":"Ich wirke wie ein Aufreißer.","reality":"Neugier auf Geschmack ist ein sehr unverfänglicher Türöffner."},"mutsatz":"Ein einfacher Satz reicht für eine Verbindung.","safetycheck":"Erwarte kein langes Gespräch. Nimm die Antwort und sag Danke.","exitjoker":"Viel Spaß noch beim Genießen!"},{"id":"DA_L2_01","sector":"dating","diff":2,"style":"classic","title":"Ehrliches Hallo","action":"Geh auf jemanden zu: Hi ich finde dich sympathisch und wollte kurz Hallo sagen. Schönen Tag noch. Direkt danach weitergehen.","goal":"Nicht das Gespräch — etwas Echtes sagen und nicht auf Reaktion warten.","level":1,"cat":"Dating","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich jemanden sehe der mir gefällt, dann bleibe ich kurz stehen und sage: Hi ich wollte nur kurz Hallo sagen.","preview":{"fear":"Es entsteht eine peinliche Stille.","reality":"Die Person sagt meistens Hallo zurück und wartet kurz ab - du kontrollierst das Ende."},"mutsatz":"Ein ehrliches Interesse ist niemals peinlich.","safetycheck":"Vermeide Entschuldigung am Anfang. Du störst nicht du bereicherst.","exitjoker":"Ich muss jetzt auch weiter wollte mir nur den Ruck geben. Tschüss!"},{"id":"DA_L2_02","sector":"dating","diff":2,"style":"classic","title":"Direkte Kompliment-Pause","action":"Bleib vor jemandem stehen: Du hast ein tolles Lächeln. Warte eine Sekunde auf den Gesichtsausdruck. Nick und geh.","goal":"Nicht das Kompliment — die Stille nach dem Satz aushalten.","level":1,"cat":"Dating","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich jemanden sehe, dann bleibe ich kurz stehen und sage: Du hast ein tolles Lächeln.","preview":{"fear":"Die Person fühlt sich bedrängt.","reality":"Ein direktes Kompliment wirkt selbstbewusst und aufrichtig."},"mutsatz":"Ich traue mich tiefer zu blicken.","safetycheck":"Halt nach dem Satz 2 Sekunden die Stille aus bevor du gehst.","exitjoker":"Wollte ich nur loswerden. Hab einen schönen Tag!"},{"id":"DA_L2_03","sector":"dating","diff":2,"style":"classic","title":"Foto-Bitte","action":"Bitte jemanden: Kannst du kurz ein Foto von mir machen? Nimm das Handy zurück sag Perfekt danke und geh.","goal":"Nicht das Foto — eine fremde Person aktiv in deine Sache einbinden.","level":1,"cat":"Dating","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich an einem schönen Ort bin, dann bitte ich eine attraktive Person ein Foto von mir zu machen.","preview":{"fear":"Ich wirke wie ein Tourist oder eitel.","reality":"Das ist eine der am meisten akzeptierten sozialen Interaktionen weltweit."},"mutsatz":"Ich schaffe eine harmlose Verbindung.","safetycheck":"Kontrolliere das Foto nicht sofort kritisch. Bedanke dich erst aufrichtig.","exitjoker":"Danke! Du hast ein gutes Auge für Licht."},{"id":"DA_L2_04","sector":"dating","diff":2,"style":"classic","title":"Ehrliche Neugier","action":"Frag jemanden: Woher hast du diese Tasche oder Schuhe — die fallen echt positiv auf. Nimm die Antwort und verabschiede dich.","goal":"Nicht die Info — echtes Interesse zeigen ohne es in ein Gespräch zu zwingen.","level":1,"cat":"Dating","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn jemand ein auffälliges Accessoire trägt, dann frage ich: Woher hast du das - das fällt echt positiv auf.","preview":{"fear":"Ich bin zu neugierig.","reality":"Menschen identifizieren sich über ihre Hobbys und reden meist gern kurz darüber."},"mutsatz":"Ich zeige echtes Interesse an meiner Umwelt.","safetycheck":"Gib nicht sofort eine eigene Story ab. Hör erst zu.","exitjoker":"Cool - viel Erfolg noch!"},{"id":"DA_L2_05","sector":"dating","diff":2,"style":"classic","title":"Ich übe Ansage","action":"Geh zu jemandem: Ich mache gerade eine Mut-Challenge und muss jemanden fragen ob er mit mir einen Kaffee trinkt. Hast du Lust? Bei Nein: Danke für den Punkt.","goal":"Das Nein ist der Punkt. Buchstäblich.","level":1,"cat":"Dating","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich jemanden sehe, dann sage ich: Ich mache gerade eine Mut-Challenge und muss jemanden fragen ob er mit mir Kaffee trinkt.","preview":{"fear":"Die Person lacht mich aus.","reality":"Die meisten finden Mut-Challenges sympathisch und sind neugierig."},"mutsatz":"Meine Verletzlichkeit ist meine Stärke.","safetycheck":"Erkläre nicht zu viel. Bleib bei dem einen Satz.","exitjoker":"Mission erfüllt! Danke dass du mir geholfen hast den Punkt zu sammeln."},{"id":"DA_L2_06","sector":"dating","diff":2,"style":"classic","title":"Nummern-Karte","action":"Überreich jemandem einen Zettel mit deinem Namen und deiner Nummer: Falls du mal Lust auf einen Kaffee hast. Dann sofort weggehen.","goal":"Nicht die Antwort — etwas hinterlassen und die Kontrolle abgeben.","level":1,"cat":"Dating","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich mit jemandem kurz gesprochen habe, dann überreiche ich meine vorbereitete Karte mit meiner Nummer.","preview":{"fear":"Die Person wirft den Zettel sofort weg.","reality":"Ob sie sich meldet liegt nicht mehr in deiner Macht - der Sieg ist die Übergabe."},"mutsatz":"Ich gebe die Kontrolle ab und bleibe bei mir.","safetycheck":"Frag nicht Darf ich - sag: Hier falls du mal Lust auf einen Kaffee hast.","exitjoker":"Kein Stress meld dich einfach wenn du magst. Bis dann!"},{"id":"DA_L2_07","sector":"dating","diff":2,"style":"classic","title":"Instant-Einladung","action":"Frag jemanden am Kiosk oder Café: Ich hol mir gerade ein Wasser willst du auch eins ich zahl. Bei Ja kaufen und geben. Bei Nein: Okay.","goal":"Nicht das Ja — eine spontane Großzügigkeit ohne Erwartung zeigen.","level":1,"cat":"Dating","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich mir gerade etwas kaufe, dann frage ich die Person hinter mir: Soll ich dir eins mitbestellen? Ich lade dich ein.","preview":{"fear":"Die Person fühlt sich gekauft.","reality":"Es ist eine extrem großzügige Geste die fast immer ein Lächeln erzeugt."},"mutsatz":"Ich bin großzügig mit meiner Energie und meinem Geld.","safetycheck":"Akzeptiere ein Nein sofort ohne Überredungsversuche.","exitjoker":"Kein Thema - einen schönen Tag dir noch!"},{"id":"DA_L3_01","sector":"dating","diff":3,"style":"classic","title":"Faden verloren","action":"Geh zu jemandem: Ich wollte dich gerade ansprechen aber ich bin so nervös dass ich alles vergessen habe. Hi. Einmal tief atmen und weggehen.","goal":"Nicht die Perfektion — Nervosität als Opener benutzen statt sie zu verstecken.","level":2,"cat":"Dating","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich jemanden anspreche, dann unterbreche ich mich selbst und sage: Sorry ich bin gerade so nervös dass ich den Faden verloren habe.","preview":{"fear":"Ich wirke schwach oder inkompetent.","reality":"Authentische Nervosität wirkt oft extrem charmant und entwaffnend."},"mutsatz":"Ich muss nicht perfekt wirken um gemocht zu werden.","safetycheck":"Versuch nicht die Nervosität zu überspielen. Atme tief durch.","exitjoker":"So jetzt geht es wieder. Hi ich bin [Name]."},{"id":"DA_L3_02","sector":"dating","diff":3,"style":"classic","title":"Ehrliche Umfrage","action":"Frag jemanden: Findest du es gruseliger wenn dich jemand anspricht oder wenn man sich nur anschweigt? Antwort abwarten. Interessant sagen. Gehen.","goal":"Nicht die Antwort — eine unerwartete Frage stellen und die Reaktion aushalten.","level":2,"cat":"Dating","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich jemanden sehe, dann frage ich: Findest du es gruseliger wenn dich jemand anspricht oder wenn man sich nur anschweigt?","preview":{"fear":"Die Frage ist zu seltsam.","reality":"Unerwartete Fragen erzeugen echte Reaktionen - meistens positive."},"mutsatz":"Ich führe Gespräche dorthin wo es interessant wird.","safetycheck":"Warte die volle Antwort ab bevor du reagierst.","exitjoker":"Interessant zu wissen danke."},{"id":"DA_L3_03","sector":"dating","diff":3,"style":"classic","title":"Kompliment-Echo","action":"Sag zu jemandem: Ich finde deine Ausstrahlung echt stark. Wenn die Person Danke sagt antworte: Gerne. Und geh sofort weiter.","goal":"Nicht das Gespräch — ein echtes Kompliment geben und den Moment nicht überziehen.","level":2,"cat":"Dating","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich jemanden sehe, dann sage ich: Ich finde deine Ausstrahlung echt stark.","preview":{"fear":"Das ist zu persönlich für einen Fremden.","reality":"Es ist ein tiefes Kompliment das meistens einen bleibenden Eindruck hinterlässt."},"mutsatz":"Ich sehe das Besondere in anderen und spreche es aus.","safetycheck":"Vermeide danach direkt nach etwas zu fragen. Gib das Kompliment und geh.","exitjoker":"Das war es schon - wollte ich nur loswerden. Ciao!"},{"id":"DA_L3_04","sector":"dating","diff":3,"style":"classic","title":"Nochmal vorbeigehen","action":"Geh an jemandem vorbei bleib kurz stehen: Sorry ich wollte eigentlich einfach weitergehen aber ich finde dich zu sympathisch. Hi. Dann stehen bleiben.","goal":"Nicht die Reaktion — den inneren Zensor einmal komplett ignorieren.","level":2,"cat":"Dating","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich an jemandem vorbeilaufe, dann bleibe ich kurz stehen: Sorry ich wollte eigentlich weitergehen aber ich finde dich zu sympathisch. Hi.","preview":{"fear":"Die Person fühlt sich bedrängt.","reality":"Ehrliche Spontaneität wird fast immer mit einem Lächeln quittiert."},"mutsatz":"Ich handle bevor mein Kopf Nein sagt.","safetycheck":"Nicht zu lange erklären. Hi sagen und dann stehen bleiben.","exitjoker":""},{"id":"DA_L3_05","sector":"dating","diff":3,"style":"classic","title":"Direkte Einladung","action":"Sprich jemanden an nach einem kurzen Augenkontakt: Ich finde dich interessant — hast du Lust auf einen kurzen Kaffee jetzt gleich?","goal":"Das Nein ist normal. Das Ja auch. Beides ist ein Sieg.","level":2,"cat":"Dating","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich nach einem kurzen Augenkontakt jemanden interessant finde, dann sage ich direkt: Ich finde dich interessant - hast du Lust auf einen kurzen Kaffee jetzt gleich?","preview":{"fear":"Ein Nein zerstört mein Selbstwertgefühl.","reality":"Das Nein sagt nichts über deinen Wert aus - nur über Timing oder Geschmack."},"mutsatz":"Das Nein ist normal. Das Ja auch. Beides ist ein Sieg.","safetycheck":"Bleib bei einem Nein entspannt und geh ohne Drama.","exitjoker":"Kein Problem - schönen Tag noch!"},{"id":"DA_L3_06","sector":"dating","diff":3,"style":"fun","title":"Faden-Geständnis öffentlich","action":"Stell dich kurz vor einer kleinen Gruppe hin: Ich übe gerade fremde Menschen anzusprechen — das hier war mein Versuch. Danke. Geh weiter.","goal":"Nicht die Reaktion der Gruppe — sich selbst in einer absurden Situation ernst nehmen.","level":2,"cat":"Dating","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich in einer Gruppe bin, dann stelle ich mich kurz hin: Ich übe gerade fremde Menschen anzusprechen - das hier war mein Versuch. Danke.","preview":{"fear":"Die Gruppe lacht mich aus.","reality":"Die meisten finden es mutig und sympathisch."},"mutsatz":"Ich nehme mich selbst nicht so ernst dass es mich einschränkt.","safetycheck":"Geh direkt danach weg. Nicht auf Reaktionen warten.","exitjoker":""},{"id":"JO_L1_01","sector":"job","diff":1,"style":"classic","title":"Tippfehler-Absicht","action":"Sende eine E-Mail oder Chat-Nachricht an einen Kollegen mit einem bewussten Rechtschreibfehler. Korrigiere ihn nicht.","goal":"Nicht der Fehler — merken dass nichts passiert wenn etwas nicht perfekt ist.","level":0,"cat":"Job","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich die nächste interne Nachricht schreibe, dann baue ich einen Buchstabendreher ein und sende sie ab.","preview":{"fear":"Die halten mich für schlampig.","reality":"Fast niemandem fällt es auf oder es wird als menschliche Eile verbucht."},"mutsatz":"Mein Wert hängt nicht an perfekter Orthografie.","safetycheck":"Schicke keine Korrektur hinterher.","exitjoker":""},{"id":"JO_L1_02","sector":"job","diff":1,"style":"classic","title":"Wissenslücke","action":"Frag einen Kollegen nach einer Erklärung für ein Fachwort das du eigentlich kennen müsstest.","goal":"Nicht die Erklärung — Nicht-Wissen laut aussprechen ohne dich zu schämen.","level":0,"cat":"Job","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn im Meeting ein Fachbegriff fällt den ich nur vage kenne, dann frage ich: Was genau meinst du damit?","preview":{"fear":"Ich wirke inkompetent.","reality":"Oft sind andere froh dass jemand fragt weil sie es auch nicht wissen."},"mutsatz":"Fragen ist ein Zeichen von Intelligenz nicht von Schwäche.","safetycheck":"Nicht entschuldigen für die Unterbrechung.","exitjoker":"Ah verstehe. Danke für die Klärung."},{"id":"JO_L1_03","sector":"job","diff":1,"style":"classic","title":"Ich weiß es nicht","action":"Antworte auf die nächste Sachfrage eines Kollegen sofort mit: Das weiß ich gerade nicht auswendig. Ohne danach zu suchen.","goal":"Nicht die Antwort — den Reflex unterbrechen sofort eine Lösung liefern zu müssen.","level":0,"cat":"Job","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn mich jemand etwas fragt dessen Antwort ich googeln müsste, dann sage ich sofort: Das weiß ich gerade nicht.","preview":{"fear":"Ich wirke unvorbereitet.","reality":"Souveränität bedeutet die eigenen Grenzen zu kennen."},"mutsatz":"Ich muss nicht alles wissen um kompetent zu sein.","safetycheck":"Fang nicht an wild zu spekulieren um die Lücke zu füllen.","exitjoker":"Ich schaue es nach und melde mich später."},{"id":"JO_L1_04","sector":"job","diff":1,"style":"classic","title":"Unfertige Skizze","action":"Schick einen Entwurf oder eine Idee an jemanden mit dem Satz: Ist erst zu 50% fertig aber hier ist der Stand.","goal":"Nicht das Feedback — etwas rausgeben bevor es perfekt ist.","level":0,"cat":"Job","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich an einer Aufgabe arbeite, dann zeige ich den Entwurf einem Kollegen bevor er fertig ist.","preview":{"fear":"Die denken ich arbeite unsauber.","reality":"Frühes Feedback spart Zeit und zeigt Teamgeist."},"mutsatz":"Besser unperfekt gestartet als perfekt gewartet.","safetycheck":"Sag nicht es ist noch total schlecht - sag hier ist der Zwischenstand.","exitjoker":"Was denkst du über die Richtung?"},{"id":"JO_L1_05","sector":"job","diff":1,"style":"classic","title":"Mikro-Verspätung","action":"Komm zu einem internen Termin exakt 2 Minuten zu spät. Sag kurz Hallo und setz dich ohne dich zu rechtfertigen.","goal":"Nicht die Verspätung — die Stille nach dem Reinkommen aushalten ohne zu erklären.","level":0,"cat":"Job","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ein internes Meeting ansteht, dann betrete ich den Raum exakt 2 Minuten nach Start.","preview":{"fear":"Ich gelte als respektlos.","reality":"In den ersten 2 Minuten passiert meist nur Smalltalk."},"mutsatz":"Ich darf mir einen Moment Zeit nehmen.","safetycheck":"Keine hektische Entschuldigung. Einfach hinsetzen und einsteigen.","exitjoker":"Hallo zusammen."},{"id":"JO_L1_06","sector":"job","diff":1,"style":"classic","title":"Kaffeepausen-Impuls","action":"Frag einen Kollegen nicht aus deinem direkten Team: Hast du 5 Minuten für einen Kaffee?","goal":"Nicht der Kaffee — Initiative setzen ohne konkreten Grund.","level":0,"cat":"Job","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich in der Küche einen Kollegen sehe den ich kaum kenne, dann frage ich: Wie läuft dein Projekt gerade?","preview":{"fear":"Ich störe ihn.","reality":"Die meisten freuen sich über echtes Interesse im Büroalltag."},"mutsatz":"Ich gestalte mein Netzwerk aktiv.","safetycheck":"Schau nicht auf dein Handy während er antwortet.","exitjoker":"Spannend! Ich muss wieder an den Schreibtisch bis dann."},{"id":"JO_L1_07","sector":"job","diff":1,"style":"classic","title":"Unstrukturierte Meldung","action":"Meld dich in einem Call zu Wort auch wenn du deinen Satz noch nicht perfekt im Kopf formuliert hast.","goal":"Nicht der perfekte Satz — sprechen bevor der Sensor entscheidet.","level":0,"cat":"Job","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich im Meeting einen Gedanken habe, dann sage ich ihn sofort auch ohne perfekte Formulierung.","preview":{"fear":"Ich verheddere mich und wirke wirr.","reality":"Frische Impulse sind wertvoller als glattgebügelte Sätze."},"mutsatz":"Meine Gedanken sind es wert geteilt zu werden.","safetycheck":"Atme einmal tief durch und rede einfach los.","exitjoker":"Das war gerade ein spontaner Impuls von mir."},{"id":"JO_L2_01","sector":"job","diff":2,"style":"classic","title":"Feedback-Spritze","action":"Frag deinen Vorgesetzten oder einen erfahrenen Kollegen: Was ist eine Sache die ich an meiner Arbeit optimieren sollte?","goal":"Nicht die Antwort — aktiv Kritik einladen statt sie zu vermeiden.","level":1,"cat":"Job","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich mit meinem Chef spreche, dann frage ich: Was ist meine größte Schwäche in deinen Augen?","preview":{"fear":"Er nutzt das gegen mich.","reality":"Es zeigt enorme Reflexionsfähigkeit und Mut."},"mutsatz":"Kritik ist Treibstoff für mein Wachstum.","safetycheck":"Rechtfertige dich nicht für das was genannt wird.","exitjoker":"Danke für die Offenheit das hilft mir sehr."},{"id":"JO_L2_02","sector":"job","diff":2,"style":"classic","title":"Nacktes Nein","action":"Lehn eine kleine Zusatzaufgabe ab: Das schaffe ich heute nicht mehr. Ohne eine Liste deiner anderen Aufgaben vorzulegen.","goal":"Nicht die Zeit — Nein sagen ohne Rechtfertigung aushalten.","level":1,"cat":"Job","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn eine Zusatzaufgabe reinkommt, dann sage ich: Das übernehme ich heute nicht.","preview":{"fear":"Ich gelte als nicht belastbar.","reality":"Wer Grenzen setzt wirkt professioneller und schützt seine Qualität."},"mutsatz":"Meine Kapazität ist begrenzt und kostbar.","safetycheck":"Keine Liste deiner anderen Aufgaben vorlegen. Bleib beim Nein.","exitjoker":"Ab nächster Woche können wir wieder darüber reden."},{"id":"JO_L2_03","sector":"job","diff":2,"style":"classic","title":"Meinungs-Check","action":"Sag in einer Diskussion: Ich sehe das anders als ihr. Auch wenn du der Einzige mit dieser Meinung bist.","goal":"Nicht Recht haben — eine Gegenmeinung in den Raum stellen und die Stille danach aushalten.","level":1,"cat":"Job","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn in einer Diskussion ein Konsens entsteht den ich nicht teile, dann sage ich: Ich sehe das anders.","preview":{"fear":"Ich gelte als Bremser.","reality":"Divergente Meinungen verhindern Fehlentscheidungen."},"mutsatz":"Reibung erzeugt Wärme und Qualität.","safetycheck":"Bleib sachlich werd nicht emotional.","exitjoker":"Das ist mein Standpunkt dazu."},{"id":"JO_L2_04","sector":"job","diff":2,"style":"classic","title":"Raum-Einnahme","action":"Setz dich in einem physischen Meeting ganz nach vorne in die Mitte — oder schalte in jedem Call als Erster die Kamera an.","goal":"Nicht auffallen — Sichtbarkeit aktiv wählen statt sie zu vermeiden.","level":1,"cat":"Job","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ein Vortrag oder großes Meeting ist, dann setze ich mich ganz nach vorne in die Mitte.","preview":{"fear":"Alle starren mich von hinten an.","reality":"Du signalisierst Präsenz und Selbstbewusstsein."},"mutsatz":"Ich darf sichtbar sein.","safetycheck":"Duck dich nicht weg wenn der Sprecher Blickkontakt sucht.","exitjoker":""},{"id":"JO_L2_05","sector":"job","diff":2,"style":"classic","title":"Die Unterbrechung","action":"Fall jemandem höflich ins Wort: Darf ich da kurz einhaken? Statt zu warten bis das Thema gewechselt wird.","goal":"Nicht unterbrechen — den richtigen Moment nicht abwarten sondern selbst schaffen.","level":1,"cat":"Job","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn jemand im Meeting zu weit ausschweift, dann sage ich: Darf ich kurz einhaken?","preview":{"fear":"Ich gelte als unhöflich.","reality":"Die Gruppe ist oft dankbar wenn jemand zum Punkt zurückführt."},"mutsatz":"Ich schütze die Zeit des Teams.","safetycheck":"Warte auf eine Atempause dann schieß los.","exitjoker":"Lass uns zurück zum Kernpunkt kommen."},{"id":"JO_L2_06","sector":"job","diff":2,"style":"classic","title":"Smalltalk-Stopp","action":"Beende ein Gespräch in der Küche aktiv: Ich muss jetzt weiterarbeiten bis später. Statt auf das Ende durch den anderen zu warten.","goal":"Nicht unhöflich sein — ein Gespräch selbst beenden ohne schlechtes Gewissen.","level":1,"cat":"Job","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich am Kopierer im Smalltalk feststecke, dann sage ich: Ich muss jetzt zurück an die Arbeit.","preview":{"fear":"Die Person fühlt sich abgewiesen.","reality":"Im Job ist Zeitdruck ein völlig akzeptierter Grund."},"mutsatz":"Ich entscheide wann mein Smalltalk endet.","safetycheck":"Warte nicht auf eine Lücke. Erzeuge sie.","exitjoker":"War nett aber ich muss weiter. Bis später!"},{"id":"JO_L2_07","sector":"job","diff":2,"style":"classic","title":"Namens-Nachfrage","action":"Frag einen Kollegen dessen Namen du eigentlich wissen müsstest: Entschuldige wie war nochmal dein Nachname?","goal":"Nicht der Name — eine peinliche Wissenslücke direkt ansprechen statt sie zu verstecken.","level":1,"cat":"Job","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich einen Kollegen treffe dessen Namen ich vergessen habe, dann frage ich direkt nach.","preview":{"fear":"Das ist extrem peinlich nach so langer Zeit.","reality":"Ehrlichkeit ist besser als ewiges Rumdrucksen."},"mutsatz":"Ehrlichkeit schlägt Perfektion.","safetycheck":"Entschuldige dich nur ganz kurz.","exitjoker":"Hilf mir kurz auf die Sprünge wie war dein Nachname?"},{"id":"JO_L3_01","sector":"job","diff":3,"style":"classic","title":"Forderung ohne Bitte","action":"Formuliere eine Bitte als klare Ansage: Schick mir das Dokument bis 15 Uhr. Statt könntest du eventuell.","goal":"Nicht Autorität zeigen — direktes Sprechen ohne Weichmacher und die Reaktion aushalten.","level":2,"cat":"Job","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich eine Zuarbeit brauche, dann formuliere ich sie als klare Ansage: Schick mir das bis 14 Uhr.","preview":{"fear":"Ich wirke bossy oder arrogant.","reality":"Klare Ansagen erleichtern anderen die Arbeit weil sie Prioritäten kennen."},"mutsatz":"Klarheit ist Freundlichkeit.","safetycheck":"Kein Vielleicht kein Könntest du.","exitjoker":"Danke ich brauche das für das nächste Meeting."},{"id":"JO_L3_02","sector":"job","diff":3,"style":"classic","title":"Fehler-Beichte","action":"Erzähl beim Mittagessen oder in einer Pause offen von einem beruflichen Missgeschick das dir peinlich war.","goal":"Nicht Sympathie — einen echten Fehler teilen ohne ihn kleinzureden.","level":2,"cat":"Job","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich mit Kollegen beim Essen bin, dann erzähle ich von meinem größten beruflichen Fehler.","preview":{"fear":"Die verlieren den Respekt vor mir.","reality":"Fehlbarkeit macht dich nahbar und sympathisch."},"mutsatz":"Meine Fehler definieren mich nicht mein Umgang damit schon.","safetycheck":"Lache selbst darüber mach kein Drama daraus.","exitjoker":"Das war echt eine harte Lektion aber heute lache ich drüber."},{"id":"JO_L3_03","sector":"job","diff":3,"style":"classic","title":"Warum-Kette","action":"Frag bei einer neuen Anweisung dreimal hintereinander höflich nach dem Warum bis du die wirkliche Ursache verstanden hast.","goal":"Nicht nerven — so lange nachfragen bis es wirklich klar ist.","level":2,"cat":"Job","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn eine neue Anweisung kommt, dann frage ich dreimal hintereinander höflich nach dem Warum.","preview":{"fear":"Ich wirke wie ein nerviges Kleinkind.","reality":"Du dringst zum Kern der Strategie vor."},"mutsatz":"Ich will verstehen nicht nur ausführen.","safetycheck":"Bleib interessiert nicht konfrontativ.","exitjoker":"Danke jetzt verstehe ich den Sinn dahinter wirklich."},{"id":"JO_L3_04","sector":"job","diff":3,"style":"classic","title":"Gehalts-Marktwert","action":"Ruf einen Recruiter an oder frag in einem Netzwerk: Was ist das absolute Maximum für meine Position?","goal":"Nicht das Gehalt — die Hemmung bei Geldthemen direkt konfrontieren.","level":2,"cat":"Job","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich heute Zeit habe, dann rufe ich einen Recruiter an und frage nach dem Gehaltsmaximum für meine Rolle.","preview":{"fear":"Ich wirke gierig.","reality":"Es ist ein Markttest - Wissen ist Macht in Verhandlungen."},"mutsatz":"Ich darf wissen was meine Arbeit wert ist.","safetycheck":"Druckse nicht rum. Frag direkt nach Zahlen.","exitjoker":"Danke für die Einschätzung sehr hilfreich."},{"id":"JO_L3_05","sector":"job","diff":3,"style":"classic","title":"Veto-Karte","action":"Sag in einem Meeting: Ich finde diesen Vorschlag nicht gut. Auch wenn der Chef ihn gerade gelobt hat.","goal":"Nicht Recht haben — eine unbequeme Meinung in den Raum stellen wenn es drauf ankommt.","level":2,"cat":"Job","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn mein Vorgesetzter eine Idee äußert die ich falsch finde, dann sage ich das im Meeting.","preview":{"fear":"Ich fliege raus oder werde abgesägt.","reality":"Gute Chefs schätzen Mitarbeiter die mitdenken und widersprechen."},"mutsatz":"Ich bin hier um meine Expertise einzubringen nicht um Ja zu sagen.","safetycheck":"Kritisiere die Sache nicht die Person.","exitjoker":"Das ist mein fachlicher Einwand dazu."},{"id":"JO_L3_06","sector":"job","diff":3,"style":"classic","title":"Spontane Präsentation","action":"Schlag in einem Termin vor: Soll ich dazu kurz meinen Bildschirm teilen und das zeigen? Auch wenn du nichts vorbereitet hast.","goal":"Nicht die perfekte Präsentation — sichtbar werden bevor du bereit bist.","level":2,"cat":"Job","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn im Call eine Frage zu meiner Arbeit kommt, dann teile ich sofort meinen Bildschirm und zeige den Rohzustand.","preview":{"fear":"Die sehen mein Chaos.","reality":"Transparenz schafft Vertrauen und beschleunigt Lösungen."},"mutsatz":"Prozess ist wichtiger als poliertes Ergebnis.","safetycheck":"Entschuldige dich nicht für das Chaos.","exitjoker":"So sieht es aktuell aus wir können hier direkt weiterarbeiten."},{"id":"GR_L1_01","sector":"grenzen","diff":1,"style":"classic","title":"Das nackte Nein","action":"Sage zu einer unverfänglichen Frage (z. B. „Willst du auch einen Kaffee?“ oder „Hast du kurz Zeit?“) einfach „Nein, danke“, ohne eine Begründung zu liefern.","goal":"Nicht das Nein selbst, sondern keine Rechtfertigung nachschieben.","level":0,"cat":"Selbstbehauptung","variants":[],"safety":"","modminus":"","modplus":""},{"id":"GR_L1_02","sector":"grenzen","diff":1,"style":"classic","title":"Die Antwort-Pause","action":"Warte bei einer privaten Nachricht (WhatsApp/Social Media) absichtlich 2 Stunden mit der Antwort, auch wenn du Zeit hättest.","goal":"Nicht erreichbar sein müssen, nur weil du erreichbar wärst.","level":0,"cat":"Selbstbehauptung","variants":[],"safety":"","modminus":"","modplus":""},{"id":"GR_L1_03","sector":"grenzen","diff":1,"style":"classic","title":"Die Wunsch-Äußerung","action":"Wenn dich jemand fragt „Was wollen wir essen?“, nenne als Erster deine echte Präferenz, statt „Mir egal“ zu sagen.","goal":"Eigene Bedürfnisse benennen statt dich anzupassen.","level":0,"cat":"Selbstbehauptung","variants":[],"safety":"","modminus":"","modplus":""},{"id":"GR_L1_04","sector":"grenzen","diff":1,"style":"classic","title":"Die kleine Korrektur","action":"Wenn jemand deinen Namen falsch ausspricht oder ein Detail falsch wiedergibt, korrigiere ihn sofort höflich.","goal":"Dich sichtbar machen, auch in kleinen Details.","level":0,"cat":"Selbstbehauptung","variants":[],"safety":"","modminus":"","modplus":""},{"id":"GR_L1_05","sector":"grenzen","diff":1,"style":"classic","title":"Das Kompliment-Ende","action":"Nimm ein Kompliment mit einem schlichten „Danke“ an, ohne es kleinzureden oder sofort ein Gegenkompliment zu erzwingen.","goal":"Anerkennung aushalten ohne dich zu relativieren.","level":0,"cat":"Selbstbehauptung","variants":[],"safety":"","modminus":"","modplus":""},{"id":"GR_L1_06","sector":"grenzen","diff":1,"style":"classic","title":"Der Themen-Stopp","action":"Wenn ein Gespräch in eine Richtung geht, die dich langweilt, sag: „Lass uns mal über was anderes reden, ich habe gerade genug von dem Thema.“","goal":"Gesprächsgrenzen aktiv setzen statt passiv mitlaufen.","level":0,"cat":"Selbstbehauptung","variants":[],"safety":"","modminus":"","modplus":""},{"id":"GR_L1_07","sector":"grenzen","diff":1,"style":"classic","title":"Die unpopuläre Meinung","action":"Sage in einer Diskussion: „Ich sehe das eigentlich ganz anders“, auch wenn alle anderen im Raum einer Meinung sind.","goal":"Abweichung zeigen, ohne dich sofort zu verteidigen.","level":0,"cat":"Selbstbehauptung","variants":[],"safety":"","modminus":"","modplus":""},{"id":"GR_L2_01","sector":"grenzen","diff":2,"style":"classic","title":"Der pünktliche Aufbruch","action":"Beende ein Treffen exakt zu der Zeit, die du dir vorgenommen hast, auch wenn es gerade „so nett“ ist.","goal":"Deine Zeit schützen, auch wenn es sozial unangenehm wird.","level":1,"cat":"Selbstbehauptung","variants":[],"safety":"","modminus":"","modplus":""},{"id":"GR_L2_02","sector":"grenzen","diff":2,"style":"classic","title":"Die Rückruf-Ehrlichkeit","action":"Wenn jemand anruft und du keine Lust hast, geh ran und sag: „Ich möchte gerade nicht telefonieren, ich melde mich morgen.“","goal":"Direkt kommunizieren statt Ausreden zu bauen.","level":1,"cat":"Selbstbehauptung","variants":[],"safety":"","modminus":"","modplus":""},{"id":"GR_L2_03","sector":"grenzen","diff":2,"style":"classic","title":"Die Gefallen-Abwehr","action":"Wenn dich jemand um einen Gefallen bittet, der dich stresst, sag: „Das kann ich diesmal leider nicht für dich übernehmen.“","goal":"Hilfsbereitschaft von Selbstüberforderung trennen.","level":1,"cat":"Selbstbehauptung","variants":[],"safety":"","modminus":"","modplus":""},{"id":"GR_L2_04","sector":"grenzen","diff":2,"style":"classic","title":"Die Schweige-Minute","action":"Halte eine Gesprächspause von 10 Sekunden aus, ohne sie nervös mit Smalltalk zu füllen.","goal":"Stille aushalten, ohne sie sofort reparieren zu müssen.","level":1,"cat":"Selbstbehauptung","variants":[],"safety":"","modminus":"","modplus":""},{"id":"GR_L2_05","sector":"grenzen","diff":2,"style":"classic","title":"Der Platz-Wechsel","action":"Bitte im Restaurant oder Café um einen anderen Tisch, obwohl der zugewiesene „okay“ ist.","goal":"Für deinen Komfort einstehen, auch ohne Notfall.","level":1,"cat":"Selbstbehauptung","variants":[],"safety":"","modminus":"","modplus":""},{"id":"GR_L2_06","sector":"grenzen","diff":2,"style":"classic","title":"Die Warteschlangen-Sperre","action":"Wenn sich jemand (vielleicht unabsichtlich) vordrängelt, sag ruhig: „Entschuldigung, ich stehe hier an.“","goal":"Raum einfordern ohne Aggression.","level":1,"cat":"Selbstbehauptung","variants":[],"safety":"","modminus":"","modplus":""},{"id":"GR_L2_07","sector":"grenzen","diff":2,"style":"classic","title":"Die geliehene Sache","action":"Fordere einen Gegenstand oder Geld zurück, das du jemandem geliehen hast, ohne dich für die Nachfrage zu entschuldigen.","goal":"Eigene Ansprüche aussprechen ohne Schuldgefühl.","level":1,"cat":"Selbstbehauptung","variants":[],"safety":"","modminus":"","modplus":""},{"id":"GR_L3_01","sector":"grenzen","diff":3,"style":"classic","title":"Das Stopp-Signal","action":"Wenn dich jemand neckt oder einen Witz macht, der dir nicht gefällt, sag ernst: „Ich möchte nicht, dass du solche Witze über mich machst.“","goal":"Klare Grenze trotz möglicher Ablehnung setzen.","level":2,"cat":"Selbstbehauptung","variants":[],"safety":"","modminus":"","modplus":""},{"id":"GR_L3_02","sector":"grenzen","diff":3,"style":"classic","title":"Die radikale Ehrlichkeit","action":"Sage eine Verabredung absichtlich kurzfristig ab mit der Begründung: „Ich brauche heute einfach Zeit für mich alleine“, statt eine Krankheit vorzutäuschen.","goal":"Ehrlich absagen statt dich hinter Ausreden zu verstecken.","level":2,"cat":"Selbstbehauptung","variants":[],"safety":"","modminus":"","modplus":""},{"id":"GR_L3_03","sector":"grenzen","diff":3,"style":"classic","title":"Die Reklamation","action":"Beschwere dich über eine Dienstleistung oder ein Produkt (z. B. lauwarmes Essen), auch wenn es „eigentlich noch geht“.","goal":"Unzufriedenheit konstruktiv äußern statt sie runterzuschlucken.","level":2,"cat":"Selbstbehauptung","variants":[],"safety":"","modminus":"","modplus":""},{"id":"GR_L3_04","sector":"grenzen","diff":3,"style":"classic","title":"Die Veto-Stimme","action":"Wenn eine Gruppe etwas plant, sag: „Ich mache da nicht mit, das ist nicht mein Ding“, und bleibe entspannt dabei.","goal":"Nein sagen, ohne die Harmonie retten zu müssen.","level":2,"cat":"Selbstbehauptung","variants":[],"safety":"","modminus":"","modplus":""},{"id":"GR_L3_05","sector":"grenzen","diff":3,"style":"classic","title":"Die Korrektur von Erwartungen","action":"Sage einer Person, die sich immer auf dich verlässt: „Du musst das diesmal alleine regeln, ich unterstütze dich dabei heute nicht.“","goal":"Verantwortung zurückgeben ohne Schuldabwehr.","level":2,"cat":"Selbstbehauptung","variants":[],"safety":"","modminus":"","modplus":""},{"id":"GR_L3_06","sector":"grenzen","diff":3,"style":"classic","title":"Die Feedback-Provokation","action":"Frage jemanden: „Was ist eine Sache an mir, die dich manchmal nervt?“ – und höre die Antwort an, ohne dich zu rechtfertigen.","goal":"Kritik aufnehmen, ohne in Verteidigung zu gehen.","level":2,"cat":"Selbstbehauptung","variants":[],"safety":"","modminus":"","modplus":""},{"id":"SE_L1_01","sector":"selbst","diff":1,"style":"classic","title":"Der Socken-Mix","action":"Ziehe zwei komplett unterschiedliche Socken an und trage sie den ganzen Tag (auch wenn man sie nur kurz sieht).","goal":"Nicht die Socken — den kleinen Makel bewusst nicht korrigieren.","level":0,"cat":"Unperfekt-Sein","variants":[],"safety":"","modminus":"","modplus":""},{"id":"SE_L1_02","sector":"selbst","diff":1,"style":"classic","title":"Die Frisur-Sabotage","action":"Kämme deine Haare absichtlich unordentlich oder lass eine Strähne „falsch“ abstehen, bevor du das Haus verlässt.","goal":"Nicht die Frisur — den Perfektionsimpuls einmal ignorieren.","level":0,"cat":"Unperfekt-Sein","variants":[],"safety":"","modminus":"","modplus":""},{"id":"SE_L1_03","sector":"selbst","diff":1,"style":"classic","title":"Der Fleck-Simulator","action":"Befeuchte eine Stelle auf deinem Shirt mit Wasser, sodass es wie ein Klecks aussieht, und trage es so in der Öffentlichkeit.","goal":"Nicht der Fleck — Scham aushalten ohne sofort zu retten.","level":0,"cat":"Unperfekt-Sein","variants":[],"safety":"","modminus":"","modplus":""},{"id":"SE_L1_04","sector":"selbst","diff":1,"style":"classic","title":"Die falsche Knöpfung","action":"Knöpfe deine Jacke oder dein Hemd um ein Loch versetzt zu und laufe so durch einen Laden.","goal":"Nicht das Outfit — einen sichtbaren Mini-Fehler stehen lassen.","level":0,"cat":"Unperfekt-Sein","variants":[],"safety":"","modminus":"","modplus":""},{"id":"SE_L1_05","sector":"selbst","diff":1,"style":"classic","title":"Das Preisschild-Versehen","action":"Lass das Etikett an einem Schal oder einer Jacke sichtbar heraushängen, während du unterwegs bist.","goal":"Nicht das Etikett — den Impuls, sofort korrekt zu wirken, brechen.","level":0,"cat":"Unperfekt-Sein","variants":[],"safety":"","modminus":"","modplus":""},{"id":"SE_L1_06","sector":"selbst","diff":1,"style":"classic","title":"Der Technik-Laie","action":"Probiere an einem Automaten (Pfand/Fahrkarten) absichtlich eine falsche Taste und schaue kurz verwirrt, bevor du es richtig machst.","goal":"Nicht die Bedienung — kurz inkompetent wirken dürfen.","level":0,"cat":"Unperfekt-Sein","variants":[],"safety":"","modminus":"","modplus":""},{"id":"SE_L1_07","sector":"selbst","diff":1,"style":"classic","title":"Die falsche Uhrzeit","action":"Stelle deine Armbanduhr auf eine komplett falsche Zeit und schaue in der Bahn demonstrativ lange darauf.","goal":"Nicht die Uhrzeit — die eigene Peinlichkeit nicht sofort wegregeln.","level":0,"cat":"Unperfekt-Sein","variants":[],"safety":"","modminus":"","modplus":""},{"id":"SE_L2_01","sector":"selbst","diff":2,"style":"classic","title":"Der Zeitlupen-Gang","action":"Gehe in einem Supermarkt oder einer Mall für 60 Sekunden extrem langsam (Zeitlupe), während alle an dir vorbeieilen.","goal":"Nicht die Geschwindigkeit — auffallen, ohne dich zu erklären.","level":1,"cat":"Unperfekt-Sein","variants":[],"safety":"","modminus":"","modplus":""},{"id":"SE_L2_02","sector":"selbst","diff":2,"style":"classic","title":"Das sichtbare Selbstgespräch","action":"Gehe durch die Stadt und bewege deine Lippen deutlich, als würdest du lautlos mit dir selbst diskutieren.","goal":"Nicht das Selbstgespräch — das Gefühl „die schauen“ neutralisieren.","level":1,"cat":"Unperfekt-Sein","variants":[],"safety":"","modminus":"","modplus":""},{"id":"SE_L2_03","sector":"selbst","diff":2,"style":"classic","title":"Die Schuh-Verwechslung","action":"Trage deine Schuhe für 10 Minuten auf den falschen Füßen (links/rechts vertauscht), während du eine kleine Erledigung machst.","goal":"Nicht der Komfort — bewusst unperfekt auftreten.","level":1,"cat":"Unperfekt-Sein","variants":[],"safety":"","modminus":"","modplus":""},{"id":"SE_L2_04","sector":"selbst","diff":2,"style":"classic","title":"Der Rückwärts-Geher","action":"Gehe in einer Fußgängerzone ohne Vorwarnung 5 Meter rückwärts, drehe dich dann um und laufe normal weiter.","goal":"Nicht die Aktion — kurz seltsam sein und danach normal bleiben.","level":1,"cat":"Unperfekt-Sein","variants":[],"safety":"","modminus":"","modplus":""},{"id":"SE_L2_05","sector":"selbst","diff":2,"style":"classic","title":"Das laute Selbst-Update","action":"Sage einmal hörbar zu dir selbst: „Wo habe ich denn jetzt schon wieder meinen Kopf?“, wenn Leute direkt neben dir stehen.","goal":"Nicht der Satz — hörbar unperfekt sein.","level":1,"cat":"Unperfekt-Sein","variants":[],"safety":"","modminus":"","modplus":""},{"id":"SE_L2_06","sector":"selbst","diff":2,"style":"classic","title":"Der falsche Eingang","action":"Betritt ein Geschäft, laufe zielstrebig bis zur Mitte, bleibe stehen, sage leise „Ach ne, falsch“ und gehe direkt wieder raus.","goal":"Nicht der Weg — den Mini-Fehltritt nicht kaschieren.","level":1,"cat":"Unperfekt-Sein","variants":[],"safety":"","modminus":"","modplus":""},{"id":"SE_L2_07","sector":"selbst","diff":2,"style":"classic","title":"Die Inhaltsstoff-Studie","action":"Nimm ein Produkt im Regal und studiere 2 Minuten lang extrem konzentriert die Rückseite, bevor du es kopfschüttelnd zurückstellst.","goal":"Nicht das Produkt — komisch wirken dürfen, ohne Rechtfertigung.","level":1,"cat":"Unperfekt-Sein","variants":[],"safety":"","modminus":"","modplus":""},{"id":"SE_L3_01","sector":"selbst","diff":3,"style":"fun","title":"Die unsichtbare Wand","action":"Bleibe auf dem Gehweg stehen und taste eine „unsichtbare Wand“ vor dir ab, bevor du ganz normal weitergehst.","goal":"Nicht die Performance — soziale Scham bewusst durchlaufen.","level":2,"cat":"Unperfekt-Sein","variants":[],"safety":"","modminus":"","modplus":""},{"id":"SE_L3_02","sector":"selbst","diff":3,"style":"classic","title":"Der Schuhbändel-Stopp","action":"Bleibe mitten im stärksten Passantenstrom stehen, um deine (eigentlich geschlossenen) Schnürsenkel neu zu binden.","goal":"Nicht die Schnürsenkel — dir Raum nehmen, obwohl es „stört“.","level":2,"cat":"Unperfekt-Sein","variants":[],"safety":"","modminus":"","modplus":""},{"id":"SE_L3_03","sector":"selbst","diff":3,"style":"classic","title":"Der Technik-Fluch","action":"Starre auf dein Handy, sag einmal laut „Och nö, ernsthaft jetzt?“ und mache eine genervte Geste, bevor du es wegsteckst.","goal":"Nicht das Handy — sichtbare Emotion zulassen, statt cool zu bleiben.","level":2,"cat":"Unperfekt-Sein","variants":[],"safety":"","modminus":"","modplus":""},{"id":"SE_L3_04","sector":"selbst","diff":3,"style":"fun","title":"Die Ampel-Melodie","action":"Summe eine bekannte Kindermelodie (z.B. „Alle meine Entchen“) laut vor dich hin, während du an einer roten Ampel wartest.","goal":"Nicht die Melodie — peinliche Sichtbarkeit aktiv wählen.","level":2,"cat":"Unperfekt-Sein","variants":[],"safety":"","modminus":"","modplus":""},{"id":"SE_L3_05","sector":"selbst","diff":3,"style":"classic","title":"Die Statuen-Minute","action":"Bleibe an einem belebten Ort (Bahnhof/Mall) für genau 60 Sekunden wie eingefroren stehen, ohne dich zu bewegen.","goal":"Nicht die Minute — den Blicken nicht ausweichen.","level":2,"cat":"Unperfekt-Sein","variants":[],"safety":"","modminus":"","modplus":""},{"id":"SE_L3_06","sector":"selbst","diff":3,"style":"fun","title":"Der Party-König","action":"Trage eine auffällige Kopfbedeckung (z.B. einen billigen Partyhut oder eine Krone aus Papier) beim nächsten Gang zum Bäcker.","goal":"Nicht der Hut — den Drang nach „normal wirken“ bewusst lockern.","level":2,"cat":"Unperfekt-Sein","variants":[],"safety":"","modminus":"","modplus":""}]</script>
 <script>
 const RT_CATS = ['Präsenz','Mini-Kontakt','Kleine Bitte','Meinung & Feedback','Sichtbarkeit','Ablehnung','Fun Mode'];
 const RT_LEVELS = {0:'Präsenz ohne Flucht',1:'Mini-Kontakt',2:'Kleine Bitte',3:'Meinung & Feedback',4:'Sichtbarkeit & Rejection',5:'Fun / Hard Mode'};
@@ -1184,20 +1227,60 @@ function questIcon(q){
   return q.style==='fun'?'🎭':'⚡';
 }
 QL.forEach(function(q){q.icon=QUEST_ICONS[q.id]||q.icon;});
-const LEVEL_META = {
-  0:{name:RT_LEVELS[0],desc:'',color:'#059669',emoji:'🌱'},
-  1:{name:RT_LEVELS[1],desc:'',color:'#0891B2',emoji:'👋'},
-  2:{name:RT_LEVELS[2],desc:'',color:'#D97706',emoji:'🙏'},
-  3:{name:RT_LEVELS[3],desc:'',color:'#7C3AED',emoji:'💬'},
-  4:{name:RT_LEVELS[4],desc:'',color:'#DC2626',emoji:'👁️'},
-  5:{name:RT_LEVELS[5],desc:'',color:'#EC4899',emoji:'🎭'},
+const SECTOR_META = {
+  sozial: {
+    label:'Sozialer Alltag',
+    desc:'Fremde, Alltag, Aufmerksamkeit aushalten',
+    emoji:'🌍',
+    color:'#0891B2'
+  },
+  dating: {
+    label:'Dating',
+    desc:'Flirt, Ansprechen, Körbe aushalten',
+    emoji:'💫',
+    color:'#EC4899'
+  },
+  job: {
+    label:'Job & Erfolg',
+    desc:'Auftreten, Kritik, Sichtbarkeit im Beruf',
+    emoji:'💼',
+    color:'#7C3AED'
+  },
+  grenzen: {
+    label:'Selbstbehauptung',
+    desc:'Nein sagen, Konflikte, Nahbereich',
+    emoji:'🛡️',
+    color:'#DC2626'
+  },
+  selbst: {
+    label:'Unperfekt-Sein',
+    desc:'Fehler, Makel, Unperfekt-Sein aushalten',
+    emoji:'🪞',
+    color:'#D97706'
+  },
 };
-const LEVEL_UNLOCK = {0:0,1:5,2:15,3:30,4:50,5:75};
-function getUnlockedLevel(totalDone){let level=0;Object.entries(LEVEL_UNLOCK).forEach(([lvl,needed])=>{if(totalDone>=needed)level=parseInt(lvl,10);});return level;}
 
-let S = {totalDone:0,streak:0,lastLogin:null,completions:[],weekQueue:[],weekStart:null,weekDone:{},currentLevel:0,ovLvl:'all',dailyMood:{},dailyScore:{}};
+const DIFF_META = {
+  1:{label:'Safe',color:'#059669'},
+  2:{label:'Spürbar',color:'#D97706'},
+  3:{label:'Mutig',color:'#DC2626'},
+};
+/* Kompatibilität für bestehende Views */
+const LEVEL_UNLOCK={0:0,1:0,2:0,3:0,4:0,5:0};
+const LEVEL_META={
+  0:{name:RT_LEVELS[0],emoji:'🌱'},
+  1:{name:RT_LEVELS[1],emoji:'👋'},
+  2:{name:RT_LEVELS[2],emoji:'🙏'},
+  3:{name:RT_LEVELS[3],emoji:'💬'},
+  4:{name:RT_LEVELS[4],emoji:'👁️'},
+  5:{name:RT_LEVELS[5],emoji:'🎭'},
+};
+function getUnlockedLevel(){return 5;}
+
+let S = {totalDone:0,streak:0,lastLogin:null,completions:[],weekQueue:[],weekStart:null,weekDone:{},weekShame:{},activeSector:'all',ovLvl:'all',name:''};
 function sv(){try{localStorage.setItem('xl7',JSON.stringify(S))}catch(e){}}
 function ld(){try{const d=JSON.parse(localStorage.getItem('xl7')||'{}');if(Object.keys(d).length)Object.assign(S,d)}catch(e){}
+  delete S.dailyMood;delete S.dailyScore;
   if('fCat' in S){
     var fc=S.fCat;
     delete S.fCat;
@@ -1247,6 +1330,15 @@ function escHtml(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/<
 function todayDoneIds(){return (S.completions||[]).filter(c=>new Date(c.ts).toDateString()===td).map(c=>c.qid);}
 function dayKey(d){const x=new Date(d);return x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0');}
 function scoreClass(n){if(n>=2)return'g';if(n===1)return'y';return'r';}
+function dayWeekDoneCount(dowIx){
+  const wq=S.weekQueue||[];
+  let n=0;
+  for(let qi=0;qi<wq.length;qi++){
+    const qid=wq[qi];
+    if(((S.weekDone||{})[qid]||[])[dowIx])n++;
+  }
+  return n;
+}
 
 function shuffleQueue(){
   const unlockedLevel=getUnlockedLevel(S.totalDone||0);
@@ -1271,30 +1363,35 @@ function shuffleQueue(){
   }
 
   S.weekQueue=picks.map(q=>q.id).slice(0,3);
+  S.weekShame = {};
   S.weekStart=getMonday();
   S.weekDone={};
   S.weekQueue.forEach(qid=>{S.weekDone[qid]=[0,0,0,0,0,0,0];});
   sv();
 }
 
-function weekDotsHtml(qid){
+function weekTrackerHtml(qid){
   const dowIdx=getTodayDowIndex();
   const done=S.weekDone?.[qid]||[0,0,0,0,0,0,0];
-  const dots=done.map(function(on,i){
-    let bg,border='none';
-    if(i===dowIdx){
-      bg=on?'#059669':'#111111';
-    }else if(on){
-      bg='#059669';
-    }else if(i<dowIdx){
-      bg='var(--surface2)';
-      border='0.5px dashed var(--t3)';
+  const labels=['Mo','Di','Mi','Do','Fr','Sa','So'];
+  const cells=labels.map(function(lbl,i){
+    const on=!!done[i];
+    let ringClass='hq-wk-ring';
+    let inner='';
+    if(on){
+      ringClass+=' hq-wk-ring--done';
+      inner='✓';
+    }else if(i===dowIdx){
+      ringClass+=' hq-wk-ring--today';
+      inner=escHtml(lbl.toUpperCase());
+    }else if(i>dowIdx){
+      ringClass+=' hq-wk-ring--future';
     }else{
-      bg='var(--surface2)';
+      ringClass+=' hq-wk-ring--past';
     }
-    return '<div style="width:14px;height:14px;border-radius:50%;background:'+bg+';border:'+border+';flex-shrink:0"></div>';
+    return '<div class="hq-wk-cell"><div class="'+ringClass+'">'+inner+'</div><span class="hq-wk-lbl">'+lbl+'</span></div>';
   }).join('');
-  return '<div style="display:flex;gap:3px;margin-top:6px;margin-bottom:10px">'+dots+'</div>';
+  return '<div class="hq-week-track"><div class="hq-wk-dots">'+cells+'</div></div>';
 }
 
 function rHome(){
@@ -1305,35 +1402,35 @@ function rHome(){
   const doneToday=(S.weekQueue||[]).filter(qid=>(S.weekDone?.[qid]||[])[dowIdx]===1).length;
   const unlockedLevel=getUnlockedLevel(S.totalDone||0);
   const homeLvl=document.getElementById('home-level-copy');if(homeLvl)homeLvl.textContent='Lv. '+unlockedLevel+' · '+RT_LEVELS[unlockedLevel];
-  const pct=totalQ>0?Math.round(doneToday/totalQ*100):0;
   const kDone=document.getElementById('kpi-done-val');if(kDone)kDone.textContent=String(S.streak||0);
-  const xpWrap=document.querySelector('#s-home .kpi-xp');
-  if(xpWrap)xpWrap.style.display=totalQ===0?'none':'';
-  const fill=document.getElementById('kpi-xp-fill');if(fill)fill.style.width=pct+'%';
-  const lbl=document.getElementById('kpi-xp-lbl');if(lbl)lbl.textContent='HEUTE · '+doneToday+' VON '+totalQ+' ERLEDIGT';
-  S.dailyScore=S.dailyScore||{};
-  S.dailyMood=S.dailyMood||{};
-  S.dailyScore[dayKey(new Date())]=scoreClass(doneToday);
+  const todayPill=document.getElementById('kpi-today-pill');
+  if(totalQ===0){
+    if(todayPill){todayPill.textContent='';todayPill.classList.add('kpi-today-pill--hide');}
+  }else if(todayPill){
+    todayPill.textContent='Heute · '+doneToday+' von '+totalQ;
+    todayPill.classList.remove('kpi-today-pill--hide');
+  }
   const wk=document.getElementById('kpi-week');if(wk){
     const names=['So','Mo','Di','Mi','Do','Fr','Sa'];
     const now=new Date();
+    const todayStart=new Date(now.getFullYear(),now.getMonth(),now.getDate());
     const todayDow=now.getDay();
     const mondayOffset=todayDow===0?-6:1-todayDow;
     const monday=new Date(now);monday.setDate(now.getDate()+mondayOffset);
+    monday.setHours(0,0,0,0);
+    const wq=S.weekQueue||[];
     const parts=[];
     for(let i=0;i<7;i++){
       const d=new Date(monday);d.setDate(monday.getDate()+i);
-      const key=dayKey(d);
-      const isToday=d.toDateString()===now.toDateString();
-      const isFuture=d>now;
-      const cls=isFuture?'future':(S.dailyScore[key]||'r');
-      const ringInner=isToday
-        ?'<p class="kpi-dd kpi-dd--mood">'+(S.dailyMood[key]||'🙂')+'</p>'
-        :'<p class="kpi-dd">'+String(d.getDate()).padStart(2,'0')+'</p>';
-      const moodCell=isToday
-        ?'<div class="kpi-dmood" aria-hidden="true"></div>'
-        :'<div class="kpi-dmood">'+(S.dailyMood[key]||'')+'</div>';
-      parts.push('<div class="kpi-dcell"><div class="kpi-dayring '+cls+(isToday?' today-sel':'')+'"><p class="kpi-dlbl'+(isToday?' today':'')+'">'+names[d.getDay()]+'</p>'+ringInner+'</div>'+moodCell+'</div>');
+      const cellStart=new Date(d.getFullYear(),d.getMonth(),d.getDate());
+      const isToday=cellStart.getTime()===todayStart.getTime();
+      const isFuture=cellStart>todayStart;
+      let cls;
+      if(isFuture)cls='future';
+      else if(!wq.length)cls='neutral';
+      else cls=scoreClass(dayWeekDoneCount(i));
+      const ringInner='<p class="kpi-dd">'+String(d.getDate()).padStart(2,'0')+'</p>';
+      parts.push('<div class="kpi-dcell"><div class="kpi-dayring '+cls+(isToday?' today-sel':'')+'"><p class="kpi-dlbl'+(isToday?' today':'')+'">'+names[d.getDay()]+'</p>'+ringInner+'</div></div>');
     }
     wk.innerHTML=parts.join('');
   }
@@ -1370,56 +1467,51 @@ function rHome(){
     const q=QL.find(function(x){return x.id===qid;});if(!q)return'';
     const isDoneToday=(S.weekDone?.[q.id]||[])[dowIdx]===1;
     const lvCol=(LEVEL_META[q.level]||LEVEL_META[0]).color;
-    const ringBtn=isDoneToday
-      ? '<button type="button" class="hq-ring done" disabled aria-label="Heute erledigt">✓</button>'
-      : '<button type="button" class="hq-ring" onclick="event.stopPropagation();questDoneToday(\''+qid+'\')" aria-label="Heute erledigt"></button>';
-    return '<div class="hq-row">'
-      +'<button type="button" class="hq-row-tap" onclick="showQuestDetail(\''+qid+'\')">'
+    const doneBtn=isDoneToday
+      ? '<button type="button" class="hq-btn-done hq-btn-done--done" onclick="event.stopPropagation();questDoneToday(\''+qid+'\')" aria-label="Erledigung ändern">Heute gemacht ✓</button>'
+      : '<button type="button" class="hq-btn-done" onclick="event.stopPropagation();questDoneToday(\''+qid+'\')" aria-label="Heute erledigt">Heute gemacht</button>';
+    const removeBtn='<button type="button" class="hq-btn-remove" onclick="event.stopPropagation();removeFromQueue(\''+qid+'\')" aria-label="Aus Woche entfernen">✕</button>';
+    return '<div class="hq-row hq-row--stack">'
+      +'<button type="button" class="hq-row-head" onclick="showQuestDetail(\''+qid+'\')">'
       +'<div class="hq-ico" style="border-color:'+lvCol+';background-color:'+lvCol+'1A">'
       +questIcon(q)+'</div>'
       +'<div class="hq-copy">'
       +'<div class="hq-title" style="'+(isDoneToday?'text-decoration:line-through;opacity:.5':'')+'">'+escHtml(q.title)+'</div>'
-      +weekDotsHtml(q.id)
       +'<div class="hq-sub">'+escHtml(q.action||'')+'</div>'
       +'</div></button>'
-      +'<div class="hq-act">'
-      +ringBtn
-      +'<button type="button" class="hq-xskip" onclick="event.stopPropagation();removeFromQueue(\''+qid+'\')" title="Entfernen">✕</button></div></div>';
+      +weekTrackerHtml(q.id)
+      +'<div class="hq-row-actions">'+doneBtn+removeBtn+'</div></div>';
   }).join('');
-  qs.innerHTML='<div class="hq-list-card"><div class="hq-list-hd">Heute ein Level weiter?</div>'+rows+'<div class="hq-card-foot"><span style="font-family:DM Mono,monospace;font-size:9px;color:var(--t3)">'+doneToday+'/'+totalQ+' erledigt</span><button type="button" class="hq-foot-link" onclick="reshuffleHome()">↺ Neue Woche</button></div></div>';
+  const missing=3-totalQ;
+  const addSlotBlock=(totalQ>0&&totalQ<3)
+    ?'<div class="hq-add-slot-wrap">'
+    +'<p class="hq-add-slot-hint">Noch '+missing+' '+ (missing===1?'Quest':'Quests') +' frei in deiner Woche – manuell unter „Quests“ wählen.</p>'
+    +'<button type="button" class="hq-add-quest-btn" onclick="go(\'levels\')">Quest hinzufügen</button>'
+    +'</div>'
+    :'';
+  qs.innerHTML='<div class="hq-list-card"><div class="hq-list-hd">Heute ein Level weiter?</div>'+rows+'<div class="hq-card-foot"><span style="font-family:DM Mono,monospace;font-size:9px;color:var(--t3)">'+doneToday+'/'+totalQ+' erledigt</span><button type="button" class="hq-foot-link" onclick="reshuffleHome()">↺ Neue Woche</button></div>'+addSlotBlock+'</div>';
 }
-function openMoodPicker(){
-  const opts=['😄','🙂','😐','😮‍💨','😵','😤'];
-  showSheet('<div class="shdl"></div><div class="sht-t">Wie fühlst du dich heute?</div><div class="sht-s">Wähle dein Tagesgefühl.</div><div class="sht-sc"><div style="display:flex;gap:10px;flex-wrap:wrap">'+opts.map(function(e){return '<button type="button" class="kpi-mood-btn" onclick="setTodayMood(\''+e+'\')">'+e+'</button>';}).join('')+'</div></div><button class="qc-btn qc-btn--ghost" onclick="closeSheet()">Schließen</button>');
-}
-function setTodayMood(emo){
-  S.dailyMood=S.dailyMood||{};
-  S.dailyMood[dayKey(new Date())]=emo;
-  sv();
-  closeSheet();
-  rHome();
-}
-
 function ovFilteredQuests(){
   return QL.filter(function(q){
-    if(S.ovLvl!=='all'&&q.level!==S.ovLvl)return false;
+    if((S.activeSector||'all')!=='all'&&q.sector!==(S.activeSector||'all'))return false;
     return true;
   });
 }
 
 function ovSetLvl(v){
-  if(v==='all'||v==='Alle')S.ovLvl='all';
-  else{var n=typeof v==='number'?v:parseInt(v,10);S.ovLvl=isNaN(n)?'all':Math.min(5,Math.max(0,n));}
+  S.activeSector=(v==='all'||!v)?'all':v;
   sv();rOverview();
 }
 
 function rOverview(){
   const w=document.getElementById('ov-wrap');if(!w)return;
   const unlockedLevel=getUnlockedLevel(S.totalDone||0);
-  var lvlChips='<button type="button" class="ov-chip ov-chip--diff'+(S.ovLvl==='all'?' on':'')+'" onclick="ovSetLvl('+JSON.stringify('all')+')">Alle</button>'
-    +[0,1,2,3,4,5].map(function(n){
-      var on=S.ovLvl===n;
-      return '<button type="button" class="ov-chip ov-chip--diff'+(on?' on':'')+'" title="'+escHtml(RT_LEVELS[n]||'')+'" onclick="ovSetLvl('+n+')">L'+n+'</button>';
+  var active=S.activeSector||'all';
+  var lvlChips='<button type="button" class="ov-chip ov-chip--diff'+(active==='all'?' on':'')+'" onclick="ovSetLvl(\'all\')">Alle</button>'
+    +Object.keys(SECTOR_META).map(function(key){
+      var on=active===key;
+      var m=SECTOR_META[key];
+      return '<button type="button" class="ov-chip ov-chip--diff'+(on?' on':'')+'" title="'+escHtml(m.label||'')+'" onclick="ovSetLvl(\''+key+'\')">'+escHtml((m.emoji||'')+' '+(m.label||key))+'</button>';
     }).join('');
   var qs=ovFilteredQuests();
   var cards=qs.length?qs.map(function(q){
@@ -1431,7 +1523,7 @@ function rOverview(){
       : inQ
         ? '<button type="button" class="ov-card-go" disabled>In Queue ✓</button>'
         : '<button type="button" class="ov-card-go" onclick="addToWeekQueue(\''+q.id+'\')">Start Quest →</button>';
-    return '<article class="ov-card '+skin+'"><button type="button" class="ov-card-tap" onclick="showQuestDetail(\''+q.id+'\')"><div class="ov-card-top"><div class="ov-card-ico">'+questIcon(q)+'</div><span class="ov-card-diff">'+escHtml(q.cat||'')+' · L'+q.level+'</span></div><div class="ov-card-title">'+escHtml(q.title)+'</div></button><div class="ov-card-foot"><span class="ov-card-time">'+escHtml(RT_LEVELS[q.level]||'')+'</span>'+btn+'</div></article>';
+    return '<article class="ov-card '+skin+'"><button type="button" class="ov-card-tap" onclick="showQuestDetail(\''+q.id+'\')"><div class="ov-card-top"><div class="ov-card-ico">'+questIcon(q)+'</div><span class="ov-card-diff">'+escHtml(q.cat||'')+' · L'+q.level+'</span></div><div class="ov-card-title">'+escHtml(q.action||q.title)+'</div></button><div class="ov-card-foot"><span class="ov-card-time">'+escHtml(q.title)+'</span>'+btn+'</div></article>';
   }).join(''):'<div class="ov-empty">Keine Quests für diese Filter.</div>';
   w.innerHTML='<div class="ov-chip-sticky"><div class="ov-chip-row">'+lvlChips+'</div></div><div class="ov-scroll-list">'+cards+'</div>';
 }
@@ -1443,35 +1535,380 @@ function removeFromQueue(qid){
   rHome();
 }
 
+function addAndShame(qid){
+  // Quest zur Woche hinzufügen
+  S.weekQueue=S.weekQueue||[];
+  if(S.weekQueue.length>=3){
+    showSheet(`
+      <div class="shdl"></div>
+      <div class="sht-t">Schon 3 Quests aktiv</div>
+      <div class="sht-s">Entferne zuerst eine Quest
+        auf der Startseite.</div>
+      <button class="btn-sv rdy"
+        onclick="closeSheet();go('home')">
+        Zur Startseite
+      </button>
+    `);
+    return;
+  }
+  if(!S.weekQueue.includes(qid)){
+    S.weekQueue.push(qid);
+    S.weekDone=S.weekDone||{};
+    S.weekDone[qid]=[0,0,0,0,0,0,0];
+    sv();
+  }
+  showShameCheck(qid);
+}
+
+function showShameCheck(qid){
+  const q=QL.find(x=>x.id===qid);
+  if(!q)return;
+
+  // Wenn Anspannung schon gemessen — überspringen
+  if((S.weekShame||{})[qid]){
+    rHome();
+    return;
+  }
+
+  window._shameQid=qid;
+  window._shameBefore=null;
+
+  showSheet(`
+    <div class="shdl"></div>
+    <div class="sht-t">Wie hoch ist deine
+      Anspannung gerade?</div>
+    <div class="sht-s">${escHtml(q.title)}</div>
+    <div class="sht-sc">
+
+      <div style="display:flex;gap:8px;
+        margin-bottom:24px" id="shame-btns">
+        ${[
+          {val:1,emoji:'😌',label:'Kaum'},
+          {val:2,emoji:'😐',label:'Etwas'},
+          {val:3,emoji:'😰',label:'Stark'},
+          {val:4,emoji:'😱',label:'Sehr stark'},
+        ].map(o=>`
+          <button type="button"
+            onclick="selShame(${o.val},this)"
+            style="flex:1;border:1.5px solid
+              var(--border);border-radius:14px;
+              padding:12px 4px;background:var(--surface);
+              cursor:pointer;display:flex;
+              flex-direction:column;align-items:center;
+              gap:6px;font-family:inherit;
+              transition:all .15s">
+            <span style="font-size:24px">
+              ${o.emoji}
+            </span>
+            <span style="font-family:'DM Mono',
+              monospace;font-size:9px;font-weight:700;
+              color:var(--t2)">
+              ${o.label}
+            </span>
+          </button>
+        `).join('')}
+      </div>
+
+      <div style="font-family:'DM Sans',sans-serif;
+        font-size:12px;color:var(--t3);
+        text-align:center;line-height:1.6">
+        Deine Antwort wird gespeichert und später
+        mit dem Ergebnis verglichen.
+      </div>
+
+    </div>
+
+    <button class="btn-sv rdy"
+      onclick="saveShameAndGo()">
+      Ich mach's →
+    </button>
+  `);
+
+  window.selShame=function(val,el){
+    document.querySelectorAll('#shame-btns button')
+      .forEach(b=>{
+        b.style.background='var(--surface)';
+        b.style.borderColor='var(--border)';
+        b.querySelectorAll('span')
+          .forEach(s=>s.style.color='');
+      });
+    el.style.background='var(--t)';
+    el.style.borderColor='var(--t)';
+    el.querySelectorAll('span')
+      .forEach(s=>s.style.color='#fff');
+    window._shameBefore=val;
+  };
+}
+
+function saveShameAndGo(){
+  const qid=window._shameQid;
+  if(!qid)return;
+  S.weekShame=S.weekShame||{};
+  S.weekShame[qid]=window._shameBefore||1;
+  sv();
+  closeSheet();
+  rHome();
+}
+
 function questDoneToday(qid){
   const dowIdx=getTodayDowIndex();
   S.weekDone=S.weekDone||{};
-  if(!S.weekDone[qid])S.weekDone[qid]=[0,0,0,0,0,0,0];
+  if(!S.weekDone[qid])
+    S.weekDone[qid]=[0,0,0,0,0,0,0];
 
+  // Toggle zurück wenn heute schon abgehakt
   if(S.weekDone[qid][dowIdx]){
     S.weekDone[qid][dowIdx]=0;
-    sv();rHome();return;
+    S.totalDone=Math.max(0,(S.totalDone||1)-1);
+    sv(); rHome(); return;
   }
 
-  S.weekDone[qid][dowIdx]=1;
-  S.totalDone=(S.totalDone||0)+1;
-  S.currentLevel=getUnlockedLevel(S.totalDone);
+  const q=QL.find(x=>x.id===qid);
+  if(!q)return;
 
+  const shameBefore=(S.weekShame||{})[qid]||null;
+  const shameEmojis=['','😌','😐','😰','😱'];
+  const shameLabels=['','Kaum','Etwas',
+    'Stark','Sehr stark'];
+
+  window._pendingQid=qid;
+  window._selectedOutcome=null;
+  window._selectedVisibility='private';
+
+  showSheet(`
+    <div class="shdl"></div>
+    <div class="sht-t">Wie war es?</div>
+    <div class="sht-s">${escHtml(q.title)}</div>
+    <div class="sht-sc">
+
+      <!-- Anspannung vorher anzeigen -->
+      ${shameBefore?`
+        <div style="background:var(--surface2);
+          border-radius:12px;padding:10px 14px;
+          margin-bottom:16px;display:flex;
+          gap:10px;align-items:center">
+          <span style="font-size:18px">
+            ${shameEmojis[shameBefore]}
+          </span>
+          <div>
+            <div style="font-family:'DM Mono',
+              monospace;font-size:8px;color:var(--t3);
+              letter-spacing:0.08em;margin-bottom:2px">
+              ANSPANNUNG VORHER
+            </div>
+            <div style="font-family:'DM Sans',
+              sans-serif;font-size:13px;font-weight:700;
+              color:var(--t)">
+              ${shameLabels[shameBefore]}
+            </div>
+          </div>
+        </div>`:''}
+
+      <!-- Outcome -->
+      <div style="display:flex;flex-direction:column;
+        gap:8px;margin-bottom:20px"
+        id="outcome-btns">
+        ${[
+          {id:'better',emoji:'🙂',
+           label:'Besser als erwartet',
+           sub:'Entspannter als gedacht'},
+          {id:'same',emoji:'😐',
+           label:'Genau wie erwartet',
+           sub:'Ungefähr das was ich dachte'},
+          {id:'worse',emoji:'😬',
+           label:'Schwerer als gedacht',
+           sub:'Unangenehmer als erwartet'},
+          {id:'nein',emoji:'✊',
+           label:'Nein bekommen',
+           sub:'Abgelehnt — und überlebt'},
+        ].map(o=>`
+          <button type="button"
+            onclick="selOutcome('${o.id}',this)"
+            style="width:100%;border:1.5px solid
+              var(--border);border-radius:14px;
+              padding:12px 14px;background:var(--surface);
+              cursor:pointer;display:flex;
+              align-items:center;gap:12px;
+              text-align:left;transition:all .15s;
+              font-family:inherit">
+            <span style="font-size:22px;flex-shrink:0">
+              ${o.emoji}
+            </span>
+            <div>
+              <div style="font-family:'DM Sans',
+                sans-serif;font-size:13px;
+                font-weight:700;color:var(--t)">
+                ${o.label}
+              </div>
+              <div style="font-family:'DM Sans',
+                sans-serif;font-size:11px;
+                color:var(--t2);margin-top:2px">
+                ${o.sub}
+              </div>
+            </div>
+          </button>
+        `).join('')}
+      </div>
+
+      <!-- Reflexion Freitext -->
+      <div style="font-family:'DM Sans',sans-serif;
+        font-size:13px;font-weight:700;color:var(--t);
+        margin-bottom:8px">
+        Was hast du gefühlt? (optional)
+      </div>
+      <textarea id="ref-text"
+        placeholder="Was hat dein Kopf erwartet —
+und was ist wirklich passiert?"
+        style="width:100%;background:var(--surface2);
+        border:1px solid var(--border);
+        border-radius:12px;padding:12px;
+        font-family:'DM Sans',sans-serif;
+        font-size:13px;color:var(--t);
+        resize:none;min-height:80px;
+        line-height:1.5;outline:none;
+        box-sizing:border-box">
+      </textarea>
+
+      <!-- Sichtbarkeit -->
+      <div style="font-family:'DM Sans',sans-serif;
+        font-size:13px;font-weight:700;color:var(--t);
+        margin:14px 0 8px">
+        Speichern als
+      </div>
+      <div style="display:flex;gap:8px"
+        id="visibility-btns">
+        ${[
+          {id:'private',emoji:'🔒',label:'Nur ich'},
+          {id:'anonym',emoji:'👤',label:'Anonym'},
+          {id:'public',emoji:'🌍',label:'Öffentlich'},
+        ].map((v,i)=>`
+          <button type="button"
+            onclick="selVisibility('${v.id}',this)"
+            style="flex:1;border:1.5px solid
+              ${i===0?'var(--t)':'var(--border)'};
+              border-radius:12px;padding:10px 4px;
+              background:${i===0
+                ?'var(--t)':'var(--surface)'};
+              cursor:pointer;display:flex;
+              flex-direction:column;align-items:center;
+              gap:4px;font-family:inherit;
+              transition:all .15s">
+            <span style="font-size:18px">${v.emoji}</span>
+            <span style="font-family:'DM Mono',
+              monospace;font-size:9px;font-weight:700;
+              color:${i===0?'#fff':'var(--t2)'}"
+              class="vis-label">
+              ${v.label}
+            </span>
+          </button>
+        `).join('')}
+      </div>
+
+    </div>
+
+    <button class="btn-sv rdy"
+      onclick="saveQuestDone()">
+      Speichern →
+    </button>
+  `);
+
+  window.selOutcome=function(id,el){
+    document.querySelectorAll('#outcome-btns button')
+      .forEach(b=>{
+        b.style.background='var(--surface)';
+        b.style.borderColor='var(--border)';
+      });
+    el.style.background='var(--t)';
+    el.style.borderColor='var(--t)';
+    window._selectedOutcome=id;
+  };
+
+  window.selVisibility=function(id,el){
+    document.querySelectorAll(
+      '#visibility-btns button')
+      .forEach(b=>{
+        b.style.background='var(--surface)';
+        b.style.borderColor='var(--border)';
+        b.querySelector('.vis-label')
+          .style.color='var(--t2)';
+      });
+    el.style.background='var(--t)';
+    el.style.borderColor='var(--t)';
+    el.querySelector('.vis-label')
+      .style.color='#fff';
+    window._selectedVisibility=id;
+  };
+}
+
+window._shameBefore = null;
+
+window.selShameBefore = function(val, el){
+  document.querySelectorAll('#shame-before-btns button')
+    .forEach(b=>{
+      b.style.background='var(--surface)';
+      b.style.borderColor='var(--border)';
+      b.querySelectorAll('span').forEach(s=>{
+        s.style.color='';
+      });
+    });
+  el.style.background='var(--t)';
+  el.style.borderColor='var(--t)';
+  el.querySelectorAll('span').forEach(s=>{
+    s.style.color='#fff';
+  });
+  window._shameBefore=val;
+};
+
+function saveQuestDone(){
+  const qid=window._pendingQid;
+  if(!qid)return;
+  const q=QL.find(x=>x.id===qid);
+  if(!q)return;
+
+  const dowIdx=getTodayDowIndex();
+  S.weekDone=S.weekDone||{};
+  if(!S.weekDone[qid])S.weekDone[qid]=[0,0,0,0,0,0,0];
+  S.weekDone[qid][dowIdx]=1;
+
+  const reflection=
+    (document.getElementById('ref-text')
+    ?.value||'').trim();
+  const outcome=window._selectedOutcome||'same';
+  const visibility=
+    window._selectedVisibility||'private';
+  const shameBefore=
+    (S.weekShame||{})[qid]||null;
+
+  S.completions=S.completions||[];
+  S.completions.push({
+    qid,
+    ts:Date.now(),
+    reflection,
+    outcome,
+    visibility,
+    shameBefore,
+    sector:q.sector||'',
+    diff:q.diff||1,
+    title:q.title||''
+  });
+
+  S.totalDone=(S.totalDone||0)+1;
+
+  // Streak
   if(S.lastLogin!==td){
-    if(S.lastLogin===yd)S.streak=(S.streak||0)+1;
+    if(S.lastLogin===yd)
+      S.streak=(S.streak||0)+1;
     else S.streak=1;
     S.lastLogin=td;
   }
 
-  S.completions=S.completions||[];
-  S.completions.push({
-    qid,ts:Date.now(),
-    level:(QL.find(q=>q.id===qid)||{}).level||0,
-    title:(QL.find(q=>q.id===qid)||{}).title||''
-  });
+  window._pendingQid=null;
+  window._selectedOutcome=null;
+  window._selectedVisibility='private';
 
   sv();
-  showCel(QL.find(q=>q.id===qid)||{title:'Quest'});
+  closeSheet();
+  showCel(q);
   setTimeout(rHome,400);
 }
 
@@ -1483,21 +1920,153 @@ function questPillHtml(q){
   return '<span class="qc-pill qc-pill--action">KONTAKT</span>';
 }
 function showQuestDetail(qid){
-  const q=QL.find(x=>x.id===qid);if(!q)return;
-  const unlockedLevel=getUnlockedLevel(S.totalDone||0);
-  const isLocked=q.level>unlockedLevel;
-  const needLock=isLocked?Math.max(0,(LEVEL_UNLOCK[q.level]||0)-(S.totalDone||0)):0;
-  const lockBanner=isLocked?`<div class="qc-lock-banner">🔒 Diese Quest kannst du erst <strong>spielen</strong>, wenn <strong>Level ${q.level}</strong> frei ist${needLock>0?' — noch <strong>'+needLock+'</strong> Gesamt-Quests bis dahin':''}.</div>`:'';
-  const doneToday=(S.weekDone?.[qid]||[])[getTodayDowIndex()]===1;
-  const vars=(q.variants||[]).map(function(v){return '<li>'+escHtml(v)+'</li>';}).join('');
-  const variantsBlock=vars?`<div class="qc-card qc-card--trigger"><div class="qc-card-hd qc-card-hd--trigger">✨ VARIANTEN</div><ul class="qc-variant-list">${vars}</ul></div>`:'';
-  const safetyBlock=q.safety?`<div class="qc-card qc-card--nogo"><div class="qc-card-hd qc-card-hd--nogo">🚫 NO-GO</div><div class="qc-card-body">${escHtml(q.safety)}</div></div>`:'';
-  const goalBlock=q.goal?`<div class="qc-card" style="background:rgba(5,150,105,0.06);border:1px solid rgba(5,150,105,0.15)"><div class="qc-card-hd" style="color:var(--g)">🎯 ZIEL</div><div class="qc-card-body">${escHtml(q.goal)}</div></div>`:'';
-  const modMinus=q.modminus?`<div class="qc-mod-row"><div class="qc-mod-ico qc-mod-ico--minus">−</div><p class="qc-mod-txt"><strong>Leichter:</strong> ${escHtml(q.modminus)}</p></div>`:'';
-  const modPlus=q.modplus?`<div class="qc-mod-row"><div class="qc-mod-ico qc-mod-ico--plus">+</div><p class="qc-mod-txt"><strong>Schwerer:</strong> ${escHtml(q.modplus)}</p></div>`:'';
-  const modBlock=(modMinus||modPlus)?`<div class="qc-card qc-card--mod"><div class="qc-card-hd qc-card-hd--mod">🎚 MODIFIER</div>${modMinus}${modPlus}</div>`:'';
-  showSheet(
-    `<div class="qc-sheet">
+  const q=QL.find(x=>x.id===qid);
+  if(!q)return;
+  const sm=SECTOR_META[q.sector]||{};
+  const dm=DIFF_META[q.diff]||{};
+  const inQueue=(S.weekQueue||[]).includes(qid);
+
+  const triggerBlock=`<div style="background:var(--surface2);
+    border:1px solid var(--border);
+    border-radius:16px;padding:14px 16px;
+    margin-bottom:10px">
+    <div style="font-family:'DM Mono',monospace;
+      font-size:9px;font-weight:700;color:var(--t3);
+      letter-spacing:0.1em;margin-bottom:6px">
+      ⚡ WENN-DANN
+    </div>
+    <div style="font-family:'DM Sans',sans-serif;
+      font-size:13px;color:var(--t);line-height:1.5">
+      ${escHtml(q.trigger||q.action)}
+    </div>
+  </div>`;
+
+  const actionBlock=`<div style="background:var(--surface2);
+    border:1px solid var(--border);
+    border-radius:16px;padding:14px 16px;
+    margin-bottom:10px">
+    <div style="font-family:'DM Mono',monospace;
+      font-size:9px;font-weight:700;color:var(--t3);
+      letter-spacing:0.1em;margin-bottom:6px">
+      📍 WAS GENAU TUN
+    </div>
+    <div style="font-family:'DM Sans',sans-serif;
+      font-size:13px;color:var(--t);line-height:1.5">
+      ${escHtml(q.action)}
+    </div>
+  </div>`;
+
+  const previewBlock=q.preview ? `
+<div style="background:var(--surface2);
+  border:1px solid var(--border);
+  border-radius:16px;padding:14px 16px;
+  margin-bottom:10px">
+  <div style="font-family:'DM Mono',monospace;
+    font-size:9px;font-weight:700;
+    color:var(--t3);letter-spacing:0.1em;
+    margin-bottom:8px">
+    🧠 DEIN KOPF VS. REALITÄT
+  </div>
+  <div style="display:flex;flex-direction:column;
+    gap:8px">
+    <div style="font-family:'DM Sans',sans-serif;
+      font-size:12px;color:var(--t);line-height:1.5">
+      <b style="color:var(--t3)">Befürchtung:</b>
+      ${escHtml(q.preview.fear||'')}
+    </div>
+    <div style="font-family:'DM Sans',sans-serif;
+      font-size:12px;color:var(--t);line-height:1.5">
+      <b style="color:var(--g)">Realität:</b>
+      ${escHtml(q.preview.reality||'')}
+    </div>
+  </div>
+</div>` : '';
+
+  const goalBlock=q.goal?`<div style="background:var(--surface2);
+    border:1px solid var(--border);
+    border-radius:16px;padding:14px 16px;
+    margin-bottom:10px">
+    <div style="font-family:'DM Mono',monospace;
+      font-size:9px;font-weight:700;color:var(--g);
+      letter-spacing:0.1em;margin-bottom:6px">
+      🎯 DAS ECHTE ZIEL
+    </div>
+    <div style="font-family:'DM Sans',sans-serif;
+      font-size:13px;color:var(--t);line-height:1.5">
+      ${escHtml(q.goal)}
+    </div>
+  </div>`:'';
+
+  const mutsatzBlock=q.mutsatz ? `
+<div style="background:var(--surface2);
+  border:1px solid var(--border);
+  border-radius:16px;padding:14px 16px;
+  margin-bottom:10px;text-align:center">
+  <div style="font-family:'DM Mono',monospace;
+    font-size:9px;font-weight:700;color:var(--g);
+    letter-spacing:0.1em;margin-bottom:6px">
+    💬 MUT-SATZ
+  </div>
+  <div style="font-family:'DM Sans',sans-serif;
+    font-size:14px;font-weight:700;
+    color:var(--t);line-height:1.5;
+    font-style:italic">
+    "${escHtml(q.mutsatz)}"
+  </div>
+</div>` : '';
+
+  const safetycheckBlock=q.safetycheck ? `
+<div style="background:var(--surface2);
+  border:1px solid var(--border);
+  border-radius:16px;padding:14px 16px;
+  margin-bottom:10px">
+  <div style="font-family:'DM Mono',monospace;
+    font-size:9px;font-weight:700;color:var(--t3);
+    letter-spacing:0.1em;margin-bottom:6px">
+    ⚠️ SICHERHEITS-CHECK
+  </div>
+  <div style="font-family:'DM Sans',sans-serif;
+    font-size:12px;color:var(--t);line-height:1.5">
+    ${escHtml(q.safetycheck)}
+  </div>
+</div>` : '';
+
+  const fairplayBlock=`<div style="background:var(--surface2);
+    border:1px solid var(--border);
+    border-radius:16px;padding:16px;
+    margin-bottom:10px">
+    <div style="font-family:'DM Mono',monospace;
+      font-size:9px;font-weight:700;color:var(--t3);
+      letter-spacing:0.1em;margin-bottom:8px">
+      🤝 FAIR-PLAY-REGEL
+    </div>
+    <div style="font-family:'DM Sans',sans-serif;
+      font-size:13px;color:var(--t2);line-height:1.6">
+      Freundlich bleiben. Jedes Nein sofort
+      akzeptieren. Kein Druck, keine Erklärung,
+      kein zweiter Versuch.
+    </div>
+  </div>`;
+
+  const exitjokerBlock=q.exitjoker ? `
+<div style="background:var(--surface2);
+  border:1px solid var(--border);
+  border-radius:16px;padding:14px 16px;
+  margin-bottom:16px">
+  <div style="font-family:'DM Mono',monospace;
+    font-size:9px;font-weight:700;color:var(--t3);
+    letter-spacing:0.1em;margin-bottom:6px">
+    🚪 EXIT-JOKER
+  </div>
+  <div style="font-family:'DM Sans',sans-serif;
+    font-size:13px;color:var(--t);line-height:1.5;
+    font-style:italic">
+    „${escHtml(q.exitjoker)}"
+  </div>
+</div>` : '';
+
+  showSheet(`
+    <div class="qc-sheet">
       <div class="shdl"></div>
       <div class="qc-head">
         <div class="qc-head-row">
@@ -1514,33 +2083,163 @@ function showQuestDetail(qid){
           </div>
         </div>
         <div class="qc-head-title">${escHtml(q.title)}</div>
-        <div class="qc-head-sub">${escHtml(q.cat||'')+' · Level '+q.level+' · '+escHtml(RT_LEVELS[q.level]||'')}</div>
+        <div class="qc-head-sub">${escHtml((sm.emoji||'')+' '+(sm.label||''))} · ${escHtml(dm.label||'')}</div>
       </div>
       <div class="qc-scroll">
-        ${lockBanner}
-        ${variantsBlock}
-        <div class="qc-card qc-card--action">
-          <div class="qc-card-hd qc-card-hd--action">📍 WAS ZU TUN IST</div>
-          <div class="qc-card-body">${escHtml(q.action)}</div>
-        </div>
+        ${triggerBlock}
+        ${actionBlock}
+        ${previewBlock}
         ${goalBlock}
-        ${safetyBlock}
-        ${modBlock}
+        ${mutsatzBlock}
+        ${safetycheckBlock}
+        ${fairplayBlock}
+        ${exitjokerBlock}
       </div>
       <div class="qc-foot">
-        ${isLocked
-          ? '<button type="button" class="qc-btn qc-btn--ghost" onclick="closeSheet()">Schließen</button>'
-          : doneToday
-            ? '<button type="button" class="qc-btn qc-btn--ghost" onclick="closeSheet()">Heute erledigt ✓</button>'
-            : `<button type="button" class="qc-btn qc-btn--primary" onclick="closeSheet();questDoneToday('${qid}')">Quest annehmen</button>
-               <button type="button" class="qc-btn qc-btn--ghost" onclick="closeSheet()">Schließen</button>`}
+        ${inQueue
+          ? `<button type="button" class="qc-btn qc-btn--primary" onclick="closeSheet();showShameCheck('${qid}')">Ich mach's heute →</button>
+             <button type="button" class="qc-btn qc-btn--ghost" onclick="closeSheet()">Schließen</button>`
+          : `<button type="button" class="qc-btn qc-btn--primary" onclick="closeSheet();addAndShame('${qid}')">Quest annehmen →</button>
+             <button type="button" class="qc-btn qc-btn--ghost" onclick="closeSheet()">Schließen</button>`
+        }
       </div>
-    </div>`,
-    'sht--qc'
-  );
+    </div>
+  `,'sht--qc');
 }
 
-function rLevels(){const w=document.getElementById('levels-wrap');if(!w)return;const unlockedLevel=getUnlockedLevel(S.totalDone||0);let html='';Object.entries(LEVEL_META).forEach(([lvl,lm])=>{const lvlNum=parseInt(lvl,10),isUnlocked=lvlNum<=unlockedLevel,neededFor=LEVEL_UNLOCK[lvlNum],quests=QL.filter(q=>q.level===lvlNum),doneInLevel=S.completions.filter(c=>QL.find(q=>q.id===c.qid&&q.level===lvlNum)).length;html+=`<div style="background:var(--surface);border-radius:22px;padding:18px 20px;margin-bottom:12px;box-shadow:0 2px 12px rgba(0,0,0,0.05);opacity:${isUnlocked?1:0.55}"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:${isUnlocked?'14px':'8px'}"><div style="display:flex;align-items:center;gap:10px"><div style="width:40px;height:40px;border-radius:20px;background:${lm.color}18;display:flex;align-items:center;justify-content:center;font-size:20px">${isUnlocked?lm.emoji:'🔒'}</div><div><div style="font-family:'DM Sans',sans-serif;font-size:15px;font-weight:800;color:var(--t)">Level ${lvlNum} · ${lm.name}</div><div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--t3);letter-spacing:0.06em;margin-top:2px">${quests.length} Quests · ${doneInLevel} erledigt</div></div></div>${!isUnlocked?`<div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--t3);text-align:right;letter-spacing:0.06em">Ab ${neededFor} Quests</div>`:''}</div>${isUnlocked?`<div style="font-family:'DM Sans',sans-serif;font-size:12px;color:var(--t2);margin-bottom:14px">${lm.desc}</div><div style="display:flex;flex-direction:column;gap:8px">${quests.map(q=>{const isDone=S.completions.some(c=>c.qid===q.id),inQueue=S.weekQueue.includes(q.id);return`<div style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;background:${isDone?'rgba(5,150,105,0.05)':'var(--surface2)'};cursor:pointer" onclick="showQuestDetail('${q.id}')"><div style="width:28px;height:28px;border-radius:14px;background:${isDone?'var(--g)':'var(--border)'};display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff;font-size:12px">${isDone?'✓':''}</div><div style="flex:1;min-width:0"><div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:var(--t);${isDone?'text-decoration:line-through;opacity:0.5':''}">${escHtml(q.title)}<span style="font-size:11px;margin-left:6px;opacity:0.92">${questIcon(q)}</span></div></div>${inQueue?`<span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--am);font-weight:700">HEUTE</span>`:isDone?'':`<button onclick="event.stopPropagation();addToWeekQueue('${q.id}')" style="background:var(--t);border:none;border-radius:8px;padding:5px 10px;font-family:'DM Mono',monospace;font-size:8px;font-weight:700;color:#fff;cursor:pointer;white-space:nowrap">+ HEUTE</button>`}</div>`}).join('')}</div>`:`<div style="background:var(--surface2);border-radius:12px;padding:12px;text-align:center"><div style="font-family:'DM Sans',sans-serif;font-size:12px;color:var(--t3);line-height:1.5">🔒 Noch ${neededFor-(S.totalDone||0)} Quests bis Level ${lvlNum}</div></div>`}</div>`;});w.innerHTML=html;}
+function rLevels(){
+  const w=document.getElementById('levels-wrap');
+  if(!w)return;
+
+  const active=S.activeSector||'all';
+
+  // Filter Chips
+  const chips=['all',...Object.keys(SECTOR_META)]
+    .map(key=>{
+      const isAll=key==='all';
+      const meta=isAll
+        ?{label:'Alle',emoji:'⚡'}
+        :SECTOR_META[key];
+      const isOn=active===key;
+      return`<button onclick="setSector('${key}')"
+        style="flex-shrink:0;border:none;
+        border-radius:99px;padding:8px 16px;
+        font-family:'DM Sans',sans-serif;
+        font-size:12px;font-weight:700;
+        cursor:pointer;transition:all .15s;
+        background:${isOn?'var(--t)':'var(--surface2)'};
+        color:${isOn?'#fff':'var(--t2)'}">
+        ${meta.emoji} ${meta.label}
+      </button>`;
+    }).join('');
+
+  // Gefilterte Quests
+  const filtered=QL.filter(q=>
+    active==='all'||q.sector===active
+  );
+
+  // Quests gruppiert nach Diff
+  const byDiff={1:[],2:[],3:[]};
+  filtered.forEach(q=>{
+    if(byDiff[q.diff])byDiff[q.diff].push(q);
+  });
+
+  // Quest Rows
+  function questRow(q){
+    const dm=DIFF_META[q.diff]||DIFF_META[1];
+    const sm=SECTOR_META[q.sector]||{};
+    const inQueue=(S.weekQueue||[]).includes(q.id);
+    const doneBefore=(S.completions||[])
+      .some(c=>c.qid===q.id);
+
+    return`<div style="display:flex;align-items:center;
+      gap:12px;padding:12px 0;
+      border-bottom:0.5px solid var(--border)">
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;gap:6px;
+          align-items:center;margin-bottom:4px">
+          <span style="font-family:'DM Mono',monospace;
+            font-size:8px;font-weight:700;
+            padding:2px 8px;border-radius:99px;
+            background:${dm.color}15;color:${dm.color}">
+            ${dm.label}
+          </span>
+          <span style="font-family:'DM Mono',monospace;
+            font-size:8px;color:var(--t3)">
+            ${sm.emoji||''} ${sm.label||''}
+          </span>
+        </div>
+        <div style="font-family:'DM Sans',sans-serif;
+          font-size:14px;font-weight:700;color:var(--t);
+          ${doneBefore?'opacity:0.5':''}">
+          ${escHtml(q.title)}
+        </div>
+      </div>
+      ${inQueue
+        ?`<span style="font-family:'DM Mono',monospace;
+            font-size:8px;color:var(--am);font-weight:700;
+            white-space:nowrap">DIESE WOCHE</span>`
+        :`<button onclick="addToWeekQueue('${q.id}')"
+            style="background:var(--t);border:none;
+            border-radius:10px;padding:7px 12px;
+            font-family:'DM Mono',monospace;font-size:9px;
+            font-weight:700;color:#fff;cursor:pointer;
+            white-space:nowrap;flex-shrink:0">
+            + Woche
+          </button>`
+      }
+    </div>`;
+  }
+
+  // Diff-Gruppen zusammenbauen
+  let questsHtml='';
+  [1,2,3].forEach(diff=>{
+    const qs=byDiff[diff];
+    if(!qs.length)return;
+    const dm=DIFF_META[diff];
+    questsHtml+=`
+      <div style="margin-bottom:24px">
+        <div style="font-family:'DM Mono',monospace;
+          font-size:9px;font-weight:700;
+          color:${dm.color};letter-spacing:0.1em;
+          margin-bottom:4px;padding-top:16px">
+          ${dm.label.toUpperCase()} — LEVEL ${diff}
+        </div>
+        <div style="font-family:'DM Sans',sans-serif;
+          font-size:11px;color:var(--t3);
+          margin-bottom:8px">
+          ${{1:'Fast kein Risiko — guter Einstieg',
+             2:'Andere merken es — es kribbelt',
+             3:'Hohes Risiko für ein Nein oder Scham'}[diff]}
+        </div>
+        ${qs.map(questRow).join('')}
+      </div>`;
+  });
+
+  w.innerHTML=`
+    <!-- Filter Chips -->
+    <div style="display:flex;gap:8px;
+      overflow-x:auto;padding-bottom:12px;
+      margin-bottom:4px">
+      ${chips}
+    </div>
+
+    <!-- Quest Liste -->
+    ${questsHtml||`
+      <div style="text-align:center;padding:40px 20px;
+        font-family:'DM Sans',sans-serif;
+        font-size:13px;color:var(--t3)">
+        Keine Quests in diesem Bereich.
+      </div>
+    `}
+  `;
+}
+
+function setSector(key){
+  S.activeSector=key;
+  sv();
+  rLevels();
+}
 function addToWeekQueue(qid){
   S.weekQueue=S.weekQueue||[];
   if(S.weekQueue.length>=3){
@@ -1564,7 +2263,159 @@ function addToWeekQueue(qid){
   rHome();
 }
 
-function rStats(){const w=document.getElementById('stats-wrap');if(!w)return;const total=S.totalDone||0,unlockedLevel=getUnlockedLevel(total),streak=S.streak||0,todayC=todayDoneIds().length,reflections=(S.completions||[]).filter(c=>c.reflection&&c.reflection.trim()).slice(-5).reverse();const outcomes={done:0,nein:0,skip:0};(S.completions||[]).forEach(c=>{if(outcomes[c.outcome]!==undefined)outcomes[c.outcome]++;});const nextLevel=unlockedLevel<5?unlockedLevel+1:null,nextUnlock=nextLevel!==null?LEVEL_UNLOCK[nextLevel]:null,progressToNext=nextUnlock?Math.min(100,Math.round(total/nextUnlock*100)):100;w.innerHTML=`<div class="sblock" style="margin-bottom:12px"><div class="sbt">📊 ÜBERSICHT</div><div class="sgrid"><div class="scell"><div class="sv">${total}</div><div class="sl">GESAMT</div></div><div class="scell"><div class="sv" style="color:var(--am)">${streak}🔥</div><div class="sl">STREAK</div></div><div class="scell"><div class="sv">${todayC}</div><div class="sl">HEUTE</div></div></div></div><div class="sblock" style="margin-bottom:12px"><div class="sbt">⭐ LEVEL</div><div style="display:flex;align-items:center;gap:12px;margin-bottom:12px"><div style="font-size:32px">${LEVEL_META[unlockedLevel].emoji}</div><div><div style="font-family:'DM Sans',sans-serif;font-size:16px;font-weight:800;color:var(--t)">Level ${unlockedLevel} · ${LEVEL_META[unlockedLevel].name}</div><div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--t3);margin-top:3px">${total} von ${nextUnlock||total} Quests</div></div></div>${nextLevel!==null?`<div style="height:6px;background:var(--surface2);border-radius:99px;overflow:hidden;margin-bottom:6px"><div style="width:${progressToNext}%;height:100%;background:${LEVEL_META[unlockedLevel].color};border-radius:99px;transition:width .5s ease"></div></div><div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--t3);text-align:right">Noch ${nextUnlock-total} bis Level ${nextLevel}</div>`:`<div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--g);text-align:center">🏆 Höchstes Level erreicht</div>`}</div>${total>0?`<div class="sblock" style="margin-bottom:12px"><div class="sbt">🎯 ERGEBNISSE</div><div class="brow"><span class="blabel">✓ Gemacht</span><div class="btrack"><div class="bfill" style="width:${Math.round(outcomes.done/Math.max(total,1)*100)}%;background:var(--g)"></div></div><span class="bval">${outcomes.done}</span></div><div class="brow"><span class="blabel">Nein bekommen</span><div class="btrack"><div class="bfill" style="width:${Math.round(outcomes.nein/Math.max(total,1)*100)}%;background:#DC2626"></div></div><span class="bval">${outcomes.nein}</span></div><div class="brow"><span class="blabel">Kein Moment</span><div class="btrack"><div class="bfill" style="width:${Math.round(outcomes.skip/Math.max(total,1)*100)}%;background:var(--t3)"></div></div><span class="bval">${outcomes.skip}</span></div>${outcomes.nein>0?`<div class="insight"><p>Du hast ${outcomes.nein} mal ein Nein bekommen. Das ist der Kern von Rejection Therapy. Gut gemacht.</p></div>`:''}</div>`:''}${reflections.length?`<div class="sblock" style="margin-bottom:12px"><div class="sbt">📖 LETZTE REFLEXIONEN</div>${reflections.map(c=>`<div style="padding:10px 0;border-bottom:1px solid var(--border)"><div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--t3);margin-bottom:4px">${c.title||''} · ${new Date(c.ts).toLocaleDateString('de')}</div><div style="font-family:'DM Sans',sans-serif;font-size:13px;color:var(--t);line-height:1.5">${escHtml(c.reflection)}</div></div>`).join('')}</div>`:''}`;}
+function openProfileSettings(){
+  const current=(S.name||'').trim();
+  showSheet(`<div class="shdl"></div>
+    <div class="sht-t">Profilname</div>
+    <div class="sht-s">Dieser Name wird im Profil angezeigt.</div>
+    <div class="sht-sc">
+      <input id="profile-name-input" class="wf-wz-field" maxlength="28" placeholder="Dein Name" value="${escHtml(current)}" />
+      <button class="btn-sv rdy" style="margin-top:12px" onclick="saveProfileName()">Speichern</button>
+      <button class="qc-btn qc-btn--ghost" style="margin-top:8px" onclick="closeSheet()">Abbrechen</button>
+    </div>`);
+}
+function saveProfileName(){
+  const val=(document.getElementById('profile-name-input')?.value||'').trim();
+  S.name=val;
+  sv();
+  closeSheet();
+  rStats();
+}
+function openResetSheet(){
+  showSheet(`<div class="shdl"></div>
+    <div class="sht-t">Alles zurücksetzen?</div>
+    <div class="sht-s">Dadurch werden alle Quests, Streaks und dein Profilname gelöscht.</div>
+    <div class="sht-sc">
+      <button class="btn-sv rdy" style="background:#DC2626" onclick="confirmResetAll()">Alles löschen</button>
+      <button class="qc-btn qc-btn--ghost" style="margin-top:8px" onclick="closeSheet()">Abbrechen</button>
+    </div>`);
+}
+function confirmResetAll(){
+  try{localStorage.removeItem('xl7')}catch(e){}
+  location.reload();
+}
+function rStats(){
+  const w=document.getElementById('stats-wrap');if(!w)return;
+  const total=S.totalDone||0;
+  const streak=S.streak||0;
+  const unlockedLevel=getUnlockedLevel(total);
+  const rawName=(S.name||'').trim();
+  const displayName=rawName||'Dein Name';
+  const avatar=(displayName&&displayName!=='Dein Name')?displayName.charAt(0).toUpperCase():'?';
+
+  const now=new Date();
+  const day=now.getDay();
+  const diff=day===0?-6:1-day;
+  const monday=new Date(now);
+  monday.setDate(now.getDate()+diff);
+  monday.setHours(0,0,0,0);
+  const todayIdx=getTodayDowIndex();
+  const weekCounts=[0,0,0,0,0,0,0];
+  (S.completions||[]).forEach(function(c){
+    const d=new Date(c.ts);
+    if(d<monday)return;
+    const idx=(d.getDay()===0?6:d.getDay()-1);
+    if(idx>=0&&idx<7)weekCounts[idx]++;
+  });
+  const weekTotal=weekCounts.reduce((a,b)=>a+b,0);
+  const weekMax=Math.max(1,...weekCounts);
+  const dayNames=['Mo','Di','Mi','Do','Fr','Sa','So'];
+
+  const latest=(S.completions||[]).slice().sort((a,b)=>b.ts-a.ts).slice(0,8);
+  function relDate(ts){
+    const d=new Date(ts);
+    const t=new Date();
+    const td=new Date(t.getFullYear(),t.getMonth(),t.getDate()).getTime();
+    const dd=new Date(d.getFullYear(),d.getMonth(),d.getDate()).getTime();
+    const diffDays=Math.round((td-dd)/86400000);
+    if(diffDays===0)return 'Heute';
+    if(diffDays===1)return 'Gestern';
+    return dayNames[(d.getDay()===0?6:d.getDay()-1)];
+  }
+
+  const weekBars=weekCounts.map(function(n,i){
+    const h=Math.max(10,Math.round((n/weekMax)*92));
+    const active=i===todayIdx;
+    const barStyle=active
+      ? 'background:linear-gradient(180deg,#F0ABFC,#C084FC);box-shadow:0 6px 14px rgba(192,132,252,.35);'
+      : 'background:var(--surface2);';
+    const lblColor=active?'var(--t)':'var(--t3)';
+    return '<div style="flex:1;min-width:0;text-align:center">'
+      +'<div style="font-family:var(--font-mono);font-size:10px;color:'+(active?'var(--am)':'var(--t3)')+';margin-bottom:4px">'+n+'</div>'
+      +'<div style="height:96px;display:flex;align-items:flex-end;justify-content:center">'
+      +'<div style="width:100%;max-width:42px;height:'+h+'px;border-radius:12px;'+barStyle+'"></div></div>'
+      +'<div style="font-family:var(--font-sans);font-size:12px;font-weight:'+(active?'800':'600')+';color:'+lblColor+';margin-top:8px">'+dayNames[i]+'</div></div>';
+  }).join('');
+
+  const latestHtml=latest.length?latest.map(function(c){
+    const lvl=(c.level==null?0:c.level);
+    return '<div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid rgba(17,24,39,0.07)">'
+      +'<div style="width:40px;height:40px;border-radius:20px;background:rgba(5,150,105,.12);display:flex;align-items:center;justify-content:center;color:var(--g);font-size:22px;flex-shrink:0">✓</div>'
+      +'<div style="flex:1;min-width:0"><div style="font-family:var(--font-sans);font-size:15px;font-weight:700;color:var(--t);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+escHtml(c.title||'Quest')+'</div>'
+      +'<div style="font-family:var(--font-sans);font-size:12px;color:var(--t3);margin-top:2px">'+relDate(c.ts)+'</div></div>'
+      +'<span style="font-family:var(--font-mono);font-size:11px;font-weight:700;color:#A78BFA;background:rgba(196,181,253,.25);padding:7px 12px;border-radius:999px">Lv.'+lvl+'</span>'
+      +'</div>';
+  }).join(''):'<div style="font-family:var(--font-sans);font-size:13px;color:var(--t3);padding:6px 2px">Noch keine Quests erledigt.</div>';
+
+  // Nur anzeigen wenn mindestens 3 Completions
+  // mit shameBefore Wert vorhanden
+  const withShame=(S.completions||[])
+    .filter(c=>c.shameBefore&&c.outcome);
+  let realityHtml='';
+  if(withShame.length>=3){
+    const avgShame=(withShame
+      .reduce((s,c)=>s+(c.shameBefore||0),0)
+      /withShame.length).toFixed(1);
+
+    const betterCount=withShame
+      .filter(c=>c.outcome==='better').length;
+    const neinCount=withShame
+      .filter(c=>c.outcome==='nein').length;
+    const betterPct=Math.round(
+      betterCount/withShame.length*100);
+
+    realityHtml='<div class="sblock" style="margin-bottom:12px">'
+      +'<div class="sbt">ERWARTUNG VS. REALITÄT</div>'
+      +'<div style="font-family:var(--font-sans);font-size:13px;color:var(--t2);line-height:1.6;margin-top:6px">Durchschnittliche Anspannung vorher: <b style="color:var(--t)">'+avgShame+'/4</b></div>'
+      +'<div style="font-family:var(--font-sans);font-size:13px;color:var(--t2);line-height:1.6">'+betterPct+'% waren besser als erwartet</div>'
+      +'<div style="font-family:var(--font-sans);font-size:13px;color:var(--t2);line-height:1.6">'+neinCount+' mal ein Nein bekommen und überlebt</div>'
+      +(betterPct>70?'<div style="margin-top:10px;background:rgba(5,150,105,0.08);border-radius:12px;padding:10px 12px;font-family:var(--font-sans);font-size:12px;color:var(--t2);line-height:1.5"><b style="color:var(--t)">Insight:</b> Dein Gehirn überschätzt die Gefahr fast immer.</div>':'')
+      +'</div>';
+  }
+
+  w.innerHTML=''
+    +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">'
+    +'<button type="button" class="hm-side" onclick="openProfileSettings()" aria-label="Einstellungen" style="color:var(--t3)">'
+    +'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'
+    +'<circle cx="12" cy="12" r="3"></circle>'
+    +'<path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>'
+    +'</svg></button>'
+    +'<button type="button" class="hm-side" onclick="openResetSheet()" aria-label="Reset" style="color:#DC2626">'
+    +'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">'
+    +'<path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>'
+    +'<polyline points="10 17 15 12 10 7"></polyline>'
+    +'<line x1="15" y1="12" x2="3" y2="12"></line>'
+    +'</svg></button></div>'
+    +'<div style="text-align:center;margin-bottom:14px">'
+    +'<div style="width:112px;height:112px;border-radius:56px;margin:0 auto 10px;background:linear-gradient(135deg,#F0ABFC,#C084FC);display:flex;align-items:center;justify-content:center;font-family:var(--font-sans);font-size:52px;font-weight:800;color:#fff">'+escHtml(avatar)+'</div>'
+    +'<div style="font-family:var(--font-sans);font-size:34px;font-weight:800;letter-spacing:-0.02em;color:var(--t)">'+escHtml(displayName)+'</div>'
+    +'<div style="display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;background:rgba(196,181,253,.25);font-family:var(--font-mono);font-size:12px;font-weight:700;color:#A78BFA;margin-top:6px">LV. '+unlockedLevel+' '+escHtml(RT_LEVELS[unlockedLevel]||'')+'</div>'
+    +'</div>'
+
+    +'<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:14px">'
+    +'<div class="sblock" style="padding:12px 10px;text-align:center"><div style="font-size:24px;line-height:1">✓</div><div class="sv" style="margin-top:6px">'+total+'</div><div class="sl">ERLEDIGT</div></div>'
+    +'<div class="sblock" style="padding:12px 10px;text-align:center"><div style="font-size:24px;line-height:1">🔥</div><div class="sv" style="margin-top:6px;color:var(--am)">'+streak+'</div><div class="sl">STREAK</div></div>'
+    +'<div class="sblock" style="padding:12px 10px;text-align:center"><div style="font-size:24px;line-height:1">⭐</div><div class="sv" style="margin-top:6px;color:#A78BFA">'+unlockedLevel+'</div><div class="sl">LEVEL</div></div>'
+    +'</div>'
+    +realityHtml
+
+    +'<div class="sblock" style="margin-bottom:12px"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><div class="sbt">Diese Woche</div><div style="font-family:var(--font-mono);font-size:10px;color:var(--t3)">'+weekTotal+' QUESTS</div></div>'
+    +'<div style="display:flex;gap:8px">'+weekBars+'</div></div>'
+
+    +'<div class="sblock" style="margin-bottom:12px"><div class="sbt" style="margin-bottom:4px">Zuletzt gemacht</div>'+latestHtml+'</div>'
+
+    +'<div class="sblock"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px"><div class="sbt">🗺️ Avoidance Map</div><span style="font-family:var(--font-mono);font-size:10px;color:#A78BFA;background:rgba(196,181,253,.25);padding:4px 10px;border-radius:999px">BETA</span></div><div style="font-family:var(--font-sans);font-size:14px;color:var(--t2)">Folgt in der nächsten Version.</div></div>';
+}
 
 function showCel(q){const c=document.getElementById('cel');if(!c)return;c.style.display='block';c.style.pointerEvents='all';const newLevel=getUnlockedLevel(S.totalDone),levelUp=newLevel>=(q.level+1)&&S.totalDone===LEVEL_UNLOCK[newLevel];const ck=levelUp?LEVEL_META[newLevel].emoji:questIcon(q);c.innerHTML=`<div class="cel-ov"><div class="cel-box"><div class="cel-ck">${ck}</div><div class="cel-t">${levelUp?'Level '+newLevel+' freigeschaltet!':'Quest erledigt!'}</div><div class="cel-s">${levelUp?LEVEL_META[newLevel].emoji+' '+LEVEL_META[newLevel].name+' ist jetzt verfügbar.':'Jede Handlung verändert das Muster. Rep #'+(S.totalDone||1)+'.'}</div><div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--t3);margin-bottom:16px">${q.title}</div><button class="btn-cel" onclick="closeCel()">Weiter →</button></div></div>`;setTimeout(closeCel,6000);}
 function closeCel(){const c=document.getElementById('cel');if(c){c.style.display='none';c.style.pointerEvents='none';}}
