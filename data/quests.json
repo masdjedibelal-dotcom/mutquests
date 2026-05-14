@@ -1,0 +1,362 @@
+[
+  {
+    "category": "Dating",
+    "skill": "Presence",
+    "level": 1,
+    "title": "Der 3s-Blick",
+    "trigger": "Halte den Blickkontakt bei einer attraktiven Person bewusst 3 Sek. lang, lächle leicht und schau erst dann ruhig weiter.",
+    "friction": "Ehrlichkeit. Das gegenseitige 'Erkennen' aushalten, ohne die Augen sofort schüchtern wegzuziehen.",
+    "rule": "Nicht nach unten wegsehen. Halte den Kopf oben.",
+    "id": "D1.1"
+  },
+  {
+    "id": "D1.2",
+    "category": "Dating",
+    "level": 1,
+    "title": "Räumliche Exposition",
+    "trigger": "Setz dich (Café/Isar) bewusst in die Nähe einer attraktiven Person, auch wenn woanders viel Platz wäre.",
+    "friction": "Nähe & Präsenz. Die eigene körperliche Anspannung im energetischen Feld der Person aushalten.",
+    "rule": "Kein Handy. Bleib 5 Min. einfach nur präsent sitzen. Du musst nicht reden, nur den Raum halten.",
+    "skill": "Intention"
+  },
+  {
+    "id": "D1.3",
+    "category": "Dating",
+    "level": 1,
+    "title": "The Slow Turn",
+    "trigger": "Wenn du an jemandem vorbeiläufst, den du attraktiv findest, dreh den Kopf beim Passieren bewusst langsam mit.",
+    "friction": "Fokus-Kontrolle. Das Signal senden: 'Ich habe dich gesehen und ich stehe zu meiner Aufmerksamkeit.'",
+    "rule": "Kein hektisches Nicken. Die Bewegung ist flüssig und kontrolliert wie bei einem Leader.",
+    "skill": "Intention"
+  },
+  {
+    "category": "Dating",
+    "skill": "Intention",
+    "level": 2,
+    "title": "Vibe-Drop",
+    "trigger": "Sag im Vorbeigehen: 'Du hast eine wahnsinnig tolle Ausstrahlung.' Geh sofort weiter.",
+    "friction": "Absicht zeigen. Ein Kompliment geben, ohne die Sicherheit einer Antwort zu haben (Take-away-Frame).",
+    "rule": "Kein Stopp. Wer weitergeht, signalisiert: 'Ich brauche nichts von dir.'",
+    "id": "D2.1"
+  },
+  {
+    "id": "D2.2",
+    "category": "Dating",
+    "level": 2,
+    "title": "Style-Note",
+    "trigger": "Sag im Stehenbleiben: 'Dein Style ist echt mutig, sieht man hier selten.' – Nicken und Weggehen.",
+    "friction": "Urteilskraft. Deine subjektive Meinung laut äußern, ohne nach Bestätigung zu suchen.",
+    "rule": "Die Handlung endet mit deinem Satz. Die Reaktion des anderen ist für den Quest-Erfolg irrelevant.",
+    "skill": "Intention"
+  },
+  {
+    "id": "D2.3",
+    "category": "Dating",
+    "level": 2,
+    "title": "Der Neugier-Opener",
+    "trigger": "Frag im Vorbeigehen: 'Bist du so cool wie du aussiehst oder täuscht das?' – Geh direkt weiter.",
+    "friction": "Spielerische Provokation. Den Frame setzen, dass du derjenige bist, der das Gegenüber prüft.",
+    "rule": "Lächle dabei. Es ist ein Kompliment, das als Herausforderung verpackt ist.",
+    "skill": "Intention"
+  },
+  {
+    "id": "D3.1",
+    "category": "Dating",
+    "level": 3,
+    "title": "Der Alleingang",
+    "trigger": "Geh gezielt alleine in eine Bar und bleib dort für 15 Min. am Tresen stehen, ohne dein Handy zu nutzen.",
+    "friction": "Radikale Autonomie. Ohne soziale 'Sicherheitsdecke' (Freunde/Digitales) im öffentlichen Raum sichtbar sein.",
+    "rule": "Beobachte den Raum. Sei die Base. Wer sich ohne Ablenkung wohlfühlt, strahlt Dominanz aus.",
+    "skill": "Intention"
+  },
+  {
+    "id": "D3.2",
+    "category": "Dating",
+    "level": 3,
+    "title": "Public Compliment",
+    "trigger": "Mach jemandem ein Vibe-Kompliment (D2.1), während Freunde der Person direkt daneben stehen.",
+    "friction": "Social Pressure. Die Aufmerksamkeit einer ganzen Gruppe aushalten, während du deine Intention zeigst.",
+    "rule": "Dein Fokus liegt nur auf der Zielperson. Blende die Umgebung für diesen Moment aus.",
+    "skill": "Intention"
+  },
+  {
+    "category": "Dating",
+    "skill": "Wirkung",
+    "level": 3,
+    "title": "Die ehrliche Pause",
+    "trigger": "Wenn du jemanden kurz ansprichst, halte nach deinem ersten Satz bewusst 3 Sek. Schweigen und Blickkontakt.",
+    "friction": "Spannungs-Management. Die Stille zwischen zwei Fremden aktiv aushalten, statt sie nervös zu füllen.",
+    "rule": "Wer die Stille hält, führt das Gespräch.",
+    "id": "D3.3"
+  },
+  {
+    "category": "Dating",
+    "skill": "Intention",
+    "level": 4,
+    "title": "Instant Nummer",
+    "trigger": "Geh auf jemanden zu: 'Ich finde deine Ausstrahlung toll – gib mir deine Nummer, dann trinken wir einen Kaffee.'",
+    "friction": "Direktes Risiko. Die maximale soziale Hürde: Das direkte 'Nein' innerhalb von Sekunden provozieren.",
+    "rule": "Ziel ist das Risiko, nicht die Nummer.",
+    "id": "D4.1"
+  },
+  {
+    "id": "D4.2",
+    "category": "Dating",
+    "level": 4,
+    "title": "Sofort-Einladung",
+    "trigger": "Frag im Café/Park nach 10 Sek. Kontakt: 'Lust, jetzt sofort mit mir 10 Min. spazieren zu gehen?'",
+    "friction": "Spontaneität & Anspruch. Die sofortige Investition von Zeit fordern. Extrem hohe Ablehnungsrate.",
+    "rule": "Bleib entspannt bei einem 'Nein'. Ein 'Nein' ist lediglich die Bestätigung deines Mutes.",
+    "skill": "Intention"
+  },
+  {
+    "id": "D4.3",
+    "category": "Dating",
+    "level": 4,
+    "title": "Korb-Sammeln",
+    "trigger": "Sprich jemanden an, bei dem du kein Interesse vermutest, nur um die Abfuhr souverän anzunehmen.",
+    "friction": "Resilienz-Training. Die komplette Abwesenheit von defensiver oder beleidigter Energie bei Ablehnung.",
+    "rule": "Antworte: 'Alles klar, schönen Tag noch!' und geh lächelnd weiter. Dein Wert bleibt unberührt.",
+    "skill": "Intention"
+  },
+  {
+    "id": "P1.1",
+    "category": "Sozialer Alltag",
+    "level": 1,
+    "title": "The Anchor",
+    "trigger": "Bleib nach dem Bezahlen oder Kaffee-Erhalt für 15 Sek. ruhig am Tresen stehen und ordne deine Sachen.",
+    "friction": "Raum-Besetzung. Der innere Druck, sofort Platz für den Nächsten machen zu müssen.",
+    "rule": "Atme tief. Dein Tempo bestimmt die Realität am Tresen, nicht die Schlange hinter dir.",
+    "skill": "Presence"
+  },
+  {
+    "id": "P1.2",
+    "category": "Sozialer Alltag",
+    "level": 1,
+    "title": "Center Stage",
+    "trigger": "Wähle im Café oder Restaurant den exponiertesten Tisch in der Mitte, statt dich an den Rand zu setzen.",
+    "friction": "Exposition. Das Gefühl, von allen Seiten beobachtet zu werden, ohne Schutz im Rücken.",
+    "rule": "Kein Handy. Schau 5 Min. einfach nur ruhig in den Raum. Sei präsent.",
+    "skill": "Presence"
+  },
+  {
+    "id": "P1.3",
+    "category": "Sozialer Alltag",
+    "level": 1,
+    "title": "Unplugged Silence",
+    "trigger": "Sitz 10 Minuten an einem belebten Ort (Isar/Park) ohne Handy, Buch oder Musik. Nur du und die Umgebung.",
+    "friction": "Reiz-Entzug. Die Angst, ohne digitale Ablenkung \"unproduktiv\" oder \"alleine\" zu wirken.",
+    "rule": "Wenn Unruhe aufkommt: Registriere sie, bleib sitzen. Du bist die Base.",
+    "skill": "Presence"
+  },
+  {
+    "id": "P2.1",
+    "category": "Sozialer Alltag",
+    "level": 2,
+    "title": "The Slow Walk",
+    "trigger": "Gehe heute durch eine belebte Straße (z.B. Kaufingerstraße) bewusst 30% langsamer als der Strom.",
+    "friction": "Social Pacing. Den instinktiven Drang unterdrücken, sich der Hektik anzupassen.",
+    "rule": "Kopf oben, Blick am Horizont. Du lässt dich nicht treiben, du navigierst.",
+    "skill": "Presence"
+  },
+  {
+    "id": "P2.2",
+    "category": "Sozialer Alltag",
+    "level": 2,
+    "title": "Slow Motion Interaction",
+    "trigger": "Bewege deine Hände und deinen Körper bei einer Interaktion (z.B. Bestellen) mit halber Geschwindigkeit.",
+    "friction": "Körperbeherrschung. Hektik ist ein Zeichen von Unterlegenheit. Ruhe ist Macht.",
+    "rule": "Keine unnötigen Gesten. Jede Bewegung ist bewusst und präzise.",
+    "skill": "Presence"
+  },
+  {
+    "id": "P2.3",
+    "category": "Sozialer Alltag",
+    "level": 2,
+    "title": "The Waiter Frame",
+    "trigger": "Wenn du im Restaurant bestellen willst, schau dem Kellner ruhig hinterher, bis er dich bemerkt, statt zu rufen oder zu winken.",
+    "friction": "Geduld-Dominanz. Den Frame halten, dass deine Zeit wertvoll ist, ohne bedürftig zu wirken.",
+    "rule": "Halte die Körperspannung aufrecht. Wer wartet, ohne nervös zu werden, führt.",
+    "skill": "Presence"
+  },
+  {
+    "id": "P3.1",
+    "category": "Sozialer Alltag",
+    "level": 3,
+    "title": "Horizon Scan",
+    "trigger": "Halte den Blick für 2 Minuten konsequent auf Augenhöhe (Horizont), während du durch eine Menschenmenge läufst.",
+    "friction": "Soziale Blindheit. Den Drang unterdrücken, auf den Boden zu schauen oder Blicken auszuweichen.",
+    "rule": "Schau \"durch\" die Menschen hindurch, wenn kein Kontakt da ist. Absolute Blicktreue.",
+    "skill": "Presence"
+  },
+  {
+    "id": "P3.2",
+    "category": "Sozialer Alltag",
+    "level": 3,
+    "title": "The Mirror Gaze",
+    "trigger": "Schau einer fremden Person im Vorbeilaufen so lange in die Augen, bis sie zuerst wegschaut.",
+    "friction": "Konfrontation. Die natürliche Hierarchie-Prüfung durch Blickkontakt gewinnen.",
+    "rule": "Kein Starren. Ein neutraler, entspannter Blick (Dominance, not Aggression).",
+    "skill": "Presence"
+  },
+  {
+    "id": "P3.3",
+    "category": "Sozialer Alltag",
+    "level": 3,
+    "title": "The 360-View",
+    "trigger": "Bleib mitten auf einem belebten Platz stehen und dreh dich einmal ganz langsam um 360 Grad, während du alles betrachtest.",
+    "friction": "Mittelpunkt-Exposition. Sich selbst zum Zentrum der Szenerie machen.",
+    "rule": "Tu es so, als würdest du ein Grundstück besichtigen, das dir gehört.",
+    "skill": "Presence"
+  },
+  {
+    "id": "P4.1",
+    "category": "Sozialer Alltag",
+    "level": 4,
+    "title": "The Street Pause",
+    "trigger": "Bleib mitten auf dem Gehweg einer belebten Straße stehen und schau für 60 Sek. auf deine (imaginäre) Uhr oder in den Himmel.",
+    "friction": "Flow-Unterbrechung. Den sozialen Fluss stören, ohne einen \"triftigen\" Grund zu haben.",
+    "rule": "Weiche den Leuten nicht aus. Sie werden um dich herumgehen. Bleib fest.",
+    "skill": "Presence"
+  },
+  {
+    "id": "P4.2",
+    "category": "Sozialer Alltag",
+    "level": 4,
+    "title": "Front Row Presence",
+    "trigger": "Setz dich in einer Vorlesung, einem Workshop oder Event bewusst in die allererste Reihe, direkt vor den Sprecher.",
+    "friction": "Direkte Exposition. Die psychologische Hürde der ersten Reihe (Angst vor Interaktion).",
+    "rule": "Halte den Fokus beim Sprecher. Sei der präsenteste Zuhörer im Raum.",
+    "skill": "Presence"
+  },
+  {
+    "id": "P4.3",
+    "category": "Sozialer Alltag",
+    "level": 4,
+    "title": "The Silent Entrance",
+    "trigger": "Betritt einen Raum (Bar/Meeting) und bleib 5 Sek. im Türrahmen stehen, bevor du dich bewegst oder jemanden grüßt.",
+    "friction": "Eintritts-Kontrolle. Den Moment des Erscheinens voll auskosten und markieren.",
+    "rule": "Scan den Raum ruhig ab. Du entscheidest, wann du den Raum betrittst.",
+    "skill": "Presence"
+  },
+  {
+    "id": "W1.1",
+    "category": "Business",
+    "level": 1,
+    "title": "Zero Softener",
+    "trigger": "Bestelle etwas (Café/Bar) ohne „vielleicht“, „gerne“ oder „könnte ich“. Sag: „Ich nehme den Espresso.“",
+    "friction": "Direktheit. Verzicht auf verbale Schutzschilde und den Drang, „nett“ zu wirken.",
+    "rule": "Halte danach Blickkontakt, bis die Bestellung bestätigt ist. Kein Lückenfüller.",
+    "skill": "Wirkung"
+  },
+  {
+    "id": "W1.2",
+    "category": "Business",
+    "level": 1,
+    "title": "Point Blank",
+    "trigger": "Beantworte eine Frage heute ausschließlich mit „Ja“ oder „Nein“, ohne eine zusätzliche Erklärung zu liefern.",
+    "friction": "Rechtfertigungs-Stopp. Das Gefühl aushalten, dass eine Erklärung „höflicher“ wäre.",
+    "rule": "Stille nach dem Wort ist dein Freund. Deine Antwort steht für sich.",
+    "skill": "Wirkung"
+  },
+  {
+    "id": "W1.3",
+    "category": "Business",
+    "level": 1,
+    "title": "The Statement",
+    "trigger": "Ersetze „Ich glaube...“ oder „Ich finde...“ durch eine klare Behauptung: „Es ist so, dass...“",
+    "friction": "Überzeugung. Die eigene Meinung als Tatsache im Raum stehen lassen.",
+    "rule": "Deine Stimme sinkt am Ende des Satzes ab, statt wie bei einer Frage zu steigen.",
+    "skill": "Wirkung"
+  },
+  {
+    "id": "W2.1",
+    "category": "Business",
+    "level": 2,
+    "title": "Volume Up",
+    "trigger": "Sprich bei einer Bestellung oder kurzen Frage 20% lauter als dein übliches Level.",
+    "friction": "Hörbarkeit. Die unterbewusste Angst vor der Aufmerksamkeit anderer Kunden.",
+    "rule": "Deine Stimme muss die Wände berühren. Nicht schreien, sondern projizieren.",
+    "skill": "Wirkung"
+  },
+  {
+    "id": "W2.2",
+    "category": "Business",
+    "level": 2,
+    "title": "The Echo",
+    "trigger": "Wenn jemand deinen Namen ruft oder dich anspricht, antworte erst nach 2 Sekunden mit tiefer, ruhiger Stimme.",
+    "friction": "Reaktions-Kontrolle. Den automatischen „Helfersyndrom“-Impuls unterdrücken.",
+    "rule": "Du kontrollierst den Startpunkt der Kommunikation.",
+    "skill": "Wirkung"
+  },
+  {
+    "id": "W2.3",
+    "category": "Business",
+    "level": 2,
+    "title": "Low-Pitch Intro",
+    "trigger": "Beginne ein Gespräch (auch Smalltalk) am unteren Ende deines Stimmspektrums (tiefer Ton).",
+    "friction": "Autorität. Tiefe Frequenzen signalisieren Gelassenheit und hohen Status.",
+    "rule": "Atme in den Bauch, bevor du den ersten Ton abgibst.",
+    "skill": "Wirkung"
+  },
+  {
+    "id": "W3.1",
+    "category": "Business",
+    "level": 3,
+    "title": "The Pause",
+    "trigger": "Wenn dir jemand eine Frage stellt, warte bewusst 3 Sekunden, während du ihn anschaust, bevor du antwortest.",
+    "friction": "Kontrolle. Die soziale Erwartung einer sofortigen Reaktion aktiv brechen.",
+    "rule": "Nutze die Stille. Wer die Stille hält, führt das Gespräch.",
+    "skill": "Wirkung"
+  },
+  {
+    "id": "W3.2",
+    "category": "Business",
+    "level": 3,
+    "title": "Eye-Lead",
+    "trigger": "Halte beim Sprechen den Blickkontakt, bis du deinen Satz komplett beendet hast. Schau erst danach weg.",
+    "friction": "Verbindung. Die Intensität des Moments bis zum Ende durchhalten.",
+    "rule": "Deine Augen sind der Anker deiner Worte. Lass sie nicht wandern.",
+    "skill": "Wirkung"
+  },
+  {
+    "id": "W3.3",
+    "category": "Business",
+    "level": 3,
+    "title": "Interrupt-Stop",
+    "trigger": "Wenn dich jemand unterbricht, sprich einfach in deinem Tempo ruhig weiter, bis du deinen Satz beendet hast.",
+    "friction": "Geltungsanspruch. Sich nicht physisch oder akustisch verdrängen lassen.",
+    "rule": "Werde nicht lauter oder schneller. Bleib einfach in deinem Rhythmus.",
+    "skill": "Wirkung"
+  },
+  {
+    "id": "W4.1",
+    "category": "Business",
+    "level": 4,
+    "title": "The Why-Question",
+    "trigger": "Wenn dich jemand zu etwas bittet, frag einmal freundlich aber bestimmt: „Warum ist das für dich wichtig?“",
+    "friction": "Filter-Funktion. Nicht sofort springen, sondern den Wert der Aufgabe prüfen.",
+    "rule": "Akzeptiere die Antwort nur, wenn sie für dich Sinn ergibt.",
+    "skill": "Wirkung"
+  },
+  {
+    "id": "W4.2",
+    "category": "Business",
+    "level": 4,
+    "title": "The Clean Cut",
+    "trigger": "Beende ein Gespräch, wenn es für dich vorbei ist, mit: „Ich habe alles gehört. Danke.“ und geh.",
+    "friction": "Abschluss-Macht. Den sozialen Zwang, auf ein „natürliches“ Ende zu warten, kappen.",
+    "rule": "Sei höflich, aber bestimmt. Deine Zeit ist dein wertvollstes Gut.",
+    "skill": "Wirkung"
+  },
+  {
+    "id": "W4.3",
+    "category": "Business",
+    "level": 4,
+    "title": "Frame-Correction",
+    "trigger": "Wenn jemand eine falsche Annahme über dich trifft, korrigiere sie sofort: „Das ist nicht korrekt. Die Lage ist so: …“",
+    "friction": "Wahrheits-Hoheit. Kleine Respektlosigkeiten oder Fehler nicht durchgehen lassen.",
+    "rule": "Bleib sachlich. Emotionen schwächen den Frame. Fakten stärken ihn.",
+    "skill": "Wirkung"
+  }
+]

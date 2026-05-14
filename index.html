@@ -45,7 +45,7 @@ body{background:var(--app-grad);font-family:var(--font-sans);-webkit-font-smooth
   --r:#DC2626; --rb:#FEF2F2;
   --am:#D97706; --amb:#FEF3C7;
   /* Areas */
-  --dating:#EC4899; --social:#3B82F6; --karriere:#7C3AED;
+  --dating:#EC4899; --business:#4A90E2; --social:#3B82F6; --karriere:#7C3AED;
   --gesundheit:#0F766E; --wachstum:#0891B2; --finanzen:#92400E;
   /* Deep */
   --deep:#1E3A52;
@@ -74,6 +74,7 @@ body{background:var(--app-grad);font-family:var(--font-sans);-webkit-font-smooth
 
 /* ── Shell: Bottom nav (bento) ── */
 #nav{
+  position:relative;z-index:400;
   flex-shrink:0;margin:0 14px calc(var(--safe-b) + 10px);padding:6px 4px 8px;
   display:flex;background:#F3F4F6;backdrop-filter:blur(var(--bento-blur));-webkit-backdrop-filter:blur(var(--bento-blur));
   border:1px solid #E5E7EB;border-radius:var(--bento-r);
@@ -374,6 +375,39 @@ body{background:var(--app-grad);font-family:var(--font-sans);-webkit-font-smooth
 .home-bento > #hpb,
 .home-bento > #hpq{grid-column:1 / -1}
 .home-bento > #hqs{grid-column:1 / -1}
+.hpq-slot:empty{display:none}
+#hpq .pq-row{
+  width:100%;text-align:left;display:flex;align-items:center;gap:12px;
+  padding:14px 0;border:none;border-bottom:1px solid rgba(17,24,39,0.07);
+  background:transparent;cursor:pointer;font-family:var(--font-sans);
+}
+#hpq .pq-row:last-of-type{border-bottom:none}
+#hpq .pq-id{font-family:var(--font-mono);font-size:10px;font-weight:800;color:var(--t3);letter-spacing:0.04em;flex-shrink:0;min-width:40px}
+#hpq .pq-mid{flex:1;min-width:0;text-align:left}
+#hpq .pq-title{font-size:15px;font-weight:800;color:var(--t);letter-spacing:-0.02em;line-height:1.25}
+#hpq .pq-cat{font-size:10px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:0.08em;margin-top:3px}
+#hpq .pq-chev{color:var(--t3);font-size:14px;flex-shrink:0}
+/* Profil-Quest-Zeilen: Intensität nach level (1 hell → 4 dunkel) */
+#hpq .pq-row[data-pq-lvl="1"]{border-radius:0}
+#hpq .pq-row[data-pq-lvl="2"]{
+  margin:2px -6px;padding:14px 10px;border-radius:14px;
+  background:rgba(17,24,39,0.04);border-bottom-color:transparent;
+}
+#hpq .pq-row[data-pq-lvl="3"]{
+  margin:4px -8px;padding:15px 12px;border-radius:16px;
+  background:linear-gradient(145deg,rgba(30,41,59,0.10) 0%,rgba(17,24,39,0.06) 100%);
+  border:1px solid rgba(17,24,39,0.08);border-bottom:none;
+}
+#hpq .pq-row[data-pq-lvl="4"]{
+  margin:6px -8px;padding:16px 14px;border-radius:18px;
+  background:linear-gradient(155deg,#1e293b 0%,#0f172a 55%,#111827 100%);
+  border:1px solid rgba(255,255,255,0.10);border-bottom:none;
+  box-shadow:0 8px 24px rgba(15,23,42,0.25);
+}
+#hpq .pq-row[data-pq-lvl="4"] .pq-id{color:rgba(248,250,252,0.55)}
+#hpq .pq-row[data-pq-lvl="4"] .pq-title{color:#f8fafc}
+#hpq .pq-row[data-pq-lvl="4"] .pq-cat{color:rgba(226,232,240,0.65)}
+#hpq .pq-row[data-pq-lvl="4"] .pq-chev{color:rgba(248,250,252,0.5)}
 
 /* KPI-Karte (Streak + Punkte heute + Stimmung + Wochen-Ampel) */
 .kpi-card,.streak-card{
@@ -419,6 +453,93 @@ body{background:var(--app-grad);font-family:var(--font-sans);-webkit-font-smooth
 .kpi-dayring.y{border-color:#CA8A04;background:rgba(254,249,195,0.45)}
 .kpi-dayring.g{border-color:#16A34A;background:rgba(220,252,231,0.45)}
 .kpi-dayring.neutral{border-style:dashed;opacity:0.55;background:rgba(249,250,251,0.85);border-color:rgba(17,24,39,0.12)}
+
+/* Profil-Quests: Vollbild-Detail (Bento-Blur, außerhalb #wrap) */
+#quest-detail.pf-qd.scr{
+  position:fixed;inset:0;z-index:260;
+  flex-direction:column;overflow:hidden;box-sizing:border-box;
+  padding:calc(var(--safe-t) + 10px) 18px calc(var(--safe-b) + 96px);
+  background:rgba(255,251,252,0.92);
+  backdrop-filter:blur(var(--bento-blur));-webkit-backdrop-filter:blur(var(--bento-blur));
+}
+#quest-detail.pf-qd.scr.on{display:flex}
+#quest-detail.pf-qd .pf-topbar{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  margin-bottom:14px;flex-shrink:0;padding:0;
+}
+#quest-detail.pf-qd .pf-close{
+  width:44px;height:44px;border-radius:14px;border:1px solid var(--bento-line);
+  background:var(--bento-fill);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  font-size:18px;line-height:1;color:var(--t2);cursor:pointer;
+  box-shadow:var(--bento-inset),var(--bento-shade-sm);
+  display:flex;align-items:center;justify-content:center;padding:0;
+  transition:transform .12s,background .15s;
+}
+#quest-detail.pf-qd .pf-close:active{transform:scale(0.96);background:rgba(255,255,255,0.9)}
+#quest-detail.pf-qd .pf-step-lbl{
+  font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:0.12em;
+  color:var(--t3);text-align:right;flex:1;
+}
+#quest-detail.pf-qd .pf-scroll{
+  flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  padding:0 0 8px;
+}
+#quest-detail.pf-qd .pf-q-meta{
+  font-family:var(--font-sans);font-size:13px;font-weight:700;color:var(--t2);
+  margin-bottom:6px;letter-spacing:-0.01em;
+}
+/* Quiet Echo: Trigger dominant lesbar */
+#quest-detail.pf-qd #det-trigger.pf-q-title{
+  font-family:var(--font-sans);
+  font-size:clamp(30px, 7.5vw, 40px);
+  font-weight:800;
+  line-height:1.16;
+  letter-spacing:-0.045em;
+  color:var(--t);
+  margin:6px 0 0;
+}
+#quest-detail.pf-qd .pf-q-title{
+  font-family:var(--font-sans);font-size:22px;font-weight:800;color:var(--t);
+  line-height:1.35;letter-spacing:-0.03em;margin-bottom:0;
+}
+#quest-detail.pf-qd .pf-result-card{
+  background:var(--bento-fill);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border:1px solid var(--bento-line);border-radius:var(--bento-r);
+  padding:16px 16px 14px;
+  box-shadow:var(--bento-inset),var(--bento-shade-sm);
+}
+#quest-detail.pf-qd .pf-result-hero{
+  background:var(--bento-fill);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border:1px solid var(--bento-line);border-radius:var(--bento-r);
+  padding:16px 16px 14px;
+  box-shadow:var(--bento-inset),var(--bento-shade-sm);
+}
+#quest-detail.pf-qd .pf-result-hero .pf-result-card-label{color:var(--t3)}
+#quest-detail.pf-qd .pf-result-hero .pf-result-card-title{color:var(--t);font-size:16px;font-weight:700}
+#quest-detail.pf-qd .pf-result-card-label{
+  font-family:var(--font-mono);font-size:9px;font-weight:800;letter-spacing:0.1em;color:var(--t3);
+  margin-bottom:8px;text-transform:uppercase;
+}
+#quest-detail.pf-qd .pf-result-card-text,
+#quest-detail.pf-qd .pf-result-card-title{
+  font-family:var(--font-sans);font-size:15px;font-weight:600;color:var(--t);line-height:1.55;
+}
+#quest-detail.pf-qd .pf-result-card-title{font-size:16px;font-weight:700}
+#quest-detail.pf-qd .pf-foot{
+  flex-shrink:0;padding:12px 0 0;margin-top:auto;
+  border-top:1px solid rgba(17,24,39,0.06);
+  display:block;
+}
+#quest-detail.pf-qd .pf-btn-next{
+  width:100%;border:none;border-radius:16px;padding:16px 20px;
+  font-family:var(--font-sans);font-size:16px;font-weight:800;color:#fff;cursor:pointer;
+  background:var(--t);
+  box-shadow:0 6px 18px rgba(17,24,39,0.18);
+  transition:transform .12s,opacity .15s;
+  flex:none;
+}
+#quest-detail.pf-qd .pf-btn-next:active{transform:scale(0.98)}
+#quest-detail.pf-qd .pf-btn-next.rdy{opacity:1}
 
 /* Hero card */
 .hero-card{background:var(--deep);border-radius:20px;padding:20px;box-shadow:0 8px 24px rgba(30,58,82,0.20)}
@@ -609,13 +730,20 @@ body{background:var(--app-grad);font-family:var(--font-sans);-webkit-font-smooth
   overflow:hidden;
   background:var(--app-grad);
 }
+/* Quest-Übersicht: explizites Flex + flex-basis 0, sonst oft 0px Höhe für .ov-scroll-list (Safari/Chrome) */
+#s-q.scr.on{
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+  height:100%;
+}
 .q-ov-hd{flex-shrink:0;padding:calc(var(--safe-t) + 12px) 18px 4px}
 .q-ov-title{font-family:var(--font-sans);font-size:var(--fs-screen);font-weight:800;color:#111827;letter-spacing:-0.03em;margin:0 0 4px;line-height:1.15}
 .q-ov-sub{font-family:var(--font-sans);font-size:var(--fs-screen-sub);font-weight:500;color:#6B7280;margin:0;line-height:1.4}
 
 /* Overview (Übersicht: Chips + Karten) */
 .ov-wrap{
-  flex:1;display:flex;flex-direction:column;min-height:0;padding:0;
+  flex:1 1 0;display:flex;flex-direction:column;min-height:0;padding:0;
   box-sizing:border-box;
 }
 .ov-chip-sticky{
@@ -639,7 +767,7 @@ body{background:var(--app-grad);font-family:var(--font-sans);-webkit-font-smooth
 .ov-chip--cat.on{background:#111827;color:#fff;border-color:#111827;box-shadow:0 4px 14px rgba(17,24,39,0.2)}
 .ov-chip--diff{background:#F3F4F6;color:#6B7280;border:1px solid #E5E7EB}
 .ov-chip--diff.on{background:#6B7280;color:#fff;border-color:#6B7280}
-.ov-scroll-list{flex:1;overflow-y:auto;min-height:0;padding:12px 16px 100px;-webkit-overflow-scrolling:touch}
+.ov-scroll-list{flex:1 1 0;overflow-y:auto;min-height:0;padding:12px 16px 100px;-webkit-overflow-scrolling:touch}
 .ov-scroll-list::-webkit-scrollbar{display:none}
 .ov-card{
   border-radius:22px;padding:16px 16px 14px;margin-bottom:14px;
@@ -822,12 +950,23 @@ body{background:var(--app-grad);font-family:var(--font-sans);-webkit-font-smooth
 .sht--wf .ov-card:last-child{margin-bottom:4px}
 
 /* Quest-Detail Bottom Card (Karten-Layout, seitlich eingerückt) */
-.sht--qc{padding:0;display:flex;flex-direction:column;max-height:92vh;overflow:hidden;background:linear-gradient(180deg,#FFF7FA 0%,#FDF2F8 55%,#F5E6FF 100%)}
+.sht--qc{padding:0;display:flex;flex-direction:column;max-height:92vh;min-height:0;overflow:hidden;background:linear-gradient(180deg,#FFF7FA 0%,#FDF2F8 55%,#F5E6FF 100%)}
 .qc-sheet{
-  display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden;
+  position:relative;
+  display:flex;flex-direction:column;flex:1 1 0;min-height:0;overflow:hidden;
   padding:0 18px;
   box-sizing:border-box;
 }
+.qc-close-sheet{
+  position:absolute;top:8px;right:10px;z-index:12;
+  width:40px;height:40px;border-radius:12px;border:1px solid rgba(17,24,39,0.08);
+  background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  box-shadow:0 2px 10px rgba(15,23,42,0.06);
+  font-size:18px;line-height:1;color:var(--t2);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;padding:0;
+  transition:transform .12s,background .15s;
+}
+.qc-close-sheet:active{transform:scale(0.96);background:#fff}
 .qc-sheet>.shdl{flex-shrink:0;margin-top:12px;margin-bottom:8px}
 .qc-head{
   flex-shrink:0;position:sticky;top:8px;z-index:6;
@@ -887,7 +1026,7 @@ body{background:var(--app-grad);font-family:var(--font-sans);-webkit-font-smooth
 }
 .qc-head-title{font-family:var(--font-sans);font-size:var(--fs-screen);font-weight:800;color:#111;line-height:1.2;letter-spacing:-0.03em;margin:12px 0 6px}
 .qc-head-sub{font-family:var(--font-sans);font-size:var(--fs-body);font-weight:500;color:#6B7280;line-height:1.45}
-.qc-scroll{flex:1;overflow-y:auto;min-height:0;padding:6px 0 14px;background:transparent;-webkit-overflow-scrolling:touch}
+.qc-scroll{flex:1 1 0;overflow-y:auto;min-height:0;padding:6px 0 14px;background:transparent;-webkit-overflow-scrolling:touch}
 .qc-scroll::-webkit-scrollbar{display:none}
 .qc-block{margin-bottom:14px}
 /* Quest-Detail: gestapelte Cards (Mockup) */
@@ -1140,6 +1279,7 @@ input[type=range]{width:100%;accent-color:var(--t);cursor:pointer;height:4px}
           </div>
           <div class="kpi-week" id="kpi-week"></div>
         </div>
+        <div id="hpq" class="hpq-slot" aria-live="polite"></div>
         <div id="hqs"></div>
       </div>
     </div>
@@ -1203,61 +1343,207 @@ input[type=range]{width:100%;accent-color:var(--t);cursor:pointer;height:4px}
       <span class="nt-dot"></span>
     </button>
   </div>
+
+  <div id="quest-detail" class="scr pf-qd">
+    <div class="pf-topbar">
+      <button type="button" class="pf-close" onclick="closeDetail()" aria-label="Schließen">✕</button>
+      <div class="pf-step-lbl" id="det-cat">KATEGORIE</div>
+    </div>
+
+    <div class="pf-scroll">
+      <div class="pf-q-meta" id="det-title"></div>
+      <div class="pf-q-title" id="det-trigger">Trigger lädt…</div>
+
+      <div class="pf-result-card" style="margin-top:20px;">
+        <div class="pf-result-card-label">FRICTION POINT</div>
+        <div class="pf-result-card-text" id="det-friction">Was trainiert wird…</div>
+      </div>
+
+      <div class="pf-result-hero" style="margin-top:14px;">
+        <div class="pf-result-card-label">SOUVERÄNITÄTS-REGEL</div>
+        <div class="pf-result-card-title" id="det-rule">Der Frame…</div>
+      </div>
+    </div>
+
+    <div class="pf-foot">
+      <button type="button" class="pf-btn-next rdy" onclick="startQuest()">QUEST STARTEN</button>
+    </div>
+  </div>
 </div>
 
 <div id="modal"></div>
 <div id="cel"></div>
-<script type="application/json" id="rt-quests-json">[{"id":"SA_L1_01","sector":"sozial","diff":1,"style":"classic","title":"Uhren-Check","action":"Frag einen Passanten nach der Uhrzeit während dein Handy sichtbar in der Hand liegt.","goal":"Nicht die Uhrzeit — eine unnötige Frage trotzdem stellen.","level":0,"cat":"Sozial","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich an einer Haltestelle stehe, dann frage ich die Person neben mir nach der Uhrzeit - trotz eigenem Handy.","preview":{"fear":"Die halten mich für dumm.","reality":"Die Person nennt die Zeit und vergisst mich sofort wieder."},"mutsatz":"Ich darf Fragen stellen auch wenn ich die Antwort wissen könnte.","safetycheck":"Schau nicht auf dein Handy während du fragst.","exitjoker":"Super danke! Mein Akku ist fast leer."},{"id":"SA_L1_02","sector":"sozial","diff":1,"style":"classic","title":"Regal-Suche","action":"Frag einen Mitarbeiter im Supermarkt nach einem Produkt das direkt vor dir in Augenhöhe steht.","goal":"Nicht die Hilfe — die Frage stellen obwohl sie überflüssig ist.","level":0,"cat":"Sozial","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich im Supermarkt bin, dann frage ich einen Mitarbeiter nach einem Produkt direkt vor meiner Nase.","preview":{"fear":"Der Mitarbeiter ist genervt.","reality":"Es ist sein Job - er zeigt es dir kurz und macht weiter."},"mutsatz":"Es ist okay kurz hilflos zu wirken.","safetycheck":"Sag nicht oh Gott wie peinlich. Nimm es einfach an.","exitjoker":"Ah da ist es ja! Danke."},{"id":"SA_L1_03","sector":"sozial","diff":1,"style":"classic","title":"Über-Kompliment","action":"Wünsch einer Kassiererin nach dem Zahlen einen außergewöhnlich phänomenalen Tag.","goal":"Nicht das Kompliment — einen Satz sagen der sich overdressed anfühlt.","level":0,"cat":"Sozial","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich bezahlt habe, dann wünsche ich der Person an der Kasse einen außergewöhnlich phänomenalen Tag.","preview":{"fear":"Das wirkt total künstlich.","reality":"Die meisten Menschen freuen sich über ein ungewöhnliches Wort."},"mutsatz":"Ich darf die soziale Norm ein kleines Stück dehnen.","safetycheck":"Sag es mit einem Lächeln nicht ironisch.","exitjoker":""},{"id":"SA_L1_04","sector":"sozial","diff":1,"style":"classic","title":"Blick-Halter","action":"Such in der Fußgängerzone Blickkontakt mit 3 Personen und halt ihn bis die andere Person zuerst wegschaut.","goal":"Nicht gewinnen — den Fluchtreflex ignorieren.","level":0,"cat":"Sozial","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn mir Leute entgegenkommen, dann halte ich den Blickkontakt zu 3 Personen bis diese wegschauen.","preview":{"fear":"Die denken ich will Streit.","reality":"In einer belebten Straße wird das als Selbstbewusstsein wahrgenommen."},"mutsatz":"Ich muss mich nicht unsichtbar machen.","safetycheck":"Nicht starren oder böse gucken - Gesicht entspannt lassen.","exitjoker":"Ein kurzes Zunicken entspannt die Situation sofort."},{"id":"SA_L1_05","sector":"sozial","diff":1,"style":"classic","title":"Echo-Frage","action":"Frag im Kiosk oder Laden nach etwas das direkt vor dir liegt oder hängt.","goal":"Nicht die Info — eine sinnlose Frage ernst stellen.","level":0,"cat":"Sozial","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich vor einem Kiosk stehe, dann frage ich ob sie Zeitungen haben - obwohl ich sie sehe.","preview":{"fear":"Der hält mich für blind.","reality":"Er sagt einfach Ja und wartet auf deinen Kaufwunsch."},"mutsatz":"Ich darf offensichtliche Dinge aussprechen.","safetycheck":"Erkläre dich nicht.","exitjoker":"Gut zu wissen danke!"},{"id":"SA_L1_06","sector":"sozial","diff":1,"style":"classic","title":"Richtungs-Twist","action":"Frag jemanden nach dem Weg zu einem Ort von dem du gerade kommst.","goal":"Nicht die Wegbeschreibung — eine falsche Frage ohne Erklärung stellen.","level":0,"cat":"Sozial","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich in der Stadt bin, dann frage ich nach dem Weg zu einem Ort von dem ich gerade komme.","preview":{"fear":"Die denken ich bin völlig orientierungslos.","reality":"Keiner weiß woher du gerade kommst."},"mutsatz":"Die Meinung Fremder über meine Orientierung ist egal.","safetycheck":"Benutze kein Google Maps als Beweis.","exitjoker":"Ah danke! Dann bin ich ja fast da."},{"id":"SA_L1_07","sector":"sozial","diff":1,"style":"classic","title":"Summen-Test","action":"Summ oder pfeif eine Melodie deutlich hörbar während du in einer Warteschlange stehst.","goal":"Nicht Musik machen — hörbar sein ohne Grund.","level":0,"cat":"Sozial","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich in einer Warteschlange stehe, dann summe ich hörbar eine Melodie.","preview":{"fear":"Die Leute denken ich bin nervig.","reality":"Die meisten merken es kaum oder finden es menschlich."},"mutsatz":"Ich darf Geräusche machen.","safetycheck":"Nicht extrem laut werden - es soll kein Konzert sein.","exitjoker":""},{"id":"SA_L2_01","sector":"sozial","diff":2,"style":"classic","title":"Leere Wand","action":"Bleib in einer belebten Passage stehen und starre 60 Sekunden intensiv an eine kahle Wand. Ignoriere die Blicke.","goal":"Nicht warten — Blicke aushalten ohne zu erklären was du machst.","level":1,"cat":"Sozial","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich in einer Mall bin, dann starre ich 60 Sekunden lang konzentriert auf eine leere Wand.","preview":{"fear":"Alle denken ich bin verrückt.","reality":"Die Leute schauen kurz irritiert und gehen weiter."},"mutsatz":"Ich darf auffallen ohne eine Rechtfertigung.","safetycheck":"Schau nicht zwischendurch peinlich berührt zu den Leuten.","exitjoker":"Schau kurz auf deine Uhr nick und geh weg."},{"id":"SA_L2_02","sector":"sozial","diff":2,"style":"classic","title":"Sitzplatz-Mut","action":"Setz dich im Bus oder der Bahn direkt neben jemanden obwohl noch viele freie Plätze da sind.","goal":"Nicht der Platz — eine soziale Norm brechen und die Reaktion aushalten.","level":1,"cat":"Sozial","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich in den Bus steige, dann setze ich mich neben jemanden obwohl andere Zweier-Plätze frei sind.","preview":{"fear":"Der andere denkt ich bin aufdringlich.","reality":"Es ist ein öffentlicher Raum - man darf sich setzen."},"mutsatz":"Soziale Nähe ist nichts Verbotenes.","safetycheck":"Fang nicht sofort ein Gespräch an wenn du nicht willst. Setz dich einfach.","exitjoker":""},{"id":"SA_L2_03","sector":"sozial","diff":2,"style":"classic","title":"Kostproben-Bitte","action":"Frag in einer Bäckerei nach einer kostenlosen Kostprobe von etwas das nicht als Probe ausliegt.","goal":"Nicht die Kostprobe — nach etwas fragen das nicht angeboten wird.","level":1,"cat":"Sozial","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich an einer Theke bin, dann frage ich nach einer Probe von etwas das nicht ausliegt.","preview":{"fear":"Die denken ich will nur was schnorren.","reality":"Es ist Verkaufsförderung - meistens kriegst du ein Stückchen."},"mutsatz":"Fragen kostet nichts.","safetycheck":"Reagiere entspannt auf ein Nein.","exitjoker":"Ah schade. Trotzdem danke!"},{"id":"SA_L2_04","sector":"sozial","diff":2,"style":"classic","title":"Parkbank","action":"Setz dich im Park zu jemandem auf die Bank und sag nach 2 Minuten: Genießen Sie die Sonne auch so?","goal":"Nicht das Gespräch — die Stille vor dem ersten Satz aushalten.","level":1,"cat":"Sozial","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich im Park bin, dann setze ich mich zu jemandem und sage: Schönes Wetter heute oder?","preview":{"fear":"Die Person will ihre Ruhe haben.","reality":"Ein Satz bricht kein Gesetz - wenn sie nicht will merkst du es sofort."},"mutsatz":"Ich darf die soziale Stille brechen.","safetycheck":"Wenn die Person nur kurz nickt akzeptiere das Schweigen danach.","exitjoker":"Ich genieß dann mal weiter die Aussicht. Ciao!"},{"id":"SA_L2_05","sector":"sozial","diff":2,"style":"fun","title":"Falsche Abteilung","action":"Frag im Baumarkt nach Vollmilch oder in der Apotheke nach Socken. Akzeptiere das Nein mit: Ah okay danke.","goal":"Nicht das Produkt — eine absurde Frage ernst stellen und ruhig bleiben.","level":1,"cat":"Sozial","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich in einem Fachgeschäft bin, dann frage ich nach etwas völlig Unpassendem.","preview":{"fear":"Die halten mich für verwirrt.","reality":"Der Mitarbeiter korrigiert dich sachlich."},"mutsatz":"Mein Ruf als wissender Kunde ist zweitrangig.","safetycheck":"Erkläre nicht dass es ein Scherz war. Nimm die Antwort ernst.","exitjoker":"Verstehe danke für die Info."},{"id":"SA_L2_06","sector":"sozial","diff":2,"style":"classic","title":"Artikel zurücklassen","action":"Lass einen Artikel an der Kasse scannen und sag dann: Ich überlegs mir nochmal. Geh ruhig.","goal":"Nicht die Entscheidung — eine unbequeme Situation selbst herbeiführen und ruhig bleiben.","level":1,"cat":"Sozial","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn alles gescannt wurde, dann sage ich kurz vor dem Zahlen: Ich möchte das doch nicht kaufen.","preview":{"fear":"Die Kassiererin wird mich hassen.","reality":"Es ist nervig für sie aber ein Standardvorgang."},"mutsatz":"Ich darf mich umentscheiden auch im letzten Moment.","safetycheck":"Du musst keinen Grund nennen.","exitjoker":"Entschuldigung für die Umstände. Schönen Tag!"},{"id":"SA_L2_07","sector":"sozial","diff":2,"style":"classic","title":"Solo-Tisch","action":"Geh alleine in ein volles Café oder Restaurant. Zentraler Tisch. Kein Handy kein Buch. Einfach da sein.","goal":"Nicht das Essen — öffentliche Einsamkeit ohne Ablenkung aushalten.","level":1,"cat":"Sozial","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich ausgehe, dann gehe ich alleine in ein volles Café. Zentraler Tisch. Kein Handy kein Buch.","preview":{"fear":"Alle sehen dass ich alleine bin.","reality":"Die meisten Menschen sind zu beschäftigt mit sich selbst um es zu bemerken."},"mutsatz":"Ich brauche keine Requisite um Raum einzunehmen.","safetycheck":"Greif nicht nach dem Handy wenn es unangenehm wird.","exitjoker":""},{"id":"SA_L3_01","sector":"sozial","diff":3,"style":"classic","title":"Glückspilz-Rabatt","action":"Frag an der Kasse beim Bezahlen: Bekomme ich heute eigentlich den Glückspilz-Rabatt von 10%? Lächle beim Nein.","goal":"Das Ziel ist das Nein. Das ist ein Punkt für dich.","level":2,"cat":"Sozial","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich an der Kasse bin, dann frage ich nach dem Glückspilz-Rabatt von 10%.","preview":{"fear":"Das ist peinlich vor den anderen Kunden.","reality":"Du kriegst ein Nein aber die Welt geht nicht unter."},"mutsatz":"Ich darf absurde Dinge fordern.","safetycheck":"Frag mit einem neutralen Tonfall.","exitjoker":"War einen Versuch wert! Danke."},{"id":"SA_L3_02","sector":"sozial","diff":3,"style":"fun","title":"Mikrofon-Wunsch","action":"Frag am Info-Stand eines Kaufhauses ob du kurz eine Durchsage für einen fiktiven Freund machen darfst.","goal":"Nicht die Durchsage — eine absurde Bitte mit ernstem Gesicht stellen und die Reaktion aushalten.","level":2,"cat":"Sozial","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich in einem Kaufhaus bin, dann frage ich an der Info ob ich eine Durchsage machen darf.","preview":{"fear":"Die Security wirft mich raus.","reality":"Man wird dir freundlich sagen dass das nicht geht."},"mutsatz":"Ich darf nach Privilegien fragen.","safetycheck":"Bleib höflich. Es ist keine Provokation sondern eine Bitte.","exitjoker":"Alles klar verstehe ich. Danke trotzdem!"},{"id":"SA_L3_03","sector":"sozial","diff":3,"style":"fun","title":"Zwei verschiedene Schuhe","action":"Zieh zwei komplett verschiedene Schuhe an und geh 30 Minuten durch die Stadt. Kein Kommentar dazu.","goal":"Nicht auffallen — mit einem sichtbaren Makel draußen sein ohne es zu erklären.","level":2,"cat":"Sozial","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich rausgehe, dann ziehe ich zwei komplett verschiedene Schuhe an und gehe 30 Minuten durch die Stadt.","preview":{"fear":"Jeder starrt auf meine Füße.","reality":"Erstaunlich viele Leute bemerken es gar nicht."},"mutsatz":"Mein Wert hängt nicht an meiner Kleidung.","safetycheck":"Wenn dich jemand anspricht sag: Ja ich wollte heute mal Abwechslung.","exitjoker":""},{"id":"SA_L3_04","sector":"sozial","diff":3,"style":"fun","title":"Bananen-Anruf","action":"Halt dir eine Banane ans Ohr und führ ein kurzes ernstes Telefonat in der Öffentlichkeit.","goal":"Nicht Aufmerksamkeit — absurd sein und nicht lachen.","level":2,"cat":"Sozial","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich unter Leuten bin, dann telefoniere ich mit einer Banane oder ähnlichem.","preview":{"fear":"Absolute soziale Ächtung.","reality":"Die meisten finden es lustig oder ignorieren es als Kunst."},"mutsatz":"Ich stehe über dem Urteil der Masse.","safetycheck":"Sprich ganz normal als wäre es ein Smartphone.","exitjoker":"Steck die Banane weg und geh ganz normal weiter."},{"id":"SA_L3_05","sector":"sozial","diff":3,"style":"fun","title":"High-Five Lotto","action":"Lauf mit erhobener Hand durch die Fußgängerzone und schau wer im Vorbeigehen einfach einschlägt.","goal":"Nicht das High-Five — peinlich sein und weitergehen.","level":2,"cat":"Sozial","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich durch eine belebte Straße gehe, dann halte ich meine Hand hoch und schaue wer einschlägt.","preview":{"fear":"Alle ignorieren mich und ich stehe dumm da.","reality":"Mindestens einer schlägt immer ein - und der Rest lächelt."},"mutsatz":"Peinlichkeit ist nur ein Gefühl kein Urteil.","safetycheck":"Nicht erklären was du machst. Einfach Hand oben lassen.","exitjoker":""},{"id":"SA_L3_06","sector":"sozial","diff":3,"style":"fun","title":"Zeitreisender","action":"Frag jemanden welches Jahr wir gerade haben. Schau geschockt bei der Antwort und geh weiter.","goal":"Nicht die Antwort — eine absurde Situation mit Ruhe durchhalten.","level":2,"cat":"Sozial","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich jemanden treffe, dann frage ich welches Jahr wir haben. Schau geschockt bei der Antwort.","preview":{"fear":"Die Person hält mich für verrückt.","reality":"Die meisten lachen oder spielen mit."},"mutsatz":"Ich darf das Drehbuch des Alltags verlassen.","safetycheck":"Nicht lachen bevor die Antwort kommt.","exitjoker":""},{"id":"DA_L1_01","sector":"dating","diff":1,"style":"classic","title":"Blick-Duell","action":"Such dir eine attraktive Person die dir entgegenkommt. Halt den Blickkontakt bis ihr auf gleicher Höhe seid — nick dann kurz.","goal":"Nicht ansprechen — den Impuls wegzuschauen ignorieren.","level":0,"cat":"Dating","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn mir eine attraktive Person entgegenkommt, dann halte ich den Blickkontakt bis wir auf gleicher Höhe sind.","preview":{"fear":"Die Person hält mich für einen Stalker.","reality":"Meistens wird kurz zurückgeschaut oder weggesehen - die Situation ist in 2 Sekunden vorbei."},"mutsatz":"Ich darf präsent sein und andere wahrnehmen.","safetycheck":"Nicht starr gucken. Entspanne deine Augenbrauen.","exitjoker":"Ein kurzes neutrales Zunicken neutralisiert jede Spannung."},{"id":"DA_L1_02","sector":"dating","diff":1,"style":"classic","title":"Drive-By Kompliment","action":"Sag im Vorbeigehen ohne anzuhalten: Hey cooler Style. Lauf direkt weiter.","goal":"Nicht die Reaktion — einen Satz sagen und verschwinden bevor das Gehirn abbricht.","level":0,"cat":"Dating","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich jemanden mit einem auffälligen Kleidungsstück sehe, dann sage ich im Vorbeigehen: Cooles Outfit!","preview":{"fear":"Die Person denkt ich will was von ihr.","reality":"Ein Kompliment ohne stehenzubleiben ist der harmloseste soziale Kontakt überhaupt."},"mutsatz":"Ich verbreite gute Laune ohne etwas zu fordern.","safetycheck":"Bleib nicht stehen. Lauf weiter während du es sagst.","exitjoker":""},{"id":"DA_L1_03","sector":"dating","diff":1,"style":"classic","title":"Experten-Frage","action":"Geh auf jemanden zu: Kurze Frage — siehst du hier irgendwo X? Wenn die Antwort kommt sag Danke und geh weg.","goal":"Nicht das Produkt — Kontakt herstellen und sauber beenden.","level":0,"cat":"Dating","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich im Laden eine attraktive Person sehe, dann frage ich nach der Position eines Produkts.","preview":{"fear":"Die Person merkt dass ich den Ort des Produkts kenne.","reality":"Niemand hinterfragt die Ortskenntnis eines Fremden im Supermarkt."},"mutsatz":"Jeder Kontakt ist eine Übung für meine Freiheit.","safetycheck":"Fang nicht an zu stammeln. Frag so kurz wie möglich.","exitjoker":"Ah danke! Da hab ich wohl Tomaten auf den Augen gehabt."},{"id":"DA_L1_04","sector":"dating","diff":1,"style":"classic","title":"Sichtbarkeits-Lächeln","action":"Lächle jemanden bewusst an während du vorbeiläufst. Zähl bis 3 bevor du den Blick abwendest.","goal":"Nicht das Lächeln zurückbekommen — den Moment aushalten.","level":0,"cat":"Dating","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn mir jemand gefällt, dann lächle ich die Person bewusst an und zähle bis 3 bevor ich den Blick abwende.","preview":{"fear":"Die Person fühlt sich angestarrt.","reality":"Ein Lächeln ist die universellste positive Geste überhaupt."},"mutsatz":"Ich darf zeigen dass ich jemanden wahrgenommen habe.","safetycheck":"Nicht sofort wegschauen wenn die Person zurückschaut.","exitjoker":""},{"id":"DA_L1_05","sector":"dating","diff":1,"style":"classic","title":"Orientierungs-Hilfe","action":"Frag jemanden nach dem Weg zu einem bekannten Ort. Nimm die Antwort an und geh sofort.","goal":"Nicht der Weg — Initiative setzen ohne Plan was danach kommt.","level":0,"cat":"Dating","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich draußen bin, dann frage ich eine attraktive Person nach dem Weg zu einem bekannten Café.","preview":{"fear":"Die Person ist genervt von mir.","reality":"Menschen helfen meistens gerne - es gibt ihnen ein kurzes Gefühl von Kompetenz."},"mutsatz":"Ich übe das Ansprechen - der Inhalt ist zweitrangig.","safetycheck":"Lass dein Handy in der Tasche. Kein Google Maps als Backup.","exitjoker":"Super danke für die Hilfe! Schönen Tag noch."},{"id":"DA_L1_06","sector":"dating","diff":1,"style":"classic","title":"Sitzplatz-Check","action":"Frag in der Bahn oder im Bus: Ist hier frei? Setz dich kurz hin schau einmal zur Person dann weg.","goal":"Nicht das Gespräch — physische Nähe ohne Erklärung aushalten.","level":0,"cat":"Dating","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich in der Bahn bin, dann frage ich eine attraktive Person: Ist hier frei?","preview":{"fear":"Die Person fühlt sich belästigt.","reality":"Solange du nicht starrst ist es ein völlig normales Verhalten im ÖPNV."},"mutsatz":"Ich darf mich dorthin setzen wo ich möchte.","safetycheck":"Schau nach der Frage kurz weg um den Druck rauszunehmen.","exitjoker":""},{"id":"DA_L1_07","sector":"dating","diff":1,"style":"classic","title":"Duft-Info","action":"Frag im Drogeriemarkt jemanden: Riecht das Parfüm gut? Sprüh es auf einen Teststreifen sag Danke und geh weiter.","goal":"Nicht die Meinung — eine fremde Person für eine Sekunde einbinden.","level":0,"cat":"Dating","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich im Drogeriemarkt bin, dann frage ich jemanden: Riecht das Parfüm gut?","preview":{"fear":"Ich wirke wie ein Aufreißer.","reality":"Neugier auf Geschmack ist ein sehr unverfänglicher Türöffner."},"mutsatz":"Ein einfacher Satz reicht für eine Verbindung.","safetycheck":"Erwarte kein langes Gespräch. Nimm die Antwort und sag Danke.","exitjoker":"Viel Spaß noch beim Genießen!"},{"id":"DA_L2_01","sector":"dating","diff":2,"style":"classic","title":"Ehrliches Hallo","action":"Geh auf jemanden zu: Hi ich finde dich sympathisch und wollte kurz Hallo sagen. Schönen Tag noch. Direkt danach weitergehen.","goal":"Nicht das Gespräch — etwas Echtes sagen und nicht auf Reaktion warten.","level":1,"cat":"Dating","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich jemanden sehe der mir gefällt, dann bleibe ich kurz stehen und sage: Hi ich wollte nur kurz Hallo sagen.","preview":{"fear":"Es entsteht eine peinliche Stille.","reality":"Die Person sagt meistens Hallo zurück und wartet kurz ab - du kontrollierst das Ende."},"mutsatz":"Ein ehrliches Interesse ist niemals peinlich.","safetycheck":"Vermeide Entschuldigung am Anfang. Du störst nicht du bereicherst.","exitjoker":"Ich muss jetzt auch weiter wollte mir nur den Ruck geben. Tschüss!"},{"id":"DA_L2_02","sector":"dating","diff":2,"style":"classic","title":"Direkte Kompliment-Pause","action":"Bleib vor jemandem stehen: Du hast ein tolles Lächeln. Warte eine Sekunde auf den Gesichtsausdruck. Nick und geh.","goal":"Nicht das Kompliment — die Stille nach dem Satz aushalten.","level":1,"cat":"Dating","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich jemanden sehe, dann bleibe ich kurz stehen und sage: Du hast ein tolles Lächeln.","preview":{"fear":"Die Person fühlt sich bedrängt.","reality":"Ein direktes Kompliment wirkt selbstbewusst und aufrichtig."},"mutsatz":"Ich traue mich tiefer zu blicken.","safetycheck":"Halt nach dem Satz 2 Sekunden die Stille aus bevor du gehst.","exitjoker":"Wollte ich nur loswerden. Hab einen schönen Tag!"},{"id":"DA_L2_03","sector":"dating","diff":2,"style":"classic","title":"Foto-Bitte","action":"Bitte jemanden: Kannst du kurz ein Foto von mir machen? Nimm das Handy zurück sag Perfekt danke und geh.","goal":"Nicht das Foto — eine fremde Person aktiv in deine Sache einbinden.","level":1,"cat":"Dating","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich an einem schönen Ort bin, dann bitte ich eine attraktive Person ein Foto von mir zu machen.","preview":{"fear":"Ich wirke wie ein Tourist oder eitel.","reality":"Das ist eine der am meisten akzeptierten sozialen Interaktionen weltweit."},"mutsatz":"Ich schaffe eine harmlose Verbindung.","safetycheck":"Kontrolliere das Foto nicht sofort kritisch. Bedanke dich erst aufrichtig.","exitjoker":"Danke! Du hast ein gutes Auge für Licht."},{"id":"DA_L2_04","sector":"dating","diff":2,"style":"classic","title":"Ehrliche Neugier","action":"Frag jemanden: Woher hast du diese Tasche oder Schuhe — die fallen echt positiv auf. Nimm die Antwort und verabschiede dich.","goal":"Nicht die Info — echtes Interesse zeigen ohne es in ein Gespräch zu zwingen.","level":1,"cat":"Dating","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn jemand ein auffälliges Accessoire trägt, dann frage ich: Woher hast du das - das fällt echt positiv auf.","preview":{"fear":"Ich bin zu neugierig.","reality":"Menschen identifizieren sich über ihre Hobbys und reden meist gern kurz darüber."},"mutsatz":"Ich zeige echtes Interesse an meiner Umwelt.","safetycheck":"Gib nicht sofort eine eigene Story ab. Hör erst zu.","exitjoker":"Cool - viel Erfolg noch!"},{"id":"DA_L2_05","sector":"dating","diff":2,"style":"classic","title":"Ich übe Ansage","action":"Geh zu jemandem: Ich mache gerade eine Mut-Challenge und muss jemanden fragen ob er mit mir einen Kaffee trinkt. Hast du Lust? Bei Nein: Danke für den Punkt.","goal":"Das Nein ist der Punkt. Buchstäblich.","level":1,"cat":"Dating","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich jemanden sehe, dann sage ich: Ich mache gerade eine Mut-Challenge und muss jemanden fragen ob er mit mir Kaffee trinkt.","preview":{"fear":"Die Person lacht mich aus.","reality":"Die meisten finden Mut-Challenges sympathisch und sind neugierig."},"mutsatz":"Meine Verletzlichkeit ist meine Stärke.","safetycheck":"Erkläre nicht zu viel. Bleib bei dem einen Satz.","exitjoker":"Mission erfüllt! Danke dass du mir geholfen hast den Punkt zu sammeln."},{"id":"DA_L2_06","sector":"dating","diff":2,"style":"classic","title":"Nummern-Karte","action":"Überreich jemandem einen Zettel mit deinem Namen und deiner Nummer: Falls du mal Lust auf einen Kaffee hast. Dann sofort weggehen.","goal":"Nicht die Antwort — etwas hinterlassen und die Kontrolle abgeben.","level":1,"cat":"Dating","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich mit jemandem kurz gesprochen habe, dann überreiche ich meine vorbereitete Karte mit meiner Nummer.","preview":{"fear":"Die Person wirft den Zettel sofort weg.","reality":"Ob sie sich meldet liegt nicht mehr in deiner Macht - der Sieg ist die Übergabe."},"mutsatz":"Ich gebe die Kontrolle ab und bleibe bei mir.","safetycheck":"Frag nicht Darf ich - sag: Hier falls du mal Lust auf einen Kaffee hast.","exitjoker":"Kein Stress meld dich einfach wenn du magst. Bis dann!"},{"id":"DA_L2_07","sector":"dating","diff":2,"style":"classic","title":"Instant-Einladung","action":"Frag jemanden am Kiosk oder Café: Ich hol mir gerade ein Wasser willst du auch eins ich zahl. Bei Ja kaufen und geben. Bei Nein: Okay.","goal":"Nicht das Ja — eine spontane Großzügigkeit ohne Erwartung zeigen.","level":1,"cat":"Dating","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich mir gerade etwas kaufe, dann frage ich die Person hinter mir: Soll ich dir eins mitbestellen? Ich lade dich ein.","preview":{"fear":"Die Person fühlt sich gekauft.","reality":"Es ist eine extrem großzügige Geste die fast immer ein Lächeln erzeugt."},"mutsatz":"Ich bin großzügig mit meiner Energie und meinem Geld.","safetycheck":"Akzeptiere ein Nein sofort ohne Überredungsversuche.","exitjoker":"Kein Thema - einen schönen Tag dir noch!"},{"id":"DA_L3_01","sector":"dating","diff":3,"style":"classic","title":"Faden verloren","action":"Geh zu jemandem: Ich wollte dich gerade ansprechen aber ich bin so nervös dass ich alles vergessen habe. Hi. Einmal tief atmen und weggehen.","goal":"Nicht die Perfektion — Nervosität als Opener benutzen statt sie zu verstecken.","level":2,"cat":"Dating","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich jemanden anspreche, dann unterbreche ich mich selbst und sage: Sorry ich bin gerade so nervös dass ich den Faden verloren habe.","preview":{"fear":"Ich wirke schwach oder inkompetent.","reality":"Authentische Nervosität wirkt oft extrem charmant und entwaffnend."},"mutsatz":"Ich muss nicht perfekt wirken um gemocht zu werden.","safetycheck":"Versuch nicht die Nervosität zu überspielen. Atme tief durch.","exitjoker":"So jetzt geht es wieder. Hi ich bin [Name]."},{"id":"DA_L3_02","sector":"dating","diff":3,"style":"classic","title":"Ehrliche Umfrage","action":"Frag jemanden: Findest du es gruseliger wenn dich jemand anspricht oder wenn man sich nur anschweigt? Antwort abwarten. Interessant sagen. Gehen.","goal":"Nicht die Antwort — eine unerwartete Frage stellen und die Reaktion aushalten.","level":2,"cat":"Dating","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich jemanden sehe, dann frage ich: Findest du es gruseliger wenn dich jemand anspricht oder wenn man sich nur anschweigt?","preview":{"fear":"Die Frage ist zu seltsam.","reality":"Unerwartete Fragen erzeugen echte Reaktionen - meistens positive."},"mutsatz":"Ich führe Gespräche dorthin wo es interessant wird.","safetycheck":"Warte die volle Antwort ab bevor du reagierst.","exitjoker":"Interessant zu wissen danke."},{"id":"DA_L3_03","sector":"dating","diff":3,"style":"classic","title":"Kompliment-Echo","action":"Sag zu jemandem: Ich finde deine Ausstrahlung echt stark. Wenn die Person Danke sagt antworte: Gerne. Und geh sofort weiter.","goal":"Nicht das Gespräch — ein echtes Kompliment geben und den Moment nicht überziehen.","level":2,"cat":"Dating","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich jemanden sehe, dann sage ich: Ich finde deine Ausstrahlung echt stark.","preview":{"fear":"Das ist zu persönlich für einen Fremden.","reality":"Es ist ein tiefes Kompliment das meistens einen bleibenden Eindruck hinterlässt."},"mutsatz":"Ich sehe das Besondere in anderen und spreche es aus.","safetycheck":"Vermeide danach direkt nach etwas zu fragen. Gib das Kompliment und geh.","exitjoker":"Das war es schon - wollte ich nur loswerden. Ciao!"},{"id":"DA_L3_04","sector":"dating","diff":3,"style":"classic","title":"Nochmal vorbeigehen","action":"Geh an jemandem vorbei bleib kurz stehen: Sorry ich wollte eigentlich einfach weitergehen aber ich finde dich zu sympathisch. Hi. Dann stehen bleiben.","goal":"Nicht die Reaktion — den inneren Zensor einmal komplett ignorieren.","level":2,"cat":"Dating","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich an jemandem vorbeilaufe, dann bleibe ich kurz stehen: Sorry ich wollte eigentlich weitergehen aber ich finde dich zu sympathisch. Hi.","preview":{"fear":"Die Person fühlt sich bedrängt.","reality":"Ehrliche Spontaneität wird fast immer mit einem Lächeln quittiert."},"mutsatz":"Ich handle bevor mein Kopf Nein sagt.","safetycheck":"Nicht zu lange erklären. Hi sagen und dann stehen bleiben.","exitjoker":""},{"id":"DA_L3_05","sector":"dating","diff":3,"style":"classic","title":"Direkte Einladung","action":"Sprich jemanden an nach einem kurzen Augenkontakt: Ich finde dich interessant — hast du Lust auf einen kurzen Kaffee jetzt gleich?","goal":"Das Nein ist normal. Das Ja auch. Beides ist ein Sieg.","level":2,"cat":"Dating","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich nach einem kurzen Augenkontakt jemanden interessant finde, dann sage ich direkt: Ich finde dich interessant - hast du Lust auf einen kurzen Kaffee jetzt gleich?","preview":{"fear":"Ein Nein zerstört mein Selbstwertgefühl.","reality":"Das Nein sagt nichts über deinen Wert aus - nur über Timing oder Geschmack."},"mutsatz":"Das Nein ist normal. Das Ja auch. Beides ist ein Sieg.","safetycheck":"Bleib bei einem Nein entspannt und geh ohne Drama.","exitjoker":"Kein Problem - schönen Tag noch!"},{"id":"DA_L3_06","sector":"dating","diff":3,"style":"fun","title":"Faden-Geständnis öffentlich","action":"Stell dich kurz vor einer kleinen Gruppe hin: Ich übe gerade fremde Menschen anzusprechen — das hier war mein Versuch. Danke. Geh weiter.","goal":"Nicht die Reaktion der Gruppe — sich selbst in einer absurden Situation ernst nehmen.","level":2,"cat":"Dating","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich in einer Gruppe bin, dann stelle ich mich kurz hin: Ich übe gerade fremde Menschen anzusprechen - das hier war mein Versuch. Danke.","preview":{"fear":"Die Gruppe lacht mich aus.","reality":"Die meisten finden es mutig und sympathisch."},"mutsatz":"Ich nehme mich selbst nicht so ernst dass es mich einschränkt.","safetycheck":"Geh direkt danach weg. Nicht auf Reaktionen warten.","exitjoker":""},{"id":"JO_L1_01","sector":"job","diff":1,"style":"classic","title":"Tippfehler-Absicht","action":"Sende eine E-Mail oder Chat-Nachricht an einen Kollegen mit einem bewussten Rechtschreibfehler. Korrigiere ihn nicht.","goal":"Nicht der Fehler — merken dass nichts passiert wenn etwas nicht perfekt ist.","level":0,"cat":"Job","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich die nächste interne Nachricht schreibe, dann baue ich einen Buchstabendreher ein und sende sie ab.","preview":{"fear":"Die halten mich für schlampig.","reality":"Fast niemandem fällt es auf oder es wird als menschliche Eile verbucht."},"mutsatz":"Mein Wert hängt nicht an perfekter Orthografie.","safetycheck":"Schicke keine Korrektur hinterher.","exitjoker":""},{"id":"JO_L1_02","sector":"job","diff":1,"style":"classic","title":"Wissenslücke","action":"Frag einen Kollegen nach einer Erklärung für ein Fachwort das du eigentlich kennen müsstest.","goal":"Nicht die Erklärung — Nicht-Wissen laut aussprechen ohne dich zu schämen.","level":0,"cat":"Job","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn im Meeting ein Fachbegriff fällt den ich nur vage kenne, dann frage ich: Was genau meinst du damit?","preview":{"fear":"Ich wirke inkompetent.","reality":"Oft sind andere froh dass jemand fragt weil sie es auch nicht wissen."},"mutsatz":"Fragen ist ein Zeichen von Intelligenz nicht von Schwäche.","safetycheck":"Nicht entschuldigen für die Unterbrechung.","exitjoker":"Ah verstehe. Danke für die Klärung."},{"id":"JO_L1_03","sector":"job","diff":1,"style":"classic","title":"Ich weiß es nicht","action":"Antworte auf die nächste Sachfrage eines Kollegen sofort mit: Das weiß ich gerade nicht auswendig. Ohne danach zu suchen.","goal":"Nicht die Antwort — den Reflex unterbrechen sofort eine Lösung liefern zu müssen.","level":0,"cat":"Job","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn mich jemand etwas fragt dessen Antwort ich googeln müsste, dann sage ich sofort: Das weiß ich gerade nicht.","preview":{"fear":"Ich wirke unvorbereitet.","reality":"Souveränität bedeutet die eigenen Grenzen zu kennen."},"mutsatz":"Ich muss nicht alles wissen um kompetent zu sein.","safetycheck":"Fang nicht an wild zu spekulieren um die Lücke zu füllen.","exitjoker":"Ich schaue es nach und melde mich später."},{"id":"JO_L1_04","sector":"job","diff":1,"style":"classic","title":"Unfertige Skizze","action":"Schick einen Entwurf oder eine Idee an jemanden mit dem Satz: Ist erst zu 50% fertig aber hier ist der Stand.","goal":"Nicht das Feedback — etwas rausgeben bevor es perfekt ist.","level":0,"cat":"Job","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich an einer Aufgabe arbeite, dann zeige ich den Entwurf einem Kollegen bevor er fertig ist.","preview":{"fear":"Die denken ich arbeite unsauber.","reality":"Frühes Feedback spart Zeit und zeigt Teamgeist."},"mutsatz":"Besser unperfekt gestartet als perfekt gewartet.","safetycheck":"Sag nicht es ist noch total schlecht - sag hier ist der Zwischenstand.","exitjoker":"Was denkst du über die Richtung?"},{"id":"JO_L1_05","sector":"job","diff":1,"style":"classic","title":"Mikro-Verspätung","action":"Komm zu einem internen Termin exakt 2 Minuten zu spät. Sag kurz Hallo und setz dich ohne dich zu rechtfertigen.","goal":"Nicht die Verspätung — die Stille nach dem Reinkommen aushalten ohne zu erklären.","level":0,"cat":"Job","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ein internes Meeting ansteht, dann betrete ich den Raum exakt 2 Minuten nach Start.","preview":{"fear":"Ich gelte als respektlos.","reality":"In den ersten 2 Minuten passiert meist nur Smalltalk."},"mutsatz":"Ich darf mir einen Moment Zeit nehmen.","safetycheck":"Keine hektische Entschuldigung. Einfach hinsetzen und einsteigen.","exitjoker":"Hallo zusammen."},{"id":"JO_L1_06","sector":"job","diff":1,"style":"classic","title":"Kaffeepausen-Impuls","action":"Frag einen Kollegen nicht aus deinem direkten Team: Hast du 5 Minuten für einen Kaffee?","goal":"Nicht der Kaffee — Initiative setzen ohne konkreten Grund.","level":0,"cat":"Job","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich in der Küche einen Kollegen sehe den ich kaum kenne, dann frage ich: Wie läuft dein Projekt gerade?","preview":{"fear":"Ich störe ihn.","reality":"Die meisten freuen sich über echtes Interesse im Büroalltag."},"mutsatz":"Ich gestalte mein Netzwerk aktiv.","safetycheck":"Schau nicht auf dein Handy während er antwortet.","exitjoker":"Spannend! Ich muss wieder an den Schreibtisch bis dann."},{"id":"JO_L1_07","sector":"job","diff":1,"style":"classic","title":"Unstrukturierte Meldung","action":"Meld dich in einem Call zu Wort auch wenn du deinen Satz noch nicht perfekt im Kopf formuliert hast.","goal":"Nicht der perfekte Satz — sprechen bevor der Sensor entscheidet.","level":0,"cat":"Job","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich im Meeting einen Gedanken habe, dann sage ich ihn sofort auch ohne perfekte Formulierung.","preview":{"fear":"Ich verheddere mich und wirke wirr.","reality":"Frische Impulse sind wertvoller als glattgebügelte Sätze."},"mutsatz":"Meine Gedanken sind es wert geteilt zu werden.","safetycheck":"Atme einmal tief durch und rede einfach los.","exitjoker":"Das war gerade ein spontaner Impuls von mir."},{"id":"JO_L2_01","sector":"job","diff":2,"style":"classic","title":"Feedback-Spritze","action":"Frag deinen Vorgesetzten oder einen erfahrenen Kollegen: Was ist eine Sache die ich an meiner Arbeit optimieren sollte?","goal":"Nicht die Antwort — aktiv Kritik einladen statt sie zu vermeiden.","level":1,"cat":"Job","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich mit meinem Chef spreche, dann frage ich: Was ist meine größte Schwäche in deinen Augen?","preview":{"fear":"Er nutzt das gegen mich.","reality":"Es zeigt enorme Reflexionsfähigkeit und Mut."},"mutsatz":"Kritik ist Treibstoff für mein Wachstum.","safetycheck":"Rechtfertige dich nicht für das was genannt wird.","exitjoker":"Danke für die Offenheit das hilft mir sehr."},{"id":"JO_L2_02","sector":"job","diff":2,"style":"classic","title":"Nacktes Nein","action":"Lehn eine kleine Zusatzaufgabe ab: Das schaffe ich heute nicht mehr. Ohne eine Liste deiner anderen Aufgaben vorzulegen.","goal":"Nicht die Zeit — Nein sagen ohne Rechtfertigung aushalten.","level":1,"cat":"Job","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn eine Zusatzaufgabe reinkommt, dann sage ich: Das übernehme ich heute nicht.","preview":{"fear":"Ich gelte als nicht belastbar.","reality":"Wer Grenzen setzt wirkt professioneller und schützt seine Qualität."},"mutsatz":"Meine Kapazität ist begrenzt und kostbar.","safetycheck":"Keine Liste deiner anderen Aufgaben vorlegen. Bleib beim Nein.","exitjoker":"Ab nächster Woche können wir wieder darüber reden."},{"id":"JO_L2_03","sector":"job","diff":2,"style":"classic","title":"Meinungs-Check","action":"Sag in einer Diskussion: Ich sehe das anders als ihr. Auch wenn du der Einzige mit dieser Meinung bist.","goal":"Nicht Recht haben — eine Gegenmeinung in den Raum stellen und die Stille danach aushalten.","level":1,"cat":"Job","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn in einer Diskussion ein Konsens entsteht den ich nicht teile, dann sage ich: Ich sehe das anders.","preview":{"fear":"Ich gelte als Bremser.","reality":"Divergente Meinungen verhindern Fehlentscheidungen."},"mutsatz":"Reibung erzeugt Wärme und Qualität.","safetycheck":"Bleib sachlich werd nicht emotional.","exitjoker":"Das ist mein Standpunkt dazu."},{"id":"JO_L2_04","sector":"job","diff":2,"style":"classic","title":"Raum-Einnahme","action":"Setz dich in einem physischen Meeting ganz nach vorne in die Mitte — oder schalte in jedem Call als Erster die Kamera an.","goal":"Nicht auffallen — Sichtbarkeit aktiv wählen statt sie zu vermeiden.","level":1,"cat":"Job","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ein Vortrag oder großes Meeting ist, dann setze ich mich ganz nach vorne in die Mitte.","preview":{"fear":"Alle starren mich von hinten an.","reality":"Du signalisierst Präsenz und Selbstbewusstsein."},"mutsatz":"Ich darf sichtbar sein.","safetycheck":"Duck dich nicht weg wenn der Sprecher Blickkontakt sucht.","exitjoker":""},{"id":"JO_L2_05","sector":"job","diff":2,"style":"classic","title":"Die Unterbrechung","action":"Fall jemandem höflich ins Wort: Darf ich da kurz einhaken? Statt zu warten bis das Thema gewechselt wird.","goal":"Nicht unterbrechen — den richtigen Moment nicht abwarten sondern selbst schaffen.","level":1,"cat":"Job","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn jemand im Meeting zu weit ausschweift, dann sage ich: Darf ich kurz einhaken?","preview":{"fear":"Ich gelte als unhöflich.","reality":"Die Gruppe ist oft dankbar wenn jemand zum Punkt zurückführt."},"mutsatz":"Ich schütze die Zeit des Teams.","safetycheck":"Warte auf eine Atempause dann schieß los.","exitjoker":"Lass uns zurück zum Kernpunkt kommen."},{"id":"JO_L2_06","sector":"job","diff":2,"style":"classic","title":"Smalltalk-Stopp","action":"Beende ein Gespräch in der Küche aktiv: Ich muss jetzt weiterarbeiten bis später. Statt auf das Ende durch den anderen zu warten.","goal":"Nicht unhöflich sein — ein Gespräch selbst beenden ohne schlechtes Gewissen.","level":1,"cat":"Job","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich am Kopierer im Smalltalk feststecke, dann sage ich: Ich muss jetzt zurück an die Arbeit.","preview":{"fear":"Die Person fühlt sich abgewiesen.","reality":"Im Job ist Zeitdruck ein völlig akzeptierter Grund."},"mutsatz":"Ich entscheide wann mein Smalltalk endet.","safetycheck":"Warte nicht auf eine Lücke. Erzeuge sie.","exitjoker":"War nett aber ich muss weiter. Bis später!"},{"id":"JO_L2_07","sector":"job","diff":2,"style":"classic","title":"Namens-Nachfrage","action":"Frag einen Kollegen dessen Namen du eigentlich wissen müsstest: Entschuldige wie war nochmal dein Nachname?","goal":"Nicht der Name — eine peinliche Wissenslücke direkt ansprechen statt sie zu verstecken.","level":1,"cat":"Job","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich einen Kollegen treffe dessen Namen ich vergessen habe, dann frage ich direkt nach.","preview":{"fear":"Das ist extrem peinlich nach so langer Zeit.","reality":"Ehrlichkeit ist besser als ewiges Rumdrucksen."},"mutsatz":"Ehrlichkeit schlägt Perfektion.","safetycheck":"Entschuldige dich nur ganz kurz.","exitjoker":"Hilf mir kurz auf die Sprünge wie war dein Nachname?"},{"id":"JO_L3_01","sector":"job","diff":3,"style":"classic","title":"Forderung ohne Bitte","action":"Formuliere eine Bitte als klare Ansage: Schick mir das Dokument bis 15 Uhr. Statt könntest du eventuell.","goal":"Nicht Autorität zeigen — direktes Sprechen ohne Weichmacher und die Reaktion aushalten.","level":2,"cat":"Job","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich eine Zuarbeit brauche, dann formuliere ich sie als klare Ansage: Schick mir das bis 14 Uhr.","preview":{"fear":"Ich wirke bossy oder arrogant.","reality":"Klare Ansagen erleichtern anderen die Arbeit weil sie Prioritäten kennen."},"mutsatz":"Klarheit ist Freundlichkeit.","safetycheck":"Kein Vielleicht kein Könntest du.","exitjoker":"Danke ich brauche das für das nächste Meeting."},{"id":"JO_L3_02","sector":"job","diff":3,"style":"classic","title":"Fehler-Beichte","action":"Erzähl beim Mittagessen oder in einer Pause offen von einem beruflichen Missgeschick das dir peinlich war.","goal":"Nicht Sympathie — einen echten Fehler teilen ohne ihn kleinzureden.","level":2,"cat":"Job","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich mit Kollegen beim Essen bin, dann erzähle ich von meinem größten beruflichen Fehler.","preview":{"fear":"Die verlieren den Respekt vor mir.","reality":"Fehlbarkeit macht dich nahbar und sympathisch."},"mutsatz":"Meine Fehler definieren mich nicht mein Umgang damit schon.","safetycheck":"Lache selbst darüber mach kein Drama daraus.","exitjoker":"Das war echt eine harte Lektion aber heute lache ich drüber."},{"id":"JO_L3_03","sector":"job","diff":3,"style":"classic","title":"Warum-Kette","action":"Frag bei einer neuen Anweisung dreimal hintereinander höflich nach dem Warum bis du die wirkliche Ursache verstanden hast.","goal":"Nicht nerven — so lange nachfragen bis es wirklich klar ist.","level":2,"cat":"Job","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn eine neue Anweisung kommt, dann frage ich dreimal hintereinander höflich nach dem Warum.","preview":{"fear":"Ich wirke wie ein nerviges Kleinkind.","reality":"Du dringst zum Kern der Strategie vor."},"mutsatz":"Ich will verstehen nicht nur ausführen.","safetycheck":"Bleib interessiert nicht konfrontativ.","exitjoker":"Danke jetzt verstehe ich den Sinn dahinter wirklich."},{"id":"JO_L3_04","sector":"job","diff":3,"style":"classic","title":"Gehalts-Marktwert","action":"Ruf einen Recruiter an oder frag in einem Netzwerk: Was ist das absolute Maximum für meine Position?","goal":"Nicht das Gehalt — die Hemmung bei Geldthemen direkt konfrontieren.","level":2,"cat":"Job","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn ich heute Zeit habe, dann rufe ich einen Recruiter an und frage nach dem Gehaltsmaximum für meine Rolle.","preview":{"fear":"Ich wirke gierig.","reality":"Es ist ein Markttest - Wissen ist Macht in Verhandlungen."},"mutsatz":"Ich darf wissen was meine Arbeit wert ist.","safetycheck":"Druckse nicht rum. Frag direkt nach Zahlen.","exitjoker":"Danke für die Einschätzung sehr hilfreich."},{"id":"JO_L3_05","sector":"job","diff":3,"style":"classic","title":"Veto-Karte","action":"Sag in einem Meeting: Ich finde diesen Vorschlag nicht gut. Auch wenn der Chef ihn gerade gelobt hat.","goal":"Nicht Recht haben — eine unbequeme Meinung in den Raum stellen wenn es drauf ankommt.","level":2,"cat":"Job","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn mein Vorgesetzter eine Idee äußert die ich falsch finde, dann sage ich das im Meeting.","preview":{"fear":"Ich fliege raus oder werde abgesägt.","reality":"Gute Chefs schätzen Mitarbeiter die mitdenken und widersprechen."},"mutsatz":"Ich bin hier um meine Expertise einzubringen nicht um Ja zu sagen.","safetycheck":"Kritisiere die Sache nicht die Person.","exitjoker":"Das ist mein fachlicher Einwand dazu."},{"id":"JO_L3_06","sector":"job","diff":3,"style":"classic","title":"Spontane Präsentation","action":"Schlag in einem Termin vor: Soll ich dazu kurz meinen Bildschirm teilen und das zeigen? Auch wenn du nichts vorbereitet hast.","goal":"Nicht die perfekte Präsentation — sichtbar werden bevor du bereit bist.","level":2,"cat":"Job","variants":[],"safety":"","modminus":"","modplus":"","trigger":"Wenn im Call eine Frage zu meiner Arbeit kommt, dann teile ich sofort meinen Bildschirm und zeige den Rohzustand.","preview":{"fear":"Die sehen mein Chaos.","reality":"Transparenz schafft Vertrauen und beschleunigt Lösungen."},"mutsatz":"Prozess ist wichtiger als poliertes Ergebnis.","safetycheck":"Entschuldige dich nicht für das Chaos.","exitjoker":"So sieht es aktuell aus wir können hier direkt weiterarbeiten."},{"id":"GR_L1_01","sector":"grenzen","diff":1,"style":"classic","title":"Das nackte Nein","action":"Sage zu einer unverfänglichen Frage (z. B. „Willst du auch einen Kaffee?“ oder „Hast du kurz Zeit?“) einfach „Nein, danke“, ohne eine Begründung zu liefern.","goal":"Nicht das Nein selbst, sondern keine Rechtfertigung nachschieben.","level":0,"cat":"Selbstbehauptung","variants":[],"safety":"","modminus":"","modplus":""},{"id":"GR_L1_02","sector":"grenzen","diff":1,"style":"classic","title":"Die Antwort-Pause","action":"Warte bei einer privaten Nachricht (WhatsApp/Social Media) absichtlich 2 Stunden mit der Antwort, auch wenn du Zeit hättest.","goal":"Nicht erreichbar sein müssen, nur weil du erreichbar wärst.","level":0,"cat":"Selbstbehauptung","variants":[],"safety":"","modminus":"","modplus":""},{"id":"GR_L1_03","sector":"grenzen","diff":1,"style":"classic","title":"Die Wunsch-Äußerung","action":"Wenn dich jemand fragt „Was wollen wir essen?“, nenne als Erster deine echte Präferenz, statt „Mir egal“ zu sagen.","goal":"Eigene Bedürfnisse benennen statt dich anzupassen.","level":0,"cat":"Selbstbehauptung","variants":[],"safety":"","modminus":"","modplus":""},{"id":"GR_L1_04","sector":"grenzen","diff":1,"style":"classic","title":"Die kleine Korrektur","action":"Wenn jemand deinen Namen falsch ausspricht oder ein Detail falsch wiedergibt, korrigiere ihn sofort höflich.","goal":"Dich sichtbar machen, auch in kleinen Details.","level":0,"cat":"Selbstbehauptung","variants":[],"safety":"","modminus":"","modplus":""},{"id":"GR_L1_05","sector":"grenzen","diff":1,"style":"classic","title":"Das Kompliment-Ende","action":"Nimm ein Kompliment mit einem schlichten „Danke“ an, ohne es kleinzureden oder sofort ein Gegenkompliment zu erzwingen.","goal":"Anerkennung aushalten ohne dich zu relativieren.","level":0,"cat":"Selbstbehauptung","variants":[],"safety":"","modminus":"","modplus":""},{"id":"GR_L1_06","sector":"grenzen","diff":1,"style":"classic","title":"Der Themen-Stopp","action":"Wenn ein Gespräch in eine Richtung geht, die dich langweilt, sag: „Lass uns mal über was anderes reden, ich habe gerade genug von dem Thema.“","goal":"Gesprächsgrenzen aktiv setzen statt passiv mitlaufen.","level":0,"cat":"Selbstbehauptung","variants":[],"safety":"","modminus":"","modplus":""},{"id":"GR_L1_07","sector":"grenzen","diff":1,"style":"classic","title":"Die unpopuläre Meinung","action":"Sage in einer Diskussion: „Ich sehe das eigentlich ganz anders“, auch wenn alle anderen im Raum einer Meinung sind.","goal":"Abweichung zeigen, ohne dich sofort zu verteidigen.","level":0,"cat":"Selbstbehauptung","variants":[],"safety":"","modminus":"","modplus":""},{"id":"GR_L2_01","sector":"grenzen","diff":2,"style":"classic","title":"Der pünktliche Aufbruch","action":"Beende ein Treffen exakt zu der Zeit, die du dir vorgenommen hast, auch wenn es gerade „so nett“ ist.","goal":"Deine Zeit schützen, auch wenn es sozial unangenehm wird.","level":1,"cat":"Selbstbehauptung","variants":[],"safety":"","modminus":"","modplus":""},{"id":"GR_L2_02","sector":"grenzen","diff":2,"style":"classic","title":"Die Rückruf-Ehrlichkeit","action":"Wenn jemand anruft und du keine Lust hast, geh ran und sag: „Ich möchte gerade nicht telefonieren, ich melde mich morgen.“","goal":"Direkt kommunizieren statt Ausreden zu bauen.","level":1,"cat":"Selbstbehauptung","variants":[],"safety":"","modminus":"","modplus":""},{"id":"GR_L2_03","sector":"grenzen","diff":2,"style":"classic","title":"Die Gefallen-Abwehr","action":"Wenn dich jemand um einen Gefallen bittet, der dich stresst, sag: „Das kann ich diesmal leider nicht für dich übernehmen.“","goal":"Hilfsbereitschaft von Selbstüberforderung trennen.","level":1,"cat":"Selbstbehauptung","variants":[],"safety":"","modminus":"","modplus":""},{"id":"GR_L2_04","sector":"grenzen","diff":2,"style":"classic","title":"Die Schweige-Minute","action":"Halte eine Gesprächspause von 10 Sekunden aus, ohne sie nervös mit Smalltalk zu füllen.","goal":"Stille aushalten, ohne sie sofort reparieren zu müssen.","level":1,"cat":"Selbstbehauptung","variants":[],"safety":"","modminus":"","modplus":""},{"id":"GR_L2_05","sector":"grenzen","diff":2,"style":"classic","title":"Der Platz-Wechsel","action":"Bitte im Restaurant oder Café um einen anderen Tisch, obwohl der zugewiesene „okay“ ist.","goal":"Für deinen Komfort einstehen, auch ohne Notfall.","level":1,"cat":"Selbstbehauptung","variants":[],"safety":"","modminus":"","modplus":""},{"id":"GR_L2_06","sector":"grenzen","diff":2,"style":"classic","title":"Die Warteschlangen-Sperre","action":"Wenn sich jemand (vielleicht unabsichtlich) vordrängelt, sag ruhig: „Entschuldigung, ich stehe hier an.“","goal":"Raum einfordern ohne Aggression.","level":1,"cat":"Selbstbehauptung","variants":[],"safety":"","modminus":"","modplus":""},{"id":"GR_L2_07","sector":"grenzen","diff":2,"style":"classic","title":"Die geliehene Sache","action":"Fordere einen Gegenstand oder Geld zurück, das du jemandem geliehen hast, ohne dich für die Nachfrage zu entschuldigen.","goal":"Eigene Ansprüche aussprechen ohne Schuldgefühl.","level":1,"cat":"Selbstbehauptung","variants":[],"safety":"","modminus":"","modplus":""},{"id":"GR_L3_01","sector":"grenzen","diff":3,"style":"classic","title":"Das Stopp-Signal","action":"Wenn dich jemand neckt oder einen Witz macht, der dir nicht gefällt, sag ernst: „Ich möchte nicht, dass du solche Witze über mich machst.“","goal":"Klare Grenze trotz möglicher Ablehnung setzen.","level":2,"cat":"Selbstbehauptung","variants":[],"safety":"","modminus":"","modplus":""},{"id":"GR_L3_02","sector":"grenzen","diff":3,"style":"classic","title":"Die radikale Ehrlichkeit","action":"Sage eine Verabredung absichtlich kurzfristig ab mit der Begründung: „Ich brauche heute einfach Zeit für mich alleine“, statt eine Krankheit vorzutäuschen.","goal":"Ehrlich absagen statt dich hinter Ausreden zu verstecken.","level":2,"cat":"Selbstbehauptung","variants":[],"safety":"","modminus":"","modplus":""},{"id":"GR_L3_03","sector":"grenzen","diff":3,"style":"classic","title":"Die Reklamation","action":"Beschwere dich über eine Dienstleistung oder ein Produkt (z. B. lauwarmes Essen), auch wenn es „eigentlich noch geht“.","goal":"Unzufriedenheit konstruktiv äußern statt sie runterzuschlucken.","level":2,"cat":"Selbstbehauptung","variants":[],"safety":"","modminus":"","modplus":""},{"id":"GR_L3_04","sector":"grenzen","diff":3,"style":"classic","title":"Die Veto-Stimme","action":"Wenn eine Gruppe etwas plant, sag: „Ich mache da nicht mit, das ist nicht mein Ding“, und bleibe entspannt dabei.","goal":"Nein sagen, ohne die Harmonie retten zu müssen.","level":2,"cat":"Selbstbehauptung","variants":[],"safety":"","modminus":"","modplus":""},{"id":"GR_L3_05","sector":"grenzen","diff":3,"style":"classic","title":"Die Korrektur von Erwartungen","action":"Sage einer Person, die sich immer auf dich verlässt: „Du musst das diesmal alleine regeln, ich unterstütze dich dabei heute nicht.“","goal":"Verantwortung zurückgeben ohne Schuldabwehr.","level":2,"cat":"Selbstbehauptung","variants":[],"safety":"","modminus":"","modplus":""},{"id":"GR_L3_06","sector":"grenzen","diff":3,"style":"classic","title":"Die Feedback-Provokation","action":"Frage jemanden: „Was ist eine Sache an mir, die dich manchmal nervt?“ – und höre die Antwort an, ohne dich zu rechtfertigen.","goal":"Kritik aufnehmen, ohne in Verteidigung zu gehen.","level":2,"cat":"Selbstbehauptung","variants":[],"safety":"","modminus":"","modplus":""},{"id":"SE_L1_01","sector":"selbst","diff":1,"style":"classic","title":"Der Socken-Mix","action":"Ziehe zwei komplett unterschiedliche Socken an und trage sie den ganzen Tag (auch wenn man sie nur kurz sieht).","goal":"Nicht die Socken — den kleinen Makel bewusst nicht korrigieren.","level":0,"cat":"Unperfekt-Sein","variants":[],"safety":"","modminus":"","modplus":""},{"id":"SE_L1_02","sector":"selbst","diff":1,"style":"classic","title":"Die Frisur-Sabotage","action":"Kämme deine Haare absichtlich unordentlich oder lass eine Strähne „falsch“ abstehen, bevor du das Haus verlässt.","goal":"Nicht die Frisur — den Perfektionsimpuls einmal ignorieren.","level":0,"cat":"Unperfekt-Sein","variants":[],"safety":"","modminus":"","modplus":""},{"id":"SE_L1_03","sector":"selbst","diff":1,"style":"classic","title":"Der Fleck-Simulator","action":"Befeuchte eine Stelle auf deinem Shirt mit Wasser, sodass es wie ein Klecks aussieht, und trage es so in der Öffentlichkeit.","goal":"Nicht der Fleck — Scham aushalten ohne sofort zu retten.","level":0,"cat":"Unperfekt-Sein","variants":[],"safety":"","modminus":"","modplus":""},{"id":"SE_L1_04","sector":"selbst","diff":1,"style":"classic","title":"Die falsche Knöpfung","action":"Knöpfe deine Jacke oder dein Hemd um ein Loch versetzt zu und laufe so durch einen Laden.","goal":"Nicht das Outfit — einen sichtbaren Mini-Fehler stehen lassen.","level":0,"cat":"Unperfekt-Sein","variants":[],"safety":"","modminus":"","modplus":""},{"id":"SE_L1_05","sector":"selbst","diff":1,"style":"classic","title":"Das Preisschild-Versehen","action":"Lass das Etikett an einem Schal oder einer Jacke sichtbar heraushängen, während du unterwegs bist.","goal":"Nicht das Etikett — den Impuls, sofort korrekt zu wirken, brechen.","level":0,"cat":"Unperfekt-Sein","variants":[],"safety":"","modminus":"","modplus":""},{"id":"SE_L1_06","sector":"selbst","diff":1,"style":"classic","title":"Der Technik-Laie","action":"Probiere an einem Automaten (Pfand/Fahrkarten) absichtlich eine falsche Taste und schaue kurz verwirrt, bevor du es richtig machst.","goal":"Nicht die Bedienung — kurz inkompetent wirken dürfen.","level":0,"cat":"Unperfekt-Sein","variants":[],"safety":"","modminus":"","modplus":""},{"id":"SE_L1_07","sector":"selbst","diff":1,"style":"classic","title":"Die falsche Uhrzeit","action":"Stelle deine Armbanduhr auf eine komplett falsche Zeit und schaue in der Bahn demonstrativ lange darauf.","goal":"Nicht die Uhrzeit — die eigene Peinlichkeit nicht sofort wegregeln.","level":0,"cat":"Unperfekt-Sein","variants":[],"safety":"","modminus":"","modplus":""},{"id":"SE_L2_01","sector":"selbst","diff":2,"style":"classic","title":"Der Zeitlupen-Gang","action":"Gehe in einem Supermarkt oder einer Mall für 60 Sekunden extrem langsam (Zeitlupe), während alle an dir vorbeieilen.","goal":"Nicht die Geschwindigkeit — auffallen, ohne dich zu erklären.","level":1,"cat":"Unperfekt-Sein","variants":[],"safety":"","modminus":"","modplus":""},{"id":"SE_L2_02","sector":"selbst","diff":2,"style":"classic","title":"Das sichtbare Selbstgespräch","action":"Gehe durch die Stadt und bewege deine Lippen deutlich, als würdest du lautlos mit dir selbst diskutieren.","goal":"Nicht das Selbstgespräch — das Gefühl „die schauen“ neutralisieren.","level":1,"cat":"Unperfekt-Sein","variants":[],"safety":"","modminus":"","modplus":""},{"id":"SE_L2_03","sector":"selbst","diff":2,"style":"classic","title":"Die Schuh-Verwechslung","action":"Trage deine Schuhe für 10 Minuten auf den falschen Füßen (links/rechts vertauscht), während du eine kleine Erledigung machst.","goal":"Nicht der Komfort — bewusst unperfekt auftreten.","level":1,"cat":"Unperfekt-Sein","variants":[],"safety":"","modminus":"","modplus":""},{"id":"SE_L2_04","sector":"selbst","diff":2,"style":"classic","title":"Der Rückwärts-Geher","action":"Gehe in einer Fußgängerzone ohne Vorwarnung 5 Meter rückwärts, drehe dich dann um und laufe normal weiter.","goal":"Nicht die Aktion — kurz seltsam sein und danach normal bleiben.","level":1,"cat":"Unperfekt-Sein","variants":[],"safety":"","modminus":"","modplus":""},{"id":"SE_L2_05","sector":"selbst","diff":2,"style":"classic","title":"Das laute Selbst-Update","action":"Sage einmal hörbar zu dir selbst: „Wo habe ich denn jetzt schon wieder meinen Kopf?“, wenn Leute direkt neben dir stehen.","goal":"Nicht der Satz — hörbar unperfekt sein.","level":1,"cat":"Unperfekt-Sein","variants":[],"safety":"","modminus":"","modplus":""},{"id":"SE_L2_06","sector":"selbst","diff":2,"style":"classic","title":"Der falsche Eingang","action":"Betritt ein Geschäft, laufe zielstrebig bis zur Mitte, bleibe stehen, sage leise „Ach ne, falsch“ und gehe direkt wieder raus.","goal":"Nicht der Weg — den Mini-Fehltritt nicht kaschieren.","level":1,"cat":"Unperfekt-Sein","variants":[],"safety":"","modminus":"","modplus":""},{"id":"SE_L2_07","sector":"selbst","diff":2,"style":"classic","title":"Die Inhaltsstoff-Studie","action":"Nimm ein Produkt im Regal und studiere 2 Minuten lang extrem konzentriert die Rückseite, bevor du es kopfschüttelnd zurückstellst.","goal":"Nicht das Produkt — komisch wirken dürfen, ohne Rechtfertigung.","level":1,"cat":"Unperfekt-Sein","variants":[],"safety":"","modminus":"","modplus":""},{"id":"SE_L3_01","sector":"selbst","diff":3,"style":"fun","title":"Die unsichtbare Wand","action":"Bleibe auf dem Gehweg stehen und taste eine „unsichtbare Wand“ vor dir ab, bevor du ganz normal weitergehst.","goal":"Nicht die Performance — soziale Scham bewusst durchlaufen.","level":2,"cat":"Unperfekt-Sein","variants":[],"safety":"","modminus":"","modplus":""},{"id":"SE_L3_02","sector":"selbst","diff":3,"style":"classic","title":"Der Schuhbändel-Stopp","action":"Bleibe mitten im stärksten Passantenstrom stehen, um deine (eigentlich geschlossenen) Schnürsenkel neu zu binden.","goal":"Nicht die Schnürsenkel — dir Raum nehmen, obwohl es „stört“.","level":2,"cat":"Unperfekt-Sein","variants":[],"safety":"","modminus":"","modplus":""},{"id":"SE_L3_03","sector":"selbst","diff":3,"style":"classic","title":"Der Technik-Fluch","action":"Starre auf dein Handy, sag einmal laut „Och nö, ernsthaft jetzt?“ und mache eine genervte Geste, bevor du es wegsteckst.","goal":"Nicht das Handy — sichtbare Emotion zulassen, statt cool zu bleiben.","level":2,"cat":"Unperfekt-Sein","variants":[],"safety":"","modminus":"","modplus":""},{"id":"SE_L3_04","sector":"selbst","diff":3,"style":"fun","title":"Die Ampel-Melodie","action":"Summe eine bekannte Kindermelodie (z.B. „Alle meine Entchen“) laut vor dich hin, während du an einer roten Ampel wartest.","goal":"Nicht die Melodie — peinliche Sichtbarkeit aktiv wählen.","level":2,"cat":"Unperfekt-Sein","variants":[],"safety":"","modminus":"","modplus":""},{"id":"SE_L3_05","sector":"selbst","diff":3,"style":"classic","title":"Die Statuen-Minute","action":"Bleibe an einem belebten Ort (Bahnhof/Mall) für genau 60 Sekunden wie eingefroren stehen, ohne dich zu bewegen.","goal":"Nicht die Minute — den Blicken nicht ausweichen.","level":2,"cat":"Unperfekt-Sein","variants":[],"safety":"","modminus":"","modplus":""},{"id":"SE_L3_06","sector":"selbst","diff":3,"style":"fun","title":"Der Party-König","action":"Trage eine auffällige Kopfbedeckung (z.B. einen billigen Partyhut oder eine Krone aus Papier) beim nächsten Gang zum Bäcker.","goal":"Nicht der Hut — den Drang nach „normal wirken“ bewusst lockern.","level":2,"cat":"Unperfekt-Sein","variants":[],"safety":"","modminus":"","modplus":""}]</script>
+
+<script type="application/json" id="xl-quests-embed">[{"category":"Dating","skill":"Presence","level":1,"title":"Der 3s-Blick","trigger":"Halte den Blickkontakt bei einer attraktiven Person bewusst 3 Sek. lang, lächle leicht und schau erst dann ruhig weiter.","friction":"Ehrlichkeit. Das gegenseitige 'Erkennen' aushalten, ohne die Augen sofort schüchtern wegzuziehen.","rule":"Nicht nach unten wegsehen. Halte den Kopf oben.","id":"D1.1"},{"id":"D1.2","category":"Dating","level":1,"title":"Räumliche Exposition","trigger":"Setz dich (Café/Isar) bewusst in die Nähe einer attraktiven Person, auch wenn woanders viel Platz wäre.","friction":"Nähe & Präsenz. Die eigene körperliche Anspannung im energetischen Feld der Person aushalten.","rule":"Kein Handy. Bleib 5 Min. einfach nur präsent sitzen. Du musst nicht reden, nur den Raum halten.","skill":"Intention"},{"id":"D1.3","category":"Dating","level":1,"title":"The Slow Turn","trigger":"Wenn du an jemandem vorbeiläufst, den du attraktiv findest, dreh den Kopf beim Passieren bewusst langsam mit.","friction":"Fokus-Kontrolle. Das Signal senden: 'Ich habe dich gesehen und ich stehe zu meiner Aufmerksamkeit.'","rule":"Kein hektisches Nicken. Die Bewegung ist flüssig und kontrolliert wie bei einem Leader.","skill":"Intention"},{"category":"Dating","skill":"Intention","level":2,"title":"Vibe-Drop","trigger":"Sag im Vorbeigehen: 'Du hast eine wahnsinnig tolle Ausstrahlung.' Geh sofort weiter.","friction":"Absicht zeigen. Ein Kompliment geben, ohne die Sicherheit einer Antwort zu haben (Take-away-Frame).","rule":"Kein Stopp. Wer weitergeht, signalisiert: 'Ich brauche nichts von dir.'","id":"D2.1"},{"id":"D2.2","category":"Dating","level":2,"title":"Style-Note","trigger":"Sag im Stehenbleiben: 'Dein Style ist echt mutig, sieht man hier selten.' – Nicken und Weggehen.","friction":"Urteilskraft. Deine subjektive Meinung laut äußern, ohne nach Bestätigung zu suchen.","rule":"Die Handlung endet mit deinem Satz. Die Reaktion des anderen ist für den Quest-Erfolg irrelevant.","skill":"Intention"},{"id":"D2.3","category":"Dating","level":2,"title":"Der Neugier-Opener","trigger":"Frag im Vorbeigehen: 'Bist du so cool wie du aussiehst oder täuscht das?' – Geh direkt weiter.","friction":"Spielerische Provokation. Den Frame setzen, dass du derjenige bist, der das Gegenüber prüft.","rule":"Lächle dabei. Es ist ein Kompliment, das als Herausforderung verpackt ist.","skill":"Intention"},{"id":"D3.1","category":"Dating","level":3,"title":"Der Alleingang","trigger":"Geh gezielt alleine in eine Bar und bleib dort für 15 Min. am Tresen stehen, ohne dein Handy zu nutzen.","friction":"Radikale Autonomie. Ohne soziale 'Sicherheitsdecke' (Freunde/Digitales) im öffentlichen Raum sichtbar sein.","rule":"Beobachte den Raum. Sei die Base. Wer sich ohne Ablenkung wohlfühlt, strahlt Dominanz aus.","skill":"Intention"},{"id":"D3.2","category":"Dating","level":3,"title":"Public Compliment","trigger":"Mach jemandem ein Vibe-Kompliment (D2.1), während Freunde der Person direkt daneben stehen.","friction":"Social Pressure. Die Aufmerksamkeit einer ganzen Gruppe aushalten, während du deine Intention zeigst.","rule":"Dein Fokus liegt nur auf der Zielperson. Blende die Umgebung für diesen Moment aus.","skill":"Intention"},{"category":"Dating","skill":"Wirkung","level":3,"title":"Die ehrliche Pause","trigger":"Wenn du jemanden kurz ansprichst, halte nach deinem ersten Satz bewusst 3 Sek. Schweigen und Blickkontakt.","friction":"Spannungs-Management. Die Stille zwischen zwei Fremden aktiv aushalten, statt sie nervös zu füllen.","rule":"Wer die Stille hält, führt das Gespräch.","id":"D3.3"},{"category":"Dating","skill":"Intention","level":4,"title":"Instant Nummer","trigger":"Geh auf jemanden zu: 'Ich finde deine Ausstrahlung toll – gib mir deine Nummer, dann trinken wir einen Kaffee.'","friction":"Direktes Risiko. Die maximale soziale Hürde: Das direkte 'Nein' innerhalb von Sekunden provozieren.","rule":"Ziel ist das Risiko, nicht die Nummer.","id":"D4.1"},{"id":"D4.2","category":"Dating","level":4,"title":"Sofort-Einladung","trigger":"Frag im Café/Park nach 10 Sek. Kontakt: 'Lust, jetzt sofort mit mir 10 Min. spazieren zu gehen?'","friction":"Spontaneität & Anspruch. Die sofortige Investition von Zeit fordern. Extrem hohe Ablehnungsrate.","rule":"Bleib entspannt bei einem 'Nein'. Ein 'Nein' ist lediglich die Bestätigung deines Mutes.","skill":"Intention"},{"id":"D4.3","category":"Dating","level":4,"title":"Korb-Sammeln","trigger":"Sprich jemanden an, bei dem du kein Interesse vermutest, nur um die Abfuhr souverän anzunehmen.","friction":"Resilienz-Training. Die komplette Abwesenheit von defensiver oder beleidigter Energie bei Ablehnung.","rule":"Antworte: 'Alles klar, schönen Tag noch!' und geh lächelnd weiter. Dein Wert bleibt unberührt.","skill":"Intention"},{"id":"P1.1","category":"Sozialer Alltag","level":1,"title":"The Anchor","trigger":"Bleib nach dem Bezahlen oder Kaffee-Erhalt für 15 Sek. ruhig am Tresen stehen und ordne deine Sachen.","friction":"Raum-Besetzung. Der innere Druck, sofort Platz für den Nächsten machen zu müssen.","rule":"Atme tief. Dein Tempo bestimmt die Realität am Tresen, nicht die Schlange hinter dir.","skill":"Presence"},{"id":"P1.2","category":"Sozialer Alltag","level":1,"title":"Center Stage","trigger":"Wähle im Café oder Restaurant den exponiertesten Tisch in der Mitte, statt dich an den Rand zu setzen.","friction":"Exposition. Das Gefühl, von allen Seiten beobachtet zu werden, ohne Schutz im Rücken.","rule":"Kein Handy. Schau 5 Min. einfach nur ruhig in den Raum. Sei präsent.","skill":"Presence"},{"id":"P1.3","category":"Sozialer Alltag","level":1,"title":"Unplugged Silence","trigger":"Sitz 10 Minuten an einem belebten Ort (Isar/Park) ohne Handy, Buch oder Musik. Nur du und die Umgebung.","friction":"Reiz-Entzug. Die Angst, ohne digitale Ablenkung \"unproduktiv\" oder \"alleine\" zu wirken.","rule":"Wenn Unruhe aufkommt: Registriere sie, bleib sitzen. Du bist die Base.","skill":"Presence"},{"id":"P2.1","category":"Sozialer Alltag","level":2,"title":"The Slow Walk","trigger":"Gehe heute durch eine belebte Straße (z.B. Kaufingerstraße) bewusst 30% langsamer als der Strom.","friction":"Social Pacing. Den instinktiven Drang unterdrücken, sich der Hektik anzupassen.","rule":"Kopf oben, Blick am Horizont. Du lässt dich nicht treiben, du navigierst.","skill":"Presence"},{"id":"P2.2","category":"Sozialer Alltag","level":2,"title":"Slow Motion Interaction","trigger":"Bewege deine Hände und deinen Körper bei einer Interaktion (z.B. Bestellen) mit halber Geschwindigkeit.","friction":"Körperbeherrschung. Hektik ist ein Zeichen von Unterlegenheit. Ruhe ist Macht.","rule":"Keine unnötigen Gesten. Jede Bewegung ist bewusst und präzise.","skill":"Presence"},{"id":"P2.3","category":"Sozialer Alltag","level":2,"title":"The Waiter Frame","trigger":"Wenn du im Restaurant bestellen willst, schau dem Kellner ruhig hinterher, bis er dich bemerkt, statt zu rufen oder zu winken.","friction":"Geduld-Dominanz. Den Frame halten, dass deine Zeit wertvoll ist, ohne bedürftig zu wirken.","rule":"Halte die Körperspannung aufrecht. Wer wartet, ohne nervös zu werden, führt.","skill":"Presence"},{"id":"P3.1","category":"Sozialer Alltag","level":3,"title":"Horizon Scan","trigger":"Halte den Blick für 2 Minuten konsequent auf Augenhöhe (Horizont), während du durch eine Menschenmenge läufst.","friction":"Soziale Blindheit. Den Drang unterdrücken, auf den Boden zu schauen oder Blicken auszuweichen.","rule":"Schau \"durch\" die Menschen hindurch, wenn kein Kontakt da ist. Absolute Blicktreue.","skill":"Presence"},{"id":"P3.2","category":"Sozialer Alltag","level":3,"title":"The Mirror Gaze","trigger":"Schau einer fremden Person im Vorbeilaufen so lange in die Augen, bis sie zuerst wegschaut.","friction":"Konfrontation. Die natürliche Hierarchie-Prüfung durch Blickkontakt gewinnen.","rule":"Kein Starren. Ein neutraler, entspannter Blick (Dominance, not Aggression).","skill":"Presence"},{"id":"P3.3","category":"Sozialer Alltag","level":3,"title":"The 360-View","trigger":"Bleib mitten auf einem belebten Platz stehen und dreh dich einmal ganz langsam um 360 Grad, während du alles betrachtest.","friction":"Mittelpunkt-Exposition. Sich selbst zum Zentrum der Szenerie machen.","rule":"Tu es so, als würdest du ein Grundstück besichtigen, das dir gehört.","skill":"Presence"},{"id":"P4.1","category":"Sozialer Alltag","level":4,"title":"The Street Pause","trigger":"Bleib mitten auf dem Gehweg einer belebten Straße stehen und schau für 60 Sek. auf deine (imaginäre) Uhr oder in den Himmel.","friction":"Flow-Unterbrechung. Den sozialen Fluss stören, ohne einen \"triftigen\" Grund zu haben.","rule":"Weiche den Leuten nicht aus. Sie werden um dich herumgehen. Bleib fest.","skill":"Presence"},{"id":"P4.2","category":"Sozialer Alltag","level":4,"title":"Front Row Presence","trigger":"Setz dich in einer Vorlesung, einem Workshop oder Event bewusst in die allererste Reihe, direkt vor den Sprecher.","friction":"Direkte Exposition. Die psychologische Hürde der ersten Reihe (Angst vor Interaktion).","rule":"Halte den Fokus beim Sprecher. Sei der präsenteste Zuhörer im Raum.","skill":"Presence"},{"id":"P4.3","category":"Sozialer Alltag","level":4,"title":"The Silent Entrance","trigger":"Betritt einen Raum (Bar/Meeting) und bleib 5 Sek. im Türrahmen stehen, bevor du dich bewegst oder jemanden grüßt.","friction":"Eintritts-Kontrolle. Den Moment des Erscheinens voll auskosten und markieren.","rule":"Scan den Raum ruhig ab. Du entscheidest, wann du den Raum betrittst.","skill":"Presence"},{"id":"W1.1","category":"Business","level":1,"title":"Zero Softener","trigger":"Bestelle etwas (Café/Bar) ohne „vielleicht“, „gerne“ oder „könnte ich“. Sag: „Ich nehme den Espresso.“","friction":"Direktheit. Verzicht auf verbale Schutzschilde und den Drang, „nett“ zu wirken.","rule":"Halte danach Blickkontakt, bis die Bestellung bestätigt ist. Kein Lückenfüller.","skill":"Wirkung"},{"id":"W1.2","category":"Business","level":1,"title":"Point Blank","trigger":"Beantworte eine Frage heute ausschließlich mit „Ja“ oder „Nein“, ohne eine zusätzliche Erklärung zu liefern.","friction":"Rechtfertigungs-Stopp. Das Gefühl aushalten, dass eine Erklärung „höflicher“ wäre.","rule":"Stille nach dem Wort ist dein Freund. Deine Antwort steht für sich.","skill":"Wirkung"},{"id":"W1.3","category":"Business","level":1,"title":"The Statement","trigger":"Ersetze „Ich glaube...“ oder „Ich finde...“ durch eine klare Behauptung: „Es ist so, dass...“","friction":"Überzeugung. Die eigene Meinung als Tatsache im Raum stehen lassen.","rule":"Deine Stimme sinkt am Ende des Satzes ab, statt wie bei einer Frage zu steigen.","skill":"Wirkung"},{"id":"W2.1","category":"Business","level":2,"title":"Volume Up","trigger":"Sprich bei einer Bestellung oder kurzen Frage 20% lauter als dein übliches Level.","friction":"Hörbarkeit. Die unterbewusste Angst vor der Aufmerksamkeit anderer Kunden.","rule":"Deine Stimme muss die Wände berühren. Nicht schreien, sondern projizieren.","skill":"Wirkung"},{"id":"W2.2","category":"Business","level":2,"title":"The Echo","trigger":"Wenn jemand deinen Namen ruft oder dich anspricht, antworte erst nach 2 Sekunden mit tiefer, ruhiger Stimme.","friction":"Reaktions-Kontrolle. Den automatischen „Helfersyndrom“-Impuls unterdrücken.","rule":"Du kontrollierst den Startpunkt der Kommunikation.","skill":"Wirkung"},{"id":"W2.3","category":"Business","level":2,"title":"Low-Pitch Intro","trigger":"Beginne ein Gespräch (auch Smalltalk) am unteren Ende deines Stimmspektrums (tiefer Ton).","friction":"Autorität. Tiefe Frequenzen signalisieren Gelassenheit und hohen Status.","rule":"Atme in den Bauch, bevor du den ersten Ton abgibst.","skill":"Wirkung"},{"id":"W3.1","category":"Business","level":3,"title":"The Pause","trigger":"Wenn dir jemand eine Frage stellt, warte bewusst 3 Sekunden, während du ihn anschaust, bevor du antwortest.","friction":"Kontrolle. Die soziale Erwartung einer sofortigen Reaktion aktiv brechen.","rule":"Nutze die Stille. Wer die Stille hält, führt das Gespräch.","skill":"Wirkung"},{"id":"W3.2","category":"Business","level":3,"title":"Eye-Lead","trigger":"Halte beim Sprechen den Blickkontakt, bis du deinen Satz komplett beendet hast. Schau erst danach weg.","friction":"Verbindung. Die Intensität des Moments bis zum Ende durchhalten.","rule":"Deine Augen sind der Anker deiner Worte. Lass sie nicht wandern.","skill":"Wirkung"},{"id":"W3.3","category":"Business","level":3,"title":"Interrupt-Stop","trigger":"Wenn dich jemand unterbricht, sprich einfach in deinem Tempo ruhig weiter, bis du deinen Satz beendet hast.","friction":"Geltungsanspruch. Sich nicht physisch oder akustisch verdrängen lassen.","rule":"Werde nicht lauter oder schneller. Bleib einfach in deinem Rhythmus.","skill":"Wirkung"},{"id":"W4.1","category":"Business","level":4,"title":"The Why-Question","trigger":"Wenn dich jemand zu etwas bittet, frag einmal freundlich aber bestimmt: „Warum ist das für dich wichtig?“","friction":"Filter-Funktion. Nicht sofort springen, sondern den Wert der Aufgabe prüfen.","rule":"Akzeptiere die Antwort nur, wenn sie für dich Sinn ergibt.","skill":"Wirkung"},{"id":"W4.2","category":"Business","level":4,"title":"The Clean Cut","trigger":"Beende ein Gespräch, wenn es für dich vorbei ist, mit: „Ich habe alles gehört. Danke.“ und geh.","friction":"Abschluss-Macht. Den sozialen Zwang, auf ein „natürliches“ Ende zu warten, kappen.","rule":"Sei höflich, aber bestimmt. Deine Zeit ist dein wertvollstes Gut.","skill":"Wirkung"},{"id":"W4.3","category":"Business","level":4,"title":"Frame-Correction","trigger":"Wenn jemand eine falsche Annahme über dich trifft, korrigiere sie sofort: „Das ist nicht korrekt. Die Lage ist so: …“","friction":"Wahrheits-Hoheit. Kleine Respektlosigkeiten oder Fehler nicht durchgehen lassen.","rule":"Bleib sachlich. Emotionen schwächen den Frame. Fakten stärken ihn.","skill":"Wirkung"}]</script>
+
 <script>
-const RT_CATS = ['Präsenz','Mini-Kontakt','Kleine Bitte','Meinung & Feedback','Sichtbarkeit','Ablehnung','Fun Mode'];
-const RT_LEVELS = {0:'Präsenz ohne Flucht',1:'Mini-Kontakt',2:'Kleine Bitte',3:'Meinung & Feedback',4:'Sichtbarkeit & Rejection',5:'Fun / Hard Mode'};
-const QL = JSON.parse(document.getElementById('rt-quests-json').textContent);
-/** Passendes Quest-Emoji; optional Feld q.icon im JSON überschreibt alles. */
-const QUEST_ICONS={
-  RT00_01:'👁️',RT00_02:'😊',RT00_03:'📵',RT00_04:'👀',RT00_05:'👋',RT00_06:'🎤',
-  RT01_01:'❓',RT01_02:'💡',RT01_03:'💬',RT01_04:'🤔',RT01_05:'👏',
-  RT02_01:'➕',RT02_02:'🤝',RT02_03:'🔧',RT02_04:'💶',RT02_05:'🔓',
-  RT03_01:'🪞',RT03_02:'👔',RT03_03:'🎯',RT03_04:'🎲',
-  RT04_01:'📢',RT04_02:'👤',RT04_03:'✨',RT04_04:'📸',RT04_05:'🪙',RT04_06:'🎬',RT04_07:'💺',RT04_08:'📋',
-  RT05_01:'🍔',RT05_02:'🏬',RT05_03:'✋',RT05_04:'🚦',RT05_05:'📅',RT05_06:'☕'
-};
-function questIcon(q){
-  if(!q)return'⚡';
-  if(q.icon)return q.icon;
-  return q.style==='fun'?'🎭':'⚡';
+const APP_LEVEL_NAMES={1:'Basis',2:'Kontakt',3:'Druck',4:'Maximum'};
+let QL=[];
+function sectorFromLifeCategory(cat){
+  var t=String(cat||'').toLowerCase();
+  if(t==='dating'||t==='date')return 'dating';
+  if(t==='business'||t==='karriere')return 'business';
+  if(t==='sozialer alltag'||t==='social'||t.indexOf('sozial')!==-1)return 'social';
+  return 'dating';
 }
-QL.forEach(function(q){q.icon=QUEST_ICONS[q.id]||q.icon;});
-const SECTOR_META = {
-  sozial: {
-    label:'Sozialer Alltag',
-    desc:'Fremde, Alltag, Aufmerksamkeit aushalten',
-    emoji:'🌍',
-    color:'#0891B2'
-  },
-  dating: {
+function normalizeQuestRow(raw){
+  if(!raw||raw.id==null)return null;
+  var lv=parseInt(raw.level,10);
+  if(isNaN(lv))lv=1;
+  lv=Math.max(1,Math.min(4,lv));
+  var id=String(raw.id||'');
+  var rawCat=String(raw.category||'').trim();
+  var lifeCat=rawCat||'Dating';
+  var ck=rawCat.toLowerCase();
+  if(ck==='intention'||ck==='presence'||ck==='wirkung'){
+    if(id.charAt(0)==='D')lifeCat='Dating';
+    else if(id.charAt(0)==='P')lifeCat='Sozialer Alltag';
+    else if(id.charAt(0)==='W')lifeCat='Business';
+    else lifeCat='Dating';
+  }
+  var sector=sectorFromLifeCategory(lifeCat);
+  var skill=String(raw.skill||'').trim();
+  if(!skill){
+    if(ck==='intention')skill='Intention';
+    else if(ck==='presence')skill='Presence';
+    else if(ck==='wirkung')skill='Wirkung';
+    else skill='Intention';
+  }
+  var title=String(raw.title||'');
+  var trig=String(raw.trigger||'');
+  var fric=String(raw.friction||'');
+  var rule=String(raw.rule||'');
+  var diff=Math.min(3,lv);
+  return{
+    id:id,
+    category:lifeCat,
+    skill:skill,
+    level:lv,
+    title:title,
+    trigger:trig,
+    friction:fric,
+    rule:rule,
+    sector:sector,
+    cat:lifeCat,
+    action:trig||title,
+    diff:diff,
+    style:'classic'
+  };
+}
+/* Passende Icons pro Quest (Fallback bleibt nach Level, wenn ID unbekannt) */
+var QUEST_ICONS_BY_ID={
+  'D1.1':'👁️','D1.2':'📍','D1.3':'↩️',
+  'D2.1':'💬','D2.2':'👗','D2.3':'😏',
+  'D3.1':'🍸','D3.2':'👥','D3.3':'⏸️',
+  'D4.1':'📱','D4.2':'🌳','D4.3':'🧺',
+  'P1.1':'⚓','P1.2':'🎭','P1.3':'📵',
+  'P2.1':'🐢','P2.2':'🎬','P2.3':'🍽️',
+  'P3.1':'🌅','P3.2':'🪞','P3.3':'🌀',
+  'P4.1':'🛑','P4.2':'🎓','P4.3':'🚪',
+  'W1.1':'☕','W1.2':'✅','W1.3':'📣',
+  'W2.1':'🔊','W2.2':'⏳','W2.3':'🎙️',
+  'W3.1':'🤔','W3.2':'👁️','W3.3':'✋',
+  'W4.1':'❓','W4.2':'✂️','W4.3':'🧭'
+};
+function applyQuestIcons(){
+  var fb={1:'👁️',2:'💬',3:'🔥',4:'⚡'};
+  QL.forEach(function(q){
+    if(!q)return;
+    if(q.icon)return;
+    var id=String(q.id||'');
+    if(QUEST_ICONS_BY_ID[id]){q.icon=QUEST_ICONS_BY_ID[id];return;}
+    q.icon=fb[q.level]||'✨';
+  });
+}
+function loadQuestLibraryFromData(d){
+  QL=(Array.isArray(d)?d:[]).map(normalizeQuestRow).filter(Boolean);
+}
+function loadQuestsFromEmbed(){
+  var el=document.getElementById('xl-quests-embed');
+  if(!el)return false;
+  try{
+    var d=JSON.parse(el.textContent);
+    if(!Array.isArray(d)||!d.length)return false;
+    loadQuestLibraryFromData(d);
+    return QL.length>0;
+  }catch(e){return false;}
+}
+function loadQuestLibrary(){
+  return fetch('data/quests.json')
+    .then(function(r){if(!r.ok)throw new Error('quests');return r.json();})
+    .then(function(d){
+      loadQuestLibraryFromData(d);
+      if(!QL.length)throw new Error('empty');
+    })
+    .catch(function(){
+      if(!loadQuestsFromEmbed())QL=[];
+    })
+    .then(function(){
+      applyQuestIcons();
+      sanitizeTodayQueue();
+      renderProfileQuestBento();
+      var sq=document.getElementById('s-q');
+      if(sq&&sq.classList.contains('on'))rOverview();
+    });
+}
+function openProfileQuestDetail(q){
+  if(!q)return;
+  window._profileDetailQuest=q;
+  var root=document.getElementById('quest-detail');if(!root)return;
+  var lv=q.level!=null&&q.level!==''&&!isNaN(Number(q.level))?Math.max(1,Math.min(4,Number(q.level))):null;
+  if(lv!=null)root.setAttribute('data-pq-lvl',String(lv));else root.removeAttribute('data-pq-lvl');
+  var catEl=document.getElementById('det-cat');
+  if(catEl)catEl.textContent=String(q.category||'').toUpperCase()+(q.skill?' · '+String(q.skill):'')+(lv!=null?' · L'+lv:'');
+  var titleEl=document.getElementById('det-title');
+  if(titleEl)titleEl.textContent=q.title||'';
+  var tr=document.getElementById('det-trigger');
+  if(tr)tr.textContent=q.trigger||(q.title||'');
+  var fr=document.getElementById('det-friction');
+  if(fr)fr.textContent=q.friction||'';
+  var ru=document.getElementById('det-rule');
+  if(ru)ru.textContent=q.rule||'';
+  root.classList.add('on');
+}
+function openProfileQuestDetailById(id){
+  var q=QL.find(function(x){return x&&x.id===id;});
+  if(q)openProfileQuestDetail(q);
+}
+function closeDetail(){
+  var root=document.getElementById('quest-detail');if(root){root.classList.remove('on');root.removeAttribute('data-pq-lvl');}
+  window._profileDetailQuest=null;
+}
+function startQuest(){
+  var q=window._profileDetailQuest;
+  closeDetail();
+  if(!q)return;
+  addAndShame(q.id);
+}
+function questIcon(q){
+  if(!q)return'✨';
+  return q.icon||'✨';
+}
+const SECTOR_META={
+  dating:{
+    id:'dating',
     label:'Dating',
-    desc:'Flirt, Ansprechen, Körbe aushalten',
-    emoji:'💫',
-    color:'#EC4899'
+    desc:'Annäherung, Signal, Risiko',
+    emoji:'💕',
+    color:'var(--dating)'
   },
-  job: {
-    label:'Job & Erfolg',
-    desc:'Auftreten, Kritik, Sichtbarkeit im Beruf',
+  business:{
+    id:'business',
+    label:'Business',
+    desc:'Status, Klarheit, Rahmen',
     emoji:'💼',
-    color:'#7C3AED'
+    color:'var(--business)'
   },
-  grenzen: {
-    label:'Selbstbehauptung',
-    desc:'Nein sagen, Konflikte, Nahbereich',
-    emoji:'🛡️',
-    color:'#DC2626'
-  },
-  selbst: {
-    label:'Unperfekt-Sein',
-    desc:'Fehler, Makel, Unperfekt-Sein aushalten',
-    emoji:'🪞',
-    color:'#D97706'
-  },
+  social:{
+    id:'social',
+    label:'Sozialer Alltag',
+    desc:'Öffentlichkeit, Tempo, Nähe',
+    emoji:'🌍',
+    color:'var(--social)'
+  }
 };
 
 const DIFF_META = {
@@ -1265,17 +1551,7 @@ const DIFF_META = {
   2:{label:'Spürbar',color:'#D97706'},
   3:{label:'Mutig',color:'#DC2626'},
 };
-/* Kompatibilität für bestehende Views */
-const LEVEL_UNLOCK={0:0,1:0,2:0,3:0,4:0,5:0};
-const LEVEL_META={
-  0:{name:RT_LEVELS[0],emoji:'🌱'},
-  1:{name:RT_LEVELS[1],emoji:'👋'},
-  2:{name:RT_LEVELS[2],emoji:'🙏'},
-  3:{name:RT_LEVELS[3],emoji:'💬'},
-  4:{name:RT_LEVELS[4],emoji:'👁️'},
-  5:{name:RT_LEVELS[5],emoji:'🎭'},
-};
-function getUnlockedLevel(){return 5;}
+function getUnlockedLevel(){return 4;}
 
 let S = {totalDone:0,streak:0,lastLogin:null,completions:[],weekQueue:[],weekStart:null,weekDone:{},weekShame:{},activeSector:'all',ovLvl:'all',name:''};
 function sv(){try{localStorage.setItem('xl7',JSON.stringify(S))}catch(e){}}
@@ -1284,7 +1560,7 @@ function ld(){try{const d=JSON.parse(localStorage.getItem('xl7')||'{}');if(Objec
   if('fCat' in S){
     var fc=S.fCat;
     delete S.fCat;
-    if(RT_CATS.indexOf(fc)!==-1||fc==='Alle')S.ovLvl='all';
+    if(fc==='Alle')S.ovLvl='all';
     else if(typeof fc==='number'&&fc>=0&&fc<=5)S.ovLvl=fc;
     else if(typeof fc==='string'){var pfc=parseInt(fc,10);if(!isNaN(pfc)&&pfc>=0&&pfc<=5)S.ovLvl=pfc;}
   }
@@ -1298,7 +1574,11 @@ function ld(){try{const d=JSON.parse(localStorage.getItem('xl7')||'{}');if(Objec
     S.weekQueue.forEach(function(qid){if(!S.weekDone[qid])S.weekDone[qid]=[0,0,0,0,0,0,0];});
     if(!S.weekStart)S.weekStart=getMonday();
   }
-  sanitizeTodayQueue();}
+  if(typeof S.activeSector!=='string')S.activeSector='all';
+  if(S.activeSector&&S.activeSector!=='all'&&!SECTOR_META[S.activeSector])S.activeSector='all';
+  var _legacySectors=['intention','presence','wirkung'];
+  if(_legacySectors.indexOf(S.activeSector)!==-1)S.activeSector='all';
+}
 function sanitizeTodayQueue(){const ok=new Set(QL.map(q=>q.id));S.weekQueue=(S.weekQueue||[]).filter(id=>ok.has(id));sv();}
 
 function getMonday(){
@@ -1327,6 +1607,11 @@ function go(tab){
   if(tab==='stats')rStats();
 }
 function escHtml(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function renderProfileQuestBento(){
+  var el=document.getElementById('hpq');if(!el)return;
+  /* Volle Bibliothek gehört unter «Quests»; Home zeigt nur die Wochenwahl in #hqs. */
+  el.innerHTML='';
+}
 function todayDoneIds(){return (S.completions||[]).filter(c=>new Date(c.ts).toDateString()===td).map(c=>c.qid);}
 function dayKey(d){const x=new Date(d);return x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0');}
 function scoreClass(n){if(n>=2)return'g';if(n===1)return'y';return'r';}
@@ -1395,13 +1680,14 @@ function weekTrackerHtml(qid){
 }
 
 function rHome(){
+  renderProfileQuestBento();
   S.weekQueue=S.weekQueue||[];
   if(S.weekQueue.length&&S.weekStart!=null&&S.weekStart!==getMonday())shuffleQueue();
   const totalQ=S.weekQueue.length;
   const dowIdx=getTodayDowIndex();
   const doneToday=(S.weekQueue||[]).filter(qid=>(S.weekDone?.[qid]||[])[dowIdx]===1).length;
   const unlockedLevel=getUnlockedLevel(S.totalDone||0);
-  const homeLvl=document.getElementById('home-level-copy');if(homeLvl)homeLvl.textContent='Lv. '+unlockedLevel+' · '+RT_LEVELS[unlockedLevel];
+  const homeLvl=document.getElementById('home-level-copy');if(homeLvl)homeLvl.textContent='Lv. '+unlockedLevel+' · '+APP_LEVEL_NAMES[unlockedLevel];
   const kDone=document.getElementById('kpi-done-val');if(kDone)kDone.textContent=String(S.streak||0);
   const todayPill=document.getElementById('kpi-today-pill');
   if(totalQ===0){
@@ -1466,7 +1752,7 @@ function rHome(){
   const rows=(S.weekQueue||[]).map(function(qid){
     const q=QL.find(function(x){return x.id===qid;});if(!q)return'';
     const isDoneToday=(S.weekDone?.[q.id]||[])[dowIdx]===1;
-    const lvCol=(LEVEL_META[q.level]||LEVEL_META[0]).color;
+    const lvCol=['#4ade80','#fbbf24','#fb923c','#f87171'][(q.level||1)-1]||'#A78BFA';
     const doneBtn=isDoneToday
       ? '<button type="button" class="hq-btn-done hq-btn-done--done" onclick="event.stopPropagation();questDoneToday(\''+qid+'\')" aria-label="Erledigung ändern">Heute gemacht ✓</button>'
       : '<button type="button" class="hq-btn-done" onclick="event.stopPropagation();questDoneToday(\''+qid+'\')" aria-label="Heute erledigt">Heute gemacht</button>';
@@ -1492,8 +1778,11 @@ function rHome(){
   qs.innerHTML='<div class="hq-list-card"><div class="hq-list-hd">Heute ein Level weiter?</div>'+rows+'<div class="hq-card-foot"><span style="font-family:DM Mono,monospace;font-size:9px;color:var(--t3)">'+doneToday+'/'+totalQ+' erledigt</span><button type="button" class="hq-foot-link" onclick="reshuffleHome()">↺ Neue Woche</button></div>'+addSlotBlock+'</div>';
 }
 function ovFilteredQuests(){
+  var active=S.activeSector;
+  if(typeof active!=='string')active='all';
+  if(active!=='all'&&!SECTOR_META[active])active='all';
   return QL.filter(function(q){
-    if((S.activeSector||'all')!=='all'&&q.sector!==(S.activeSector||'all'))return false;
+    if(active!=='all'&&q.sector!==active)return false;
     return true;
   });
 }
@@ -1515,7 +1804,7 @@ function rOverview(){
     }).join('');
   var qs=ovFilteredQuests();
   var cards=qs.length?qs.map(function(q){
-    var skin=q.level<=1?'ov-card--diff-leicht':q.level<=3?'ov-card--diff-mittel':'ov-card--diff-stark';
+    var skin=q.level<=1?'ov-card--diff-leicht':q.level===2?'ov-card--diff-mittel':'ov-card--diff-stark';
     var inQ=(S.weekQueue||[]).includes(q.id);
     var isLocked=q.level>unlockedLevel;
     var btn=isLocked
@@ -1523,7 +1812,7 @@ function rOverview(){
       : inQ
         ? '<button type="button" class="ov-card-go" disabled>In Queue ✓</button>'
         : '<button type="button" class="ov-card-go" onclick="addToWeekQueue(\''+q.id+'\')">Start Quest →</button>';
-    return '<article class="ov-card '+skin+'"><button type="button" class="ov-card-tap" onclick="showQuestDetail(\''+q.id+'\')"><div class="ov-card-top"><div class="ov-card-ico">'+questIcon(q)+'</div><span class="ov-card-diff">'+escHtml(q.cat||'')+' · L'+q.level+'</span></div><div class="ov-card-title">'+escHtml(q.action||q.title)+'</div></button><div class="ov-card-foot"><span class="ov-card-time">'+escHtml(q.title)+'</span>'+btn+'</div></article>';
+    return '<article class="ov-card '+skin+'"><button type="button" class="ov-card-tap" onclick="showQuestDetail(\''+q.id+'\')"><div class="ov-card-top"><div class="ov-card-ico">'+questIcon(q)+'</div><span class="ov-card-diff">'+escHtml(q.skill||'')+' · L'+q.level+'</span></div><div class="ov-card-title">'+escHtml(q.action||q.title)+'</div></button><div class="ov-card-foot"><span class="ov-card-time">'+escHtml(q.category||'')+' · '+escHtml(q.title)+'</span>'+btn+'</div></article>';
   }).join(''):'<div class="ov-empty">Keine Quests für diese Filter.</div>';
   w.innerHTML='<div class="ov-chip-sticky"><div class="ov-chip-row">'+lvlChips+'</div></div><div class="ov-scroll-list">'+cards+'</div>';
 }
@@ -1887,8 +2176,9 @@ function saveQuestDone(){
     outcome,
     visibility,
     shameBefore,
-    sector:q.sector||'',
+    sector:q.sector||'dating',
     diff:q.diff||1,
+    level:q.level||1,
     title:q.title||''
   });
 
@@ -1913,17 +2203,16 @@ function saveQuestDone(){
 }
 
 function questPillHtml(q){
-  if(q.style==='fun'||q.cat==='Fun Mode')return '<span class="qc-pill qc-pill--fun">FUN</span>';
-  if(q.cat==='Ablehnung')return '<span class="qc-pill qc-pill--mut">MUT</span>';
-  if(q.cat==='Sichtbarkeit')return '<span class="qc-pill qc-pill--action">SICHTBAR</span>';
-  if(q.level<=1)return '<span class="qc-pill qc-pill--fund">BASIS</span>';
-  return '<span class="qc-pill qc-pill--action">KONTAKT</span>';
+  var s=String(q.skill||'');
+  if(s==='Wirkung')return '<span class="qc-pill qc-pill--mut">WIRKUNG</span>';
+  if(s==='Presence')return '<span class="qc-pill qc-pill--action">PRESENCE</span>';
+  if(s==='Intention')return '<span class="qc-pill qc-pill--fund">INTENTION</span>';
+  return '<span class="qc-pill qc-pill--fund">'+(s?escHtml(s).toUpperCase():'SKILL')+'</span>';
 }
 function showQuestDetail(qid){
   const q=QL.find(x=>x.id===qid);
   if(!q)return;
-  const sm=SECTOR_META[q.sector]||{};
-  const dm=DIFF_META[q.diff]||{};
+  const dm=DIFF_META[q.diff]||DIFF_META[1];
   const inQueue=(S.weekQueue||[]).includes(qid);
 
   const triggerBlock=`<div style="background:var(--surface2);
@@ -1933,103 +2222,43 @@ function showQuestDetail(qid){
     <div style="font-family:'DM Mono',monospace;
       font-size:9px;font-weight:700;color:var(--t3);
       letter-spacing:0.1em;margin-bottom:6px">
-      ⚡ WENN-DANN
+      ⚡ TRIGGER
     </div>
     <div style="font-family:'DM Sans',sans-serif;
-      font-size:13px;color:var(--t);line-height:1.5">
-      ${escHtml(q.trigger||q.action)}
+      font-size:15px;font-weight:700;color:var(--t);line-height:1.45">
+      ${escHtml(q.trigger||q.title||'')}
     </div>
   </div>`;
 
-  const actionBlock=`<div style="background:var(--surface2);
+  const frictionBlock=q.friction?`<div style="background:var(--surface2);
     border:1px solid var(--border);
     border-radius:16px;padding:14px 16px;
     margin-bottom:10px">
     <div style="font-family:'DM Mono',monospace;
       font-size:9px;font-weight:700;color:var(--t3);
       letter-spacing:0.1em;margin-bottom:6px">
-      📍 WAS GENAU TUN
+      FRICTION
     </div>
     <div style="font-family:'DM Sans',sans-serif;
       font-size:13px;color:var(--t);line-height:1.5">
-      ${escHtml(q.action)}
+      ${escHtml(q.friction)}
     </div>
-  </div>`;
+  </div>`:'';
 
-  const previewBlock=q.preview ? `
-<div style="background:var(--surface2);
-  border:1px solid var(--border);
-  border-radius:16px;padding:14px 16px;
-  margin-bottom:10px">
-  <div style="font-family:'DM Mono',monospace;
-    font-size:9px;font-weight:700;
-    color:var(--t3);letter-spacing:0.1em;
-    margin-bottom:8px">
-    🧠 DEIN KOPF VS. REALITÄT
-  </div>
-  <div style="display:flex;flex-direction:column;
-    gap:8px">
-    <div style="font-family:'DM Sans',sans-serif;
-      font-size:12px;color:var(--t);line-height:1.5">
-      <b style="color:var(--t3)">Befürchtung:</b>
-      ${escHtml(q.preview.fear||'')}
-    </div>
-    <div style="font-family:'DM Sans',sans-serif;
-      font-size:12px;color:var(--t);line-height:1.5">
-      <b style="color:var(--g)">Realität:</b>
-      ${escHtml(q.preview.reality||'')}
-    </div>
-  </div>
-</div>` : '';
-
-  const goalBlock=q.goal?`<div style="background:var(--surface2);
+  const ruleBlock=q.rule?`<div style="background:var(--surface2);
     border:1px solid var(--border);
     border-radius:16px;padding:14px 16px;
     margin-bottom:10px">
     <div style="font-family:'DM Mono',monospace;
       font-size:9px;font-weight:700;color:var(--g);
       letter-spacing:0.1em;margin-bottom:6px">
-      🎯 DAS ECHTE ZIEL
+      REGEL
     </div>
     <div style="font-family:'DM Sans',sans-serif;
       font-size:13px;color:var(--t);line-height:1.5">
-      ${escHtml(q.goal)}
+      ${escHtml(q.rule)}
     </div>
   </div>`:'';
-
-  const mutsatzBlock=q.mutsatz ? `
-<div style="background:var(--surface2);
-  border:1px solid var(--border);
-  border-radius:16px;padding:14px 16px;
-  margin-bottom:10px;text-align:center">
-  <div style="font-family:'DM Mono',monospace;
-    font-size:9px;font-weight:700;color:var(--g);
-    letter-spacing:0.1em;margin-bottom:6px">
-    💬 MUT-SATZ
-  </div>
-  <div style="font-family:'DM Sans',sans-serif;
-    font-size:14px;font-weight:700;
-    color:var(--t);line-height:1.5;
-    font-style:italic">
-    "${escHtml(q.mutsatz)}"
-  </div>
-</div>` : '';
-
-  const safetycheckBlock=q.safetycheck ? `
-<div style="background:var(--surface2);
-  border:1px solid var(--border);
-  border-radius:16px;padding:14px 16px;
-  margin-bottom:10px">
-  <div style="font-family:'DM Mono',monospace;
-    font-size:9px;font-weight:700;color:var(--t3);
-    letter-spacing:0.1em;margin-bottom:6px">
-    ⚠️ SICHERHEITS-CHECK
-  </div>
-  <div style="font-family:'DM Sans',sans-serif;
-    font-size:12px;color:var(--t);line-height:1.5">
-    ${escHtml(q.safetycheck)}
-  </div>
-</div>` : '';
 
   const fairplayBlock=`<div style="background:var(--surface2);
     border:1px solid var(--border);
@@ -2048,25 +2277,9 @@ function showQuestDetail(qid){
     </div>
   </div>`;
 
-  const exitjokerBlock=q.exitjoker ? `
-<div style="background:var(--surface2);
-  border:1px solid var(--border);
-  border-radius:16px;padding:14px 16px;
-  margin-bottom:16px">
-  <div style="font-family:'DM Mono',monospace;
-    font-size:9px;font-weight:700;color:var(--t3);
-    letter-spacing:0.1em;margin-bottom:6px">
-    🚪 EXIT-JOKER
-  </div>
-  <div style="font-family:'DM Sans',sans-serif;
-    font-size:13px;color:var(--t);line-height:1.5;
-    font-style:italic">
-    „${escHtml(q.exitjoker)}"
-  </div>
-</div>` : '';
-
   showSheet(`
     <div class="qc-sheet">
+      <button type="button" class="qc-close-sheet" onclick="closeSheet()" aria-label="Schließen">✕</button>
       <div class="shdl"></div>
       <div class="qc-head">
         <div class="qc-head-row">
@@ -2083,17 +2296,13 @@ function showQuestDetail(qid){
           </div>
         </div>
         <div class="qc-head-title">${escHtml(q.title)}</div>
-        <div class="qc-head-sub">${escHtml((sm.emoji||'')+' '+(sm.label||''))} · ${escHtml(dm.label||'')}</div>
+        <div class="qc-head-sub">${escHtml(q.category||'')} · ${escHtml(q.skill||'')} · L${q.level} · ${escHtml(dm.label||'')}</div>
       </div>
       <div class="qc-scroll">
         ${triggerBlock}
-        ${actionBlock}
-        ${previewBlock}
-        ${goalBlock}
-        ${mutsatzBlock}
-        ${safetycheckBlock}
+        ${frictionBlock}
+        ${ruleBlock}
         ${fairplayBlock}
-        ${exitjokerBlock}
       </div>
       <div class="qc-foot">
         ${inQueue
@@ -2399,7 +2608,7 @@ function rStats(){
     +'<div style="text-align:center;margin-bottom:14px">'
     +'<div style="width:112px;height:112px;border-radius:56px;margin:0 auto 10px;background:linear-gradient(135deg,#F0ABFC,#C084FC);display:flex;align-items:center;justify-content:center;font-family:var(--font-sans);font-size:52px;font-weight:800;color:#fff">'+escHtml(avatar)+'</div>'
     +'<div style="font-family:var(--font-sans);font-size:34px;font-weight:800;letter-spacing:-0.02em;color:var(--t)">'+escHtml(displayName)+'</div>'
-    +'<div style="display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;background:rgba(196,181,253,.25);font-family:var(--font-mono);font-size:12px;font-weight:700;color:#A78BFA;margin-top:6px">LV. '+unlockedLevel+' '+escHtml(RT_LEVELS[unlockedLevel]||'')+'</div>'
+    +'<div style="display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;background:rgba(196,181,253,.25);font-family:var(--font-mono);font-size:12px;font-weight:700;color:#A78BFA;margin-top:6px">LV. '+unlockedLevel+' '+escHtml(APP_LEVEL_NAMES[unlockedLevel]||'')+'</div>'
     +'</div>'
 
     +'<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:14px">'
@@ -2417,15 +2626,25 @@ function rStats(){
     +'<div class="sblock"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px"><div class="sbt">🗺️ Avoidance Map</div><span style="font-family:var(--font-mono);font-size:10px;color:#A78BFA;background:rgba(196,181,253,.25);padding:4px 10px;border-radius:999px">BETA</span></div><div style="font-family:var(--font-sans);font-size:14px;color:var(--t2)">Folgt in der nächsten Version.</div></div>';
 }
 
-function showCel(q){const c=document.getElementById('cel');if(!c)return;c.style.display='block';c.style.pointerEvents='all';const newLevel=getUnlockedLevel(S.totalDone),levelUp=newLevel>=(q.level+1)&&S.totalDone===LEVEL_UNLOCK[newLevel];const ck=levelUp?LEVEL_META[newLevel].emoji:questIcon(q);c.innerHTML=`<div class="cel-ov"><div class="cel-box"><div class="cel-ck">${ck}</div><div class="cel-t">${levelUp?'Level '+newLevel+' freigeschaltet!':'Quest erledigt!'}</div><div class="cel-s">${levelUp?LEVEL_META[newLevel].emoji+' '+LEVEL_META[newLevel].name+' ist jetzt verfügbar.':'Jede Handlung verändert das Muster. Rep #'+(S.totalDone||1)+'.'}</div><div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--t3);margin-bottom:16px">${q.title}</div><button class="btn-cel" onclick="closeCel()">Weiter →</button></div></div>`;setTimeout(closeCel,6000);}
+function showCel(q){
+  const c=document.getElementById('cel');
+  if(!c)return;
+  c.style.display='block';
+  c.style.pointerEvents='all';
+  const ck=questIcon(q);
+  c.innerHTML='<div class="cel-ov"><div class="cel-box"><div class="cel-ck">'+ck+'</div><div class="cel-t">Quest erledigt!</div><div class="cel-s">Jede Handlung verändert das Muster. Rep #'+(S.totalDone||1)+'.</div><div style="font-family:\'DM Mono\',monospace;font-size:10px;color:var(--t3);margin-bottom:16px">'+escHtml(q.title||'')+'</div><button class="btn-cel" onclick="closeCel()">Weiter →</button></div></div>';
+  setTimeout(closeCel,6000);
+}
 function closeCel(){const c=document.getElementById('cel');if(c){c.style.display='none';c.style.pointerEvents='none';}}
 
 function showSheet(html,shtExtra){var cls='sht'+(shtExtra?' '+shtExtra:'');document.getElementById('modal').innerHTML=`<div class="olay" id="ol"><div class="obg" onclick="closeSheet()"></div><div class="${cls}">${html}</div></div>`;}
 function closeSheet(){const ol=document.getElementById('ol');if(ol)ol.remove();}
 
 ld();
-if(S.lastLogin!==td){if(S.lastLogin===yd)S.streak=(S.streak||0)+1;else if(!S.lastLogin)S.streak=1;S.lastLogin=td;sv();}
-go('home');
+loadQuestLibrary().then(function(){
+  if(S.lastLogin!==td){if(S.lastLogin===yd)S.streak=(S.streak||0)+1;else if(!S.lastLogin)S.streak=1;S.lastLogin=td;sv();}
+  go('home');
+});
 </script>
 <div id="profile-funnel" aria-hidden="true"></div>
 </body>
