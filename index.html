@@ -1459,7 +1459,7 @@ function loadQuestLibrary(){
     .then(function(r){if(!r.ok)throw new Error('fetch');return r.json();})
     .then(function(d){loadQuestLibraryFromData(d);if(!QL.length)throw new Error('empty');})
     .catch(function(){if(!loadQuestsFromEmbed())QL=[];})
-    .then(function(){rHome();rLevels();});
+    .then(function(){rHome();});
 }
 
 /* ── Home renderer ── */
@@ -1474,12 +1474,12 @@ function rHome(){
   if(lvEl){
     var done=S.totalDone||0;
     var lv=done<3?1:done<8?2:done<15?3:4;
-    lvEl.textContent='Lv. '+lv+' '+( APP_LEVEL_NAMES[lv]||'');
+    lvEl.textContent='Lv. '+lv+' '+(APP_LEVEL_NAMES[lv]||'');
   }
   var avEl=document.getElementById('home-avatar-fallback');
   if(avEl)avEl.textContent=(S.name||'?').charAt(0).toUpperCase();
 
-  // Week-bar
+  // KPI Week-bar
   var kpiWeek=document.getElementById('kpi-week');
   if(kpiWeek){
     var days=['Mo','Di','Mi','Do','Fr','Sa','So'];
@@ -1487,52 +1487,76 @@ function rHome(){
     var weekDone=S.weekDone||{};
     var queue=S.weekQueue||[];
     var bars=days.map(function(d,i){
-      var done=queue.some(function(qid){return(weekDone[qid]||[])[i];});
+      var hasDone=queue.some(function(qid){return(weekDone[qid]||[])[i];});
+      var isToday=i===today;
       return '<div style="display:flex;flex-direction:column;align-items:center;gap:3px">'
-        +'<div style="width:28px;height:28px;border-radius:8px;background:'+(done?'var(--g)':'var(--surface2)')+';border:1.5px solid '+(i===today?'var(--t3)':'transparent')+'"></div>'
+        +'<div style="width:28px;height:28px;border-radius:8px;background:'+(hasDone?'var(--g)':'rgba(17,24,39,0.08)')+';'+(isToday?'outline:2px solid var(--t3);outline-offset:2px':'')+'"></div>'
         +'<span style="font-size:9px;color:var(--t3);font-family:var(--font-mono)">'+d+'</span>'
         +'</div>';
     }).join('');
     kpiWeek.innerHTML='<div style="display:flex;gap:6px;justify-content:center">'+bars+'</div>';
   }
 
-  // Weekly quest cards + Auswahl-CTA
+  // Weekly quest card
   var hqs=document.getElementById('hqs');
-  if(hqs){
-    var queue=S.weekQueue||[];
-    var today=getTodayDowIndex();
-    var cards=queue.map(function(qid){
-      var q=QL.find(function(x){return x.id===qid;});
-      if(!q)return '';
-      var done=((S.weekDone||{})[qid]||[])[today];
-      var icon=questIcon(q);
-      var sm=SECTOR_META[q.sector]||{};
-      var icoCol=(sm.color||'var(--t3)').replace('var(--love)','#EC4899').replace('var(--alltag)','#3B82F6');
-      return '<div class="new-qcard new-qcard--compact" style="margin-bottom:10px;cursor:pointer" onclick="showQuestDetail(\''+qid+'\')">'
-        +'<div class="new-qcard-ico" style="background:'+icoCol+'20">'+icon+'</div>'
-        +'<div class="new-qcard-mid">'
-        +'<div class="new-qmeta">'+escHtml(q.area||'')+(q.skill?' · '+escHtml(q.skill):'')+'</div>'
-        +'<div class="new-qtitle">'+escHtml(q.title)+'</div>'
-        +'</div>'
-        +'<button type="button" class="btn-done-new" onclick="event.stopPropagation();questDoneToday(\''+qid+'\')" style="background:'+(done?'var(--g)':'var(--surface2)')+';color:'+(done?'#fff':'var(--t3)')+';border:2px solid '+(done?'var(--g)':'var(--border)')+'">'+( done?'✓':'○')+'</button>'
-        +'</div>';
-    }).join('');
+  if(!hqs){renderProfileQuestBento();return;}
+  var queue=S.weekQueue||[];
+  var today=getTodayDowIndex();
 
-    // CTA wenn < 3 Quests
-    var ctaHtml='';
-    if(queue.length<3){
-      ctaHtml='<div class="home-empty" style="margin-top:'+(queue.length?'10px':'0')+'">'
-        +'<div style="font-size:28px;margin-bottom:8px">⚡</div>'
-        +'<div style="font-family:var(--font-sans);font-weight:700;font-size:15px;color:var(--t);margin-bottom:6px">Quests für die Woche wählen</div>'
-        +'<div style="font-family:var(--font-sans);font-size:13px;color:var(--t2);line-height:1.5;margin-bottom:16px">Max. 3 aktive Quests – wähle gezielt oder lass den Zufall entscheiden.</div>'
-        +'<div style="display:flex;gap:8px">'
-        +'<button onclick="go(\'q\')" class="btn-p" style="flex:1;padding:12px 8px;font-size:13px">Quest wählen</button>'
-        +'<button onclick="addRandomQuest()" class="btn-p" style="flex:1;padding:12px 8px;font-size:13px;background:var(--surface2);color:var(--t);box-shadow:none">🎲 Zufall</button>'
-        +'</div>'
-        +'</div>';
-    }
-    hqs.innerHTML=cards+ctaHtml;
+  if(!queue.length){
+    hqs.innerHTML='<div class="home-empty">'
+      +'<div style="font-size:32px;margin-bottom:10px">⚡</div>'
+      +'<div style="font-family:var(--font-sans);font-weight:800;font-size:16px;color:var(--t);letter-spacing:-0.01em;margin-bottom:6px">Keine Quests aktiv</div>'
+      +'<div style="font-family:var(--font-sans);font-size:13px;color:var(--t2);line-height:1.5;margin-bottom:18px">Wähle bis zu 3 Quests für diese Woche – gezielt oder per Zufall.</div>'
+      +'<div style="display:flex;gap:8px">'
+      +'<button onclick="go(\'q\')" class="hq-add-quest-btn" style="flex:1">Quest wählen</button>'
+      +'<button onclick="addRandomQuest()" class="hq-add-quest-btn" style="flex:1">🎲 Zufall</button>'
+      +'</div></div>';
+    renderProfileQuestBento();
+    return;
   }
+
+  var rows=queue.map(function(qid){
+    var q=QL.find(function(x){return x.id===qid;});
+    if(!q)return '';
+    var doneToday=((S.weekDone||{})[qid]||[])[today];
+    var icon=questIcon(q);
+    var wkDots=['Mo','Di','Mi','Do','Fr','Sa','So'].map(function(d,i){
+      var dayDone=((S.weekDone||{})[qid]||[])[i];
+      var isT=i===today;
+      var cls=dayDone?'hq-wk-ring--done':isT?'hq-wk-ring--today':(i<today?'hq-wk-ring--past':'hq-wk-ring--future');
+      return '<div class="hq-wk-cell"><div class="hq-wk-ring '+cls+'">'+(dayDone?'✓':'')+'</div><div class="hq-wk-lbl">'+d+'</div></div>';
+    }).join('');
+    return '<div class="hq-row hq-row--stack">'
+      +'<button class="hq-row-tap" onclick="showQuestDetail(\''+qid+'\')">'
+      +'<div class="hq-ico" style="'+(doneToday?'background:var(--g);border-color:var(--g);color:#fff;':'')+'">'+icon+'</div>'
+      +'<div class="hq-copy">'
+      +'<div class="hq-meta">'+escHtml(q.area||'')+(q.skill?' · '+escHtml(q.skill):'')+'</div>'
+      +'<div class="hq-title">'+escHtml(q.title)+'</div>'
+      +'</div></button>'
+      +'<div class="hq-week-track"><div class="hq-wk-dots">'+wkDots+'</div></div>'
+      +'<div class="hq-row-actions">'
+      +'<button class="hq-btn-done'+(doneToday?' hq-btn-done--done':'')+'" onclick="questDoneToday(\''+qid+'\')">'+(doneToday?'✓ Erledigt':'Heute erledigt')+'</button>'
+      +'<button class="hq-btn-remove" onclick="removeFromQueue(\''+qid+'\')" title="Entfernen">×</button>'
+      +'</div></div>';
+  }).join('');
+
+  var addSlot='';
+  if(queue.length<3){
+    addSlot='<div class="hq-add-slot-wrap">'
+      +'<p class="hq-add-slot-hint">Noch '+(3-queue.length)+' freie Slot'+(queue.length===2?'':'s')+' – wähle gezielt oder per Zufall</p>'
+      +'<div style="display:flex;gap:8px">'
+      +'<button onclick="go(\'q\')" class="hq-add-quest-btn" style="flex:1">＋ Quest wählen</button>'
+      +'<button onclick="addRandomQuest()" class="hq-add-quest-btn" style="flex:1">🎲 Zufall</button>'
+      +'</div></div>';
+  }
+
+  hqs.innerHTML='<div class="hq-list-card">'
+    +'<div class="hq-list-hd">Diese Woche</div>'
+    +rows+addSlot
+    +'<div class="hq-card-foot"><button class="hq-foot-link" onclick="go(\'q\')">Alle Quests →</button></div>'
+    +'</div>';
+
   renderProfileQuestBento();
 }
 
@@ -1558,15 +1582,6 @@ function addAndShame(qid){
   addToWeekQueue(qid);
   closeSheet();
   showShameCheck(qid);
-}
-function addRandomQuest(){
-  var queue=S.weekQueue||[];
-  if(queue.length>=3)return;
-  var available=QL.filter(function(q){return!queue.includes(q.id);});
-  if(!available.length)return;
-  var pick=available[Math.floor(Math.random()*available.length)];
-  addToWeekQueue(pick.id);
-  rHome();
 }
 function relDate(iso){
   var d=new Date(iso),n=new Date();
@@ -1992,51 +2007,131 @@ function showQuestDetail(qid){
 }
 
 function rLevels(){
-  const w=document.getElementById('ov-wrap');
+  const w=document.getElementById('levels-wrap');
   if(!w)return;
 
   const active=S.activeSector||'all';
 
   // Filter Chips
-  const chips=['all',...Object.keys(SECTOR_META)].map(key=>{
-    const isAll=key==='all';
-    const meta=isAll?{label:'Alle',emoji:'⚡'}:SECTOR_META[key];
-    const isOn=active===key;
-    return`<button onclick="setSector('${key}')" style="flex-shrink:0;border:none;border-radius:99px;padding:8px 16px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;background:${isOn?'var(--t)':'var(--surface2)'};color:${isOn?'#fff':'var(--t2)'}">${meta.emoji} ${meta.label}</button>`;
-  }).join('');
+  const chips=['all',...Object.keys(SECTOR_META)]
+    .map(key=>{
+      const isAll=key==='all';
+      const meta=isAll
+        ?{label:'Alle',emoji:'⚡'}
+        :SECTOR_META[key];
+      const isOn=active===key;
+      return`<button onclick="setSector('${key}')"
+        style="flex-shrink:0;border:none;
+        border-radius:99px;padding:8px 16px;
+        font-family:'DM Sans',sans-serif;
+        font-size:12px;font-weight:700;
+        cursor:pointer;transition:all .15s;
+        background:${isOn?'var(--t)':'var(--surface2)'};
+        color:${isOn?'#fff':'var(--t2)'}">
+        ${meta.emoji} ${meta.label}
+      </button>`;
+    }).join('');
 
   // Gefilterte Quests
-  const filtered=QL.filter(q=>active==='all'||q.sector===active);
+  const filtered=QL.filter(q=>
+    active==='all'||q.sector===active
+  );
 
-  // Card-Farbe nach Diff
-  const dcls={1:'ov-card--diff-leicht',2:'ov-card--diff-mittel',3:'ov-card--diff-stark'};
+  // Quests gruppiert nach Diff
+  const byDiff={1:[],2:[],3:[]};
+  filtered.forEach(q=>{
+    if(byDiff[q.diff])byDiff[q.diff].push(q);
+  });
 
-  const cards=filtered.map(q=>{
+  // Quest Rows
+  function questRow(q){
     const dm=DIFF_META[q.diff]||DIFF_META[1];
+    const sm=SECTOR_META[q.sector]||{};
     const inQueue=(S.weekQueue||[]).includes(q.id);
-    const icon=questIcon(q);
-    return`<button class="ov-card-tap" onclick="showQuestDetail('${q.id}')">
-      <div class="ov-card ${dcls[q.diff]||'ov-card--diff-leicht'}">
-        <div class="ov-card-top">
-          <div class="ov-card-ico">${icon}</div>
-          <span class="ov-card-diff" style="background:rgba(255,255,255,0.65);color:${dm.color}">${escHtml(q.skill||dm.label)}</span>
+    const doneBefore=(S.completions||[])
+      .some(c=>c.qid===q.id);
+
+    return`<div style="display:flex;align-items:center;
+      gap:12px;padding:12px 0;
+      border-bottom:0.5px solid var(--border)">
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;gap:6px;
+          align-items:center;margin-bottom:4px">
+          <span style="font-family:'DM Mono',monospace;
+            font-size:8px;font-weight:700;
+            padding:2px 8px;border-radius:99px;
+            background:${dm.color}15;color:${dm.color}">
+            ${dm.label}
+          </span>
+          <span style="font-family:'DM Mono',monospace;
+            font-size:8px;color:var(--t3)">
+            ${sm.emoji||''} ${sm.label||''}
+          </span>
         </div>
-        <div class="ov-card-title">${escHtml(q.title)}</div>
-        <div class="ov-card-hook">${escHtml(q.cue||'')}</div>
-        <div class="ov-card-foot">
-          <span class="ov-card-time">${escHtml(q.area||'')} · L${q.level}</span>
-          ${inQueue
-            ?`<span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--am);font-weight:700">AKTIV ✓</span>`
-            :`<button class="ov-card-go" onclick="event.stopPropagation();addToWeekQueue('${q.id}')">+ Woche</button>`
-          }
+        <div style="font-family:'DM Sans',sans-serif;
+          font-size:14px;font-weight:700;color:var(--t);
+          ${doneBefore?'opacity:0.5':''}">
+          ${escHtml(q.title)}
         </div>
       </div>
-    </button>`;
-  }).join('');
+      ${inQueue
+        ?`<span style="font-family:'DM Mono',monospace;
+            font-size:8px;color:var(--am);font-weight:700;
+            white-space:nowrap">DIESE WOCHE</span>`
+        :`<button onclick="addToWeekQueue('${q.id}')"
+            style="background:var(--t);border:none;
+            border-radius:10px;padding:7px 12px;
+            font-family:'DM Mono',monospace;font-size:9px;
+            font-weight:700;color:#fff;cursor:pointer;
+            white-space:nowrap;flex-shrink:0">
+            + Woche
+          </button>`
+      }
+    </div>`;
+  }
 
-  w.innerHTML=
-    `<div style="flex-shrink:0;display:flex;gap:8px;overflow-x:auto;padding:0 16px 12px;-webkit-overflow-scrolling:touch">${chips}</div>`
-    +`<div class="ov-scroll-list">${cards||'<div class="ov-empty">Keine Quests in diesem Bereich.</div>'}</div>`;
+  // Diff-Gruppen zusammenbauen
+  let questsHtml='';
+  [1,2,3].forEach(diff=>{
+    const qs=byDiff[diff];
+    if(!qs.length)return;
+    const dm=DIFF_META[diff];
+    questsHtml+=`
+      <div style="margin-bottom:24px">
+        <div style="font-family:'DM Mono',monospace;
+          font-size:9px;font-weight:700;
+          color:${dm.color};letter-spacing:0.1em;
+          margin-bottom:4px;padding-top:16px">
+          ${dm.label.toUpperCase()} — LEVEL ${diff}
+        </div>
+        <div style="font-family:'DM Sans',sans-serif;
+          font-size:11px;color:var(--t3);
+          margin-bottom:8px">
+          ${{1:'Fast kein Risiko — guter Einstieg',
+             2:'Andere merken es — es kribbelt',
+             3:'Hohes Risiko für ein Nein oder Scham'}[diff]}
+        </div>
+        ${qs.map(questRow).join('')}
+      </div>`;
+  });
+
+  w.innerHTML=`
+    <!-- Filter Chips -->
+    <div style="display:flex;gap:8px;
+      overflow-x:auto;padding-bottom:12px;
+      margin-bottom:4px">
+      ${chips}
+    </div>
+
+    <!-- Quest Liste -->
+    ${questsHtml||`
+      <div style="text-align:center;padding:40px 20px;
+        font-family:'DM Sans',sans-serif;
+        font-size:13px;color:var(--t3)">
+        Keine Quests in diesem Bereich.
+      </div>
+    `}
+  `;
 }
 
 function setSector(key){
