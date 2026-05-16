@@ -1506,23 +1506,29 @@ function rHome(){
       if(!q)return '';
       var done=((S.weekDone||{})[qid]||[])[today];
       var icon=questIcon(q);
-      return '<div style="background:var(--surface2);border-radius:16px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;gap:12px">'
-        +'<span style="font-size:26px;flex-shrink:0;cursor:pointer" onclick="showQuestDetail(\''+qid+'\')">'+icon+'</span>'
-        +'<div style="flex:1;min-width:0;cursor:pointer" onclick="showQuestDetail(\''+qid+'\')">'
-        +'<div style="font-family:var(--font-sans);font-size:14px;font-weight:700;color:var(--t)">'+escHtml(q.title)+'</div>'
-        +'<div style="font-family:var(--font-mono);font-size:10px;color:var(--t3);margin-top:2px">'+escHtml(q.area||'')+(q.skill?' · '+escHtml(q.skill):'')+'</div>'
+      var sm=SECTOR_META[q.sector]||{};
+      var icoCol=(sm.color||'var(--t3)').replace('var(--love)','#EC4899').replace('var(--alltag)','#3B82F6');
+      return '<div class="new-qcard new-qcard--compact" style="margin-bottom:10px;cursor:pointer" onclick="showQuestDetail(\''+qid+'\')">'
+        +'<div class="new-qcard-ico" style="background:'+icoCol+'20">'+icon+'</div>'
+        +'<div class="new-qcard-mid">'
+        +'<div class="new-qmeta">'+escHtml(q.area||'')+(q.skill?' · '+escHtml(q.skill):'')+'</div>'
+        +'<div class="new-qtitle">'+escHtml(q.title)+'</div>'
         +'</div>'
-        +'<button type="button" onclick="questDoneToday(\''+qid+'\')" style="width:38px;height:38px;border-radius:50%;border:2px solid '+(done?'var(--g)':'var(--border)')+';background:'+(done?'var(--g)':'transparent')+';color:'+(done?'#fff':'var(--t3)')+';font-size:18px;cursor:pointer;flex-shrink:0;transition:all .15s">'
-        +(done?'✓':'○')+'</button>'
+        +'<button type="button" class="btn-done-new" onclick="event.stopPropagation();questDoneToday(\''+qid+'\')" style="background:'+(done?'var(--g)':'var(--surface2)')+';color:'+(done?'#fff':'var(--t3)')+';border:2px solid '+(done?'var(--g)':'var(--border)')+'">'+( done?'✓':'○')+'</button>'
         +'</div>';
     }).join('');
 
-    // CTA: Quest hinzufügen oder Zufall wenn < 3
+    // CTA wenn < 3 Quests
     var ctaHtml='';
     if(queue.length<3){
-      ctaHtml='<div style="display:flex;gap:8px;margin-top:4px">'
-        +'<button onclick="go(\'q\')" style="flex:1;background:var(--surface2);border:1.5px dashed var(--border);border-radius:14px;padding:12px;font-family:var(--font-sans);font-size:13px;font-weight:600;color:var(--t2);cursor:pointer">＋ Quest wählen</button>'
-        +'<button onclick="addRandomQuest()" style="flex:1;background:var(--surface2);border:1.5px dashed var(--border);border-radius:14px;padding:12px;font-family:var(--font-sans);font-size:13px;font-weight:600;color:var(--t2);cursor:pointer">🎲 Zufall</button>'
+      ctaHtml='<div class="home-empty" style="margin-top:'+(queue.length?'10px':'0')+'">'
+        +'<div style="font-size:28px;margin-bottom:8px">⚡</div>'
+        +'<div style="font-family:var(--font-sans);font-weight:700;font-size:15px;color:var(--t);margin-bottom:6px">Quests für die Woche wählen</div>'
+        +'<div style="font-family:var(--font-sans);font-size:13px;color:var(--t2);line-height:1.5;margin-bottom:16px">Max. 3 aktive Quests – wähle gezielt oder lass den Zufall entscheiden.</div>'
+        +'<div style="display:flex;gap:8px">'
+        +'<button onclick="go(\'q\')" class="btn-p" style="flex:1;padding:12px 8px;font-size:13px">Quest wählen</button>'
+        +'<button onclick="addRandomQuest()" class="btn-p" style="flex:1;padding:12px 8px;font-size:13px;background:var(--surface2);color:var(--t);box-shadow:none">🎲 Zufall</button>'
+        +'</div>'
         +'</div>';
     }
     hqs.innerHTML=cards+ctaHtml;
@@ -1992,113 +1998,45 @@ function rLevels(){
   const active=S.activeSector||'all';
 
   // Filter Chips
-  const chips=['all',...Object.keys(SECTOR_META)]
-    .map(key=>{
-      const isAll=key==='all';
-      const meta=isAll
-        ?{label:'Alle',emoji:'⚡'}
-        :SECTOR_META[key];
-      const isOn=active===key;
-      return`<button onclick="setSector('${key}')"
-        style="flex-shrink:0;border:none;
-        border-radius:99px;padding:8px 16px;
-        font-family:'DM Sans',sans-serif;
-        font-size:12px;font-weight:700;
-        cursor:pointer;transition:all .15s;
-        background:${isOn?'var(--t)':'var(--surface2)'};
-        color:${isOn?'#fff':'var(--t2)'}">
-        ${meta.emoji} ${meta.label}
-      </button>`;
-    }).join('');
+  const chips=['all',...Object.keys(SECTOR_META)].map(key=>{
+    const isAll=key==='all';
+    const meta=isAll?{label:'Alle',emoji:'⚡'}:SECTOR_META[key];
+    const isOn=active===key;
+    return`<button onclick="setSector('${key}')" style="flex-shrink:0;border:none;border-radius:99px;padding:8px 16px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;background:${isOn?'var(--t)':'var(--surface2)'};color:${isOn?'#fff':'var(--t2)'}">${meta.emoji} ${meta.label}</button>`;
+  }).join('');
 
   // Gefilterte Quests
-  const filtered=QL.filter(q=>
-    active==='all'||q.sector===active
-  );
+  const filtered=QL.filter(q=>active==='all'||q.sector===active);
 
-  // Quests gruppiert nach Diff
-  const byDiff={1:[],2:[],3:[]};
-  filtered.forEach(q=>{
-    if(byDiff[q.diff])byDiff[q.diff].push(q);
-  });
+  // Card-Farbe nach Diff
+  const dcls={1:'ov-card--diff-leicht',2:'ov-card--diff-mittel',3:'ov-card--diff-stark'};
 
-  // Quest Rows
-  function questRow(q){
+  const cards=filtered.map(q=>{
     const dm=DIFF_META[q.diff]||DIFF_META[1];
-    const sm=SECTOR_META[q.sector]||{};
     const inQueue=(S.weekQueue||[]).includes(q.id);
-    const doneBefore=(S.completions||[]).some(c=>c.qid===q.id);
     const icon=questIcon(q);
-
-    return`<div onclick="showQuestDetail('${q.id}')"
-      style="display:flex;align-items:center;gap:12px;
-        padding:13px 0;border-bottom:0.5px solid var(--border);
-        cursor:pointer">
-      <div style="font-size:26px;flex-shrink:0;width:36px;text-align:center">${icon}</div>
-      <div style="flex:1;min-width:0">
-        <div style="display:flex;gap:6px;align-items:center;margin-bottom:3px">
-          <span style="font-family:'DM Mono',monospace;font-size:8px;font-weight:700;
-            padding:2px 8px;border-radius:99px;
-            background:${dm.color}18;color:${dm.color}">${dm.label}</span>
-          <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--t3)">
-            ${sm.emoji||''} ${escHtml(q.skill||sm.label||'')}</span>
+    return`<button class="ov-card-tap" onclick="showQuestDetail('${q.id}')">
+      <div class="ov-card ${dcls[q.diff]||'ov-card--diff-leicht'}">
+        <div class="ov-card-top">
+          <div class="ov-card-ico">${icon}</div>
+          <span class="ov-card-diff" style="background:rgba(255,255,255,0.65);color:${dm.color}">${escHtml(q.skill||dm.label)}</span>
         </div>
-        <div style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;
-          color:var(--t);${doneBefore?'opacity:0.5':''}">
-          ${escHtml(q.title)}
+        <div class="ov-card-title">${escHtml(q.title)}</div>
+        <div class="ov-card-hook">${escHtml(q.cue||'')}</div>
+        <div class="ov-card-foot">
+          <span class="ov-card-time">${escHtml(q.area||'')} · L${q.level}</span>
+          ${inQueue
+            ?`<span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--am);font-weight:700">AKTIV ✓</span>`
+            :`<button class="ov-card-go" onclick="event.stopPropagation();addToWeekQueue('${q.id}')">+ Woche</button>`
+          }
         </div>
       </div>
-      ${inQueue
-        ?`<span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--am);
-            font-weight:700;white-space:nowrap;flex-shrink:0">AKTIV ✓</span>`
-        :`<span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--t3);
-            white-space:nowrap;flex-shrink:0">→</span>`
-      }
-    </div>`;
-  }
+    </button>`;
+  }).join('');
 
-  // Diff-Gruppen zusammenbauen
-  let questsHtml='';
-  [1,2,3].forEach(diff=>{
-    const qs=byDiff[diff];
-    if(!qs.length)return;
-    const dm=DIFF_META[diff];
-    questsHtml+=`
-      <div style="margin-bottom:24px">
-        <div style="font-family:'DM Mono',monospace;
-          font-size:9px;font-weight:700;
-          color:${dm.color};letter-spacing:0.1em;
-          margin-bottom:4px;padding-top:16px">
-          ${dm.label.toUpperCase()} — LEVEL ${diff}
-        </div>
-        <div style="font-family:'DM Sans',sans-serif;
-          font-size:11px;color:var(--t3);
-          margin-bottom:8px">
-          ${{1:'Fast kein Risiko — guter Einstieg',
-             2:'Andere merken es — es kribbelt',
-             3:'Hohes Risiko für ein Nein oder Scham'}[diff]}
-        </div>
-        ${qs.map(questRow).join('')}
-      </div>`;
-  });
-
-  w.innerHTML=`
-    <!-- Filter Chips -->
-    <div style="display:flex;gap:8px;
-      overflow-x:auto;padding-bottom:12px;
-      margin-bottom:4px">
-      ${chips}
-    </div>
-
-    <!-- Quest Liste -->
-    ${questsHtml||`
-      <div style="text-align:center;padding:40px 20px;
-        font-family:'DM Sans',sans-serif;
-        font-size:13px;color:var(--t3)">
-        Keine Quests in diesem Bereich.
-      </div>
-    `}
-  `;
+  w.innerHTML=
+    `<div style="flex-shrink:0;display:flex;gap:8px;overflow-x:auto;padding:0 16px 12px;-webkit-overflow-scrolling:touch">${chips}</div>`
+    +`<div class="ov-scroll-list">${cards||'<div class="ov-empty">Keine Quests in diesem Bereich.</div>'}</div>`;
 }
 
 function setSector(key){
