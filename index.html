@@ -924,7 +924,7 @@ body{background:var(--app-grad);font-family:var(--font-sans);-webkit-font-smooth
 .estat{text-align:center;padding:22px 0;font-family:var(--font-mono);color:var(--t3);font-size:var(--fs-small)}
 
 /* ── SHEETS ── */
-.olay{position:fixed;inset:0;z-index:300;display:flex;flex-direction:column;justify-content:flex-end}
+.olay{position:fixed;inset:0;z-index:500;display:flex;flex-direction:column;justify-content:flex-end}
 .obg{position:absolute;inset:0;background:rgba(0,0,0,0.2);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);animation:fi .2s ease}
 .sht{position:relative;background:var(--surface);border-radius:28px 28px 0 0;padding:0 20px calc(var(--safe-b) + 20px);max-height:92vh;display:flex;flex-direction:column;animation:su .3s cubic-bezier(.32,.72,0,1)}
 .shdl{width:36px;height:4px;background:var(--border);border-radius:2px;margin:12px auto 18px}
@@ -1500,7 +1500,13 @@ function rHome(){
     var doneT=((S.weekDone||{})[qid]||[])[today];
     var icon=questIcon(q);
     var isBg=q.sector==='love'?'rgba(236,72,153,0.12)':'rgba(59,130,246,0.12)';
-    return `<div style="display:flex;align-items:center;gap:14px;padding:14px 0;border-top:1px solid #F5F5F5;cursor:pointer" onclick="showQuestDetail('${qid}')"><div style="width:44px;height:44px;border-radius:22px;flex-shrink:0;background:${doneT?'rgba(5,150,105,0.15)':isBg};display:flex;align-items:center;justify-content:center;font-size:20px">${doneT?'<svg width="18" height="14" viewBox="0 0 18 14" fill="none"><path d="M1 7l5 5L17 1" stroke="#059669" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>':icon}</div><div style="flex:1;min-width:0"><div style="font-family:DM Sans,sans-serif;font-size:15px;font-weight:700;color:#111;line-height:1.3;${doneT?'text-decoration:line-through;opacity:0.5':''};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escHtml(q.title)}</div><div style="font-family:DM Sans,sans-serif;font-size:12px;color:#9B8EA8;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${doneT?'Erledigt ✓':escHtml(q.cue||'')}</div></div><button onclick="event.stopPropagation();questDoneToday('${qid}')" style="width:28px;height:28px;border-radius:14px;flex-shrink:0;border:${doneT?'none':'1.5px solid #DDD'};background:${doneT?'#059669':'transparent'};display:flex;align-items:center;justify-content:center;cursor:pointer">${doneT?'<svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5l3.5 3.5L11 1" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>':''}</button></div>`;
+    var rowId='hqr-'+qid.replace(/\./g,'-');
+    return `<div style="position:relative;overflow:hidden;border-top:1px solid #F5F5F5">`
+      // trash reveal layer
+      +`<div style="position:absolute;right:0;top:0;bottom:0;width:70px;display:flex;align-items:center;justify-content:center"><button onclick="removeFromQueue('${qid}')" style="width:44px;height:44px;border-radius:22px;background:#FF3B30;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(255,59,48,0.35)"><svg width="16" height="18" viewBox="0 0 16 18" fill="none"><path d="M1 4h14M5 4V2h6v2M3 4l1 12h8l1-12" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg></button></div>`
+      // swipeable content
+      +`<div id="${rowId}" style="display:flex;align-items:center;gap:14px;padding:14px 0;cursor:pointer;background:#fff;transition:transform 200ms ease;will-change:transform" onclick="showQuestDetail('${qid}')" ontouchstart="swipeStart(event,'${rowId}')" ontouchmove="swipeMove(event,'${rowId}')" ontouchend="swipeEnd(event,'${rowId}')"><div style="width:44px;height:44px;border-radius:22px;flex-shrink:0;background:${doneT?'rgba(5,150,105,0.15)':isBg};display:flex;align-items:center;justify-content:center;font-size:20px">${doneT?'<svg width="18" height="14" viewBox="0 0 18 14" fill="none"><path d="M1 7l5 5L17 1" stroke="#059669" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>':icon}</div><div style="flex:1;min-width:0"><div style="font-family:DM Sans,sans-serif;font-size:15px;font-weight:700;color:#111;line-height:1.3;${doneT?'text-decoration:line-through;opacity:0.5':''};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escHtml(q.title)}</div><div style="font-family:DM Sans,sans-serif;font-size:12px;color:#9B8EA8;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${doneT?'Erledigt ✓':escHtml(q.cue||'')}</div></div><button onclick="event.stopPropagation();questDoneToday('${qid}')" style="width:28px;height:28px;border-radius:14px;flex-shrink:0;border:${doneT?'none':'1.5px solid #DDD'};background:${doneT?'#059669':'transparent'};display:flex;align-items:center;justify-content:center;cursor:pointer">${doneT?'<svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5l3.5 3.5L11 1" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>':''}</button></div>`
+      +`</div>`;
   }).join('');
 
   var addSlot='';
@@ -1904,7 +1910,8 @@ function showQuestDetail(qid){
   const doneToday=((S.weekDone||{})[qid]||[])[today];
 
   // card bg by area
-  const cardBg=q.sector==='love'?'#FFD6E8':q.sector==='alltag'?'#D4F0FF':'#E0D4FF';
+  const _lvBg={'1':'#C8F0C8','2':'#FFF3B0','3':'#FFD6A0','4':'#FFB5C8'};
+  const cardBg=_lvBg[String(q.level)]||'#E8E8E8';
 
   // section helper
   function sec(icon,label,text,bg){
@@ -1972,7 +1979,7 @@ function showQuestDetail(qid){
       +idHtml
     +'</div>'
     // buttons
-    +'<div style="padding:16px 16px 36px;flex-shrink:0;display:flex;flex-direction:column;gap:10px">'
+    +'<div style="padding:16px 16px calc(env(safe-area-inset-bottom,0px) + 36px);flex-shrink:0;display:flex;flex-direction:column;gap:10px">'
       +primaryBtn
       +'<button onclick="closeSheet()" style="width:100%;background:rgba(0,0,0,0.04);border:none;border-radius:18px;padding:14px;font-family:DM Sans,sans-serif;font-size:13px;font-weight:500;color:#ABABAB;cursor:pointer">Schließen</button>'
     +'</div>'
@@ -1985,25 +1992,62 @@ function rLevels(){
   const filt=S.activeSector||'all';
   const visible=QL.filter(q=>filt==='all'||q.sector===filt);
 
+  const LEVEL_BG={'1':'#C8F0C8','2':'#FFF3B0','3':'#FFD6A0','4':'#FFB5C8'};
   const DIFF=['','Leicht','Mittel','Stark','Stark','Extrem'];
   const DIFF_COLOR={'Leicht':'#059669','Mittel':'#D97706','Stark':'#DC2626','Extrem':'#7C3AED'};
-  const AREA_BG={love:'#FFD6E8',alltag:'#D4F0FF'};
 
-  const cards=visible.map(function(q){
-    const bg=AREA_BG[q.sector]||'#E8E8E8';
-    const dl=DIFF[Math.min(q.level,5)]||'Leicht';
-    const dc=DIFF_COLOR[dl]||'#6B6B6B';
-    const inQueue=(S.weekQueue||[]).includes(q.id);
-    return `<div onclick="showQuestDetail('${q.id}')" style="background:${bg};border-radius:22px;padding:20px 20px 18px;cursor:pointer;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:12px"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px"><div style="width:52px;height:52px;border-radius:26px;background:rgba(255,255,255,0.70);display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 2px 8px rgba(0,0,0,0.08)">${questIcon(q)}</div><span style="font-family:DM Sans,sans-serif;font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px;background:rgba(255,255,255,0.65);color:${dc}">${dl}</span></div><div style="font-family:DM Sans,sans-serif;font-size:19px;font-weight:800;color:#111;letter-spacing:-0.01em;line-height:1.25;margin-bottom:8px">${escHtml(q.title)}</div><div style="font-family:DM Sans,sans-serif;font-size:14px;color:rgba(0,0,0,0.55);line-height:1.6;margin-bottom:16px">${escHtml(q.cue||'')}</div><div style="display:flex;justify-content:space-between;align-items:center"><div style="font-family:DM Mono,monospace;font-size:10px;color:rgba(0,0,0,0.4);letter-spacing:0.06em">${(q.skill||q.area||'').toUpperCase()} · L${q.level}</div><button onclick="event.stopPropagation();addToWeekQueue('${q.id}')" style="padding:8px 16px;background:rgba(255,255,255,0.75);border:none;border-radius:99px;font-family:DM Sans,sans-serif;font-size:13px;font-weight:600;color:#111;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.08)">${inQueue?'✓ In Woche':'+ Woche'}</button></div></div>`;
-  }).join('');
+  // Level meta: title + description per area+level
+  const LEVEL_META={
+    'love-1':{ title:'Trefferfläche', desc:'Du wirst sichtbar – Blickkontakt, Haltung, Präsenz im Raum.' },
+    'love-2':{ title:'Präsenz',       desc:'Echte Aufmerksamkeit statt Performance. Moment spüren.' },
+    'love-3':{ title:'Micro-Opener',  desc:'Situative Ansprache – kurz, direkt, ohne Druck.' },
+    'love-4':{ title:'Verbindlichkeit', desc:'Kontakte festigen, Nummern holen, Verbindung halten.' },
+    'alltag-1':{ title:'Alltags-Präsenz', desc:'Im Raum sein und wahrgenommen werden – ohne extra Aufwand.' },
+    'alltag-2':{ title:'Situativer Entry', desc:'Kleine soziale Momente aktiv nutzen statt ignorieren.' },
+    'alltag-3':{ title:'Proaktive Grenzen', desc:'Dein Tempo, dein Raum – im Alltag klar vertreten.' },
+    'alltag-4':{ title:'Initiative',   desc:'Erst du – Gespräche starten, Kontakte halten, Nächstes vorschlagen.' },
+  };
 
+  // Group quests by level, preserve level order
+  const levels=[1,2,3,4];
+  let html='';
+  levels.forEach(function(lv){
+    const group=visible.filter(q=>q.level===lv);
+    if(!group.length)return;
+
+    const bg=LEVEL_BG[String(lv)]||'#EEE';
+    // pick meta from first quest's sector
+    const sec=group[0].sector||'love';
+    const meta=LEVEL_META[sec+'-'+lv]||{title:'Level '+lv,desc:''};
+
+    // Level divider
+    html+=`<div style="margin:${lv===1?'0':'20px'} 0 10px">`
+      +`<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">`
+        +`<div style="width:28px;height:28px;border-radius:14px;background:${bg};display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'DM Mono',monospace;font-size:11px;font-weight:800;color:rgba(0,0,0,0.5)">L${lv}</div>`
+        +`<div>`
+          +`<div style="font-family:'DM Sans',sans-serif;font-size:15px;font-weight:800;color:#111;line-height:1.2">${meta.title}</div>`
+          +`<div style="font-family:'DM Sans',sans-serif;font-size:12px;color:#9B8EA8;line-height:1.4;margin-top:1px">${meta.desc}</div>`
+        +`</div>`
+      +`</div>`
+    +`</div>`;
+
+    // Quest cards for this level
+    group.forEach(function(q){
+      const dl=DIFF[Math.min(q.level,5)]||'Leicht';
+      const dc=DIFF_COLOR[dl]||'#6B6B6B';
+      const inQueue=(S.weekQueue||[]).includes(q.id);
+      html+=`<div onclick="showQuestDetail('${q.id}')" style="background:${bg};border-radius:22px;padding:20px 20px 18px;cursor:pointer;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:10px"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px"><div style="width:52px;height:52px;border-radius:26px;background:rgba(255,255,255,0.70);display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 2px 8px rgba(0,0,0,0.08)">${questIcon(q)}</div><span style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px;background:rgba(255,255,255,0.65);color:${dc}">${dl}</span></div><div style="font-family:'DM Sans',sans-serif;font-size:19px;font-weight:800;color:#111;letter-spacing:-0.01em;line-height:1.25;margin-bottom:8px">${escHtml(q.title)}</div><div style="font-family:'DM Sans',sans-serif;font-size:14px;color:rgba(0,0,0,0.55);line-height:1.6;margin-bottom:16px">${escHtml(q.cue||'')}</div><div style="display:flex;justify-content:space-between;align-items:center"><div style="font-family:'DM Mono',monospace;font-size:10px;color:rgba(0,0,0,0.4);letter-spacing:0.06em">${(q.skill||'').toUpperCase()}</div><button onclick="event.stopPropagation();addToWeekQueue('${q.id}')" style="padding:8px 16px;background:rgba(255,255,255,0.75);border:none;border-radius:99px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:#111;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.08)">${inQueue?'✓ In Woche':'+ Woche'}</button></div></div>`;
+    });
+  });
+
+  // filter chips
   const sectors=[{id:'all',label:'Alle',emoji:'⚡'},{id:'love',label:'Love',emoji:'💕'},{id:'alltag',label:'Alltag',emoji:'🌍'}];
   const chips=sectors.map(function(s){
     const on=filt===s.id;
-    return `<button onclick="S.activeSector='${s.id}';sv();rLevels()" style="padding:7px 16px;border-radius:99px;white-space:nowrap;border:none;background:${on?'#111':'rgba(0,0,0,0.06)'};font-family:DM Sans,sans-serif;font-size:13px;font-weight:${on?700:400};color:${on?'#fff':'#6B6B6B'};cursor:pointer;flex-shrink:0">${s.emoji} ${s.label}</button>`;
+    return `<button onclick="S.activeSector='${s.id}';sv();rLevels()" style="padding:7px 16px;border-radius:99px;white-space:nowrap;border:none;background:${on?'#111':'rgba(0,0,0,0.06)'};font-family:'DM Sans',sans-serif;font-size:13px;font-weight:${on?700:400};color:${on?'#fff':'#6B6B6B'};cursor:pointer;flex-shrink:0">${s.emoji} ${s.label}</button>`;
   }).join('');
 
-  wrap.innerHTML=`<div style="display:flex;flex-direction:column;height:100%"><div style="padding:12px 16px 0;flex-shrink:0"><div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:12px">${chips}</div></div><div style="flex:1;overflow-y:auto;padding:0 16px 36px">${visible.length?cards:'<div style="text-align:center;padding:40px 0;color:#ABABAB;font-family:DM Sans,sans-serif;font-size:14px">Keine Quests</div>'}</div></div>`;
+  wrap.innerHTML=`<div style="display:flex;flex-direction:column;height:100%"><div style="padding:12px 16px 0;flex-shrink:0"><div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:12px">${chips}</div></div><div style="flex:1;overflow-y:auto;padding:4px 16px 36px">${visible.length?html:'<div style="text-align:center;padding:40px 0;color:#ABABAB;font-family:DM Sans,sans-serif;font-size:14px">Keine Quests</div>'}</div></div>`;
 }
 
 function setSector(key){
@@ -2045,6 +2089,68 @@ function removeFromQueue(qid){
   S.weekQueue=(S.weekQueue||[]).filter(function(x){return x!==qid;});
   sv();rHome();
 }
+/* ── Swipe-to-delete ── */
+var _swipeState={};
+function swipeStart(e,id){
+  // close any other open row
+  Object.keys(_swipeState).forEach(function(k){
+    if(k!==id){
+      var el=document.getElementById(k);
+      if(el){el.style.transition='transform 200ms ease';el.style.transform='translateX(0)';}
+      delete _swipeState[k];
+    }
+  });
+  var t=e.touches[0];
+  _swipeState[id]={startX:t.clientX,startY:t.clientY,dx:0,locked:false,cancelled:false};
+}
+function swipeMove(e,id){
+  var st=_swipeState[id];
+  if(!st||st.cancelled)return;
+  var t=e.touches[0];
+  var dx=t.clientX-st.startX;
+  var dy=t.clientY-st.startY;
+  // if mostly vertical, cancel swipe
+  if(!st.locked&&Math.abs(dy)>Math.abs(dx)&&Math.abs(dy)>6){
+    st.cancelled=true;return;
+  }
+  if(!st.locked&&Math.abs(dx)>6)st.locked=true;
+  if(!st.locked)return;
+  e.preventDefault();
+  // only allow left swipe (negative dx), max -70px
+  var clamped=Math.max(-70,Math.min(0,dx));
+  st.dx=clamped;
+  var el=document.getElementById(id);
+  if(el){el.style.transition='none';el.style.transform='translateX('+clamped+'px)';}
+}
+function swipeEnd(e,id){
+  var st=_swipeState[id];
+  if(!st||st.cancelled){delete _swipeState[id];return;}
+  var el=document.getElementById(id);
+  if(!el){delete _swipeState[id];return;}
+  el.style.transition='transform 220ms cubic-bezier(0.32,0.72,0,1)';
+  if(st.dx<-36){
+    // snap open to -70
+    el.style.transform='translateX(-70px)';
+    _swipeState[id].open=true;
+  } else {
+    // snap back
+    el.style.transform='translateX(0)';
+    delete _swipeState[id];
+  }
+}
+// tap anywhere else closes open rows
+document.addEventListener('touchstart',function(e){
+  var openIds=Object.keys(_swipeState).filter(function(k){return _swipeState[k]&&_swipeState[k].open;});
+  openIds.forEach(function(id){
+    var el=document.getElementById(id);
+    if(el&&!el.contains(e.target)){
+      el.style.transition='transform 200ms ease';
+      el.style.transform='translateX(0)';
+      delete _swipeState[id];
+    }
+  });
+},{passive:true});
+
 
 
 function openProfileSettings(){
@@ -2212,8 +2318,8 @@ function showCel(q){
 }
 function closeCel(){const c=document.getElementById('cel');if(c){c.style.display='none';c.style.pointerEvents='none';}}
 
-function showSheet(html,shtExtra){var cls='sht'+(shtExtra?' '+shtExtra:'');document.getElementById('modal').innerHTML=`<div class="olay" id="ol"><div class="obg" onclick="closeSheet()"></div><div class="${cls}">${html}</div></div>`;}
-function closeSheet(){const ol=document.getElementById('ol');if(ol)ol.remove();}
+function showSheet(html,shtExtra){var nav=document.getElementById('nav');if(nav)nav.style.zIndex='0';var cls='sht'+(shtExtra?' '+shtExtra:'');document.getElementById('modal').innerHTML=`<div class="olay" id="ol"><div class="obg" onclick="closeSheet()"></div><div class="${cls}">${html}</div></div>`;}
+function closeSheet(){const ol=document.getElementById('ol');if(ol)ol.remove();var nav=document.getElementById('nav');if(nav)nav.style.zIndex='400';}
 
 ld();
 loadQuestLibrary().then(function(){
