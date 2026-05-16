@@ -1459,7 +1459,7 @@ function loadQuestLibrary(){
     .then(function(r){if(!r.ok)throw new Error('fetch');return r.json();})
     .then(function(d){loadQuestLibraryFromData(d);if(!QL.length)throw new Error('empty');})
     .catch(function(){if(!loadQuestsFromEmbed())QL=[];})
-    .then(function(){rHome();});
+    .then(function(){rHome();rLevels();});
 }
 
 /* ── Home renderer ── */
@@ -1496,30 +1496,36 @@ function rHome(){
     kpiWeek.innerHTML='<div style="display:flex;gap:6px;justify-content:center">'+bars+'</div>';
   }
 
-  // Weekly quest cards
+  // Weekly quest cards + Auswahl-CTA
   var hqs=document.getElementById('hqs');
   if(hqs){
     var queue=S.weekQueue||[];
-    if(!queue.length){
-      hqs.innerHTML='<div style="font-family:var(--font-sans);font-size:13px;color:var(--t3);padding:12px 0">Keine Quests ausgewählt – geh zu <b>Quests</b> und nimm eine an.</div>';
-    } else {
-      hqs.innerHTML=queue.map(function(qid){
-        var q=QL.find(function(x){return x.id===qid;});
-        if(!q)return '';
-        var today=getTodayDowIndex();
-        var done=((S.weekDone||{})[qid]||[])[today];
-        var icon=questIcon(q);
-        return '<div style="background:var(--surface2);border-radius:16px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;gap:12px;cursor:pointer" onclick="showQuestDetail(\''+qid+'\')">'
-          +'<span style="font-size:28px;flex-shrink:0">'+icon+'</span>'
-          +'<div style="flex:1;min-width:0">'
-          +'<div style="font-family:var(--font-sans);font-size:14px;font-weight:700;color:var(--t)">'+escHtml(q.title)+'</div>'
-          +'<div style="font-family:var(--font-mono);font-size:10px;color:var(--t3);margin-top:2px">'+escHtml(q.area||'')+(q.skill?' · '+escHtml(q.skill):'')+'</div>'
-          +'</div>'
-          +'<button type="button" onclick="event.stopPropagation();questDoneToday(\''+qid+'\')" style="width:36px;height:36px;border-radius:50%;border:2px solid '+(done?'var(--g)':'var(--border)')+';background:'+(done?'var(--g)':'transparent')+';color:'+(done?'#fff':'var(--t3)')+';font-size:16px;cursor:pointer;flex-shrink:0">'
-          +(done?'✓':'○')+'</button>'
-          +'</div>';
-      }).join('');
+    var today=getTodayDowIndex();
+    var cards=queue.map(function(qid){
+      var q=QL.find(function(x){return x.id===qid;});
+      if(!q)return '';
+      var done=((S.weekDone||{})[qid]||[])[today];
+      var icon=questIcon(q);
+      return '<div style="background:var(--surface2);border-radius:16px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;gap:12px">'
+        +'<span style="font-size:26px;flex-shrink:0;cursor:pointer" onclick="showQuestDetail(\''+qid+'\')">'+icon+'</span>'
+        +'<div style="flex:1;min-width:0;cursor:pointer" onclick="showQuestDetail(\''+qid+'\')">'
+        +'<div style="font-family:var(--font-sans);font-size:14px;font-weight:700;color:var(--t)">'+escHtml(q.title)+'</div>'
+        +'<div style="font-family:var(--font-mono);font-size:10px;color:var(--t3);margin-top:2px">'+escHtml(q.area||'')+(q.skill?' · '+escHtml(q.skill):'')+'</div>'
+        +'</div>'
+        +'<button type="button" onclick="questDoneToday(\''+qid+'\')" style="width:38px;height:38px;border-radius:50%;border:2px solid '+(done?'var(--g)':'var(--border)')+';background:'+(done?'var(--g)':'transparent')+';color:'+(done?'#fff':'var(--t3)')+';font-size:18px;cursor:pointer;flex-shrink:0;transition:all .15s">'
+        +(done?'✓':'○')+'</button>'
+        +'</div>';
+    }).join('');
+
+    // CTA: Quest hinzufügen oder Zufall wenn < 3
+    var ctaHtml='';
+    if(queue.length<3){
+      ctaHtml='<div style="display:flex;gap:8px;margin-top:4px">'
+        +'<button onclick="go(\'q\')" style="flex:1;background:var(--surface2);border:1.5px dashed var(--border);border-radius:14px;padding:12px;font-family:var(--font-sans);font-size:13px;font-weight:600;color:var(--t2);cursor:pointer">＋ Quest wählen</button>'
+        +'<button onclick="addRandomQuest()" style="flex:1;background:var(--surface2);border:1.5px dashed var(--border);border-radius:14px;padding:12px;font-family:var(--font-sans);font-size:13px;font-weight:600;color:var(--t2);cursor:pointer">🎲 Zufall</button>'
+        +'</div>';
     }
+    hqs.innerHTML=cards+ctaHtml;
   }
   renderProfileQuestBento();
 }
@@ -1546,6 +1552,15 @@ function addAndShame(qid){
   addToWeekQueue(qid);
   closeSheet();
   showShameCheck(qid);
+}
+function addRandomQuest(){
+  var queue=S.weekQueue||[];
+  if(queue.length>=3)return;
+  var available=QL.filter(function(q){return!queue.includes(q.id);});
+  if(!available.length)return;
+  var pick=available[Math.floor(Math.random()*available.length)];
+  addToWeekQueue(pick.id);
+  rHome();
 }
 function relDate(iso){
   var d=new Date(iso),n=new Date();
@@ -1971,7 +1986,7 @@ function showQuestDetail(qid){
 }
 
 function rLevels(){
-  const w=document.getElementById('levels-wrap');
+  const w=document.getElementById('ov-wrap');
   if(!w)return;
 
   const active=S.activeSector||'all';
@@ -2012,44 +2027,32 @@ function rLevels(){
     const dm=DIFF_META[q.diff]||DIFF_META[1];
     const sm=SECTOR_META[q.sector]||{};
     const inQueue=(S.weekQueue||[]).includes(q.id);
-    const doneBefore=(S.completions||[])
-      .some(c=>c.qid===q.id);
+    const doneBefore=(S.completions||[]).some(c=>c.qid===q.id);
+    const icon=questIcon(q);
 
-    return`<div style="display:flex;align-items:center;
-      gap:12px;padding:12px 0;
-      border-bottom:0.5px solid var(--border)">
+    return`<div onclick="showQuestDetail('${q.id}')"
+      style="display:flex;align-items:center;gap:12px;
+        padding:13px 0;border-bottom:0.5px solid var(--border);
+        cursor:pointer">
+      <div style="font-size:26px;flex-shrink:0;width:36px;text-align:center">${icon}</div>
       <div style="flex:1;min-width:0">
-        <div style="display:flex;gap:6px;
-          align-items:center;margin-bottom:4px">
-          <span style="font-family:'DM Mono',monospace;
-            font-size:8px;font-weight:700;
+        <div style="display:flex;gap:6px;align-items:center;margin-bottom:3px">
+          <span style="font-family:'DM Mono',monospace;font-size:8px;font-weight:700;
             padding:2px 8px;border-radius:99px;
-            background:${dm.color}15;color:${dm.color}">
-            ${dm.label}
-          </span>
-          <span style="font-family:'DM Mono',monospace;
-            font-size:8px;color:var(--t3)">
-            ${sm.emoji||''} ${sm.label||''}
-          </span>
+            background:${dm.color}18;color:${dm.color}">${dm.label}</span>
+          <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--t3)">
+            ${sm.emoji||''} ${escHtml(q.skill||sm.label||'')}</span>
         </div>
-        <div style="font-family:'DM Sans',sans-serif;
-          font-size:14px;font-weight:700;color:var(--t);
-          ${doneBefore?'opacity:0.5':''}">
+        <div style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;
+          color:var(--t);${doneBefore?'opacity:0.5':''}">
           ${escHtml(q.title)}
         </div>
       </div>
       ${inQueue
-        ?`<span style="font-family:'DM Mono',monospace;
-            font-size:8px;color:var(--am);font-weight:700;
-            white-space:nowrap">DIESE WOCHE</span>`
-        :`<button onclick="addToWeekQueue('${q.id}')"
-            style="background:var(--t);border:none;
-            border-radius:10px;padding:7px 12px;
-            font-family:'DM Mono',monospace;font-size:9px;
-            font-weight:700;color:#fff;cursor:pointer;
-            white-space:nowrap;flex-shrink:0">
-            + Woche
-          </button>`
+        ?`<span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--am);
+            font-weight:700;white-space:nowrap;flex-shrink:0">AKTIV ✓</span>`
+        :`<span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--t3);
+            white-space:nowrap;flex-shrink:0">→</span>`
       }
     </div>`;
   }
