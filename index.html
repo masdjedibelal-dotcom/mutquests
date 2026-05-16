@@ -1464,103 +1464,54 @@ function loadQuestLibrary(){
 
 /* ── Home renderer ── */
 function rHome(){
-  var streak=S.streak||0;
-  var kpiEl=document.getElementById('kpi-done-val');
-  if(kpiEl)kpiEl.textContent=streak;
-
   var grEl=document.getElementById('home-greeting');
   if(grEl)grEl.textContent='Hallo '+(S.name||'');
   var lvEl=document.getElementById('home-level-copy');
-  if(lvEl){
-    var done=S.totalDone||0;
-    var lv=done<3?1:done<8?2:done<15?3:4;
-    lvEl.textContent='Lv. '+lv+' '+(APP_LEVEL_NAMES[lv]||'');
-  }
+  if(lvEl){var done=S.totalDone||0;var lv=done<3?1:done<8?2:done<15?3:4;lvEl.textContent='Lv. '+lv+' '+(APP_LEVEL_NAMES[lv]||'');}
   var avEl=document.getElementById('home-avatar-fallback');
   if(avEl)avEl.textContent=(S.name||'?').charAt(0).toUpperCase();
 
-  // KPI Week-bar
-  var kpiWeek=document.getElementById('kpi-week');
-  if(kpiWeek){
-    var days=['Mo','Di','Mi','Do','Fr','Sa','So'];
-    var today=getTodayDowIndex();
-    var weekDone=S.weekDone||{};
-    var queue=S.weekQueue||[];
-    var bars=days.map(function(d,i){
-      var hasDone=queue.some(function(qid){return(weekDone[qid]||[])[i];});
-      var isToday=i===today;
-      return '<div style="display:flex;flex-direction:column;align-items:center;gap:3px">'
-        +'<div style="width:28px;height:28px;border-radius:8px;background:'+(hasDone?'var(--g)':'rgba(17,24,39,0.08)')+';'+(isToday?'outline:2px solid var(--t3);outline-offset:2px':'')+'"></div>'
-        +'<span style="font-size:9px;color:var(--t3);font-family:var(--font-mono)">'+d+'</span>'
-        +'</div>';
-    }).join('');
-    kpiWeek.innerHTML='<div style="display:flex;gap:6px;justify-content:center">'+bars+'</div>';
-  }
-
-  // Weekly quest card
   var hqs=document.getElementById('hqs');
   if(!hqs){renderProfileQuestBento();return;}
   var queue=S.weekQueue||[];
   var today=getTodayDowIndex();
+  var days=['Mo','Di','Mi','Do','Fr','Sa','So'];
+
+  // week track
+  var kpiWeek=document.getElementById('kpi-week');
+  if(kpiWeek){
+    var weekDone=S.weekDone||{};
+    var bars=days.map(function(d,i){
+      var hasDone=queue.some(function(qid){return(weekDone[qid]||[])[i];});
+      var isT=i===today;
+      return `<div style="display:flex;flex-direction:column;align-items:center;gap:4px"><div style="width:32px;height:32px;border-radius:16px;background:${hasDone?'#16A34A':'rgba(0,0,0,0.06)'};display:flex;align-items:center;justify-content:center;${isT?'outline:2px solid #9D7FEA;outline-offset:2px;':''}">${hasDone?'<svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5l3.5 3.5L11 1" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>':''}</div><span style="font-family:DM Sans,sans-serif;font-size:11px;color:${isT?'#111':'#ABABAB'};font-weight:${isT?700:400}">${d}</span></div>`;
+    }).join('');
+    kpiWeek.innerHTML=`<div style="display:flex;justify-content:space-between">${bars}</div>`;
+  }
 
   if(!queue.length){
-    hqs.innerHTML='<div class="home-empty">'
-      +'<div style="font-size:32px;margin-bottom:10px">⚡</div>'
-      +'<div style="font-family:var(--font-sans);font-weight:800;font-size:16px;color:var(--t);letter-spacing:-0.01em;margin-bottom:6px">Keine Quests aktiv</div>'
-      +'<div style="font-family:var(--font-sans);font-size:13px;color:var(--t2);line-height:1.5;margin-bottom:18px">Wähle bis zu 3 Quests für diese Woche – gezielt oder per Zufall.</div>'
-      +'<div style="display:flex;gap:8px">'
-      +'<button onclick="go(\'q\')" class="hq-add-quest-btn" style="flex:1">Quest wählen</button>'
-      +'<button onclick="addRandomQuest()" class="hq-add-quest-btn" style="flex:1">🎲 Zufall</button>'
-      +'</div></div>';
-    renderProfileQuestBento();
-    return;
+    hqs.innerHTML=`<div style="background:#fff;border-radius:24px;padding:28px 20px;box-shadow:0 2px 16px rgba(0,0,0,0.06);text-align:center"><div style="font-size:36px;margin-bottom:10px">⚡</div><div style="font-family:DM Sans,sans-serif;font-size:16px;font-weight:800;color:#111;margin-bottom:6px">Keine Quests aktiv</div><div style="font-family:DM Sans,sans-serif;font-size:13px;color:#9B8EA8;line-height:1.5;margin-bottom:18px">Wähle bis zu 3 Quests für diese Woche.</div><div style="display:flex;gap:8px"><button onclick="go('q')" style="flex:1;background:#111;border:none;border-radius:14px;padding:13px;font-family:DM Sans,sans-serif;font-size:13px;font-weight:700;color:#fff;cursor:pointer">Quest wählen</button><button onclick="addRandomQuest()" style="flex:1;background:rgba(0,0,0,0.05);border:none;border-radius:14px;padding:13px;font-family:DM Sans,sans-serif;font-size:13px;font-weight:600;color:#6B6B6B;cursor:pointer">🎲 Zufall</button></div></div>`;
+    renderProfileQuestBento();return;
   }
 
   var rows=queue.map(function(qid){
     var q=QL.find(function(x){return x.id===qid;});
     if(!q)return '';
-    var doneToday=((S.weekDone||{})[qid]||[])[today];
+    var doneT=((S.weekDone||{})[qid]||[])[today];
     var icon=questIcon(q);
-    var wkDots=['Mo','Di','Mi','Do','Fr','Sa','So'].map(function(d,i){
-      var dayDone=((S.weekDone||{})[qid]||[])[i];
-      var isT=i===today;
-      var cls=dayDone?'hq-wk-ring--done':isT?'hq-wk-ring--today':(i<today?'hq-wk-ring--past':'hq-wk-ring--future');
-      return '<div class="hq-wk-cell"><div class="hq-wk-ring '+cls+'">'+(dayDone?'✓':'')+'</div><div class="hq-wk-lbl">'+d+'</div></div>';
-    }).join('');
-    return '<div class="hq-row hq-row--stack">'
-      +'<button class="hq-row-tap" onclick="showQuestDetail(\''+qid+'\')">'
-      +'<div class="hq-ico" style="'+(doneToday?'background:var(--g);border-color:var(--g);color:#fff;':'')+'">'+icon+'</div>'
-      +'<div class="hq-copy">'
-      +'<div class="hq-meta">'+escHtml(q.area||'')+(q.skill?' · '+escHtml(q.skill):'')+'</div>'
-      +'<div class="hq-title">'+escHtml(q.title)+'</div>'
-      +'</div></button>'
-      +'<div class="hq-week-track"><div class="hq-wk-dots">'+wkDots+'</div></div>'
-      +'<div class="hq-row-actions">'
-      +'<button class="hq-btn-done'+(doneToday?' hq-btn-done--done':'')+'" onclick="questDoneToday(\''+qid+'\')">'+(doneToday?'✓ Erledigt':'Heute erledigt')+'</button>'
-      +'<button class="hq-btn-remove" onclick="removeFromQueue(\''+qid+'\')" title="Entfernen">×</button>'
-      +'</div></div>';
+    var isBg=q.sector==='love'?'rgba(236,72,153,0.12)':'rgba(59,130,246,0.12)';
+    return `<div style="display:flex;align-items:center;gap:14px;padding:14px 0;border-top:1px solid #F5F5F5;cursor:pointer" onclick="showQuestDetail('${qid}')"><div style="width:44px;height:44px;border-radius:22px;flex-shrink:0;background:${doneT?'rgba(5,150,105,0.15)':isBg};display:flex;align-items:center;justify-content:center;font-size:20px">${doneT?'<svg width="18" height="14" viewBox="0 0 18 14" fill="none"><path d="M1 7l5 5L17 1" stroke="#059669" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>':icon}</div><div style="flex:1;min-width:0"><div style="font-family:DM Sans,sans-serif;font-size:15px;font-weight:700;color:#111;line-height:1.3;${doneT?'text-decoration:line-through;opacity:0.5':''};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escHtml(q.title)}</div><div style="font-family:DM Sans,sans-serif;font-size:12px;color:#9B8EA8;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${doneT?'Erledigt ✓':escHtml(q.cue||'')}</div></div><button onclick="event.stopPropagation();questDoneToday('${qid}')" style="width:28px;height:28px;border-radius:14px;flex-shrink:0;border:${doneT?'none':'1.5px solid #DDD'};background:${doneT?'#059669':'transparent'};display:flex;align-items:center;justify-content:center;cursor:pointer">${doneT?'<svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5l3.5 3.5L11 1" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>':''}</button></div>`;
   }).join('');
 
   var addSlot='';
   if(queue.length<3){
-    addSlot='<div class="hq-add-slot-wrap">'
-      +'<p class="hq-add-slot-hint">Noch '+(3-queue.length)+' freie Slot'+(queue.length===2?'':'s')+' – wähle gezielt oder per Zufall</p>'
-      +'<div style="display:flex;gap:8px">'
-      +'<button onclick="go(\'q\')" class="hq-add-quest-btn" style="flex:1">＋ Quest wählen</button>'
-      +'<button onclick="addRandomQuest()" class="hq-add-quest-btn" style="flex:1">🎲 Zufall</button>'
-      +'</div></div>';
+    addSlot=`<div style="padding:14px 0 4px;border-top:1px solid #F5F5F5;display:flex;gap:8px"><button onclick="go('q')" style="flex:1;background:rgba(0,0,0,0.04);border:none;border-radius:14px;padding:11px;font-family:DM Sans,sans-serif;font-size:13px;font-weight:600;color:#6B6B6B;cursor:pointer">＋ Quest wählen</button><button onclick="addRandomQuest()" style="flex:1;background:rgba(0,0,0,0.04);border:none;border-radius:14px;padding:11px;font-family:DM Sans,sans-serif;font-size:13px;font-weight:600;color:#6B6B6B;cursor:pointer">🎲 Zufall</button></div>`;
   }
 
-  hqs.innerHTML='<div class="hq-list-card">'
-    +'<div class="hq-list-hd">Diese Woche</div>'
-    +rows+addSlot
-    +'<div class="hq-card-foot"><button class="hq-foot-link" onclick="go(\'q\')">Alle Quests →</button></div>'
-    +'</div>';
+  hqs.innerHTML=`<div style="background:#fff;border-radius:24px;padding:18px 18px 10px;box-shadow:0 2px 16px rgba(0,0,0,0.06);overflow:hidden"><div style="font-family:DM Sans,sans-serif;font-size:16px;font-weight:700;color:#111;text-align:center;margin-bottom:4px">Diese Woche</div>${rows}${addSlot}<div style="text-align:right;padding-top:10px"><button onclick="go('q')" style="background:none;border:none;font-family:DM Mono,monospace;font-size:11px;color:#ABABAB;cursor:pointer;letter-spacing:0.06em">ALLE QUESTS →</button></div></div>`;
 
-  renderProfileQuestBento();
-}
+  renderProfileQuestBento();return;}
 
-/* ── Shame check ── */
 function showShameCheck(qid){
   window._shameQid=qid;
   var q=QL.find(function(x){return x.id===qid;});
@@ -1948,190 +1899,111 @@ function habitSituationsBlock(situations){
 function showQuestDetail(qid){
   const q=QL.find(x=>x.id===qid);
   if(!q)return;
-  const dm=DIFF_META[q.diff]||DIFF_META[1];
   const inQueue=(S.weekQueue||[]).includes(qid);
+  const today=getTodayDowIndex();
+  const doneToday=((S.weekDone||{})[qid]||[])[today];
 
-  const cueBlock=habitFieldBlock('CUE','🎯',q.cue,'var(--t3)',false);
-  const actionBlock=habitFieldBlock('HANDLUNG','⚡',q.action,'var(--g)',true);
-  const situationsBlock=habitSituationsBlock(q.situations);
-  const rewardBlock=habitFieldBlock('REWARD','✨',q.reward,'var(--am)',false);
-  const frictionBlock=habitFieldBlock('WIDERSTAND','🧱',q.friction,'var(--r)',false);
-  const antreiberBlock=habitFieldBlock('ANTRIEBER','🧠',q.antreiber_target,'#7C3AED',false);
-  const identityBlock=q.identity_shift
-    ?'<div style="background:linear-gradient(135deg,rgba(5,150,105,0.08),rgba(5,150,105,0.04));border:1px solid rgba(5,150,105,0.25);border-radius:16px;padding:16px;margin-bottom:10px">'
-      +'<div style="font-family:\'DM Mono\',monospace;font-size:9px;font-weight:700;color:var(--g);letter-spacing:0.1em;margin-bottom:8px">🪞 IDENTITY SHIFT</div>'
-      +'<div style="font-family:\'DM Sans\',sans-serif;font-size:14px;font-weight:700;color:var(--t);line-height:1.55">'+escHtml(q.identity_shift)+'</div>'
+  // card bg by area
+  const cardBg=q.sector==='love'?'#FFD6E8':q.sector==='alltag'?'#D4F0FF':'#E0D4FF';
+
+  // section helper
+  function sec(icon,label,text,bg){
+    if(!text)return '';
+    return '<div style="background:'+bg+';border-radius:18px;padding:14px 16px;margin-bottom:12px">'
+      +'<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">'
+      +'<span style="font-size:14px">'+icon+'</span>'
+      +'<span style="font-family:DM Mono,monospace;font-size:9px;font-weight:700;color:#C084FC;letter-spacing:0.1em">'+label+'</span>'
       +'</div>'
-    :''
+      +'<div style="font-family:DM Sans,sans-serif;font-size:13px;color:#111;line-height:1.7">'+escHtml(text)+'</div>'
+      +'</div>';
+  }
 
-  showSheet(`
-    <div class="qc-sheet">
-      <button type="button" class="qc-close-sheet" onclick="closeSheet()" aria-label="Schließen">✕</button>
-      <div class="shdl"></div>
-      <div class="qc-head">
-        <div class="qc-head-row">
-          <div class="qc-head-ico">${questIcon(q)}</div>
-          <div class="qc-head-meta">
-            <span class="qc-dots-wrap">
-              <span class="qc-dot qc-dot--on"></span>
-              <span class="qc-dot qc-dot--on"></span>
-              <span class="qc-dot qc-dot--on"></span>
-              <span class="qc-dot"></span>
-              <span class="qc-dot"></span>
-            </span>
-            ${questPillHtml(q)}
-          </div>
-        </div>
-        <div class="qc-head-title">${escHtml(q.title)}</div>
-        <div class="qc-head-sub">${escHtml(q.area||q.category||'')}${q.skill?' · '+escHtml(q.skill):''} · L${q.level} · ${escHtml(dm.label||'')}</div>
-      </div>
-      <div class="qc-scroll">
-        ${cueBlock}
-        ${actionBlock}
-        ${situationsBlock}
-        ${rewardBlock}
-        ${frictionBlock}
-        ${antreiberBlock}
-        ${identityBlock}
-      </div>
-      <div class="qc-foot">
-        ${inQueue
-          ? `<button type="button" class="qc-btn qc-btn--primary" onclick="closeSheet();showShameCheck('${qid}')">Ich mach's heute →</button>
-             <button type="button" class="qc-btn qc-btn--ghost" onclick="closeSheet()">Schließen</button>`
-          : `<button type="button" class="qc-btn qc-btn--primary" onclick="closeSheet();addAndShame('${qid}')">Quest annehmen →</button>
-             <button type="button" class="qc-btn qc-btn--ghost" onclick="closeSheet()">Schließen</button>`
-        }
-      </div>
-    </div>
-  `,'sht--qc');
+  // situations list
+  var sitHtml='';
+  if(q.situations&&q.situations.length){
+    var items=q.situations.map(function(s){return '<div style="font-family:DM Sans,sans-serif;font-size:13px;color:#111;line-height:1.6;padding:4px 0;border-bottom:1px solid rgba(0,0,0,0.06)">📍 '+escHtml(s)+'</div>';}).join('');
+    sitHtml='<div style="background:rgba(157,127,234,0.06);border-radius:18px;padding:14px 16px;margin-bottom:12px">'
+      +'<div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">'
+      +'<span style="font-size:14px">🗺️</span>'
+      +'<span style="font-family:DM Mono,monospace;font-size:9px;font-weight:700;color:#C084FC;letter-spacing:0.1em">SITUATIONEN</span>'
+      +'</div>'+items+'</div>';
+  }
+
+  // identity shift
+  var idHtml=q.identity_shift
+    ?'<div style="background:linear-gradient(135deg,rgba(249,168,212,0.15),rgba(192,132,252,0.12));border-radius:18px;padding:16px;margin-bottom:12px">'
+      +'<div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">'
+      +'<span style="font-size:14px">🪞</span>'
+      +'<span style="font-family:DM Mono,monospace;font-size:9px;font-weight:700;color:#C084FC;letter-spacing:0.1em">IDENTITY SHIFT</span>'
+      +'</div>'
+      +'<div style="font-family:DM Sans,sans-serif;font-size:14px;font-weight:700;color:#111;line-height:1.55">'+escHtml(q.identity_shift)+'</div>'
+      +'</div>'
+    :'';
+
+  // primary button
+  var primaryBtn=doneToday
+    ?'<button style="width:100%;background:#059669;border:none;border-radius:18px;padding:17px;font-family:DM Sans,sans-serif;font-size:15px;font-weight:800;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">'
+      +'<svg width="16" height="12" viewBox="0 0 16 12" fill="none"><path d="M1 6l5 5L15 1" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>Heute erledigt ✓</button>'
+    :inQueue
+    ?'<button onclick="questDoneToday(\''+qid+'\');closeSheet()" style="width:100%;background:linear-gradient(90deg,#F9A8D4,#C084FC);border:none;border-radius:18px;padding:17px;font-family:DM Sans,sans-serif;font-size:15px;font-weight:800;color:#fff;cursor:pointer;box-shadow:0 4px 16px rgba(192,132,252,0.35);display:flex;align-items:center;justify-content:center;gap:8px">'
+      +'<svg width="16" height="12" viewBox="0 0 16 12" fill="none"><path d="M1 6l5 5L15 1" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>Heute erledigt</button>'
+    :'<button onclick="addToWeekQueue(\''+qid+'\');closeSheet()" style="width:100%;background:linear-gradient(90deg,#F9A8D4,#C084FC);border:none;border-radius:18px;padding:17px;font-family:DM Sans,sans-serif;font-size:15px;font-weight:800;color:#fff;cursor:pointer;box-shadow:0 4px 16px rgba(192,132,252,0.35)">Hinzufügen →</button>';
+
+  showSheet(''
+    // drag handle
+    +'<div style="display:flex;justify-content:center;padding:14px 0 8px;flex-shrink:0"><div style="width:44px;height:4px;background:#E5E5E5;border-radius:2px"></div></div>'
+    // pastel hero
+    +'<div style="margin:0 16px;background:'+cardBg+';border-radius:24px;padding:22px 20px 20px;flex-shrink:0">'
+      +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">'
+        +'<div style="width:56px;height:56px;border-radius:28px;background:rgba(255,255,255,0.65);display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 2px 8px rgba(0,0,0,0.08)">'+questIcon(q)+'</div>'
+        +'<div style="display:flex;gap:6px">'
+          +'<span style="font-family:DM Mono,monospace;font-size:9px;font-weight:600;padding:4px 10px;border-radius:99px;background:rgba(255,255,255,0.65);color:rgba(0,0,0,0.5)">L'+q.level+'</span>'
+          +(q.skill?'<span style="font-family:DM Mono,monospace;font-size:9px;font-weight:700;padding:4px 10px;border-radius:99px;background:rgba(255,255,255,0.65);color:rgba(0,0,0,0.5)">'+escHtml(q.skill)+'</span>':'')+'</div>'
+      +'</div>'
+      +'<div style="font-family:DM Sans,sans-serif;font-size:22px;font-weight:800;color:#111;letter-spacing:-0.02em;line-height:1.25;margin-bottom:8px">'+escHtml(q.title)+'</div>'
+      +'<div style="font-family:DM Sans,sans-serif;font-size:14px;color:rgba(0,0,0,0.55);line-height:1.7">'+escHtml(q.cue||'')+'</div>'
+    +'</div>'
+    // scrollable sections
+    +'<div style="overflow-y:auto;padding:16px 16px 0;flex:1">'
+      +sec('⚡','HANDLUNG',q.action,'rgba(5,150,105,0.08)')
+      +sitHtml
+      +sec('🧱','WIDERSTAND',q.friction,'rgba(220,38,38,0.06)')
+      +sec('🧠','ANTREIBER',q.antreiber_target,'rgba(249,168,212,0.10)')
+      +idHtml
+    +'</div>'
+    // buttons
+    +'<div style="padding:16px 16px 36px;flex-shrink:0;display:flex;flex-direction:column;gap:10px">'
+      +primaryBtn
+      +'<button onclick="closeSheet()" style="width:100%;background:rgba(0,0,0,0.04);border:none;border-radius:18px;padding:14px;font-family:DM Sans,sans-serif;font-size:13px;font-weight:500;color:#ABABAB;cursor:pointer">Schließen</button>'
+    +'</div>'
+  ,'sht--qc');
 }
 
 function rLevels(){
-  const w=document.getElementById('levels-wrap');
-  if(!w)return;
+  const wrap=document.getElementById('ov-wrap');
+  if(!wrap)return;
+  const filt=S.activeSector||'all';
+  const visible=QL.filter(q=>filt==='all'||q.sector===filt);
 
-  const active=S.activeSector||'all';
+  const DIFF=['','Leicht','Mittel','Stark','Stark','Extrem'];
+  const DIFF_COLOR={'Leicht':'#059669','Mittel':'#D97706','Stark':'#DC2626','Extrem':'#7C3AED'};
+  const AREA_BG={love:'#FFD6E8',alltag:'#D4F0FF'};
 
-  // Filter Chips
-  const chips=['all',...Object.keys(SECTOR_META)]
-    .map(key=>{
-      const isAll=key==='all';
-      const meta=isAll
-        ?{label:'Alle',emoji:'⚡'}
-        :SECTOR_META[key];
-      const isOn=active===key;
-      return`<button onclick="setSector('${key}')"
-        style="flex-shrink:0;border:none;
-        border-radius:99px;padding:8px 16px;
-        font-family:'DM Sans',sans-serif;
-        font-size:12px;font-weight:700;
-        cursor:pointer;transition:all .15s;
-        background:${isOn?'var(--t)':'var(--surface2)'};
-        color:${isOn?'#fff':'var(--t2)'}">
-        ${meta.emoji} ${meta.label}
-      </button>`;
-    }).join('');
-
-  // Gefilterte Quests
-  const filtered=QL.filter(q=>
-    active==='all'||q.sector===active
-  );
-
-  // Quests gruppiert nach Diff
-  const byDiff={1:[],2:[],3:[]};
-  filtered.forEach(q=>{
-    if(byDiff[q.diff])byDiff[q.diff].push(q);
-  });
-
-  // Quest Rows
-  function questRow(q){
-    const dm=DIFF_META[q.diff]||DIFF_META[1];
-    const sm=SECTOR_META[q.sector]||{};
+  const cards=visible.map(function(q){
+    const bg=AREA_BG[q.sector]||'#E8E8E8';
+    const dl=DIFF[Math.min(q.level,5)]||'Leicht';
+    const dc=DIFF_COLOR[dl]||'#6B6B6B';
     const inQueue=(S.weekQueue||[]).includes(q.id);
-    const doneBefore=(S.completions||[])
-      .some(c=>c.qid===q.id);
+    return `<div onclick="showQuestDetail('${q.id}')" style="background:${bg};border-radius:22px;padding:20px 20px 18px;cursor:pointer;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:12px"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px"><div style="width:52px;height:52px;border-radius:26px;background:rgba(255,255,255,0.70);display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 2px 8px rgba(0,0,0,0.08)">${questIcon(q)}</div><span style="font-family:DM Sans,sans-serif;font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px;background:rgba(255,255,255,0.65);color:${dc}">${dl}</span></div><div style="font-family:DM Sans,sans-serif;font-size:19px;font-weight:800;color:#111;letter-spacing:-0.01em;line-height:1.25;margin-bottom:8px">${escHtml(q.title)}</div><div style="font-family:DM Sans,sans-serif;font-size:14px;color:rgba(0,0,0,0.55);line-height:1.6;margin-bottom:16px">${escHtml(q.cue||'')}</div><div style="display:flex;justify-content:space-between;align-items:center"><div style="font-family:DM Mono,monospace;font-size:10px;color:rgba(0,0,0,0.4);letter-spacing:0.06em">${(q.skill||q.area||'').toUpperCase()} · L${q.level}</div><button onclick="event.stopPropagation();addToWeekQueue('${q.id}')" style="padding:8px 16px;background:rgba(255,255,255,0.75);border:none;border-radius:99px;font-family:DM Sans,sans-serif;font-size:13px;font-weight:600;color:#111;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.08)">${inQueue?'✓ In Woche':'+ Woche'}</button></div></div>`;
+  }).join('');
 
-    return`<div style="display:flex;align-items:center;
-      gap:12px;padding:12px 0;
-      border-bottom:0.5px solid var(--border)">
-      <div style="flex:1;min-width:0">
-        <div style="display:flex;gap:6px;
-          align-items:center;margin-bottom:4px">
-          <span style="font-family:'DM Mono',monospace;
-            font-size:8px;font-weight:700;
-            padding:2px 8px;border-radius:99px;
-            background:${dm.color}15;color:${dm.color}">
-            ${dm.label}
-          </span>
-          <span style="font-family:'DM Mono',monospace;
-            font-size:8px;color:var(--t3)">
-            ${sm.emoji||''} ${sm.label||''}
-          </span>
-        </div>
-        <div style="font-family:'DM Sans',sans-serif;
-          font-size:14px;font-weight:700;color:var(--t);
-          ${doneBefore?'opacity:0.5':''}">
-          ${escHtml(q.title)}
-        </div>
-      </div>
-      ${inQueue
-        ?`<span style="font-family:'DM Mono',monospace;
-            font-size:8px;color:var(--am);font-weight:700;
-            white-space:nowrap">DIESE WOCHE</span>`
-        :`<button onclick="addToWeekQueue('${q.id}')"
-            style="background:var(--t);border:none;
-            border-radius:10px;padding:7px 12px;
-            font-family:'DM Mono',monospace;font-size:9px;
-            font-weight:700;color:#fff;cursor:pointer;
-            white-space:nowrap;flex-shrink:0">
-            + Woche
-          </button>`
-      }
-    </div>`;
-  }
+  const sectors=[{id:'all',label:'Alle',emoji:'⚡'},{id:'love',label:'Love',emoji:'💕'},{id:'alltag',label:'Alltag',emoji:'🌍'}];
+  const chips=sectors.map(function(s){
+    const on=filt===s.id;
+    return `<button onclick="S.activeSector='${s.id}';sv();rLevels()" style="padding:7px 16px;border-radius:99px;white-space:nowrap;border:none;background:${on?'#111':'rgba(0,0,0,0.06)'};font-family:DM Sans,sans-serif;font-size:13px;font-weight:${on?700:400};color:${on?'#fff':'#6B6B6B'};cursor:pointer;flex-shrink:0">${s.emoji} ${s.label}</button>`;
+  }).join('');
 
-  // Diff-Gruppen zusammenbauen
-  let questsHtml='';
-  [1,2,3].forEach(diff=>{
-    const qs=byDiff[diff];
-    if(!qs.length)return;
-    const dm=DIFF_META[diff];
-    questsHtml+=`
-      <div style="margin-bottom:24px">
-        <div style="font-family:'DM Mono',monospace;
-          font-size:9px;font-weight:700;
-          color:${dm.color};letter-spacing:0.1em;
-          margin-bottom:4px;padding-top:16px">
-          ${dm.label.toUpperCase()} — LEVEL ${diff}
-        </div>
-        <div style="font-family:'DM Sans',sans-serif;
-          font-size:11px;color:var(--t3);
-          margin-bottom:8px">
-          ${{1:'Fast kein Risiko — guter Einstieg',
-             2:'Andere merken es — es kribbelt',
-             3:'Hohes Risiko für ein Nein oder Scham'}[diff]}
-        </div>
-        ${qs.map(questRow).join('')}
-      </div>`;
-  });
-
-  w.innerHTML=`
-    <!-- Filter Chips -->
-    <div style="display:flex;gap:8px;
-      overflow-x:auto;padding-bottom:12px;
-      margin-bottom:4px">
-      ${chips}
-    </div>
-
-    <!-- Quest Liste -->
-    ${questsHtml||`
-      <div style="text-align:center;padding:40px 20px;
-        font-family:'DM Sans',sans-serif;
-        font-size:13px;color:var(--t3)">
-        Keine Quests in diesem Bereich.
-      </div>
-    `}
-  `;
+  wrap.innerHTML=`<div style="display:flex;flex-direction:column;height:100%"><div style="padding:12px 16px 0;flex-shrink:0"><div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:12px">${chips}</div></div><div style="flex:1;overflow-y:auto;padding:0 16px 36px">${visible.length?cards:'<div style="text-align:center;padding:40px 0;color:#ABABAB;font-family:DM Sans,sans-serif;font-size:14px">Keine Quests</div>'}</div></div>`;
 }
 
 function setSector(key){
@@ -2161,6 +2033,19 @@ function addToWeekQueue(qid){
   rLevels();
   rHome();
 }
+function addRandomQuest(){
+  var queue=S.weekQueue||[];
+  if(queue.length>=3)return;
+  var avail=QL.filter(function(q){return !queue.includes(q.id);});
+  if(!avail.length)return;
+  var q=avail[Math.floor(Math.random()*avail.length)];
+  addToWeekQueue(q.id);
+}
+function removeFromQueue(qid){
+  S.weekQueue=(S.weekQueue||[]).filter(function(x){return x!==qid;});
+  sv();rHome();
+}
+
 
 function openProfileSettings(){
   const current=(S.name||'').trim();
