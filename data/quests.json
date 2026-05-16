@@ -1,362 +1,427 @@
 [
   {
-    "category": "Dating",
-    "skill": "Presence",
+    "id": "L1.1",
+    "area": "Love",
     "level": 1,
-    "title": "Der 3s-Blick",
-    "trigger": "Halte den Blickkontakt bei einer attraktiven Person bewusst 3 Sek. lang, lächle leicht und schau erst dann ruhig weiter.",
-    "friction": "Ehrlichkeit. Das gegenseitige 'Erkennen' aushalten, ohne die Augen sofort schüchtern wegzuziehen.",
-    "rule": "Nicht nach unten wegsehen. Halte den Kopf oben.",
-    "id": "D1.1"
+    "skill": "Trefferfläche",
+    "title": "The Third Place",
+    "cue": "Nach Feierabend oder dem Sidehustle – bevor du nach Hause fährst.",
+    "action": "Verbringe 45 Minuten in einem belebten Café oder einer Bar, anstatt direkt nach Hause zu gehen. Kein Handy als Schutzwall.",
+    "situations": [
+      "Schelling-Villa oder Café Jasmin nach Feierabend (Maxvorstadt)",
+      "Spontaner Stop in der Münchner Freiheit auf dem Heimweg",
+      "Freitagabend im Corso Coffee oder an der Isar vor der Bar"
+    ],
+    "friction": "Der innere Schweinehund, der sagt: 'Heute bin ich zu müde' – obwohl du zuhause nur scrollst.",
+    "antreiber_target": "Machs allen recht",
+    "identity_shift": "Ich bin jemand, der seinen Alltag aktiv gestaltet – nicht jemand, der auf den perfekten Moment wartet."
   },
   {
-    "id": "D1.2",
-    "category": "Dating",
+    "id": "L1.2",
+    "area": "Love",
     "level": 1,
-    "title": "Räumliche Exposition",
-    "trigger": "Setz dich (Café/Isar) bewusst in die Nähe einer attraktiven Person, auch wenn woanders viel Platz wäre.",
-    "friction": "Nähe & Präsenz. Die eigene körperliche Anspannung im energetischen Feld der Person aushalten.",
-    "rule": "Kein Handy. Bleib 5 Min. einfach nur präsent sitzen. Du musst nicht reden, nur den Raum halten.",
-    "skill": "Intention"
+    "skill": "Trefferfläche",
+    "title": "Activity Stacking",
+    "cue": "Wenn du deinen Wochenplan machst oder einen freien Abendslot siehst.",
+    "action": "Plane und buche eine wöchentliche Aktivität, bei der organische Begegnungen möglich sind (Yoga, Tanzkurs, Kochkurs, Ü30-Event).",
+    "situations": [
+      "Salsa-Anfängerkurs im Café Glockenspiel oder Tanz 24 München",
+      "Yoga-Klasse in einem Studio in Schwabing oder Haidhausen",
+      "Kochkurs bei der VHS München oder im Kochstudio Herd 23"
+    ],
+    "friction": "Der Aufwand, sich zu verpflichten, bevor du weißt, ob es sich 'lohnt'.",
+    "antreiber_target": "Sei Stark",
+    "identity_shift": "Ich bin jemand, der Begegnungen plant – nicht jemand, der auf den Zufall wartet."
   },
   {
-    "id": "D1.3",
-    "category": "Dating",
+    "id": "L1.3",
+    "area": "Love",
     "level": 1,
-    "title": "The Slow Turn",
-    "trigger": "Wenn du an jemandem vorbeiläufst, den du attraktiv findest, dreh den Kopf beim Passieren bewusst langsam mit.",
-    "friction": "Fokus-Kontrolle. Das Signal senden: 'Ich habe dich gesehen und ich stehe zu meiner Aufmerksamkeit.'",
-    "rule": "Kein hektisches Nicken. Die Bewegung ist flüssig und kontrolliert wie bei einem Leader.",
-    "skill": "Intention"
+    "skill": "Trefferfläche",
+    "title": "Event-Scout",
+    "cue": "Wenn du heute Abend oder am Wochenende Zeit hast und kein konkretes Programm.",
+    "action": "Sichere dir aktiv ein Ticket für ein Afterwork, eine Vernissage oder ein Community-Event.",
+    "situations": [
+      "Afterwork-Event auf Meetup.com oder Eventbrite München",
+      "Vernissage-Opening in einer Galerie in der Maxvorstadt",
+      "Münchner Startup-Events oder Language-Exchange-Abende"
+    ],
+    "friction": "Die Angst, alleine auf Events zu gehen und wie ein Außenseiter zu wirken.",
+    "antreiber_target": "Machs allen recht",
+    "identity_shift": "Ich bin jemand, der Räume aufsucht, in denen Kontakt erwünscht ist – nicht zufällig entsteht."
   },
   {
-    "category": "Dating",
-    "skill": "Intention",
-    "level": 2,
-    "title": "Vibe-Drop",
-    "trigger": "Sag im Vorbeigehen: 'Du hast eine wahnsinnig tolle Ausstrahlung.' Geh sofort weiter.",
-    "friction": "Absicht zeigen. Ein Kompliment geben, ohne die Sicherheit einer Antwort zu haben (Take-away-Frame).",
-    "rule": "Kein Stopp. Wer weitergeht, signalisiert: 'Ich brauche nichts von dir.'",
-    "id": "D2.1"
-  },
-  {
-    "id": "D2.2",
-    "category": "Dating",
-    "level": 2,
-    "title": "Style-Note",
-    "trigger": "Sag im Stehenbleiben: 'Dein Style ist echt mutig, sieht man hier selten.' – Nicken und Weggehen.",
-    "friction": "Urteilskraft. Deine subjektive Meinung laut äußern, ohne nach Bestätigung zu suchen.",
-    "rule": "Die Handlung endet mit deinem Satz. Die Reaktion des anderen ist für den Quest-Erfolg irrelevant.",
-    "skill": "Intention"
-  },
-  {
-    "id": "D2.3",
-    "category": "Dating",
-    "level": 2,
-    "title": "Der Neugier-Opener",
-    "trigger": "Frag im Vorbeigehen: 'Bist du so cool wie du aussiehst oder täuscht das?' – Geh direkt weiter.",
-    "friction": "Spielerische Provokation. Den Frame setzen, dass du derjenige bist, der das Gegenüber prüft.",
-    "rule": "Lächle dabei. Es ist ein Kompliment, das als Herausforderung verpackt ist.",
-    "skill": "Intention"
-  },
-  {
-    "id": "D3.1",
-    "category": "Dating",
-    "level": 3,
-    "title": "Der Alleingang",
-    "trigger": "Geh gezielt alleine in eine Bar und bleib dort für 15 Min. am Tresen stehen, ohne dein Handy zu nutzen.",
-    "friction": "Radikale Autonomie. Ohne soziale 'Sicherheitsdecke' (Freunde/Digitales) im öffentlichen Raum sichtbar sein.",
-    "rule": "Beobachte den Raum. Sei die Base. Wer sich ohne Ablenkung wohlfühlt, strahlt Dominanz aus.",
-    "skill": "Intention"
-  },
-  {
-    "id": "D3.2",
-    "category": "Dating",
-    "level": 3,
-    "title": "Public Compliment",
-    "trigger": "Mach jemandem ein Vibe-Kompliment (D2.1), während Freunde der Person direkt daneben stehen.",
-    "friction": "Social Pressure. Die Aufmerksamkeit einer ganzen Gruppe aushalten, während du deine Intention zeigst.",
-    "rule": "Dein Fokus liegt nur auf der Zielperson. Blende die Umgebung für diesen Moment aus.",
-    "skill": "Intention"
-  },
-  {
-    "category": "Dating",
-    "skill": "Wirkung",
-    "level": 3,
-    "title": "Die ehrliche Pause",
-    "trigger": "Wenn du jemanden kurz ansprichst, halte nach deinem ersten Satz bewusst 3 Sek. Schweigen und Blickkontakt.",
-    "friction": "Spannungs-Management. Die Stille zwischen zwei Fremden aktiv aushalten, statt sie nervös zu füllen.",
-    "rule": "Wer die Stille hält, führt das Gespräch.",
-    "id": "D3.3"
-  },
-  {
-    "category": "Dating",
-    "skill": "Intention",
-    "level": 4,
-    "title": "Instant Nummer",
-    "trigger": "Geh auf jemanden zu: 'Ich finde deine Ausstrahlung toll – gib mir deine Nummer, dann trinken wir einen Kaffee.'",
-    "friction": "Direktes Risiko. Die maximale soziale Hürde: Das direkte 'Nein' innerhalb von Sekunden provozieren.",
-    "rule": "Ziel ist das Risiko, nicht die Nummer.",
-    "id": "D4.1"
-  },
-  {
-    "id": "D4.2",
-    "category": "Dating",
-    "level": 4,
-    "title": "Sofort-Einladung",
-    "trigger": "Frag im Café/Park nach 10 Sek. Kontakt: 'Lust, jetzt sofort mit mir 10 Min. spazieren zu gehen?'",
-    "friction": "Spontaneität & Anspruch. Die sofortige Investition von Zeit fordern. Extrem hohe Ablehnungsrate.",
-    "rule": "Bleib entspannt bei einem 'Nein'. Ein 'Nein' ist lediglich die Bestätigung deines Mutes.",
-    "skill": "Intention"
-  },
-  {
-    "id": "D4.3",
-    "category": "Dating",
-    "level": 4,
-    "title": "Korb-Sammeln",
-    "trigger": "Sprich jemanden an, bei dem du kein Interesse vermutest, nur um die Abfuhr souverän anzunehmen.",
-    "friction": "Resilienz-Training. Die komplette Abwesenheit von defensiver oder beleidigter Energie bei Ablehnung.",
-    "rule": "Antworte: 'Alles klar, schönen Tag noch!' und geh lächelnd weiter. Dein Wert bleibt unberührt.",
-    "skill": "Intention"
-  },
-  {
-    "id": "P1.1",
-    "category": "Sozialer Alltag",
+    "id": "L1.4",
+    "area": "Love",
     "level": 1,
-    "title": "The Anchor",
-    "trigger": "Bleib nach dem Bezahlen oder Kaffee-Erhalt für 15 Sek. ruhig am Tresen stehen und ordne deine Sachen.",
-    "friction": "Raum-Besetzung. Der innere Druck, sofort Platz für den Nächsten machen zu müssen.",
-    "rule": "Atme tief. Dein Tempo bestimmt die Realität am Tresen, nicht die Schlange hinter dir.",
-    "skill": "Presence"
+    "skill": "Trefferfläche",
+    "title": "The Raw Profile",
+    "cue": "Wenn du heute eine Stunde Zeit hast und an dein Handy denkst.",
+    "action": "Erstelle ein Dating-App-Profil mit 3 aktuellen, echten Bildern und einem ehrlichen, kurzen Satz über dich – ohne Filter-Perfektionismus.",
+    "situations": [
+      "Hinge oder Bumble – Profilbilder aus den letzten 3 Monaten",
+      "Ein Bild im Alltag (Café/Isar/Sport), eines mit Lachen, eines stehend",
+      "Prompt-Antwort: etwas Konkretes statt 'ich liebe Reisen'"
+    ],
+    "friction": "Das Gefühl, auf Bildern nicht gut genug auszusehen – und daher gar nicht erst zu starten.",
+    "antreiber_target": "Sei Perfekt",
+    "identity_shift": "Ich bin jemand, der sichtbar ist – auch bevor er 'fertig' ist."
   },
   {
-    "id": "P1.2",
-    "category": "Sozialer Alltag",
+    "id": "L2.1",
+    "area": "Love",
+    "level": 2,
+    "skill": "Präsenz",
+    "title": "The Orientation",
+    "cue": "Beim Betreten eines Cafés, einer Bar oder eines Raumes mit Menschen.",
+    "action": "Bleib kurz an der Tür stehen, nimm in Ruhe die Jacke ab oder richte deine Sachen – scan den Raum, dann wähle bewusst deinen Platz.",
+    "situations": [
+      "Betreten eines Cafés in der Mittagspause – kein Hineinhuschen zum nächsten freien Tisch",
+      "Ankommen auf einer Party oder einem Event – kurz Pause an der Tür",
+      "Eintreten in die Kantine oder ein Restaurant mit Begleitung"
+    ],
+    "friction": "Der Impuls, sofort zum Handy zu greifen, sobald man kurz im Fokus steht.",
+    "antreiber_target": "Machs allen recht",
+    "identity_shift": "Ich bin jemand, der einen Raum betritt – nicht jemand, der sich in ihn hineinschleicht."
+  },
+  {
+    "id": "L2.2",
+    "area": "Love",
+    "level": 2,
+    "skill": "Präsenz",
+    "title": "Open Positioning",
+    "cue": "Wenn du in einem Café, einer Bar oder einem Co-Working-Space Platz suchst.",
+    "action": "Wähle bewusst einen Tisch mit Sichtfeld in den Raum (nicht Gesicht zur Wand) und lass das Handy die ersten 5 Minuten komplett in der Tasche.",
+    "situations": [
+      "Café-Arbeitstag: Platz an der Bar oder in der Raummitte statt Ecke",
+      "Warten auf einen Freund in einem Lokal – ohne Scroll-Reflex",
+      "Lunch alleine: Tisch so wählen, dass du den Eingang siehst"
+    ],
+    "friction": "Das unbehagliche Gefühl, ohne Handy im Raum 'ausgestellt' zu sein.",
+    "antreiber_target": "Sei Stark",
+    "identity_shift": "Ich bin jemand, der den Raum nimmt, den er braucht – ohne sich zu verstecken."
+  },
+  {
+    "id": "L2.3",
+    "area": "Love",
+    "level": 2,
+    "skill": "Präsenz",
+    "title": "The Kind Eye-Contact",
+    "cue": "Beim Warten in einer Schlange, im Park, beim Pendeln – wenn du eine interessante Person siehst.",
+    "action": "Halte Blickkontakt für 2–3 Sekunden und schenke ein leichtes, echtes Lächeln. Dann schau erst ruhig weiter.",
+    "situations": [
+      "Schlange im Supermarkt oder Bäcker – nicht aufs Handy, sondern in den Raum",
+      "S-Bahn oder U-Bahn Richtung Innenstadt",
+      "Isar-Spaziergang oder Englischer Garten am Wochenende"
+    ],
+    "friction": "Die tief verwurzelte Angst, als aufdringlich zu gelten, wenn man jemandem in die Augen schaut.",
+    "antreiber_target": "Machs allen recht",
+    "identity_shift": "Ich bin jemand, der freundliche Präsenz zeigt – nicht jemand, der sich unsichtbar macht."
+  },
+  {
+    "id": "L2.4",
+    "area": "Love",
+    "level": 2,
+    "skill": "Präsenz",
+    "title": "The Path-Cross",
+    "cue": "In der S-Bahn, im Bus oder in einem Wartezimmer, wenn du deinen Platz wählst.",
+    "action": "Setz dich bewusst in die Nähe oder gegenüber einer interessanten Person – statt den isoliertesten Platz am Ende zu wählen.",
+    "situations": [
+      "S1/S8 Richtung Flughafen oder S-Bahn-Ring: Platz gegenüber wählen",
+      "Bus 100 oder Tram 18 – Sitzplatz neben statt hinter",
+      "Wartezimmer beim Arzt oder Behörde – nicht in die fernste Ecke"
+    ],
+    "friction": "Der automatische Reflex, sich an den isoliertesten Platz zu setzen, um 'niemanden zu stören'.",
+    "antreiber_target": "Machs allen recht",
+    "identity_shift": "Ich bin jemand, der physische Nähe als natürlich akzeptiert – nicht als Übergriff."
+  },
+  {
+    "id": "L3.1",
+    "area": "Love",
+    "level": 3,
+    "skill": "Micro-Opener",
+    "title": "Situational Comment",
+    "cue": "Bei einer ungewöhnlichen Situation, einer langen Wartezeit oder einer geteilten Absurdität.",
+    "action": "Mach einen trockenen, situativen Kommentar – z. B. »Die Schlange heute ist auch ein Fulltime-Job, oder?« – ohne Erwartung an eine Antwort.",
+    "situations": [
+      "Lange Kassenschlange im Rewe oder Edeka",
+      "Verspätete S-Bahn mit Durchsage",
+      "Ausverkauftes Produkt im Laden oder unerwartetes Chaos"
+    ],
+    "friction": "Das Overthinking – 'Was, wenn sie das blöd findet?' – das die spontane Reaktion blockiert.",
+    "antreiber_target": "Sei Perfekt",
+    "identity_shift": "Ich bin jemand, der spontan reagiert – nicht jemand, der alles im Kopf durchspielt, bis der Moment vorbei ist."
+  },
+  {
+    "id": "L3.2",
+    "area": "Love",
+    "level": 3,
+    "skill": "Micro-Opener",
+    "title": "The Grocery-Opinion",
+    "cue": "Im Supermarkt, Weinladen oder vor einem Regal mit zu vielen Optionen.",
+    "action": "Frag eine Frau nach einer echten Empfehlung: »Taugt der Wein/Kaffee was? Ich kann mich nie entscheiden.«",
+    "situations": [
+      "Rewe oder Tengelmann: Weinregal oder Käsetheke",
+      "Viktualienmarkt: Stand mit Spezialitäten",
+      "Bio-Laden: Produktvergleich bei Öl, Pasta oder Käse"
+    ],
+    "friction": "Das 'Sei Stark'-Muster: Ich frage nicht nach Hilfe, weil das Schwäche signalisiert.",
+    "antreiber_target": "Sei Stark",
+    "identity_shift": "Ich bin jemand, der echte Neugier zeigt – nicht jemand, der alles alleine regelt, um stark zu wirken."
+  },
+  {
+    "id": "L3.3",
+    "area": "Love",
+    "level": 3,
+    "skill": "Micro-Opener",
+    "title": "The Object Hook",
+    "cue": "Wenn du ein auffälliges Buch, ein Accessoire oder einen Hund bemerkst.",
+    "action": "Mach eine kurze, echte Bemerkung dazu – z. B. »Das ist ein gutes Buch« oder »Welche Rasse ist das?«",
+    "situations": [
+      "Isar oder Englischer Garten: Hunde als natürlicher Gesprächsöffner",
+      "Café oder U-Bahn: interessantes Buch oder auffälliger Rucksack",
+      "Buchladen oder Markt: Produktwahl als Einstieg"
+    ],
+    "friction": "Der Gedanke, dass eine Bemerkung zu auffällig oder seltsam ist – und man lieber schweigt.",
+    "antreiber_target": "Sei Perfekt",
+    "identity_shift": "Ich bin jemand, der echtes Interesse zeigt – ohne auf den perfekten Satz zu warten."
+  },
+  {
+    "id": "L3.4",
+    "area": "Love",
+    "level": 3,
+    "skill": "Micro-Opener",
+    "title": "The Time-Boxed Hi",
+    "cue": "Beim Vorbeigehen an jemandem, der dir sympathisch auffällt.",
+    "action": "Schenke im Vorbeigehen ein kurzes Lächeln plus »Hi« oder »Servus« – ohne zu stoppen oder eine Reaktion abzuwarten.",
+    "situations": [
+      "Auf dem Weg zum Eingang eines Cafés",
+      "Auf dem Bürgersteig oder im Park beim Überholen",
+      "Im Treppenhaus oder Aufzug des Bürogebäudes"
+    ],
+    "friction": "Der Impuls, einfach durchzulaufen, ohne irgendeine Form von Verbindung herzustellen.",
+    "antreiber_target": "Machs allen recht",
+    "identity_shift": "Ich bin jemand, der freundlich grüßt – weil es mir gut tut, nicht weil ich etwas erwarte."
+  },
+  {
+    "id": "L3.5",
+    "area": "Love",
+    "level": 3,
+    "skill": "Micro-Opener",
+    "title": "The Style-Drop",
+    "cue": "Wenn du an einer Frau mit einem auffälligen Detail vorbeigehst – Outfit, Tasche, Schuhe.",
+    "action": "Sag im Vorbeigehen: »Cooler Style!« oder »Die Tasche ist echt besonders« – und geh direkt weiter. Keine Pause.",
+    "situations": [
+      "Kaufingerstraße oder Schwabing beim Spazieren",
+      "Flohmarkt am Olympiapark oder Auer Dult",
+      "Eingang zu einem Club oder einer Bar abends"
+    ],
+    "friction": "Das Bedürfnis, stehenzubleiben und eine Antwort zu bekommen – Bestätigung, dass das Kompliment gut ankam.",
+    "antreiber_target": "Machs allen recht",
+    "identity_shift": "Ich bin jemand, der Wert gibt, ohne eine Gegenleistung zu erwarten."
+  },
+  {
+    "id": "L4.1",
+    "area": "Love",
+    "level": 4,
+    "skill": "Verbindlichkeit",
+    "title": "The Vulnerable Ask",
+    "cue": "Wenn das Gespräch läuft und du echtes Interesse spürst.",
+    "action": "Frage nach echter Hilfe oder einer tieferen Meinung: »Ich suche ein gutes Buch für den Sommer – was fasziniert dich gerade?« oder »Was würdest du hier bestellen?«",
+    "situations": [
+      "Im Gespräch an der Bar oder nach dem Tanzkurs",
+      "Buchhandlung oder Café mit einem Gespräch als Basis",
+      "Event-Nachgespräch oder Vernissage"
+    ],
+    "friction": "Die Angst, als unsicher oder bedürftig zu gelten, wenn man echte Fragen stellt.",
+    "antreiber_target": "Sei Stark",
+    "identity_shift": "Ich bin jemand, der Neugier zeigt – und darin Stärke sieht, keine Schwäche."
+  },
+  {
+    "id": "L4.2",
+    "area": "Love",
+    "level": 4,
+    "skill": "Verbindlichkeit",
+    "title": "The Selection",
+    "cue": "Nach einem Match oder einer kurzen digitalen Unterhaltung, die sich gut anfühlt.",
+    "action": "Schlage einen unkomplizierten Quick-Coffee vor (30 Min.) – mit dem Mindset: Ich schaue, ob die Chemie real stimmt.",
+    "situations": [
+      "Hinge oder Bumble Match nach 3–5 Nachrichten: 'Kaffee irgendwann diese Woche?'",
+      "Treffpunkt: Café Lotti, Rischart oder ein kleines Café in deiner Nähe",
+      "Dauer: explizit 30 Min. – kein Druck, kein Abend-Setting"
+    ],
+    "friction": "Der Drang, sich anzupassen und zu gefallen – statt selbst zu prüfen, ob es passt.",
+    "antreiber_target": "Machs allen recht",
+    "identity_shift": "Ich bin jemand, der wählt – nicht jemand, der hofft, gewählt zu werden."
+  },
+  {
+    "id": "L4.3",
+    "area": "Love",
+    "level": 4,
+    "skill": "Verbindlichkeit",
+    "title": "The Honest Truth",
+    "cue": "Wenn die Situation stimmt: Abendatmosphäre, Blickkontakt stand, der Vibe ist da.",
+    "action": "Geh hin und sag ehrlich: »Ich fand deine Ausstrahlung gerade so toll – ich musste kurz Hallo sagen.«",
+    "situations": [
+      "Lauer Sommerabend an der Isar oder im Biergarten",
+      "Lockere Bar-Atmosphäre im Glockenbachviertel oder Schwabing",
+      "Vernissage oder Event, bei dem längerer Blickkontakt entstand"
+    ],
+    "friction": "Die 'Sei Perfekt'-Stimme, die sagt: 'Noch nicht, der Moment ist nicht perfekt genug.'",
+    "antreiber_target": "Sei Perfekt",
+    "identity_shift": "Ich bin jemand, der handelt, wenn er etwas fühlt – nicht jemand, der wartet, bis der Moment perfekt ist."
+  },
+  {
+    "id": "L4.4",
+    "area": "Love",
+    "level": 4,
+    "skill": "Verbindlichkeit",
+    "title": "Korb-Marathon",
+    "cue": "Wenn du ein Gespräch wagst und Desinteresse oder ein 'Ich habe einen Freund' kommt.",
+    "action": "Nimm es lächelnd an: »Alles klar, schönen Abend!« – und geh weiter. Verbuche es intern als Erfolg.",
+    "situations": [
+      "Direktes Ansprechen auf der Straße oder im Café",
+      "Gespräch auf einem Event, das in eine Abfuhr endet",
+      "Match, das nach der Datums-Frage eingeschlafen ist"
+    ],
+    "friction": "Der Körperschmerz nach einem Nein – und die Geschichte, die man danach über sich selbst konstruiert.",
+    "antreiber_target": "Sei Stark",
+    "identity_shift": "Ich bin jemand, dessen Selbstwert nach einem Nein genauso stabil ist wie davor."
+  },
+  {
+    "id": "A1.1",
+    "area": "Alltag",
     "level": 1,
-    "title": "Center Stage",
-    "trigger": "Wähle im Café oder Restaurant den exponiertesten Tisch in der Mitte, statt dich an den Rand zu setzen.",
-    "friction": "Exposition. Das Gefühl, von allen Seiten beobachtet zu werden, ohne Schutz im Rücken.",
-    "rule": "Kein Handy. Schau 5 Min. einfach nur ruhig in den Raum. Sei präsent.",
-    "skill": "Presence"
+    "skill": "Alltags-Präsenz",
+    "title": "Der Kassen-Stopp",
+    "cue": "Du stehst an der Supermarktkasse und deine Sachen werden gescannt.",
+    "action": "Pack deine Sachen bewusst entspannt ein. Schau der Person an der Kasse kurz in die Augen und sag ein klares »Schönen Tag noch« oder »Servus«.",
+    "situations": [
+      "Edeka oder Rewe – Hauptkasse, nicht Self-Checkout",
+      "Bäcker am Morgen, wenn die Schlange kurz aufreißt",
+      "Drogeriemarkt oder Supermarkt nach der Arbeit"
+    ],
+    "friction": "Das Gefühl, die Leute hinter dir aufzuhalten, wenn du nicht wie ein Irrer hetzt.",
+    "antreiber_target": "Machs allen recht",
+    "identity_shift": "Ich bin jemand, der sein eigenes Tempo geht – auch an der Kasse."
   },
   {
-    "id": "P1.3",
-    "category": "Sozialer Alltag",
+    "id": "A1.2",
+    "area": "Alltag",
     "level": 1,
-    "title": "Unplugged Silence",
-    "trigger": "Sitz 10 Minuten an einem belebten Ort (Isar/Park) ohne Handy, Buch oder Musik. Nur du und die Umgebung.",
-    "friction": "Reiz-Entzug. Die Angst, ohne digitale Ablenkung \"unproduktiv\" oder \"alleine\" zu wirken.",
-    "rule": "Wenn Unruhe aufkommt: Registriere sie, bleib sitzen. Du bist die Base.",
-    "skill": "Presence"
+    "skill": "Alltags-Präsenz",
+    "title": "Der S-Bahn-Blick",
+    "cue": "Du fährst mit der U-Bahn oder S-Bahn.",
+    "action": "Steck das Handy für zwei Stationen in die Tasche, Kopfhörer ab. Schau entspannt in den Wagen. Wenn sich Blicke kreuzen, halte sie eine Sekunde mit neutralem Gesicht.",
+    "situations": [
+      "S1/S8 Stammstrecke Marienplatz bis Hauptbahnhof",
+      "U3 oder U6 in der Rushhour Richtung Innenstadt",
+      "Morgenfahrt in die Arbeit – zwei Stationen ohne Bildschirm"
+    ],
+    "friction": "Die nackte, ungeschützte Präsenz im Raum ohne digitales Schutzschild.",
+    "antreiber_target": "Machs allen recht",
+    "identity_shift": "Ich bin jemand, der im Raum präsent ist – nicht einer, der sich wegduckt."
   },
   {
-    "id": "P2.1",
-    "category": "Sozialer Alltag",
+    "id": "A2.1",
+    "area": "Alltag",
     "level": 2,
-    "title": "The Slow Walk",
-    "trigger": "Gehe heute durch eine belebte Straße (z.B. Kaufingerstraße) bewusst 30% langsamer als der Strom.",
-    "friction": "Social Pacing. Den instinktiven Drang unterdrücken, sich der Hektik anzupassen.",
-    "rule": "Kopf oben, Blick am Horizont. Du lässt dich nicht treiben, du navigierst.",
-    "skill": "Presence"
+    "skill": "Situativer Entry",
+    "title": "Der Wartezeit-Kommentar",
+    "cue": "Du stehst in einer Warteschlange oder wartest auf eine verspätete Bahn.",
+    "action": "Sprich einen trockenen Gedanken über die Situation zur Person neben dir aus – z.B. »Die Schlange heute hat auch ein eigenes Zeitzonen-Management« oder »Koffein-Notstand in München.«",
+    "situations": [
+      "Bäcker morgens – Schlange bis zur Tür",
+      "Café-Bestellung in der Mittagspause",
+      "Verspätete S-Bahn mit Durchsage auf dem Bahnsteig"
+    ],
+    "friction": "Das Eis brechen, ohne zu wissen, ob der andere perfekt reagiert.",
+    "antreiber_target": "Sei Perfekt",
+    "identity_shift": "Ich bin jemand, der spontan reagiert – nicht einer, der auf die perfekte Reaktion wartet."
   },
   {
-    "id": "P2.2",
-    "category": "Sozialer Alltag",
+    "id": "A2.2",
+    "area": "Alltag",
     "level": 2,
-    "title": "Slow Motion Interaction",
-    "trigger": "Bewege deine Hände und deinen Körper bei einer Interaktion (z.B. Bestellen) mit halber Geschwindigkeit.",
-    "friction": "Körperbeherrschung. Hektik ist ein Zeichen von Unterlegenheit. Ruhe ist Macht.",
-    "rule": "Keine unnötigen Gesten. Jede Bewegung ist bewusst und präzise.",
-    "skill": "Presence"
+    "skill": "Situativer Entry",
+    "title": "Der Experten-Drop",
+    "cue": "Du stehst im Laden neben jemandem vor einem Regal – Wein, Kaffee, Buch, Magazin.",
+    "action": "Zeige auf ein Produkt und frag kurz: »Schon mal probiert? Taugt das was?«",
+    "situations": [
+      "Weinregal im Rewe oder beim Vinothek",
+      "Kaffeebohnen-Regal im Bio-Markt oder Aldi",
+      "Magazin-Stand im Bahnhof oder Kiosk"
+    ],
+    "friction": "Eine fremde Meinung einholen, statt alles im Stillen per Smartphone zu googeln.",
+    "antreiber_target": "Sei Stark",
+    "identity_shift": "Ich bin jemand, der echte Neugier zeigt – auch wenn es bedeutet, jemanden zu fragen."
   },
   {
-    "id": "P2.3",
-    "category": "Sozialer Alltag",
-    "level": 2,
-    "title": "The Waiter Frame",
-    "trigger": "Wenn du im Restaurant bestellen willst, schau dem Kellner ruhig hinterher, bis er dich bemerkt, statt zu rufen oder zu winken.",
-    "friction": "Geduld-Dominanz. Den Frame halten, dass deine Zeit wertvoll ist, ohne bedürftig zu wirken.",
-    "rule": "Halte die Körperspannung aufrecht. Wer wartet, ohne nervös zu werden, führt.",
-    "skill": "Presence"
-  },
-  {
-    "id": "P3.1",
-    "category": "Sozialer Alltag",
+    "id": "A3.1",
+    "area": "Alltag",
     "level": 3,
-    "title": "Horizon Scan",
-    "trigger": "Halte den Blick für 2 Minuten konsequent auf Augenhöhe (Horizont), während du durch eine Menschenmenge läufst.",
-    "friction": "Soziale Blindheit. Den Drang unterdrücken, auf den Boden zu schauen oder Blicken auszuweichen.",
-    "rule": "Schau \"durch\" die Menschen hindurch, wenn kein Kontakt da ist. Absolute Blicktreue.",
-    "skill": "Presence"
+    "skill": "Proaktive Grenzen",
+    "title": "Die ungeschönte Absage",
+    "cue": "Ein Kumpel oder Bekannter fragt nach einem spontanen Treffen, auf das du gerade keine Energie hast.",
+    "action": "Sag direkt ab, ohne Notlüge: »Danke für die Einladung, aber ich brauche den Abend komplett für mich. Ein andermal gerne!«",
+    "situations": [
+      "WhatsApp-Nachricht am Freitagabend für ein spontanes Bier",
+      "Spontaner Anruf für einen Gefallen am Wochenende",
+      "Gruppenplan, der sich kurzfristig ergibt und du nicht willst"
+    ],
+    "friction": "Die Angst, den anderen vor den Kopf zu stoßen oder unhöflich zu wirken.",
+    "antreiber_target": "Machs allen recht",
+    "identity_shift": "Ich bin jemand, der Nein sagt – ohne eine Ausrede zu brauchen."
   },
   {
-    "id": "P3.2",
-    "category": "Sozialer Alltag",
+    "id": "A3.2",
+    "area": "Alltag",
     "level": 3,
-    "title": "The Mirror Gaze",
-    "trigger": "Schau einer fremden Person im Vorbeilaufen so lange in die Augen, bis sie zuerst wegschaut.",
-    "friction": "Konfrontation. Die natürliche Hierarchie-Prüfung durch Blickkontakt gewinnen.",
-    "rule": "Kein Starren. Ein neutraler, entspannter Blick (Dominance, not Aggression).",
-    "skill": "Presence"
+    "skill": "Proaktive Grenzen",
+    "title": "Der Fokus-Block",
+    "cue": "Du setzt dich für 2 Stunden an deine eigenen Projekte.",
+    "action": "Schalte dein Handy stumm, leg es in einen anderen Raum. Reagiere 2 Stunden auf keine private Nachricht oder Anruf von Freunden oder Familie.",
+    "situations": [
+      "Samstagnachmittag für Code oder Konzepte",
+      "Abendblock nach der Arbeit für das eigene Sideprojekt",
+      "Sonntagmorgen – 2 Stunden Deep-Work vor dem ersten Check"
+    ],
+    "friction": "Die gefühlte Verpflichtung, für dein Umfeld permanent sofort erreichbar zu sein.",
+    "antreiber_target": "Machs allen recht",
+    "identity_shift": "Ich bin jemand, der seine Zeit schützt – nicht jemand, der ständig auf Abruf steht."
   },
   {
-    "id": "P3.3",
-    "category": "Sozialer Alltag",
-    "level": 3,
-    "title": "The 360-View",
-    "trigger": "Bleib mitten auf einem belebten Platz stehen und dreh dich einmal ganz langsam um 360 Grad, während du alles betrachtest.",
-    "friction": "Mittelpunkt-Exposition. Sich selbst zum Zentrum der Szenerie machen.",
-    "rule": "Tu es so, als würdest du ein Grundstück besichtigen, das dir gehört.",
-    "skill": "Presence"
-  },
-  {
-    "id": "P4.1",
-    "category": "Sozialer Alltag",
+    "id": "A4.1",
+    "area": "Alltag",
     "level": 4,
-    "title": "The Street Pause",
-    "trigger": "Bleib mitten auf dem Gehweg einer belebten Straße stehen und schau für 60 Sek. auf deine (imaginäre) Uhr oder in den Himmel.",
-    "friction": "Flow-Unterbrechung. Den sozialen Fluss stören, ohne einen \"triftigen\" Grund zu haben.",
-    "rule": "Weiche den Leuten nicht aus. Sie werden um dich herumgehen. Bleib fest.",
-    "skill": "Presence"
+    "skill": "Initiative",
+    "title": "Der Spontan-Kaffee",
+    "cue": "Du chattest mit einem Kumpel unverbindlich hin und her.",
+    "action": "Brich das Tippen ab und schreibe: »Lass das Tippen sparen. Bist du in 20 Minuten am Gärtnerplatz auf einen schnellen Espresso?«",
+    "situations": [
+      "WhatsApp-Chat, der schon 10 Nachrichten geht und nirgendwo hinführt",
+      "Kumpel meldet sich nach längerem mit »Was machst du so?«",
+      "Freund im gleichen Viertel – Gärtnerplatz, Maxvorstadt oder Schwabing"
+    ],
+    "friction": "Ein sofortiges, verbindliches Treffen einfordern, statt im sicheren digitalen Raum zu bleiben.",
+    "antreiber_target": "Sei Perfekt",
+    "identity_shift": "Ich bin jemand, der Initiative ergreift – nicht jemand, der auf den richtigen Moment wartet."
   },
   {
-    "id": "P4.2",
-    "category": "Sozialer Alltag",
+    "id": "A4.2",
+    "area": "Alltag",
     "level": 4,
-    "title": "Front Row Presence",
-    "trigger": "Setz dich in einer Vorlesung, einem Workshop oder Event bewusst in die allererste Reihe, direkt vor den Sprecher.",
-    "friction": "Direkte Exposition. Die psychologische Hürde der ersten Reihe (Angst vor Interaktion).",
-    "rule": "Halte den Fokus beim Sprecher. Sei der präsenteste Zuhörer im Raum.",
-    "skill": "Presence"
-  },
-  {
-    "id": "P4.3",
-    "category": "Sozialer Alltag",
-    "level": 4,
-    "title": "The Silent Entrance",
-    "trigger": "Betritt einen Raum (Bar/Meeting) und bleib 5 Sek. im Türrahmen stehen, bevor du dich bewegst oder jemanden grüßt.",
-    "friction": "Eintritts-Kontrolle. Den Moment des Erscheinens voll auskosten und markieren.",
-    "rule": "Scan den Raum ruhig ab. Du entscheidest, wann du den Raum betrittst.",
-    "skill": "Presence"
-  },
-  {
-    "id": "W1.1",
-    "category": "Business",
-    "level": 1,
-    "title": "Zero Softener",
-    "trigger": "Bestelle etwas (Café/Bar) ohne „vielleicht“, „gerne“ oder „könnte ich“. Sag: „Ich nehme den Espresso.“",
-    "friction": "Direktheit. Verzicht auf verbale Schutzschilde und den Drang, „nett“ zu wirken.",
-    "rule": "Halte danach Blickkontakt, bis die Bestellung bestätigt ist. Kein Lückenfüller.",
-    "skill": "Wirkung"
-  },
-  {
-    "id": "W1.2",
-    "category": "Business",
-    "level": 1,
-    "title": "Point Blank",
-    "trigger": "Beantworte eine Frage heute ausschließlich mit „Ja“ oder „Nein“, ohne eine zusätzliche Erklärung zu liefern.",
-    "friction": "Rechtfertigungs-Stopp. Das Gefühl aushalten, dass eine Erklärung „höflicher“ wäre.",
-    "rule": "Stille nach dem Wort ist dein Freund. Deine Antwort steht für sich.",
-    "skill": "Wirkung"
-  },
-  {
-    "id": "W1.3",
-    "category": "Business",
-    "level": 1,
-    "title": "The Statement",
-    "trigger": "Ersetze „Ich glaube...“ oder „Ich finde...“ durch eine klare Behauptung: „Es ist so, dass...“",
-    "friction": "Überzeugung. Die eigene Meinung als Tatsache im Raum stehen lassen.",
-    "rule": "Deine Stimme sinkt am Ende des Satzes ab, statt wie bei einer Frage zu steigen.",
-    "skill": "Wirkung"
-  },
-  {
-    "id": "W2.1",
-    "category": "Business",
-    "level": 2,
-    "title": "Volume Up",
-    "trigger": "Sprich bei einer Bestellung oder kurzen Frage 20% lauter als dein übliches Level.",
-    "friction": "Hörbarkeit. Die unterbewusste Angst vor der Aufmerksamkeit anderer Kunden.",
-    "rule": "Deine Stimme muss die Wände berühren. Nicht schreien, sondern projizieren.",
-    "skill": "Wirkung"
-  },
-  {
-    "id": "W2.2",
-    "category": "Business",
-    "level": 2,
-    "title": "The Echo",
-    "trigger": "Wenn jemand deinen Namen ruft oder dich anspricht, antworte erst nach 2 Sekunden mit tiefer, ruhiger Stimme.",
-    "friction": "Reaktions-Kontrolle. Den automatischen „Helfersyndrom“-Impuls unterdrücken.",
-    "rule": "Du kontrollierst den Startpunkt der Kommunikation.",
-    "skill": "Wirkung"
-  },
-  {
-    "id": "W2.3",
-    "category": "Business",
-    "level": 2,
-    "title": "Low-Pitch Intro",
-    "trigger": "Beginne ein Gespräch (auch Smalltalk) am unteren Ende deines Stimmspektrums (tiefer Ton).",
-    "friction": "Autorität. Tiefe Frequenzen signalisieren Gelassenheit und hohen Status.",
-    "rule": "Atme in den Bauch, bevor du den ersten Ton abgibst.",
-    "skill": "Wirkung"
-  },
-  {
-    "id": "W3.1",
-    "category": "Business",
-    "level": 3,
-    "title": "The Pause",
-    "trigger": "Wenn dir jemand eine Frage stellt, warte bewusst 3 Sekunden, während du ihn anschaust, bevor du antwortest.",
-    "friction": "Kontrolle. Die soziale Erwartung einer sofortigen Reaktion aktiv brechen.",
-    "rule": "Nutze die Stille. Wer die Stille hält, führt das Gespräch.",
-    "skill": "Wirkung"
-  },
-  {
-    "id": "W3.2",
-    "category": "Business",
-    "level": 3,
-    "title": "Eye-Lead",
-    "trigger": "Halte beim Sprechen den Blickkontakt, bis du deinen Satz komplett beendet hast. Schau erst danach weg.",
-    "friction": "Verbindung. Die Intensität des Moments bis zum Ende durchhalten.",
-    "rule": "Deine Augen sind der Anker deiner Worte. Lass sie nicht wandern.",
-    "skill": "Wirkung"
-  },
-  {
-    "id": "W3.3",
-    "category": "Business",
-    "level": 3,
-    "title": "Interrupt-Stop",
-    "trigger": "Wenn dich jemand unterbricht, sprich einfach in deinem Tempo ruhig weiter, bis du deinen Satz beendet hast.",
-    "friction": "Geltungsanspruch. Sich nicht physisch oder akustisch verdrängen lassen.",
-    "rule": "Werde nicht lauter oder schneller. Bleib einfach in deinem Rhythmus.",
-    "skill": "Wirkung"
-  },
-  {
-    "id": "W4.1",
-    "category": "Business",
-    "level": 4,
-    "title": "The Why-Question",
-    "trigger": "Wenn dich jemand zu etwas bittet, frag einmal freundlich aber bestimmt: „Warum ist das für dich wichtig?“",
-    "friction": "Filter-Funktion. Nicht sofort springen, sondern den Wert der Aufgabe prüfen.",
-    "rule": "Akzeptiere die Antwort nur, wenn sie für dich Sinn ergibt.",
-    "skill": "Wirkung"
-  },
-  {
-    "id": "W4.2",
-    "category": "Business",
-    "level": 4,
-    "title": "The Clean Cut",
-    "trigger": "Beende ein Gespräch, wenn es für dich vorbei ist, mit: „Ich habe alles gehört. Danke.“ und geh.",
-    "friction": "Abschluss-Macht. Den sozialen Zwang, auf ein „natürliches“ Ende zu warten, kappen.",
-    "rule": "Sei höflich, aber bestimmt. Deine Zeit ist dein wertvollstes Gut.",
-    "skill": "Wirkung"
-  },
-  {
-    "id": "W4.3",
-    "category": "Business",
-    "level": 4,
-    "title": "Frame-Correction",
-    "trigger": "Wenn jemand eine falsche Annahme über dich trifft, korrigiere sie sofort: „Das ist nicht korrekt. Die Lage ist so: …“",
-    "friction": "Wahrheits-Hoheit. Kleine Respektlosigkeiten oder Fehler nicht durchgehen lassen.",
-    "rule": "Bleib sachlich. Emotionen schwächen den Frame. Fakten stärken ihn.",
-    "skill": "Wirkung"
+    "skill": "Initiative",
+    "title": "Der ehrliche Status",
+    "cue": "Ein guter Freund fragt beiläufig: »Wie läuft's bei dir?«",
+    "action": "Antworte nicht mit »Alles gut«, wenn du gerade mental vollgepackt bist. Sag: »Ehrlich gesagt gerade intensiv und zäh – zu viele Baustellen gleichzeitig. Und bei dir?«",
+    "situations": [
+      "Gespräch mit einem engen Freund beim Treffen oder Telefonat",
+      "Check-in-Nachricht von jemandem, den du länger nicht gesehen hast",
+      "Familiengespräch am Wochenende"
+    ],
+    "friction": "Die Maske des unzerstörbaren Machers fallen zu lassen und echte Tiefe zuzulassen.",
+    "antreiber_target": "Sei Stark",
+    "identity_shift": "Ich bin jemand, der ehrlich ist – auch wenn es bedeutet, Stärke durch Offenheit zu zeigen."
   }
 ]
