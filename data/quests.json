@@ -431,18 +431,18 @@
     "diff": 1,
     "style": "classic",
     "area": "Dating",
-    "title": "The Night-Shift 5",
-    "trigger": "Wenn ich am Wochenende abends alleine in einer Bar oder einem Club bin.",
+    "title": "The Anchor",
+    "trigger": "Wenn ich in einem Café oder einer Bar in Schwabing oder Maxvorstadt bin.",
     "preview": {
-      "fear": "Ich wirke verzweifelt wenn ich einfach so Frauen anspreche.",
-      "reality": "Im Club ist Ansprechen der Standard — die meisten freuen sich über jeden der einfach normal ist."
+      "fear": "20 Minuten ohne Handy sitzen wirkt komisch und alle schauen mich an.",
+      "reality": "Niemand bemerkt es — und wenn doch wirkt es souverän nicht komisch."
     },
-    "mutsatz": "Die 5 sind der Sieg — nicht das Gespräch.",
-    "action": "Sprich bis du gehst mindestens 5 Frauen an. Ein trockenes Hi, cooler Vibe hier oder einfach Guten Abend reicht völlig. Die Zahl 5 ist das Ziel — nicht das Gespräch.",
-    "goal": "Quantität killt den Perfektionsdruck. Das Soziometer auf Interaktion programmieren.",
-    "identity": "Ich bin im Club präsent und nehme aktiv am Raum teil.",
-    "safetycheck": "Nicht auf das perfekte Gespräch warten. Kein Gespräch muss länger als 10 Sekunden sein.",
-    "exitjoker": "War nett — schönen Abend noch."
+    "mutsatz": "Präsenz ist die Basis für alles andere.",
+    "action": "Setz dich für 20 Minuten ohne Handy an den belebtesten Platz. Nur beobachten. Kein Ziel außer da sein.",
+    "goal": "Das Nervensystem an Präsenz im Raum gewöhnen ohne Druck zu interagieren.",
+    "identity": "Ich brauche kein Handy um Raum einzunehmen.",
+    "safetycheck": "Nicht nach 5 Minuten doch das Handy rausholen. Die vollen 20 Minuten.",
+    "exitjoker": ""
   },
   {
     "id": "DA_L1_02",
@@ -451,18 +451,18 @@
     "diff": 1,
     "style": "classic",
     "area": "Dating",
-    "title": "The Counter Roulette",
-    "trigger": "Wenn ich abends an einer gut besuchten Bartheke stehe um etwas zu bestellen.",
+    "title": "The Glance",
+    "trigger": "Wenn ich heute im Alltag unterwegs bin — Gym, Café, Straße.",
     "preview": {
-      "fear": "Sie will einfach ihren Drink und ich störe sie.",
-      "reality": "An der Bar ist Smalltalk völlig normal — die Wartezeit ist der perfekte Kontext."
+      "fear": "Sie denkt ich starre sie an.",
+      "reality": "2-3 Sekunden Blickkontakt mit einem Lächeln ist normale menschliche Präsenz — kein Starren."
     },
-    "mutsatz": "Ich kann überall spontan einsteigen.",
-    "action": "Dreh dich leicht zur Seite und frag die Frau neben dir ganz trocken: Kennst du dich hier aus — was ist der beste Drink auf der Karte?",
-    "goal": "Den unvorbereiteten Moment nutzen statt auf den perfekten zu warten.",
-    "identity": "Ich steige spontan und entspannt in Situationen ein.",
-    "safetycheck": "Nicht anfangen zu erklären warum du fragst. Einfach fragen und abwarten.",
-    "exitjoker": "Perfekt — dann teste ich das mal. Prost."
+    "mutsatz": "Ich verstecke mich im öffentlichen Raum nicht.",
+    "action": "Halte heute mit 3 Frauen bewusst Blickkontakt für 2-3 Sekunden. Kurzes entspanntes Lächeln. Du schaust nicht zuerst weg.",
+    "goal": "Das Soziometer an Blickkontakt gewöhnen ohne Handlung zu brauchen.",
+    "identity": "Ich bin präsent und nehme wahr ohne mich zu verstecken.",
+    "safetycheck": "Nicht starren — entspannter Blick. Und nicht sofort wegschauen wenn sie zurückschaut.",
+    "exitjoker": ""
   },
   {
     "id": "DA_L1_03",
@@ -471,17 +471,17 @@
     "diff": 1,
     "style": "classic",
     "area": "Dating",
-    "title": "The Known Smile",
-    "trigger": "Wenn ich eine Frau sehe die ich flüchtig kenne — Gym-Mitglied, Nachbarin, Kollegin aus anderer Abteilung.",
+    "title": "Open Posture",
+    "trigger": "Wenn ich heute an einem belebten Ort bin — Café, Bar, Platz.",
     "preview": {
-      "fear": "Es wirkt komisch wenn ich sie jetzt plötzlich anlächle.",
-      "reality": "Ein echtes Lächeln und ein Servus ist das Normalste der Welt — du hast es nur nie initiiert."
+      "fear": "Ohne Handy und mit offener Haltung falle ich komisch auf.",
+      "reality": "Offene Körperhaltung wird unbewusst als Selbstbewusstsein gelesen — nicht als komisch."
     },
-    "mutsatz": "Ich initiiere den freundlichen Kontakt in meiner Umgebung.",
-    "action": "Warte nicht passiv ab. Such den Blickkontakt, schenk ihr ein kurzes echtes Lächeln und sag im Vorbeigehen ein klares, entspanntes Servus.",
-    "goal": "Passivität brechen. Den ersten Schritt machen ohne großen Einsatz.",
-    "identity": "Ich bin derjenige der den freundlichen Kontakt setzt.",
-    "safetycheck": "Nicht stehen bleiben und warten was passiert. Lächeln, sagen, weitergehen.",
+    "mutsatz": "Mein Körper kommuniziert bevor ich einen Satz sage.",
+    "action": "Steh oder sitz an einem belebten Ort für 15 Minuten mit offener Körperhaltung. Hände aus den Taschen. Schultern zurück. Kein Handy als Schutzschild.",
+    "goal": "Raum einnehmen ohne direkten Kontakt. Körpersprache als erste Sprache.",
+    "identity": "Ich nehme Raum ein — ich verkleinere mich nicht.",
+    "safetycheck": "Nicht nach 5 Minuten doch das Handy rausholen wenn es unangenehm wird.",
     "exitjoker": ""
   },
   {
@@ -491,17 +491,17 @@
     "diff": 1,
     "style": "classic",
     "area": "Dating",
-    "title": "The Social Office Wingman",
-    "trigger": "Kaffeepause in der Büroküche oder Ende eines gemeinsamen Meetings.",
+    "title": "The Room Fill",
+    "trigger": "Wenn ich heute ein Café, eine Bar oder ein Geschäft betrete.",
     "preview": {
-      "fear": "Das wirkt übergriffig oder sie erzählt es weiter.",
-      "reality": "Ein Kompliment zur Kompetenz ist im Berufsumfeld das Wertschätzendste was es gibt."
+      "fear": "Das wirkt aufgesetzt oder alle schauen mich komisch an.",
+      "reality": "Ein klares entspanntes Servus beim Reinkommen wird fast immer positiv wahrgenommen."
     },
-    "mutsatz": "Ich kann Frauen unbefangen und souverän anerkennen.",
-    "action": "Mach einer Kollegin ein ehrliches Kompliment das sich zu 100% auf ihre Kompetenz bezieht: «Deine Energie im Meeting war vorhin echt stark» oder «Wie du das Problem gelöst hast war top». Direkt sagen, lächeln, weitergehen.",
-    "goal": "Wert geben ohne Bestätigung zurückzuwollen.",
-    "identity": "Ich erkenne Menschen souverän an ohne etwas dafür zu wollen.",
-    "safetycheck": "Kein Kompliment zur Optik im Büro. Nur Kompetenz, Energie oder Arbeitsweise.",
+    "mutsatz": "Ich betrete Räume — ich schleiche mich nicht rein.",
+    "action": "Grüß beim Reinkommen laut, klar und hörbar mit einem entspannten Servus oder Hi. Nicht flüstern. Hörbar.",
+    "goal": "Den ersten Ton im Raum setzen statt unsichtbar reinzuschleichen.",
+    "identity": "Ich betrete Räume mit Präsenz.",
+    "safetycheck": "Nicht warten bis jemand dich zuerst begrüßt. Du machst den Anfang.",
     "exitjoker": ""
   },
   {
@@ -511,17 +511,17 @@
     "diff": 1,
     "style": "classic",
     "area": "Dating",
-    "title": "The Rhythm Gaze",
-    "trigger": "Beim Partnerwechsel im Tanzkurs oder bei einem lockeren Community-Event.",
+    "title": "Spatial Awareness",
+    "trigger": "Wenn ich durch eine belebte Straße in München gehe — Kaufingerstraße, Schwabing, Maxvorstadt.",
     "preview": {
-      "fear": "Direkter Blickkontakt wirkt zu intensiv oder aufdringlich.",
-      "reality": "Blickkontakt beim Tanzen ist die natürlichste Form von Präsenz — er wird erwartet."
+      "fear": "Ich remple jemanden an wenn ich nicht ausweiche.",
+      "reality": "Menschen passen sich an wenn du Präsenz zeigst. Du musst nicht jeden Zentimeter freimachen."
     },
-    "mutsatz": "Meine Präsenz hält der visuellen Spannung stand.",
-    "action": "Schau deiner Partnerin beim Wechsel direkt in die Augen und lächle kurz. Kein Blick auf den Boden, kein nervöses Korrigieren der Hände. Halte die visuelle Führung aus.",
-    "goal": "Physische und visuelle Nähe entspannt aushalten.",
-    "identity": "Meine maskuline Präsenz hält der visuellen Spannung stand.",
-    "safetycheck": "Nicht nach dem Lächeln sofort wegsehen. Einen Moment länger als gewohnt halten.",
+    "mutsatz": "Ich mache Platz für mich — nicht für alle anderen.",
+    "action": "Geh durch eine belebte Straße und weich entgegenkommenden Menschen nicht mehr panisch im letzten Moment aus. Halte deine Spur. Die Leute machen Platz wenn du Präsenz zeigst.",
+    "goal": "Das Muster durchbrechen überall auszuweichen. Raum als Recht erleben.",
+    "identity": "Ich nehme meinen Platz im öffentlichen Raum ein.",
+    "safetycheck": "Niemanden absichtlich anrempeln — einfach normal geradeaus gehen ohne panisch auszuweichen.",
     "exitjoker": ""
   },
   {
@@ -531,17 +531,17 @@
     "diff": 1,
     "style": "classic",
     "area": "Dating",
-    "title": "The Digital Fast-Hook",
-    "trigger": "Wenn ich 5 neue Matches auf einer Dating-App habe.",
+    "title": "The Known Smile",
+    "trigger": "Wenn ich heute eine Frau sehe die ich flüchtig kenne — Kollegin, Nachbarin, Gym-Mitglied.",
     "preview": {
-      "fear": "Eine direkte Frage wirkt zu aufdringlich und sie antwortet nicht.",
-      "reality": "Eine konkrete Frage zu einem Detail auf ihrem Profil ist das Einzige was aus der Masse heraussticht."
+      "fear": "Es wirkt komisch wenn ich sie jetzt plötzlich anlächle.",
+      "reality": "Ein echtes Lächeln und ein Servus ist das Normalste der Welt — du hast es nur nie initiiert."
     },
-    "mutsatz": "Ich bin im digitalen Raum direkt und unverwechselbar.",
-    "action": "Schreib alle 5 an. Absolutes Verbot für «Hey» oder «Wie geht es dir». Stell eine konkrete, leicht augenzwinkernde Frage zu einem spezifischen Detail auf ihren Bildern oder in ihrer Bio.",
-    "goal": "Raus aus der lahmen Sicherheitszone des generischen Openers.",
-    "identity": "Ich bin im digitalen Raum direkt und unverwechselbar.",
-    "safetycheck": "Keine Nachricht die auch an 100 andere passen würde. Spezifisch oder gar nicht.",
+    "mutsatz": "Ich initiiere den freundlichen Kontakt in meiner Umgebung.",
+    "action": "Such aktiv den Blickkontakt, schenk ihr ein kurzes echtes Lächeln und sag im Vorbeigehen ein klares, entspanntes Servus. Du wartest nicht bis sie es tut.",
+    "goal": "Passivität brechen. Den ersten Schritt machen ohne großen Einsatz.",
+    "identity": "Ich bin derjenige der den freundlichen Kontakt setzt.",
+    "safetycheck": "Nicht stehen bleiben und warten was passiert. Lächeln, sagen, weitergehen.",
     "exitjoker": ""
   },
   {
@@ -552,7 +552,7 @@
     "style": "classic",
     "area": "Dating",
     "title": "The Silent Walkthrough",
-    "trigger": "Wenn ich abends ohne Kopfhörer durch ein belebtes Ausgehviertel gehe.",
+    "trigger": "Wenn ich abends ohne Kopfhörer durch ein belebtes Viertel gehe.",
     "preview": {
       "fear": "Ich starre Frauen an und wirke creepy.",
       "reality": "Blickkontakt halten bis auf gleicher Höhe ist normale menschliche Präsenz — kein Starren."
@@ -571,18 +571,18 @@
     "diff": 2,
     "style": "classic",
     "area": "Dating",
-    "title": "Der Kassen-Kommentar",
-    "trigger": "Wenn ich beim Bäcker oder Supermarkt in einer langen Warteschlange stehe.",
+    "title": "The Micro Compliment",
+    "trigger": "Wenn ich heute bei einem Barista, Bäcker oder Kassierer bin.",
     "preview": {
-      "fear": "Sie denkt ich bin ein komischer Typ der Fremde anquatscht.",
-      "reality": "Ein trockener Kommentar zur gemeinsamen Situation ist das Ungezwungenste was es gibt."
+      "fear": "Das wirkt aufgesetzt oder sie denken ich will etwas.",
+      "reality": "Ein echtes Kompliment zur Arbeitsweise ist das Seltenste und Wertschätzendste das jemand hören kann."
     },
-    "mutsatz": "Ich kommentiere meine Realität unbeschwert.",
-    "action": "Sprich einen völlig banalen, trockenen Gedanken über die Situation laut aus: «Die Schlange heute braucht auch ein eigenes Zeitzonen-Management» oder «Koffein-Notstand in München heute?»",
-    "goal": "Die Angst vor dem Ansprechen durch Humor und Kontext nehmen.",
-    "identity": "Ich kommentiere meine Realität unbeschwert und lade andere mit ein.",
-    "safetycheck": "Kein langer Monolog. Ein Satz — dann abwarten was kommt.",
-    "exitjoker": "Na dann viel Erfolg noch in der Schlange."
+    "mutsatz": "Ich gebe Wert ohne etwas dafür zu wollen.",
+    "action": "Mach dem Mitarbeiter ein kurzes ehrliches Kompliment das nichts mit Aussehen zu tun hat. «Danke für deine extrem entspannte Art bei dem Stress hier.» Direkt sagen und weitergehen.",
+    "goal": "Den Muskel trainieren Wert zu geben ohne Bestätigung zu erwarten.",
+    "identity": "Ich erkenne Menschen an ohne etwas dafür zu wollen.",
+    "safetycheck": "Nur Arbeitsweise, Energie oder Haltung kommentieren — nie Aussehen bei Servicepersonal.",
+    "exitjoker": ""
   },
   {
     "id": "DA_L2_02",
@@ -591,18 +591,18 @@
     "diff": 2,
     "style": "classic",
     "area": "Dating",
-    "title": "The Mat Talk",
-    "trigger": "Nach dem Box- oder MMA-Training oder im Gym-Freihantelbereich.",
+    "title": "The Absurd No",
+    "trigger": "Wenn ich heute in ein Café gehe.",
     "preview": {
-      "fear": "Sie will nach dem Training ihre Ruhe und ich störe sie.",
-      "reality": "Nach intensivem Training ist die Stimmung offen — gemeinsame Erschöpfung verbindet."
+      "fear": "Die Bedienung denkt ich bin komisch.",
+      "reality": "Die Bedienung hat das schon tausendmal erlebt und vergisst es in 10 Sekunden."
     },
-    "mutsatz": "Ich connecte mich natürlich über gemeinsamen Sport.",
-    "action": "Geh zu einer Frau die intensiv trainiert hat und sag ohne lange Rechtfertigung: «Du hast heute richtig Gas gegeben beim Sparring — machst du das schon lange hier?»",
-    "goal": "Die harte Maske ablegen und ehrliches Interesse zeigen.",
-    "identity": "Ich bin ein offener Mann der echtes Interesse an anderen zeigt.",
-    "safetycheck": "Keine Bewertung der Technik oder des Körpers. Nur Einsatz und Ausdauer kommentieren.",
-    "exitjoker": "Respekt — dann bis zum nächsten Training."
+    "mutsatz": "Ein Nein in einem sicheren Kontext ist mein Training für den echten.",
+    "action": "Frag nach etwas das es dort garantiert nicht gibt. «Habt ihr heute auch frische Waffeln?» Halt das Nein aus, lächle entspannt und bestell ganz normal einen Kaffee.",
+    "goal": "Ablehnung in einem sicheren Kontext sammeln bevor der echte Einsatz kommt.",
+    "identity": "Ein Nein ist harmlos. Ich überlebe es jedes Mal.",
+    "safetycheck": "Nicht erklären dass es ein Experiment ist. Einfach normal reagieren auf das Nein.",
+    "exitjoker": "Kein Problem — dann einen Espresso bitte."
   },
   {
     "id": "DA_L2_03",
@@ -611,18 +611,18 @@
     "diff": 2,
     "style": "classic",
     "area": "Dating",
-    "title": "The Supermarket Match",
-    "trigger": "Wenn eine Frau im Laden neben mir nach demselben Produkt greift.",
+    "title": "The Opinion Opener",
+    "trigger": "Wenn ich heute mit jemandem in einer Warteschlange, einem Café oder auf der Straße bin.",
     "preview": {
-      "fear": "Sie denkt ich bin ein Typ der Frauen im Supermarkt anmacht.",
-      "reality": "Eine echte Frage zu einem Produkt ist der natürlichste Gesprächseinstieg der existiert."
+      "fear": "Die Person findet die Frage komisch und ignoriert mich.",
+      "reality": "Eine absurde leichte Frage bringt fast jeden zum Schmunzeln — es ist der ungezwungenste Opener überhaupt."
     },
-    "mutsatz": "Ich mache aus banalen Situationen charmante Momente.",
-    "action": "Frag unkompliziert: «Ist das wirklich so gut wie es aussieht — oder fall ich gerade auf gutes Marketing rein?» Nutz ihre Antwort für genau eine lockere Folgefrage.",
-    "goal": "Alltägliche Brücken nutzen ohne Druck und ohne Plan.",
-    "identity": "Ich mache aus banalen Momenten charmante Begegnungen.",
-    "safetycheck": "Nicht mehr als eine Folgefrage. Wenn sie kurz antwortet und wegschaut — lächeln und weiterziehen.",
-    "exitjoker": "Danke für den Tipp — jetzt weiß ich wenigstens was ich mir einbilde."
+    "mutsatz": "Ich kommentiere meine Realität unbeschwert.",
+    "action": "Nutz eine banale Situation: «Kurze Frage, ich brauche eine ehrliche Meinung — ist es eine Red Flag wenn man beim ersten Date Pizza mit Ananas bestellt?» Kurz lachen und weiterziehen.",
+    "goal": "Die Angst vor dem Ansprechen durch Humor nehmen.",
+    "identity": "Ich mache aus Alltagsmomenten leichte, charmante Begegnungen.",
+    "safetycheck": "Nicht zu lange beim Thema bleiben. Ein Satz, Reaktion abwarten, kurz lachen, weitergehen.",
+    "exitjoker": "Gut zu wissen — danke für die ehrliche Einschätzung."
   },
   {
     "id": "DA_L2_04",
@@ -631,18 +631,18 @@
     "diff": 2,
     "style": "classic",
     "area": "Dating",
-    "title": "The Café Intercept",
-    "trigger": "Wenn ich im Café sitze und eine Frau fragt ob der Stuhl neben mir frei ist.",
+    "title": "Der Kassen-Kommentar",
+    "trigger": "Wenn ich beim Bäcker oder Supermarkt in einer langen Warteschlange stehe.",
     "preview": {
-      "fear": "Sie will einfach sitzen und nicht reden.",
-      "reality": "Die Frage nach dem Stuhl ist bereits ein sozialer Öffner — ein kurzer Satz danach ist völlig normal."
+      "fear": "Sie denkt ich bin ein komischer Typ der Fremde anquatscht.",
+      "reality": "Ein trockener Kommentar zur gemeinsamen Situation ist das Ungezwungenste was es gibt."
     },
-    "mutsatz": "Ich bin nahbar und öffne den Raum für Gespräche.",
-    "action": "Sag lächelnd Ja und häng direkt einen Satz dran sobald sie sich setzt: «Arbeitest du von hier aus oder flüchtest du nur kurz vor dem Wetter draußen?»",
-    "goal": "Den Moment ohne langes Abwägen direkt nutzen.",
-    "identity": "Ich öffne Räume für Gespräche ohne zu warten bis andere es tun.",
-    "safetycheck": "Nicht nach ihrer Antwort sofort mit der eigenen Geschichte kommen. Erst zuhören.",
-    "exitjoker": "Schönes Arbeiten noch — oder gutes Flüchten."
+    "mutsatz": "Ich kommentiere meine Realität und lade andere ein mitzulachen.",
+    "action": "Sprich einen trockenen Gedanken zur Situation laut aus: «Koffein-Notstand in München heute?» Ein Satz — dann abwarten was kommt.",
+    "goal": "Alltägliche Situationen als natürliche Brücke nutzen ohne Plan und ohne Druck.",
+    "identity": "Ich mache aus banalen Momenten leichte, charmante Begegnungen.",
+    "safetycheck": "Kein langer Monolog. Ein Satz — dann abwarten.",
+    "exitjoker": "Na dann viel Erfolg noch in der Schlange."
   },
   {
     "id": "DA_L2_05",
@@ -651,18 +651,18 @@
     "diff": 2,
     "style": "classic",
     "area": "Dating",
-    "title": "The Event Opinion",
-    "trigger": "Wenn ich tagsüber auf einer Vernissage, einem Designmarkt oder einem After-Work-Event bin.",
+    "title": "The Digital Fast-Hook",
+    "trigger": "Wenn ich heute 5 neue Matches auf einer Dating-App habe.",
     "preview": {
-      "fear": "Sie will das Werk in Ruhe anschauen und ich störe ihren Moment.",
-      "reality": "Auf Events wird sozialer Kontakt erwartet — eine echte Meinung einzuholen ist kein Übergriff."
+      "fear": "Eine direkte Frage wirkt zu aufdringlich und sie antwortet nicht.",
+      "reality": "Eine konkrete Frage zu einem Detail auf ihrem Profil ist das Einzige was aus der Masse heraussticht."
     },
-    "mutsatz": "Ich teile meine intellektuelle Neugier spielerisch.",
-    "action": "Geh zu einer Frau die alleine vor einem Objekt steht und sag: «Du wirkst als hättest du eine fundierte Meinung zu dem Werk hier — täuscht mein Eindruck oder ist das Kunst?»",
-    "goal": "Auf Augenhöhe und mit leichtem Charme einsteigen.",
-    "identity": "Ich teile meine Neugier und lade andere spielerisch ein mitzudenken.",
-    "safetycheck": "Nicht sofort die eigene Meinung reindrücken. Erst ihre Reaktion abwarten.",
-    "exitjoker": "Interessante Perspektive — danke für den Kunstunterricht."
+    "mutsatz": "Ich bin im digitalen Raum direkt und unverwechselbar.",
+    "action": "Schreib alle 5 an. Kein «Hey», kein «Wie gehts». Eine konkrete, leicht augenzwinkernde Frage zu einem spezifischen Detail auf ihren Bildern oder in ihrer Bio.",
+    "goal": "Raus aus der lahmen Sicherheitszone des generischen Openers.",
+    "identity": "Ich bin im digitalen Raum direkt und unverwechselbar.",
+    "safetycheck": "Keine Nachricht die auch an 100 andere passen würde. Spezifisch oder gar nicht.",
+    "exitjoker": ""
   },
   {
     "id": "DA_L2_06",
@@ -671,18 +671,18 @@
     "diff": 2,
     "style": "classic",
     "area": "Dating",
-    "title": "The Court Connection",
-    "trigger": "Beim Tennis, Padel oder nach dem Sport auf der Anlage.",
+    "title": "Hit and Run",
+    "trigger": "Wenn ich heute eine Frau mit einem außergewöhnlichen Look oder Style sehe.",
     "preview": {
-      "fear": "Sie ist im Sportmodus und will nicht angesprochen werden.",
-      "reality": "Ein kurzes Kompliment zum Spiel ist unter Sportlern völlig normal und wird fast immer positiv aufgenommen."
+      "fear": "Sie findet es unangenehm angesprochen zu werden.",
+      "reality": "Ein kurzes aufrichtiges Kompliment ohne Erwartung ist eine der seltensten und respektvollsten Gesten."
     },
-    "mutsatz": "Ich bin ein offener sportlicher Mann unter Gleichgesinnten.",
-    "action": "Sag im Vorbeigehen zur Spielerin am Nachbarplatz: «Starke Rückhand vorhin — spielst du hier öfter auf der Anlage?»",
-    "goal": "Gemeinsame Nenner im Alltag als natürliche Brücke nutzen.",
-    "identity": "Ich connecte mich natürlich über gemeinsame Interessen.",
-    "safetycheck": "Kein Kommentar zur Optik. Nur zum Spiel, zur Technik oder zur Anlage.",
-    "exitjoker": "Dann sieht man sich vielleicht nochmal auf dem Platz."
+    "mutsatz": "Ich gebe Wert ohne etwas dafür zu wollen.",
+    "action": "Mach ihr im Vorbeigehen ein klares spezifisches Kompliment: «Mega gute Kombination mit dem Mantel.» Sofort weitergehen ohne auf eine Antwort zu warten.",
+    "goal": "Wert geben mit null Erwartung. Der Abgang ist Teil der Quest.",
+    "identity": "Ich teile ehrliche Wahrnehmungen ohne etwas dafür zu fordern.",
+    "safetycheck": "Sofort weitergehen nach dem Satz. Nicht stehen bleiben und warten.",
+    "exitjoker": ""
   },
   {
     "id": "DA_L2_07",
@@ -698,10 +698,10 @@
       "reality": "Wer endlos chattet verliert. Wer schnell ins Echte wechselt gewinnt."
     },
     "mutsatz": "Ich verschwende keine Zeit und steuere auf reale Treffen zu.",
-    "action": "Nach maximal 4 Nachrichten: «Ich finds ehrlich gesagt schöner wenn man sich kurz im echten Leben sieht. Hast du diese Woche mal Zeit für 30 Min Kaffee in der Maxvorstadt?»",
+    "action": "Nach maximal 4 Nachrichten: «Ich finds ehrlich gesagt schöner wenn man sich kurz im echten Leben sieht. Hast du diese Woche mal Zeit für 30 Minuten Kaffee in der Maxvorstadt?»",
     "goal": "Die Komfortzone des endlosen Chattens killen.",
     "identity": "Ich steuere auf echte Verbindungen zu — nicht auf digitale Korrespondenzen.",
-    "safetycheck": "Kein Datum vorschlagen ohne vorher echten Austausch gehabt zu haben. Mindestens 3 echte Nachrichten.",
+    "safetycheck": "Mindestens 3 echte Nachrichten bevor du das Treffen vorschlägst.",
     "exitjoker": "Kein Stress — meld dich wenn sich was ergibt."
   },
   {
@@ -711,18 +711,18 @@
     "diff": 3,
     "style": "classic",
     "area": "Dating",
-    "title": "The Style Drop",
-    "trigger": "Wenn ich tagsüber auf der Straße eine Frau mit einem außergewöhnlich guten Look sehe.",
+    "title": "The Transparent Truth",
+    "trigger": "Wenn ich beim Spazieren an der Isar oder im Englischen Garten eine Frau sehe die mich wirklich fasziniert.",
     "preview": {
       "fear": "Mitten am Tag eine Frau ansprechen wirkt creepy.",
-      "reality": "Ein kurzes aufrichtiges Kompliment ohne Erwartung ist eine der seltensten und respektvollsten Gesten."
+      "reality": "Direktheit mit Respekt wirkt auf die meisten Frauen stärker als jeder indirekte Versuch."
     },
-    "mutsatz": "Ich teile ehrliche Komplimente ohne etwas dafür zu wollen.",
-    "action": "Geh im Vorbeilaufen hin, such kurz den Blick und sag ruhig: «Entschuldigung — ich finde deinen Style wirklich verdammt gut. Das wollte ich dir nur kurz sagen.» Lächle kurz und geh sofort weiter.",
-    "goal": "Wert geben mit null Erwartung. Der Abgang ist Teil der Quest.",
-    "identity": "Ich teile ehrliche Wahrnehmungen ohne etwas dafür zu fordern.",
-    "safetycheck": "Sofort weitergehen nach dem Satz. Nicht stehen bleiben und warten.",
-    "exitjoker": ""
+    "mutsatz": "Ich habe den Mut meine echte Intention erwachsen hinzustellen.",
+    "action": "Geh hin, bleib mit respektvollem Abstand stehen und sag ruhig: «Hey, ganz kurz — du bist mir aufgefallen und ich finde deine Ausstrahlung Wahnsinn. Ich weiß das ist mitten am Tag aber ich musste kurz Hallo sagen. Ich bin Belal.»",
+    "goal": "Radikale, ungefilterte Verletzlichkeit ohne Sprüche. Das Nein als stolzen Datenpunkt integrieren.",
+    "identity": "Ich stelle meine echte Intention als Mann respektvoll und ohne Umwege hin.",
+    "safetycheck": "Kein langer Monolog danach. Einen Satz sagen — dann stehen lassen und abwarten.",
+    "exitjoker": "Alles gut — hat mich trotzdem gefreut. Schönen Tag noch."
   },
   {
     "id": "DA_L3_02",
@@ -731,18 +731,18 @@
     "diff": 3,
     "style": "classic",
     "area": "Dating",
-    "title": "The Transparent Truth",
-    "trigger": "Wenn ich beim Spazieren an der Isar oder im Englischen Garten eine Frau sehe die mich wirklich fasziniert.",
+    "title": "The Double-Take Anchor",
+    "trigger": "Wenn eine Frau im Café oder Park zweimal intensiv zu mir rüberschaut.",
     "preview": {
-      "fear": "Sie wird mich abwimmeln und es ist peinlich mitten am Tag.",
-      "reality": "Direktheit mit Respekt wirkt auf die meisten Frauen stärker als jeder indirekte Versuch."
+      "fear": "Ich bilde mir das ein und sie schaut nur zufällig.",
+      "reality": "Zweimal schauen ist kein Zufall — es ist eine Einladung die du normalerweise ignorierst."
     },
-    "mutsatz": "Ich habe den Mut meine echte Intention erwachsen hinzustellen.",
-    "action": "Geh hin, bleib mit respektvollem Abstand stehen und sag ruhig: «Hey, ganz kurz — du bist mir gerade aufgefallen und ich finde deine Ausstrahlung Wahnsinn. Ich weiß das ist mitten am Tag aber ich musste kurz Hallo sagen. Ich bin Belal.»",
-    "goal": "Radikale, ungefilterte Verletzlichkeit ohne Sprüche. Das Nein als stolzen Datenpunkt integrieren.",
-    "identity": "Ich stelle meine echte Intention als Mann respektvoll und ohne Umwege hin.",
-    "safetycheck": "Kein langer Monolog danach. Einen Satz — dann stehen lassen und abwarten.",
-    "exitjoker": "Alles gut — hat mich trotzdem gefreut. Schönen Tag noch."
+    "mutsatz": "Ich nehme die Einladungen des Lebens an.",
+    "action": "Handy weglassen, direkt rübergehen und sagen: «Hey, ich bin Belal. Du hast mich gerade extrem neugierig gemacht.» Keine Entschuldigung, kein Erklären.",
+    "goal": "Die Initiative ergreifen wenn der Ball auf dem Elfmeterpunkt liegt.",
+    "identity": "Ich handle wenn ich eingeladen werde — ich warte nicht bis die Chance vorbei ist.",
+    "safetycheck": "Nicht fragen ob es okay ist dass du rüberkommst. Einfach kommen und vorstellen.",
+    "exitjoker": "War schön dich kennenzulernen — schönen Tag noch."
   },
   {
     "id": "DA_L3_03",
@@ -751,61 +751,21 @@
     "diff": 3,
     "style": "classic",
     "area": "Dating",
-    "title": "The Double-Take Anchor",
-    "trigger": "Wenn eine Frau im Café oder Park zweimal intensiv zu mir rüberschaut und Blickkontakt entsteht.",
-    "preview": {
-      "fear": "Ich bilde mir das ein und sie schaut nur zufällig.",
-      "reality": "Zweimal schauen ist kein Zufall — es ist eine Einladung die du normalerweise ignorierst."
-    },
-    "mutsatz": "Ich nehme die visuellen Einladungen des Lebens selbstbewusst an.",
-    "action": "Pack nicht dein Handy aus. Geh direkt rüber, stell dich vor sie und sag mit einem entspannten Grinsen: «Hey — ich bin Belal. Du hast mich gerade extrem neugierig gemacht.» Keine Entschuldigung, kein langes Erklären.",
-    "goal": "Die Initiative ergreifen wenn der Ball auf dem Elfmeterpunkt liegt.",
-    "identity": "Ich handle wenn ich eingeladen werde — ich warte nicht bis die Chance vorbei ist.",
-    "safetycheck": "Nicht fragen ob es okay ist dass du rüberkommst. Einfach kommen und vorstellen.",
-    "exitjoker": "War schön dich kennenzulernen — schönen Tag noch."
-  },
-  {
-    "id": "DA_L3_04",
-    "sector": "dating",
-    "level": 3,
-    "diff": 3,
-    "style": "classic",
-    "area": "Dating",
     "title": "The Direct Connection Ask",
     "trigger": "Wenn ein kurzes nettes Alltagsgespräch einen guten Vibe erreicht hat.",
     "preview": {
-      "fear": "Es ist noch zu früh um nach der Nummer zu fragen — das wirkt aufdringlich.",
+      "fear": "Es ist noch zu früh um nach der Nummer zu fragen.",
       "reality": "Der richtige Moment kommt nie von alleine. Wer wartet verliert den Moment."
     },
     "mutsatz": "Ich fordere Verbindlichkeit wenn mir ein Mensch gefällt.",
-    "action": "Verpack den Abschied nicht in Floskeln. Schau ihr in die Augen und sag direkt: «Ich muss leider weiter aber ich fand den Moment gerade sehr nett. Lass uns Nummern oder Instagram tauschen.» Halte den Blick ruhig bis sie antwortet.",
+    "action": "Schau ihr in die Augen und sag direkt: «Ich muss leider weiter aber ich fand den Moment gerade sehr nett. Lass uns Nummern oder Instagram tauschen.» Blick ruhig halten bis sie antwortet.",
     "goal": "Keine künstlichen Umwege — direkt den Sack zumachen.",
     "identity": "Ich fordere Verbindlichkeit wenn mir jemand gefällt.",
     "safetycheck": "Nicht fragen ob sie das okay findet. Sagen und abwarten.",
     "exitjoker": "Kein Stress — schönen Tag noch."
   },
   {
-    "id": "DA_L3_05",
-    "sector": "dating",
-    "level": 3,
-    "diff": 3,
-    "style": "classic",
-    "area": "Dating",
-    "title": "The Rejection Honor",
-    "trigger": "Wenn ich eine Frau direkt anspreche und sie absagt.",
-    "preview": {
-      "fear": "Ein Nein ist peinlich und zeigt dass ich nicht attraktiv genug bin.",
-      "reality": "Ein Nein sagt nichts über deinen Wert — es sagt etwas über ihren Kontext in diesem Moment."
-    },
-    "mutsatz": "Ein respektvolles Nein berührt meinen Wert als Mann zu null Prozent.",
-    "action": "Wenn sie absagt — nimm es mit einem entspannten Lächeln an, halte den Blick und sag: «Alles gut, das gehört zum Handwerk. Hab noch einen schönen Tag.» Umdrehen und entspannt weitergehen.",
-    "goal": "Das Nein komplett entmachten. Der Selbstwert bleibt absolut stabil.",
-    "identity": "Ich gehe mit jedem Ergebnis souverän um — Ja und Nein sind beide okay.",
-    "safetycheck": "Nicht erklären warum das Nein okay ist. Einfach lächeln und gehen.",
-    "exitjoker": "Hab noch einen schönen Tag."
-  },
-  {
-    "id": "DA_L3_06",
+    "id": "DA_L3_04",
     "sector": "dating",
     "level": 3,
     "diff": 3,
@@ -818,10 +778,50 @@
       "reality": "Frauen wissen gerne wo sie stehen. Eine klare Einladung ist Führung — kein Druck."
     },
     "mutsatz": "Ich treffe klare Entscheidungen und lade Menschen in mein Leben ein.",
-    "action": "Mach keine schwammigen Vorschläge wie «ja man könnte ja mal». Sag stattdessen konkret: «Ich gehe am Donnerstagabend in eine verdammt gute Bar in Schwabing — komm mit, hast du Lust?»",
+    "action": "Kein «vielleicht mal irgendwann». Sag konkret: «Ich gehe am Donnerstagabend in eine verdammt gute Bar in Schwabing — komm mit, hast du Lust?»",
     "goal": "Verbindliche Führung übernehmen ohne Angst vor dem Korb.",
     "identity": "Ich lade Menschen konkret in mein Leben ein.",
     "safetycheck": "Datum und Ort nennen. Kein «vielleicht mal irgendwann».",
     "exitjoker": "Kein Stress — dann ein andermal."
+  },
+  {
+    "id": "DA_L3_05",
+    "sector": "dating",
+    "level": 3,
+    "diff": 3,
+    "style": "classic",
+    "area": "Dating",
+    "title": "The Rejection Honor",
+    "trigger": "Wenn ich eine Frau direkt anspreche mit dem klaren Ziel ein Nein zu bekommen.",
+    "preview": {
+      "fear": "Ein Nein ist peinlich und zeigt dass ich nicht attraktiv genug bin.",
+      "reality": "Ein Nein sagt nichts über deinen Wert — es sagt etwas über ihren Kontext in diesem Moment."
+    },
+    "mutsatz": "Ein respektvolles Nein berührt meinen Wert als Mann zu null Prozent.",
+    "action": "Sprich eine Frau tagsüber direkt an. Wenn sie absagt — entspanntes Lächeln, Blick halten und sagen: «Alles gut, das gehört zum Handwerk. Hab noch einen schönen Tag.» Umdrehen, weitergehen. Das Nein ist der Sieg.",
+    "goal": "Das Nein komplett entmachten. Der Selbstwert bleibt absolut stabil.",
+    "identity": "Ich gehe mit jedem Ergebnis souverän um — Ja und Nein sind beide okay.",
+    "safetycheck": "Nicht erklären warum das Nein okay ist. Einfach lächeln und gehen.",
+    "exitjoker": "Hab noch einen schönen Tag."
+  },
+  {
+    "id": "DA_L3_06",
+    "sector": "dating",
+    "level": 3,
+    "diff": 3,
+    "style": "classic",
+    "area": "Dating",
+    "title": "The Instant Date",
+    "trigger": "Wenn ein Gespräch nach dem Ansprechen sofort sehr gut läuft.",
+    "preview": {
+      "fear": "Das ist zu schnell — sie denkt ich bin zu direkt.",
+      "reality": "Wer im richtigen Moment direkt ist wirkt selbstsicher und führend — nicht aufdringlich."
+    },
+    "mutsatz": "Ich handle wenn der Moment da ist — ich warte nicht auf später.",
+    "action": "Nicht die Nummer fragen. Direkt sagen: «Ich hole mir drüben gerade einen Kaffee — komm für 5 Minuten mit.»",
+    "goal": "Nicht Nummer sammeln für später — den Moment jetzt nutzen.",
+    "identity": "Ich handle wenn der Moment da ist.",
+    "safetycheck": "Nur wenn das Gespräch wirklich sehr gut läuft. Nicht erzwingen.",
+    "exitjoker": "War schön — dann vielleicht ein andermal."
   }
 ]
